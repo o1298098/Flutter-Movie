@@ -1,0 +1,29 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/hezhibin/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.0.3/android/src/main/AndroidManifest.xml:1:1-8:12
+INJECTED from /Users/hezhibin/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.0.3/android/src/main/AndroidManifest.xml:1:1-8:12
+INJECTED from /Users/hezhibin/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.0.3/android/src/main/AndroidManifest.xml:1:1-8:12
+	package
+		ADDED from /Users/hezhibin/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.0.3/android/src/main/AndroidManifest.xml:2:3-43
+		INJECTED from /Users/hezhibin/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.0.3/android/src/main/AndroidManifest.xml
+		INJECTED from /Users/hezhibin/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.0.3/android/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/hezhibin/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.0.3/android/src/main/AndroidManifest.xml:1:11-69
+application
+ADDED from /Users/hezhibin/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.0.3/android/src/main/AndroidManifest.xml:3:3-7:17
+activity#io.flutter.plugins.urllauncher.UrlLauncherPlugin$WebViewActivity
+ADDED from /Users/hezhibin/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.0.3/android/src/main/AndroidManifest.xml:4:5-6:33
+	android:exported
+		ADDED from /Users/hezhibin/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.0.3/android/src/main/AndroidManifest.xml:6:7-31
+	android:theme
+		ADDED from /Users/hezhibin/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.0.3/android/src/main/AndroidManifest.xml:5:7-65
+	android:name
+		ADDED from /Users/hezhibin/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.0.3/android/src/main/AndroidManifest.xml:4:15-64
+uses-sdk
+INJECTED from /Users/hezhibin/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.0.3/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/hezhibin/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.0.3/android/src/main/AndroidManifest.xml
+INJECTED from /Users/hezhibin/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.0.3/android/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/hezhibin/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.0.3/android/src/main/AndroidManifest.xml
+		ADDED from /Users/hezhibin/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.0.3/android/src/main/AndroidManifest.xml
+		INJECTED from /Users/hezhibin/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.0.3/android/src/main/AndroidManifest.xml

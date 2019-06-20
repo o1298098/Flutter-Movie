@@ -1,0 +1,1 @@
+../../../../.symlinks/plugins/shared_preferences/ios/Classes/SharedPreferencesPlugin.h

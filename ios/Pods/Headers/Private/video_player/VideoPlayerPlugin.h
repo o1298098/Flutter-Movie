@@ -1,0 +1,1 @@
+../../../../.symlinks/plugins/video_player/ios/Classes/VideoPlayerPlugin.h
