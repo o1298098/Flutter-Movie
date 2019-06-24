@@ -1,11 +1,10 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/movielist.dart';
-import 'package:movie/models/tvlist.dart';
+import 'package:movie/models/videolist.dart';
 
 class HomePageState implements Cloneable<HomePageState> {
 
-MoiveListModel movie=new MoiveListModel.fromParams(results: List<MovieListResult>());
-TVListModel tv=new TVListModel.fromParams(results:List<TVListResult>());
+VideoListModel movie=new VideoListModel.fromParams(results: List<VideoListResult>());
+VideoListModel tv=new VideoListModel.fromParams(results:List<VideoListResult>());
 
   @override
   HomePageState clone() {

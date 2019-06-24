@@ -6,15 +6,15 @@ import 'package:dio/dio.dart';
 import 'package:movie/models/accountdetail.dart';
 import 'package:movie/models/certification.dart';
 import 'package:movie/models/creditsmodel.dart';
+import 'package:movie/models/discoversorttype.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/keyword.dart';
 import 'package:movie/models/moviechange.dart';
 import 'package:movie/models/moviedetail.dart';
-import 'package:movie/models/movielist.dart';
+import 'package:movie/models/videolist.dart';
 import 'package:movie/models/review.dart';
 import 'package:movie/models/searchresult.dart';
 import 'package:movie/models/tvdetail.dart';
-import 'package:movie/models/tvlist.dart';
 import 'package:movie/models/videomodel.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -184,34 +184,43 @@ class ApiHelper {
   }
 
   ///Get a list of upcoming movies in theatres. This is a release type query that looks for all movies that have a release type of 2 or 3 within the specified date range.You can optionally specify a region prameter which will narrow the search to only look for theatrical release dates within the specified country.
-  static Future<MoiveListModel> getMoviceUpComing(
+  static Future<VideoListModel> getMoviceUpComing(
       {String region, int page = 1}) async {
-    MoiveListModel model;
+    VideoListModel model;
     String param =
         '/movie/upcoming?api_key=$_apikey&language=$language&page=$page';
     var r = await httpGet(param);
-    if (r != null) model = MoiveListModel(r);
+    if (r != null) model = VideoListModel(r);
     return model;
   }
 
   ///Get a list of movies in theatres. This is a release type query that looks for all movies that have a release type of 2 or 3 within the specified date range.You can optionally specify a region prameter which will narrow the search to only look for theatrical release dates within the specified country.
-  static Future<MoiveListModel> getNowPlayingMovie(
+  static Future<VideoListModel> getNowPlayingMovie(
       {String region, int page = 1}) async {
-    MoiveListModel model;
+    VideoListModel model;
     String param =
         '/movie/now_playing?api_key=$_apikey&language=$language&page=$page';
     var r = await httpGet(param);
-    if (r != null) model = MoiveListModel(r);
+    if (r != null) model = VideoListModel(r);
     return model;
   }
 
-  static Future<MoiveListModel> getRecommendationsMovie(int movieid,
+  static Future<VideoListModel> getRecommendationsMovie(int movieid,
       {int page = 1}) async {
-    MoiveListModel model;
+    VideoListModel model;
     String param =
         '/movie/$movieid/recommendations?api_key=$_apikey&language=$language&page=$page';
     var r = await httpGet(param);
-    if (r != null) model = MoiveListModel(r);
+    if (r != null) model = VideoListModel(r);
+    return model;
+  }
+  static Future<VideoListModel> getRecommendationsTV(int tvid,
+      {int page = 1}) async {
+    VideoListModel model;
+    String param =
+        '/tv/$tvid/recommendations?api_key=$_apikey&language=$language&page=$page';
+    var r = await httpGet(param);
+    if (r != null) model = VideoListModel(r);
     return model;
   }
 
@@ -223,14 +232,23 @@ class ApiHelper {
     if (r != null) model = VideoModel(r);
     return model;
   }
+  
+   static Future<VideoModel> getTVVideo(int tvid) async {
+    VideoModel model;
+    String param = '/tv/$tvid/videos?api_key=$_apikey';
+    var r = await httpGet(param);
+    if (r != null) model = VideoModel(r);
+    return model;
+  }
+
 
   ///Get a list of shows that are currently on the air.This query looks for any TV show that has an episode with an air date in the next 7 days.
-  static Future<TVListModel> getTVOnTheAir({int page = 1}) async {
-    TVListModel model;
+  static Future<VideoListModel> getTVOnTheAir({int page = 1}) async {
+    VideoListModel model;
     String param =
         '/tv/on_the_air?api_key=$_apikey&language=$language&page=$page';
     var r = await httpGet(param);
-    if (r != null) model = TVListModel(r);
+    if (r != null) model = VideoListModel(r);
     return model;
   }
 
@@ -239,7 +257,7 @@ class ApiHelper {
       {int page = 1, bool searchadult = false}) async {
     SearchResultModel model;
     String param =
-        '/search/multi?api_key=$_apikey&language=$language&page=$page&include_adult=$searchadult';
+        '/search/multi?api_key=$_apikey&page=$page&include_adult=$searchadult';
     var r = await httpGet(param);
     if (r != null) model = SearchResultModel(r);
     return model;
@@ -250,6 +268,15 @@ class ApiHelper {
     CreditsModel model;
     String param =
         '/movie/$movieid/credits?api_key=$_apikey&language=$language';
+    var r = await httpGet(param);
+    if (r != null) model = CreditsModel(r);
+    return model;
+  }
+  
+  static Future<CreditsModel> getTVCredits(int tvid) async {
+    CreditsModel model;
+    String param =
+        '/tv/$tvid/credits?api_key=$_apikey&language=$language';
     var r = await httpGet(param);
     if (r != null) model = CreditsModel(r);
     return model;
@@ -265,12 +292,29 @@ class ApiHelper {
     return model;
   }
 
+  static Future<ReviewModel> getTVReviews(int tvid,
+      {int page = 1}) async {
+    ReviewModel model;
+    String param = '/tv/$tvid/reviews?api_key=$_apikey&page=$page';
+    var r = await httpGet(param);
+    if (r != null) model = ReviewModel(r);
+    return model;
+  }
+
   ///Get the images that belong to a movie.Querying images with a language parameter will filter the results. If you want to include a fallback language (especially useful for backdrops) you can use the include_image_language parameter. This should be a comma seperated value like so: include_image_language=en,null.
   static Future<ImageModel> getMovieImages(int movieid,
       {String includelan = 'en,cn,jp'}) async {
     ImageModel model;
-    String param =
-        '/movie/$movieid/images?api_key=$_apikey&language=$language&include_image_language=$includelan';
+    String param = '/movie/$movieid/images?api_key=$_apikey';
+    var r = await httpGet(param);
+    if (r != null) model = ImageModel(r);
+    return model;
+  }
+
+  static Future<ImageModel> getTVImages(int tvid,
+      {String includelan = 'en,cn,jp'}) async {
+    ImageModel model;
+    String param = '/tv/$tvid/images?api_key=$_apikey';
     var r = await httpGet(param);
     if (r != null) model = ImageModel(r);
     return model;
@@ -282,6 +326,95 @@ class ApiHelper {
     String param = '/movie/$moiveid/keywords?api_key=$_apikey';
     var r = await httpGet(param);
     if (r != null) model = KeyWordModel(r);
+    return model;
+  }
+
+   static Future<KeyWordModel> getTVKeyWords(int tvid) async {
+    KeyWordModel model;
+    String param = '/tv/$tvid/keywords?api_key=$_apikey';
+    var r = await httpGet(param);
+    if (r != null) model = KeyWordModel(r);
+    return model;
+  }
+
+///Discover movies by different types of data like average rating, number of votes, genres and certifications. You can get a valid list of certifications from the certifications list method.Discover also supports a nice list of sort options. See below for all of the available options.Please note, when using certification \ certification.lte you must also specify certification_country. These two parameters work together in order to filter the results. You can only filter results with the countries we have added to our certifications list.If you specify the region parameter, the regional release date will be used instead of the primary release date. The date returned will be the first date based on your query (ie. if a with_release_type is specified). It's important to note the order of the release types that are used. Specifying "2|3" would return the limited theatrical release date as opposed to "3|2" which would return the theatrical date.Also note that a number of filters support being comma (,) or pipe (|) separated. Comma's are treated like an AND and query while pipe's are an OR.
+  static Future<VideoListModel> getMovieDiscover({String lan,String region,String sortBy,String certificationCountry,String certification,String certificationLte,bool includeAdult = false,bool includeVideo = false,int page = 1,int primaryReleaseYear,String primaryReleaseDateGte,String primaryReleaseDateLte,String releaseDateGte,String releaseDateLte,int voteCountGte,int voteCountLte,double voteAverageGte,double voteAverageLte,String withCast,String withCrew,String withCompanies,String withGenres,String withKeywords,String withPeople,int year,String withoutGenres,int withRuntimeGte,int withRuntimeLte,int withReleaseType,String withOriginalLanguage,String withoutKeywords}) async {
+    VideoListModel model;
+    String param =
+        '/discover/movie?api_key=$_apikey&page=$page&language=$language';
+    param += region == null ? '' : '&region=$region';
+    param += sortBy == null ? '' : '&sort_by=$sortBy';
+    param += certification == null ? '' : '&certification=$certification';
+    param += certificationCountry == null
+        ? ''
+        : '&certification_country=$certificationCountry';
+    param +=
+        certificationLte == null ? '' : '&certification.lte=$certificationLte';
+    param += includeAdult == null ? '' : '&include_adult=$includeAdult';
+    param += includeVideo == null ? '' : '&include_video=$includeVideo';
+    param += primaryReleaseYear == null
+        ? ''
+        : '&primary_release_year=$primaryReleaseYear';
+    param += primaryReleaseDateGte == null
+        ? ''
+        : '&primary_release_date.gte=$primaryReleaseDateGte';
+    param += primaryReleaseDateLte == null
+        ? ''
+        : '&primary_release_date.lte=$primaryReleaseDateLte';
+    param += releaseDateGte == null ? '' : '&release_date.gte=$releaseDateGte';
+    param += releaseDateLte == null ? '' : '&release_date.lte=$releaseDateLte';
+    param += voteAverageGte == null ? '' : '&vote_average.gte=$voteAverageGte';
+    param += voteCountGte == null ? '' : '&vote_count.gte=$voteCountGte';
+    param += voteCountLte == null ? '' : '&vote_count.lte=$voteCountLte';
+    param += voteAverageLte == null ? '' : '&vote_average.lte=$voteAverageLte';
+    param += withCast == null ? '' : '&with_cast=$withCast';
+    param += withCrew == null ? '' : '&with_crew=$withCrew';
+    param += withCompanies == null ? '' : '&with_companies=$withCompanies';
+    param += withGenres == null ? '' : '&with_genres=$withGenres';
+    param += withKeywords == null ? '' : '&with_keywords=$withKeywords';
+    param += withPeople == null ? '' : '&with_people=$withPeople';
+    param += year == null ? '' : '&year=$year';
+    param += withoutGenres == null ? '' : '&without_genres=$withoutGenres';
+    param += withRuntimeGte == null ? '' : '&with_runtime.gte=$withRuntimeGte';
+    param += withRuntimeLte == null ? '' : '&with_runtime.lte=$withRuntimeLte';
+    param +=
+        withReleaseType == null ? '' : '&with_release_type=$withReleaseType';
+    param += withOriginalLanguage == null
+        ? ''
+        : '&with_original_language=$withOriginalLanguage';
+    param +=
+        withoutKeywords == null ? '' : '&without_keywords=$withoutKeywords';
+    var r = await httpGet(param);
+    if(r!=null)model=VideoListModel(r);
+    return model;
+  }
+
+  static Future<VideoListModel> getTVDiscover({String lan,int page,String sortBy,String airDateGte,String airDateLte,String firstAirDateGte,String firstAirDateLte,String timezone='America/New_York',String withGenres,String withKeywords})async{
+     VideoListModel model;
+     String param ='/discover/tv?api_key=$_apikey&page=$page&timezone=$timezone&language=$language';
+     param += sortBy == null ? '' : '&sort_by=$sortBy';
+     param += airDateGte == null ? '' : '&air_ate.gte=$airDateGte';
+     param += airDateLte == null ? '' : '&air_ate.lte=$airDateLte';
+     param += firstAirDateGte == null ? '' : '&first_air_ate.gte=$firstAirDateGte';
+     param += firstAirDateLte == null ? '' : '&first_air_ate.lte=$firstAirDateLte';
+     param += withGenres == null ? '' : '&with_genres=$withGenres';
+     param += withKeywords == null ? '' : '&with_keywords=$withKeywords';
+     var r=await httpGet(param);
+     if(r!=null)model=VideoListModel(r);
+     return model;
+  }
+
+///Search for movies.
+  static Future<VideoListModel> searchMovie(String keyword,{String lan,int page=1,bool includeAdult=false,String region,int year, int primaryReleaseYear})async{
+    VideoListModel model;
+    String param='/search/movie?api_key=$_apikey&page=$page&include_adult=$includeAdult';
+    param += region == null ? '' : '&region=$region';
+    param += year == null ? '' : '&year=$year';
+    param += primaryReleaseYear == null
+        ? ''
+        : '&primary_release_year=$primaryReleaseYear';
+    var r=httpGet(param);
+    if(r!=null)model=VideoListModel(r);
     return model;
   }
 

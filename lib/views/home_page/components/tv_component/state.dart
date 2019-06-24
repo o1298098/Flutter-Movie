@@ -1,10 +1,10 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/tvlist.dart';
+import 'package:movie/models/videolist.dart';
 
 import '../../state.dart';
 
 class TVCellsState implements Cloneable<TVCellsState> {
- TVListModel tv=new TVListModel.fromParams(results:List<TVListResult>());
+ VideoListModel tv=new VideoListModel.fromParams(results:List<VideoListResult>());
   @override
   TVCellsState clone() {
     return TVCellsState();

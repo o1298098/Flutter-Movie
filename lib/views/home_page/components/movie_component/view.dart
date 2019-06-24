@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
-import 'package:movie/models/movielist.dart';
+import 'package:movie/models/videolist.dart';
 
 import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
     MovieCellsState state, Dispatch dispatch, ViewService viewService) {
-  Widget _bulidcell(MovieListResult d) {
+  Widget _bulidcell(VideoListResult d) {
     return GestureDetector(
       onTap: ()=>dispatch(MovieCellsActionCreator.onCellTapped(d.id)),
       child: Container(
@@ -31,7 +31,7 @@ Widget buildView(
               height: Adapt.screenW() * 9 / 16,
               alignment: Alignment.bottomLeft,
               child: Text(
-                d.original_title,
+                d.title,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: Adapt.px(40),

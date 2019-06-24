@@ -34,7 +34,7 @@ class SearchResult {
   Object poster_path;
   int id;
   int popularity;
-  int vote_average;
+  Object vote_average;
   int vote_count;
   String first_air_date;
   String media_type;

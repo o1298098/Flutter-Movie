@@ -1,10 +1,10 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/movielist.dart';
+import 'package:movie/models/videolist.dart';
 
 import '../../state.dart';
 
 class MovieCellsState implements Cloneable<MovieCellsState> {
-  MoiveListModel movie=new MoiveListModel.fromParams(results: List<MovieListResult>());
+  VideoListModel movie=new VideoListModel.fromParams(results: List<VideoListResult>());
   @override
   MovieCellsState clone() {
     return MovieCellsState()
