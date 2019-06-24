@@ -37,7 +37,7 @@ Widget buildView(MainPageState state, Dispatch dispatch, ViewService viewService
           ), 
         ],
         currentIndex: state.selectedIndex,
-        selectedItemColor: Colors.teal,
+        selectedItemColor: Colors.black87,
         unselectedItemColor: Colors.grey,        
         onTap: (int index) {
           pageController.jumpToPage(index);

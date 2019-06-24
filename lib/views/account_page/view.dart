@@ -10,6 +10,7 @@ Widget buildView(
     AccountPageState state, Dispatch dispatch, ViewService viewService) {
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.dark.copyWith(statusBarBrightness: Brightness.dark));
+   
   return Container(
     child: Column(
       children: <Widget>[
@@ -74,3 +75,4 @@ Widget buildView(
     ),
   );
 }
+

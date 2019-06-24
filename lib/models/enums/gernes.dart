@@ -1,5 +1,5 @@
 class Gernes {
-  static Map gernes = {
+  static Map<int,String> gernes = {
     10759: "Action & Adventure",
     16: "Animation",
     35: "Comedy",

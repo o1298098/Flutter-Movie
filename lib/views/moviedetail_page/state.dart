@@ -7,27 +7,21 @@ import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/keyword.dart';
 import 'package:movie/models/moviedetail.dart';
-import 'package:movie/models/movielist.dart';
 import 'package:movie/models/review.dart';
+import 'package:movie/models/videolist.dart';
 import 'package:movie/models/videomodel.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class MovieDetailPageState implements GlobalBaseState<MovieDetailPageState> {
-  MovieDetailModel movieDetailModel = new MovieDetailModel.fromParams();
+  MovieDetailModel movieDetailModel;
   int movieid;
-  CreditsModel creditsModel = new CreditsModel.fromParams(
-      cast: List<CastData>(), crew: List<CrewData>());
-  PaletteGenerator palette = new PaletteGenerator.fromColors(
-      List<PaletteColor>()..add(new PaletteColor(Colors.black87, 0)));
-  ImageModel imagesmodel = new ImageModel.fromParams(
-      posters: List<PosterData>(), backdrops: List<BackDropData>());
-  ReviewModel reviewModel =
-      new ReviewModel.fromParams(results: List<ReviewResult>());
-  MoiveListModel recommendations =
-      new MoiveListModel.fromParams(results: List<MovieListResult>());
-  KeyWordModel keywords =
-      new KeyWordModel.fromParams(keywords: List<KeyWordData>());
-  VideoModel videomodel = new VideoModel.fromParams(results: List<VideoResult>());
+  CreditsModel creditsModel;
+  PaletteGenerator palette;
+  ImageModel imagesmodel;
+  ReviewModel reviewModel;
+  VideoListModel recommendations;
+  KeyWordModel keywords;
+  VideoModel videomodel;
 
   @override
   MovieDetailPageState clone() {
@@ -40,7 +34,7 @@ class MovieDetailPageState implements GlobalBaseState<MovieDetailPageState> {
       ..imagesmodel = imagesmodel
       ..recommendations = recommendations
       ..keywords = keywords
-      ..videomodel=videomodel;
+      ..videomodel = videomodel;
   }
 
   @override
@@ -50,5 +44,17 @@ class MovieDetailPageState implements GlobalBaseState<MovieDetailPageState> {
 MovieDetailPageState initState(Map<String, dynamic> args) {
   var state = MovieDetailPageState();
   state.movieid = args['movieid'];
+  state.movieDetailModel = new MovieDetailModel.fromParams();
+  state.creditsModel = new CreditsModel.fromParams(
+      cast: List<CastData>(), crew: List<CrewData>());
+  state.palette = new PaletteGenerator.fromColors(
+      List<PaletteColor>()..add(new PaletteColor(Colors.black87, 0)));
+  state.imagesmodel = new ImageModel.fromParams(
+      posters: List<ImageData>(), backdrops: List<ImageData>());
+  state.reviewModel = new ReviewModel.fromParams(results: List<ReviewResult>());
+  state.recommendations =
+      new VideoListModel.fromParams(results: List<VideoListResult>());
+  state.keywords = new KeyWordModel.fromParams(keywords: List<KeyWordData>());
+  state.videomodel = new VideoModel.fromParams(results: List<VideoResult>());
   return state;
 }

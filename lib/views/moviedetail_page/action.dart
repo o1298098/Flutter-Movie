@@ -5,8 +5,8 @@ import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/keyword.dart';
 import 'package:movie/models/moviedetail.dart';
-import 'package:movie/models/movielist.dart';
 import 'package:movie/models/review.dart';
+import 'package:movie/models/videolist.dart';
 import 'package:movie/models/videomodel.dart';
 import 'package:palette_generator/palette_generator.dart';
 
@@ -48,7 +48,7 @@ class MovieDetailPageActionCreator {
   static Action onSetReviews(ReviewModel c) {
     return Action(MovieDetailPageAction.setReviews, payload: c);
   }
-  static Action onSetRecommendations(MoiveListModel c) {
+  static Action onSetRecommendations(VideoListModel c) {
     return Action(MovieDetailPageAction.setRecommendation, payload: c);
   }
   static Action onKeyWords(KeyWordModel c) {

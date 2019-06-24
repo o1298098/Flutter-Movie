@@ -6,11 +6,12 @@ import 'package:flutter/widgets.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/actions/videourl.dart';
+import 'package:movie/actions/votecolorhelper.dart';
 import 'package:movie/customwidgets/videoplayeritem.dart';
 import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/enums/imagesize.dart';
-import 'package:movie/models/keyword.dart';
-import 'package:movie/models/movielist.dart';
+import 'package:movie/models/imagemodel.dart';
+import 'package:movie/models/videolist.dart';
 import 'package:movie/models/videomodel.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
@@ -72,7 +73,7 @@ Widget buildView(
     );
   }
 
-  Widget _buildRecommendationCell(MovieListResult d) {
+  Widget _buildRecommendationCell(VideoListResult d) {
     return GestureDetector(
       child: Container(
           padding: EdgeInsets.only(
@@ -143,13 +144,67 @@ Widget buildView(
   }
 
   Widget _buildVideoCell(VideoResult d) {
-    return Column(children: <Widget>[
-      VideoPlayerItem(
-        vc: VideoPlayerController.network(VideoUrl.getUrl(d.key, d.site)),
-        coverurl: 'https://i.ytimg.com/vi/${d.key}/hqdefault.jpg',
-        showplayer: d.id!='',)
-      
-    ],) ;
+    return Container(
+      padding: EdgeInsets.fromLTRB(Adapt.px(30), 0, Adapt.px(30), Adapt.px(30)),
+      child: Card(
+        elevation: 2.0,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            VideoPlayerItem(
+              vc: VideoPlayerController.network(VideoUrl.getUrl(d.key, d.site)),
+              coverurl: 'https://i.ytimg.com/vi/${d.key}/hqdefault.jpg',
+              showplayer: true,
+            ),
+            Padding(
+              padding: EdgeInsets.all(Adapt.px(20)),
+              child: Text(
+                d.name,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: Adapt.px(35),
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImageCell(ImageData d) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(Adapt.px(30), 0, Adapt.px(30), Adapt.px(20)),
+      child: Card(
+        elevation: 1.0,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            FadeInImage.assetNetwork(
+              placeholder: 'images/CacheBG.jpg',
+              image: ImageUrl.getUrl(d.file_path, ImageSize.w400),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(30)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Size:${d.width}x${d.height}',
+                    style:
+                        TextStyle(color: Colors.black, fontSize: Adapt.px(30)),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.cloud_download),
+                    onPressed: () {},
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildHeader() {
@@ -196,7 +251,7 @@ Widget buildView(
                   child: RichText(
                     text: TextSpan(children: <TextSpan>[
                       TextSpan(
-                          text: s.original_title,
+                          text: s.title,
                           style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: Adapt.px(50),
@@ -249,7 +304,7 @@ Widget buildView(
                               child: CircularProgressIndicator(
                                 strokeWidth: 6.0,
                                 valueColor: new AlwaysStoppedAnimation<Color>(
-                                    Colors.green),
+                                    VoteColorHelper.getColor(s.vote_average)),
                                 backgroundColor: Colors.grey,
                                 value: s.vote_average / 10,
                               )),
@@ -425,20 +480,8 @@ Widget buildView(
                             ],
                           )),
                           SliverToBoxAdapter(
-                              child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.all(Adapt.px(30)),
-                                child: Text('Tags',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: Adapt.px(40),
-                                        fontWeight: FontWeight.w800)),
-                              ),
-                              viewService.buildComponent('keywords'),
-                            ],
-                          )),
+                            child: viewService.buildComponent('keywords'),
+                          ),
                           SliverToBoxAdapter(
                               child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -475,17 +518,26 @@ Widget buildView(
                           SliverList(
                               delegate: SliverChildBuilderDelegate(
                                   (BuildContext contxt, int index) {
-                            return _buildVideoCell(state.videomodel.results[index]);
+                            return _buildVideoCell(
+                                state.videomodel.results[index]);
                           }, childCount: state.videomodel.results.length))
                         ]);
                       })),
                       Container(child: Builder(builder: (BuildContext context) {
+                        var allimage = new List<ImageData>()
+                          ..addAll(state.imagesmodel.backdrops)
+                          ..addAll(state.imagesmodel.posters);
                         return CustomScrollView(slivers: <Widget>[
                           SliverOverlapInjector(
                             handle:
                                 NestedScrollView.sliverOverlapAbsorberHandleFor(
                                     context),
                           ),
+                          SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                  (BuildContext contxt, int index) {
+                            return _buildImageCell(allimage[index]);
+                          }, childCount: allimage.length))
                         ]);
                       })),
                       Container(child: Builder(builder: (BuildContext context) {

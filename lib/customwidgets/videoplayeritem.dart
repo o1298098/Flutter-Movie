@@ -59,13 +59,13 @@ class VideoPlayerItemState extends State<VideoPlayerItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: Adapt.screenW() - Adapt.px(20),
-        height: (Adapt.screenW() - Adapt.px(20)) * 9 / 16,
+        width: Adapt.screenW(),
+        height: Adapt.screenW()  * 9 / 16,
        child: Stack(
             children: <Widget>[
               SizedBox.expand(
                 child: new FittedBox(
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                     child: FadeInImage.assetNetwork(
                       placeholder: 'images/CacheBG.jpg',
                       image: widget.coverurl,
