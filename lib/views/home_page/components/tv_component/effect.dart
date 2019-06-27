@@ -14,5 +14,5 @@ void _onAction(Action action, Context<TVCellsState> ctx) {
 }
 
 Future _onCellTapped(Action action, Context<TVCellsState> ctx) async{
-  await Navigator.of(ctx.context).pushNamed('tvdetailpage',arguments:{'tvid':action.payload});
+  await Navigator.of(ctx.context).pushNamed('tvdetailpage',arguments:{'tvid':action.payload[0],'bgpic':action.payload[1]});
 }

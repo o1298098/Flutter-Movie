@@ -14,6 +14,7 @@ import 'package:palette_generator/palette_generator.dart';
 
 class MovieDetailPageState implements GlobalBaseState<MovieDetailPageState> {
   MovieDetailModel movieDetailModel;
+  String backdropPic;
   int movieid;
   CreditsModel creditsModel;
   PaletteGenerator palette;
@@ -34,7 +35,8 @@ class MovieDetailPageState implements GlobalBaseState<MovieDetailPageState> {
       ..imagesmodel = imagesmodel
       ..recommendations = recommendations
       ..keywords = keywords
-      ..videomodel = videomodel;
+      ..videomodel = videomodel
+      ..backdropPic=backdropPic;
   }
 
   @override
@@ -44,6 +46,7 @@ class MovieDetailPageState implements GlobalBaseState<MovieDetailPageState> {
 MovieDetailPageState initState(Map<String, dynamic> args) {
   var state = MovieDetailPageState();
   state.movieid = args['movieid'];
+  if(args['bgpic']!=null)state.backdropPic = args['bgpic'];
   state.movieDetailModel = new MovieDetailModel.fromParams();
   state.creditsModel = new CreditsModel.fromParams(
       cast: List<CastData>(), crew: List<CrewData>());

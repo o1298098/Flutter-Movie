@@ -38,6 +38,7 @@ MovieDetailPageState _onInit(MovieDetailPageState state, Action action) {
   MovieDetailModel model=action.payload??new MovieDetailModel.fromParams();
   final MovieDetailPageState newState = state.clone();
   newState.movieDetailModel=model;
+  newState.backdropPic=model.backdrop_path;
   return newState;
 }
 MovieDetailPageState _onSetColor(MovieDetailPageState state, Action action) {
@@ -71,7 +72,7 @@ MovieDetailPageState _onSetRecommendations(MovieDetailPageState state, Action ac
   return newState;
 }
 MovieDetailPageState _onSetKeyWords(MovieDetailPageState state, Action action) {
-  KeyWordModel c=action.payload;
+  KeyWordModel c=action.payload?? new KeyWordModel.fromParams(keywords: List<KeyWordData>());
   final MovieDetailPageState newState = state.clone();
   newState.keywords=c;
   return newState;

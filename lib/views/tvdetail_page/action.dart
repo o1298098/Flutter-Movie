@@ -53,7 +53,7 @@ class TVDetailPageActionCreator {
   static Action onSetVideos(VideoModel c) {
     return Action(TVDetailPageAction.setVideos, payload: c);
   }
-  static Action onRecommendationTapped(int movieid) {
-    return Action(TVDetailPageAction.recommendationTapped, payload:movieid);
+  static Action onRecommendationTapped(int movieid,String backpic) {
+    return Action(TVDetailPageAction.recommendationTapped, payload:[movieid,backpic]);
   }
 }

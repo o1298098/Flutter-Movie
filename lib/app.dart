@@ -6,6 +6,7 @@ import 'package:movie/actions/apihelper.dart';
 import 'package:movie/views/login_page/page.dart';
 import 'package:movie/views/main_page/page.dart';
 import 'package:movie/views/moviedetail_page/page.dart';
+import 'package:movie/views/peopledetail_page/page.dart';
 import 'package:movie/views/tvdetail_page/page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -52,6 +53,7 @@ Future<Widget> createApp() async {
         'loginpage': pageConfiguration(LoginPage()),
         'moviedetailpage':pageConfiguration(MovieDetailPage()),
         'tvdetailpage':pageConfiguration(TVDetailPage()),
+        'peopledetailpage':pageConfiguration(PeopleDetailPage()),
       },
     ),
   ]);

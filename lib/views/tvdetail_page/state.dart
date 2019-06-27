@@ -20,6 +20,7 @@ class TVDetailPageState implements GlobalBaseState<TVDetailPageState> {
   VideoListModel recommendations;
   KeyWordModel keywords;
   VideoModel videomodel;
+  String backdropPic;
 
   @override
   TVDetailPageState clone() {
@@ -32,7 +33,8 @@ class TVDetailPageState implements GlobalBaseState<TVDetailPageState> {
       ..imagesmodel = imagesmodel
       ..recommendations = recommendations
       ..keywords = keywords
-      ..videomodel = videomodel;
+      ..videomodel = videomodel
+      ..backdropPic=backdropPic;
   }
 
   @override
@@ -42,6 +44,7 @@ class TVDetailPageState implements GlobalBaseState<TVDetailPageState> {
 TVDetailPageState initState(Map<String, dynamic> args) {
   var state = TVDetailPageState();
   state.tvid = args['tvid'];
+  if(args['bgpic']!=null)state.backdropPic = args['bgpic'];
   state.tvDetailModel = new TVDetailModel.fromParams();
   state.creditsModel = new CreditsModel.fromParams(
       cast: List<CastData>(), crew: List<CrewData>());

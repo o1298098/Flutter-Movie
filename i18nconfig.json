@@ -2,13 +2,15 @@
     "defaultLocale": "en-US",
     "locales": [
         "en-US",
-        "zh-CN"
+        "zh-CN",
+        "ja-JP"
     ],
     "localePath": "i18n",
     "generatedPath": "lib/generated",
     "ltr": [
         "en-US",
-        "zh-CN"
+        "zh-CN",
+        "ja-JP"
     ],
     "rtl": []
 }

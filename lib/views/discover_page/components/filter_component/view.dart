@@ -82,7 +82,7 @@ Widget buildView(
               GestureDetector(
                 child: Container(
                     alignment: Alignment.center,
-                    width: Adapt.px(100),
+                    width: Adapt.px(120),
                     padding: EdgeInsets.all(Adapt.px(10)),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(Adapt.px(10)),
@@ -105,7 +105,7 @@ Widget buildView(
               GestureDetector(
                 child: Container(
                   alignment: Alignment.center,
-                  width: Adapt.px(100),
+                  width: Adapt.px(120),
                   padding: EdgeInsets.all(Adapt.px(10)),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(Adapt.px(10)),

@@ -9,6 +9,7 @@ enum DiscoverPageAction {
   videoCellTapped,
   refreshData,
   loadMore,
+  busyChanged,
 }
 
 class DiscoverPageActionCreator {
@@ -27,7 +28,10 @@ class DiscoverPageActionCreator {
   static Action onLoadMore(List<VideoListResult> p) {
     return Action(DiscoverPageAction.loadMore,payload: p);
   }
-  static Action onVideoCellTapped(int p) {
-    return Action(DiscoverPageAction.videoCellTapped,payload: p);
+  static Action onVideoCellTapped(int p,String backpic) {
+    return Action(DiscoverPageAction.videoCellTapped,payload: [p,backpic]);
+  }
+  static Action onBusyChanged(bool p) {
+    return Action(DiscoverPageAction.busyChanged,payload: p);
   }
 }

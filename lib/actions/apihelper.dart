@@ -5,12 +5,14 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:movie/models/accountdetail.dart';
 import 'package:movie/models/certification.dart';
+import 'package:movie/models/combinedcredits.dart';
 import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/discoversorttype.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/keyword.dart';
 import 'package:movie/models/moviechange.dart';
 import 'package:movie/models/moviedetail.dart';
+import 'package:movie/models/peopledetail.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:movie/models/review.dart';
 import 'package:movie/models/searchresult.dart';
@@ -415,6 +417,28 @@ class ApiHelper {
         : '&primary_release_year=$primaryReleaseYear';
     var r=httpGet(param);
     if(r!=null)model=VideoListModel(r);
+    return model;
+  }
+
+  static Future<PeopleDetailModel> getPeopleDetail(int peopleid)async{
+    PeopleDetailModel model;
+    String param='/person/$peopleid?api_key=$_apikey&language=$language';
+    var r = await httpGet(param);
+    if(r!=null)model=PeopleDetailModel(r);
+    return model;
+  }
+  static Future<CreditsModel> getPeopleMovieCredits(int peopleid)async{
+    CreditsModel model;
+    String param='/person/$peopleid/movie_credits?api_key=$_apikey&language=$language';
+    var r = await httpGet(param);
+    if(r!=null)model=CreditsModel(r);
+    return model;
+  }
+  static Future<CombinedCreditsModel> getCombinedCredits(int peopleid)async{
+    CombinedCreditsModel model;
+    String param='/person/$peopleid/combined_credits?api_key=$_apikey&language=$language';
+    var r=await httpGet(param);
+    if(r!=null)model=CombinedCreditsModel(r);
     return model;
   }
 
