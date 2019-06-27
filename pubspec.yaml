@@ -35,6 +35,7 @@ dependencies:
   video_player: ^0.10.1+3
   youtube_extractor: ^1.0.2
   gzx_dropdown_menu: ^1.0.2
+  timeline_list: ^0.0.4
   intl: ^0.15.8
 
 dev_dependencies:

@@ -35,6 +35,7 @@ TVDetailPageState _onInit(TVDetailPageState state, Action action) {
   TVDetailModel model=action.payload??new TVDetailModel.fromParams();
   final TVDetailPageState newState = state.clone();
   newState.tvDetailModel=model;
+  newState.backdropPic=model.backdrop_path;
   return newState;
 }
 TVDetailPageState _onSetColor(TVDetailPageState state, Action action) {
@@ -68,7 +69,7 @@ TVDetailPageState _onSetRecommendations(TVDetailPageState state, Action action) 
   return newState;
 }
 TVDetailPageState _onSetKeyWords(TVDetailPageState state, Action action) {
-  KeyWordModel c=action.payload;
+  KeyWordModel c=action.payload ??new KeyWordModel.fromParams(keywords: List<KeyWordData>());
   final TVDetailPageState newState = state.clone();
   newState.keywords=c;
   return newState;

@@ -7,19 +7,113 @@ import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/actions/votecolorhelper.dart';
 import 'package:movie/customwidgets/sliverappbardelegate.dart';
+import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/sortcondition.dart';
 import 'package:movie/models/videolist.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
     DiscoverPageState state, Dispatch dispatch, ViewService viewService) {
+  Widget _buildShimmerCell() {
+    return SizedBox(
+        height: Adapt.px(400),
+        child: Shimmer.fromColors(
+            baseColor: Colors.grey[200],
+            highlightColor: Colors.grey[100],
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    width: Adapt.px(260),
+                    height: Adapt.px(400),
+                    color: Colors.grey[200],
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(Adapt.px(20)),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Container(
+                              width: Adapt.px(80),
+                              height: Adapt.px(80),
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  borderRadius:
+                                      BorderRadius.circular(Adapt.px(40))),
+                            ),
+                            SizedBox(
+                              width: Adapt.px(10),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  width: Adapt.screenW() - Adapt.px(450),
+                                  height: Adapt.px(25),
+                                  color: Colors.grey[200],
+                                ),
+                                SizedBox(
+                                  height: Adapt.px(10),
+                                ),
+                                Container(
+                                  width: Adapt.px(120),
+                                  height: Adapt.px(20),
+                                  color: Colors.grey[200],
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: Adapt.px(20),
+                        ),
+                        Container(
+                          width: Adapt.screenW() - Adapt.px(360),
+                          height: Adapt.px(20),
+                          color: Colors.grey[200],
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: Adapt.px(10)),
+                          width: Adapt.screenW() - Adapt.px(360),
+                          height: Adapt.px(20),
+                          color: Colors.grey[200],
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: Adapt.px(10)),
+                          width: Adapt.screenW() - Adapt.px(360),
+                          height: Adapt.px(20),
+                          color: Colors.grey[200],
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: Adapt.px(10)),
+                          width: Adapt.screenW() - Adapt.px(360),
+                          height: Adapt.px(20),
+                          color: Colors.grey[200],
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: Adapt.px(10)),
+                          width: Adapt.screenW() - Adapt.px(360),
+                          height: Adapt.px(20),
+                          color: Colors.grey[200],
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ));
+  }
+
   Widget _buildListCell(VideoListResult d) {
-    bool ismovie=state.filterState.isMovie;
+    bool ismovie = state.filterState.isMovie;
     return GestureDetector(
-      key: Key(ismovie?d.original_title:d.original_name),
+      key: Key(ismovie ? d.original_title : d.original_name),
       child: Container(
         padding:
             EdgeInsets.fromLTRB(Adapt.px(20), 0, Adapt.px(20), Adapt.px(30)),
@@ -30,14 +124,13 @@ Widget buildView(
               Container(
                   width: Adapt.px(260),
                   height: Adapt.px(400),
-                  child: 
-                      FadeInImage.assetNetwork(
-                        fit: BoxFit.cover,
-                        placeholder: 'images/CacheBG.jpg',
-                        image: ImageUrl.getUrl(
-                            d.poster_path ?? '/lrzvimkeL72qxHN1FaSmjIoztvj.jpg',
-                            ImageSize.w300),
-                      )),
+                  child: FadeInImage.assetNetwork(
+                    fit: BoxFit.cover,
+                    placeholder: 'images/CacheBG.jpg',
+                    image: ImageUrl.getUrl(
+                        d.poster_path ?? '/lrzvimkeL72qxHN1FaSmjIoztvj.jpg',
+                        ImageSize.w300),
+                  )),
               Container(
                 padding: EdgeInsets.all(Adapt.px(20)),
                 child: Column(
@@ -101,9 +194,9 @@ Widget buildView(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Container(
-                              width: Adapt.screenW() -Adapt.px(450),
+                              width: Adapt.screenW() - Adapt.px(450),
                               child: Text(
-                                (ismovie?d.title:d.name)??'',
+                                (ismovie ? d.title : d.name) ?? '',
                                 maxLines: 2,
                                 softWrap: true,
                                 overflow: TextOverflow.ellipsis,
@@ -114,9 +207,14 @@ Widget buildView(
                               ),
                             ),
                             Text(
-                              DateFormat.yMMMd()
-                                  .format(DateTime.tryParse((ismovie?d.release_date:d.first_air_date)??'1900-01-01')),
-                              style: TextStyle(color: Colors.grey[800],fontSize: Adapt.px(20)),
+                              DateFormat.yMMMd().format(DateTime.tryParse(
+                                  (ismovie
+                                          ? d.release_date
+                                          : d.first_air_date) ??
+                                      '1900-01-01')),
+                              style: TextStyle(
+                                  color: Colors.grey[800],
+                                  fontSize: Adapt.px(20)),
                             )
                           ],
                         )
@@ -126,9 +224,9 @@ Widget buildView(
                       height: Adapt.px(20),
                     ),
                     Container(
-                      width: Adapt.screenW() -Adapt.px(360),
+                      width: Adapt.screenW() - Adapt.px(360),
                       child: Text(
-                        d.overview??'',
+                        d.overview ?? '',
                         softWrap: true,
                         maxLines: 8,
                         overflow: TextOverflow.ellipsis,
@@ -141,7 +239,8 @@ Widget buildView(
           ),
         ),
       ),
-      onTap: () => dispatch(DiscoverPageActionCreator.onVideoCellTapped(d.id)),
+      onTap: () => dispatch(
+          DiscoverPageActionCreator.onVideoCellTapped(d.id, d.backdrop_path)),
     );
   }
 
@@ -193,12 +292,24 @@ Widget buildView(
               SliverToBoxAdapter(
                   child: Offstage(
                 offstage: state.isbusy,
-                child: Center(
-                  child: Container(
-                    margin: EdgeInsets.only(top:Adapt.px(10),bottom: Adapt.px(30)),
-                    width: Adapt.px(60),
-                    height: Adapt.px(60),
-                    child: CircularProgressIndicator(),
+                child: Container(
+                  margin: EdgeInsets.only(
+                      top: Adapt.px(10),
+                      bottom: Adapt.px(30),
+                      left: Adapt.px(30),
+                      right: Adapt.px(30)),
+                  child: Column(
+                    children: <Widget>[
+                      _buildShimmerCell(),
+                      SizedBox(
+                        height: Adapt.px(30),
+                      ),
+                      _buildShimmerCell(),
+                      SizedBox(
+                        height: Adapt.px(30),
+                      ),
+                      _buildShimmerCell(),
+                    ],
                   ),
                 ),
               ))

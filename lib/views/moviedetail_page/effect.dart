@@ -11,6 +11,7 @@ Effect<MovieDetailPageState> buildEffect() {
   return combineEffects(<Object, Effect<MovieDetailPageState>>{
     MovieDetailPageAction.action: _onAction,
     MovieDetailPageAction.recommendationTapped:_onRecommendationTapped,
+    MovieDetailPageAction.castCellTapped:_onCastCellTapped,
     Lifecycle.initState: _onInit,
   });
 }
@@ -46,5 +47,8 @@ Future _onInit(Action action, Context<MovieDetailPageState> ctx) async {
 
 
   Future _onRecommendationTapped(Action action, Context<MovieDetailPageState> ctx) async{
-    await Navigator.of(ctx.context).pushNamed('moviedetailpage',arguments: {'movieid':action.payload});
+    await Navigator.of(ctx.context).pushNamed('moviedetailpage',arguments: {'movieid':action.payload[0],'bgpic':action.payload[1]});
+  }
+  Future _onCastCellTapped(Action action, Context<MovieDetailPageState> ctx) async{
+    await Navigator.of(ctx.context).pushNamed('peopledetailpage',arguments: {'peopleid':action.payload[0],'profilePath':action.payload[1],'profileName':action.payload[2]});
   }

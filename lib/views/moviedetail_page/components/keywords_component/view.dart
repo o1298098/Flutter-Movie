@@ -2,12 +2,14 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/models/keyword.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
     KeyWordsState state, Dispatch dispatch, ViewService viewService) {
+  
   Widget _buildKeyWordChip(KeyWordData k) {
     return Chip(
       elevation: 3.0,
@@ -15,11 +17,41 @@ Widget buildView(
       label: Text(k.name),
     );
   }
+  
+  Widget _buildKeyWordShimmer(double w){
+    return SizedBox(
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey[200],
+        highlightColor: Colors.grey[100],
+        child: Container(
+          width: w,
+          height: Adapt.px(50),
+          margin: EdgeInsets.only(bottom: Adapt.px(20)),
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+            borderRadius: BorderRadius.circular(Adapt.px(25)),
+          ),
+        ),
+      ),
+    );
+  }
+  List<Widget> _buildKeyBody()
+  {
+    if(state.keywords.keywords.length>0)
+    return state.keywords.keywords.map(_buildKeyWordChip).toList();
+    else
+    return <Widget>[
+      _buildKeyWordShimmer(Adapt.px(100)),
+      _buildKeyWordShimmer(Adapt.px(200)),
+      _buildKeyWordShimmer(Adapt.px(150)),
+      _buildKeyWordShimmer(Adapt.px(230)),
+      _buildKeyWordShimmer(Adapt.px(150)),
+      _buildKeyWordShimmer(Adapt.px(120)),
+    ];
+  }
 
   Widget _getKeyWordCell() {
-    if (state.keywords.keywords.length == 0)
-      return Container();
-    else
+    
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -37,7 +69,7 @@ Widget buildView(
             child: Wrap(
               spacing: Adapt.px(15),
               direction: Axis.horizontal,
-              children: state.keywords.keywords.map(_buildKeyWordChip).toList(),
+              children: _buildKeyBody(),
             ),
           ),
         ],

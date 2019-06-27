@@ -22,6 +22,7 @@ enum MovieDetailPageAction {
   setRecommendation,
   setKeyWords,
   recommendationTapped,
+  castCellTapped,
 }
 
 class MovieDetailPageActionCreator {
@@ -57,8 +58,11 @@ class MovieDetailPageActionCreator {
   static Action onSetVideos(VideoModel c) {
     return Action(MovieDetailPageAction.setVideos, payload: c);
   }
-  static Action onRecommendationTapped(int movieid) {
-    return Action(MovieDetailPageAction.recommendationTapped, payload:movieid);
+  static Action onRecommendationTapped(int movieid,String backpic) {
+    return Action(MovieDetailPageAction.recommendationTapped, payload:[movieid,backpic]);
+  }
+  static Action onCastCellTapped(int peopleid,String profilePath,String profileName) {
+    return Action(MovieDetailPageAction.castCellTapped, payload:[peopleid,profilePath,profileName]);
   }
   
 }

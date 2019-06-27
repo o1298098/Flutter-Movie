@@ -12,6 +12,7 @@ Reducer<DiscoverPageState> buildReducer() {
       DiscoverPageAction.sortChanged:_onSortChanged,
       DiscoverPageAction.loadData:_onLoadData,
       DiscoverPageAction.loadMore:_onLoadMore,
+     // DiscoverPageAction.busyChanged:_onBusyChanged,
       //Lifecycle.dispose:_onDispose,
     },
   );
@@ -33,6 +34,13 @@ DiscoverPageState _onSortChanged(DiscoverPageState state, Action action) {
   newState.selectedSort=s;
   return newState;
 }
+DiscoverPageState _onBusyChanged(DiscoverPageState state, Action action) {
+  final bool s=action.payload??false;
+  final DiscoverPageState newState = state.clone();
+  newState.isbusy=s;
+  return newState;
+}
+
 
 DiscoverPageState _onLoadMore(DiscoverPageState state, Action action) {
   final List<VideoListResult> m=action.payload??List<VideoListResult>();

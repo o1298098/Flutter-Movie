@@ -4,6 +4,7 @@ import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/videolist.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -12,7 +13,7 @@ Widget buildView(
     MovieCellsState state, Dispatch dispatch, ViewService viewService) {
   Widget _bulidcell(VideoListResult d) {
     return GestureDetector(
-      onTap: ()=>dispatch(MovieCellsActionCreator.onCellTapped(d.id)),
+      onTap: ()=>dispatch(MovieCellsActionCreator.onCellTapped(d.id,d.backdrop_path)),
       child: Container(
         child: Stack(
           children: <Widget>[
@@ -50,10 +51,33 @@ Widget buildView(
       ),
     );
   }
+  
+  Widget _buildShimmerCell(){
+    return SizedBox(
+      width: Adapt.screenW(),
+      height: Adapt.screenW() * 9 / 16,
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey[300],
+        highlightColor: Colors.white,
+        child: Container(
+          color: Colors.grey[300],),
+        ),
+    );
+  }
 
-  return Container(
-    child: Column(
+  Widget _buildMian(){
+    if(state.movie.results.length>0)
+    return Column(
       children: state.movie.results.take(3).map(_bulidcell).toList(),
-    ),
-  );
+    );
+    else 
+    return Column(
+      children: <Widget>[
+         _buildShimmerCell(),
+         _buildShimmerCell(),
+         _buildShimmerCell()
+      ],
+    );
+  }
+  return _buildMian();
 }

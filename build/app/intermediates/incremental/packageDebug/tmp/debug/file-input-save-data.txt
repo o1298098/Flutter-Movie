@@ -1,19 +1,19 @@
 #Internal package file, do not edit.
-#Wed Jun 19 21:59:56 CST 2019
-4.path=flutter_assets/images/CacheBG.jpg
+#Thu Jun 27 09:18:08 CST 2019
+4.path=flutter_assets/LICENSE
 13.baseType=DIRECTORY
 8.set=NATIVE_RESOURCE
-6.path=flutter_assets/FontManifest.json
+6.path=flutter_assets/packages/open_iconic_flutter/assets/open-iconic.woff
 0.baseType=DIRECTORY
 10.path=lib/x86_64/libflutter.so
 5.baseType=DIRECTORY
 1.base=/Users/hezhibin/Projects/o1298098/Flutter-Movie/build/app/intermediates/merged_assets/debug/mergeDebugAssets/out
 8.path=lib/x86/libflutter.so
 12.path=flutter_assets/kernel_blob.bin
-3.base=/Users/hezhibin/Projects/o1298098/Flutter-Movie/build/app/intermediates/merged_assets/debug/mergeDebugAssets/out
+3.base=/Users/hezhibin/Projects/o1298098/Flutter-Movie/build/app/intermediates/transforms/mergeJniLibs/debug/0
 4.set=ASSET
 5.base=/Users/hezhibin/Projects/o1298098/Flutter-Movie/build/app/intermediates/merged_assets/debug/mergeDebugAssets/out
-7.base=/Users/hezhibin/Projects/o1298098/Flutter-Movie/build/app/intermediates/transforms/mergeJniLibs/debug/0
+7.base=/Users/hezhibin/Projects/o1298098/Flutter-Movie/build/app/intermediates/merged_assets/debug/mergeDebugAssets/out
 11.base=/Users/hezhibin/Projects/o1298098/Flutter-Movie/build/app/intermediates/merged_assets/debug/mergeDebugAssets/out
 9.base=/Users/hezhibin/Projects/o1298098/Flutter-Movie/build/app/intermediates/transforms/dexMerger/debug/0
 13.base=/Users/hezhibin/Projects/o1298098/Flutter-Movie/build/app/intermediates/merged_assets/debug/mergeDebugAssets/out
@@ -21,17 +21,17 @@
 11.set=ASSET
 0.set=ASSET
 6.baseType=DIRECTORY
-7.set=NATIVE_RESOURCE
-3.set=ASSET
+7.set=ASSET
+3.set=NATIVE_RESOURCE
 2.baseType=DIRECTORY
 10.baseType=DIRECTORY
 1.path=flutter_assets/AssetManifest.json
 7.baseType=DIRECTORY
-3.path=flutter_assets/LICENSE
+3.path=lib/arm64-v8a/libflutter.so
 10.set=NATIVE_RESOURCE
-5.path=flutter_assets/packages/open_iconic_flutter/assets/open-iconic.woff
+5.path=flutter_assets/images/CacheBG.jpg
 0.base=/Users/hezhibin/Projects/o1298098/Flutter-Movie/build/app/intermediates/merged_assets/debug/mergeDebugAssets/out
-7.path=lib/armeabi-v7a/libflutter.so
+7.path=flutter_assets/FontManifest.json
 11.path=flutter_assets/fonts/MaterialIcons-Regular.ttf
 9.path=classes.dex
 6.set=ASSET
