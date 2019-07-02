@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/actions/videourl.dart';
 import 'package:movie/actions/votecolorhelper.dart';
 import 'package:movie/customwidgets/videoplayeritem.dart';
+import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/imagemodel.dart';
@@ -151,8 +153,8 @@ Widget buildView(
               ),
             ],
           )),
-      onTap: () =>
-          dispatch(MovieDetailPageActionCreator.onRecommendationTapped(d.id,d.backdrop_path)),
+      onTap: () => dispatch(MovieDetailPageActionCreator.onRecommendationTapped(
+          d.id, d.backdrop_path)),
     );
   }
 
@@ -201,17 +203,18 @@ Widget buildView(
             ),
             Container(
               height: Adapt.px(24),
-              margin: EdgeInsets.fromLTRB(0,Adapt.px(15),Adapt.px(20),0),
+              margin: EdgeInsets.fromLTRB(0, Adapt.px(15), Adapt.px(20), 0),
               color: Colors.grey[200],
             ),
             Container(
               height: Adapt.px(24),
-              margin: EdgeInsets.fromLTRB(0,Adapt.px(5),Adapt.px(20),0),
+              margin: EdgeInsets.fromLTRB(0, Adapt.px(5), Adapt.px(20), 0),
               color: Colors.grey[200],
             ),
             Container(
               height: Adapt.px(24),
-              margin: EdgeInsets.fromLTRB(0,Adapt.px(5),Adapt.px(70),Adapt.px(20)),
+              margin: EdgeInsets.fromLTRB(
+                  0, Adapt.px(5), Adapt.px(70), Adapt.px(20)),
               color: Colors.grey[200],
             ),
           ],
@@ -255,7 +258,44 @@ Widget buildView(
     );
   }
 
-  Widget _buildRecommendationShimmer(){
+  Widget _buildShimmerVideoCell() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(Adapt.px(30), 0, Adapt.px(30), Adapt.px(30)),
+      child: Shimmer.fromColors(
+        highlightColor: Colors.grey[100],
+        baseColor: Colors.grey[200],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              height: Adapt.px(10),
+            ),
+            Container(
+              height: (Adapt.screenW() - Adapt.px(60)) * 9 / 16,
+              color: Colors.grey[200],
+            ),
+            SizedBox(
+              height: Adapt.px(20),
+            ),
+            Container(
+              height: Adapt.px(35),
+              color: Colors.grey[200],
+            ),
+            SizedBox(
+              height: Adapt.px(8),
+            ),
+            Container(
+              margin: EdgeInsets.only(right: Adapt.px(200)),
+              height: Adapt.px(35),
+              color: Colors.grey[200],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRecommendationShimmer() {
     return SizedBox(
       child: Shimmer.fromColors(
         baseColor: Colors.grey[200],
@@ -263,7 +303,7 @@ Widget buildView(
         child: Container(
           width: Adapt.px(400),
           height: Adapt.px(400) * 9 / 16,
-          margin: EdgeInsets.only(left:Adapt.px(30)),
+          margin: EdgeInsets.only(left: Adapt.px(30)),
           decoration: BoxDecoration(
             color: Colors.grey[200],
             borderRadius: BorderRadius.circular(Adapt.px(10)),
@@ -273,58 +313,102 @@ Widget buildView(
     );
   }
 
-  List<Widget> _buildRecommendationBody(){
-    if(state.recommendations.results.length>0)
-    return state.recommendations.results.map(_buildRecommendationCell).toList();
+  List<Widget> _buildRecommendationBody() {
+    if (state.movieDetailModel?.recommendations != null)
+      return state.movieDetailModel.recommendations.results
+          .map(_buildRecommendationCell)
+          .toList();
     else
-    return <Widget>[
-      _buildRecommendationShimmer(),
-      _buildRecommendationShimmer(),
-      _buildRecommendationShimmer(),
-    ];
+      return <Widget>[
+        _buildRecommendationShimmer(),
+        _buildRecommendationShimmer(),
+        _buildRecommendationShimmer(),
+      ];
+  }
+
+  Widget _getVideoBody() {
+    if (state.videomodel.results.length > 0)
+      return SliverList(
+          delegate:
+              SliverChildBuilderDelegate((BuildContext contxt, int index) {
+        return _buildVideoCell(state.videomodel.results[index]);
+      }, childCount: state.videomodel.results.length));
+    else
+      return SliverList(
+          delegate:
+              SliverChildBuilderDelegate((BuildContext contxt, int index) {
+        return _buildShimmerVideoCell();
+      }, childCount: 3));
+  }
+
+  Widget _getImageBody() {
+    var allimage = new List<ImageData>()
+      ..addAll(state.imagesmodel.backdrops)
+      ..addAll(state.imagesmodel.posters);
+    if(allimage.length>0)
+    return SliverList(
+        delegate: SliverChildBuilderDelegate((BuildContext contxt, int index) {
+      return _buildImageCell(allimage[index]);
+    }, childCount: allimage.length));
+    else
+      return SliverList(
+          delegate:
+              SliverChildBuilderDelegate((BuildContext contxt, int index) {
+        return _buildShimmerVideoCell();
+      }, childCount: 3));
+
   }
 
   Widget _getPosterPic() {
-    if (state.movieDetailModel.poster_path == null)
+    if (state.posterPic == null)
       return SizedBox(
           child: Shimmer.fromColors(
-        baseColor: Colors.grey[200],
+        baseColor: Colors.grey[500],
         highlightColor: Colors.grey[100],
         child: Container(
           height: Adapt.px(300),
           width: Adapt.px(200),
-          color: Colors.grey[200],
+          color: Colors.grey[500],
         ),
       ));
     else
       return Card(
         elevation: 20.0,
-        child: Image.network(
-          ImageUrl.getUrl(state.movieDetailModel.poster_path, ImageSize.w500),
+        child: CachedNetworkImage(
+          fadeInDuration: Duration(milliseconds: 1000),
           height: Adapt.px(300),
           width: Adapt.px(200),
           fit: BoxFit.cover,
+          imageUrl: ImageUrl.getUrl(
+              state.posterPic, ImageSize.w500),
+          placeholder: (c, s) {
+            return Container(
+              height: Adapt.px(300),
+              width: Adapt.px(200),
+              color: Colors.grey,
+            );
+          },
         ),
       );
   }
 
   Widget _getTitle() {
-    if (state.movieDetailModel.title == null)
+    if (state.title == null)
       return SizedBox(
           child: Shimmer.fromColors(
-        baseColor: Colors.grey[200],
+        baseColor: Colors.grey[500],
         highlightColor: Colors.grey[100],
         child: Container(
           height: Adapt.px(50),
           width: Adapt.px(200),
-          color: Colors.grey[200],
+          color: Colors.grey[500],
         ),
       ));
     else
       return RichText(
         text: TextSpan(children: <TextSpan>[
           TextSpan(
-              text: s.title,
+              text: state.title ?? '',
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Adapt.px(50),
@@ -337,7 +421,7 @@ Widget buildView(
                     ),
                   ])),
           TextSpan(
-              text: ' (${DateTime.tryParse(s.release_date).year.toString()})',
+              text:s.title==null?' (-)':' (${DateTime.tryParse(s.release_date)?.year.toString()})',
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Adapt.px(30),
@@ -418,24 +502,32 @@ Widget buildView(
           style: TextStyle(
               color: Colors.black,
               fontSize: Adapt.px(30),
+              height: 1.2,
               fontWeight: FontWeight.w400));
   }
 
   Widget _getCreditsCells() {
-    if (state.creditsModel.cast.length > 0)
+    if (state.movieDetailModel?.credits != null)
       return ListView(
         scrollDirection: Axis.horizontal,
-        children: state.creditsModel.cast.map(_buildCreditsCell).toList(),
+        children:
+            state.movieDetailModel.credits.cast.map(_buildCreditsCell).toList(),
       );
     else
-     return ListView(
+      return ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[
-          SizedBox(width: Adapt.px(30),),
+          SizedBox(
+            width: Adapt.px(30),
+          ),
           _buildCreditsShimmerCell(),
-          SizedBox(width: Adapt.px(30),),
+          SizedBox(
+            width: Adapt.px(30),
+          ),
           _buildCreditsShimmerCell(),
-          SizedBox(width: Adapt.px(30),),
+          SizedBox(
+            width: Adapt.px(30),
+          ),
           _buildCreditsShimmerCell(),
         ],
       );
@@ -446,15 +538,16 @@ Widget buildView(
       child: Stack(
         children: <Widget>[
           Container(
-              width: Adapt.screenW(),
-              height: Adapt.px(400),
-              child: SizedBox.expand(
-                child: FadeInImage.assetNetwork(
-                  placeholder: 'images/CacheBG.jpg',
-                  image: ImageUrl.getUrl(state.backdropPic, ImageSize.w500),
-                  fit: BoxFit.cover,
-                ),
-              )),
+            width: Adapt.screenW(),
+            height: Adapt.px(400),
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    colorFilter:
+                        ColorFilter.mode(dominantColor, BlendMode.color),
+                    image: NetworkImage(ImageUrl.getUrl(
+                        state.backdropPic ?? '', ImageSize.w500)),
+                    fit: BoxFit.cover)),
+          ),
           Container(
             width: Adapt.screenW(),
             height: Adapt.px(401),
@@ -524,7 +617,7 @@ Widget buildView(
                       SizedBox(
                         width: Adapt.px(30),
                       ),
-                      Text('User Score',
+                      Text(I18n.of(viewService.context).userScore,
                           style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: Adapt.px(30),
@@ -541,7 +634,7 @@ Widget buildView(
                   child: Row(
                     children: <Widget>[
                       Icon(Icons.play_arrow, color: Colors.white),
-                      Text('Play Traller',
+                      Text(I18n.of(viewService.context).playTraller,
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: Adapt.px(30),
@@ -558,235 +651,217 @@ Widget buildView(
   }
 
   return Scaffold(
-    body: Scaffold(
-        body: DefaultTabController(
-            length: 4,
-            child: NestedScrollView(
-                headerSliverBuilder: (BuildContext context, bool de) {
-                  return <Widget>[
-                    SliverOverlapAbsorber(
+    body: DefaultTabController(
+        length: 4,
+        child: NestedScrollView(
+            headerSliverBuilder: (BuildContext context, bool de) {
+              return <Widget>[
+                SliverOverlapAbsorber(
+                  handle:
+                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                  child: SliverAppBar(
+                      pinned: true,
+                      backgroundColor: state.palette.darkVibrantColor?.color ??
+                          Colors.black87,
+                      expandedHeight: Adapt.px(700),
+                      centerTitle: false,
+                      title: Text(de ? state.title ?? '' : ''),
+                      actions: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.more_vert),
+                          color: Colors.white,
+                          iconSize: Adapt.px(50),
+                          onPressed: () {},
+                        )
+                      ],
+                      bottom: PreferredSize(
+                        preferredSize: new Size(double.infinity, Adapt.px(60)),
+                        child: Container(
+                            width: Adapt.screenW(),
+                            color: Colors.white,
+                            child: TabBar(
+                              labelColor: Colors.black,
+                              indicatorColor:
+                                  state.palette.lightVibrantColor?.color ??
+                                      Colors.black,
+                              indicatorSize: TabBarIndicatorSize.label,
+                              isScrollable: true,
+                              labelStyle: TextStyle(
+                                  fontSize: Adapt.px(35),
+                                  fontWeight: FontWeight.w600),
+                              tabs: <Widget>[
+                                Tab(text: I18n.of(viewService.context).main),
+                                Tab(text: I18n.of(viewService.context).videos),
+                                Tab(text: I18n.of(viewService.context).images),
+                                Tab(text: I18n.of(viewService.context).reviews),
+                              ],
+                            )),
+                      ),
+                      flexibleSpace: FlexibleSpaceBar(
+                        centerTitle: false,
+                        background: _buildHeader(),
+                      )),
+                )
+              ];
+            },
+            body: TabBarView(
+              children: <Widget>[
+                Container(child: Builder(builder: (BuildContext context) {
+                  return CustomScrollView(slivers: <Widget>[
+                    SliverOverlapInjector(
                       handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
                           context),
-                      child: SliverAppBar(
-                          pinned: true,
-                          backgroundColor:
-                              state.palette.darkVibrantColor?.color ??
-                                  Colors.black87,
-                          expandedHeight: Adapt.px(700),
-                          centerTitle: false,
-                          title: Text(de ? s.original_title??'' : ''),
-                          actions: <Widget>[
-                            IconButton(
-                              icon: Icon(Icons.more_vert),
-                              color: Colors.white,
-                              iconSize: Adapt.px(50),
-                              onPressed: () {},
-                            )
+                    ),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(
+                            Adapt.px(30), Adapt.px(30), Adapt.px(30), 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(I18n.of(viewService.context).overView,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: Adapt.px(40),
+                                    fontWeight: FontWeight.w800)),
+                            SizedBox(
+                              height: Adapt.px(30),
+                            ),
+                            _getOverWatch(),
                           ],
-                          bottom: PreferredSize(
-                            preferredSize:
-                                new Size(double.infinity, Adapt.px(60)),
-                            child: Container(
-                                width: Adapt.screenW(),
-                                color: Colors.white,
-                                child: TabBar(
-                                  labelColor: Colors.black,
-                                  indicatorColor:
-                                      state.palette.lightVibrantColor?.color ??
-                                          Colors.black,
-                                  indicatorSize: TabBarIndicatorSize.label,
-                                  isScrollable: true,
-                                  labelStyle: TextStyle(
-                                      fontSize: Adapt.px(35),
-                                      fontWeight: FontWeight.w600),
-                                  tabs: <Widget>[
-                                    Tab(text: 'Main'),
-                                    Tab(text: 'Videos'),
-                                    Tab(text: 'Images'),
-                                    Tab(text: 'Reviews'),
-                                  ],
-                                )),
-                          ),
-                          flexibleSpace: FlexibleSpaceBar(
-                            centerTitle: false,
-                            background: _buildHeader(),
-                          )),
-                    )
-                  ];
-                },
-                body: TabBarView(
-                  children: <Widget>[
-                    Container(child: Builder(builder: (BuildContext context) {
-                      return CustomScrollView(slivers: <Widget>[
-                        SliverOverlapInjector(
-                          handle:
-                              NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                  context),
                         ),
-                        SliverToBoxAdapter(
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(Adapt.px(30)),
+                          child: Text(
+                              I18n.of(viewService.context).topBilledCast,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: Adapt.px(40),
+                                  fontWeight: FontWeight.w800)),
+                        ),
+                        Container(
+                          height: Adapt.px(450),
+                          child: _getCreditsCells(),
+                        ),
+                      ],
+                    )),
+                    SliverToBoxAdapter(
+                      child: viewService.buildComponent('keywords'),
+                    ),
+                    SliverToBoxAdapter(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(Adapt.px(30)),
+                          child: Text(
+                              I18n.of(viewService.context).recommendations,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: Adapt.px(40),
+                                  fontWeight: FontWeight.w800)),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(bottom: Adapt.px(70)),
+                          height: Adapt.px(400) * 9 / 16,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: _buildRecommendationBody(),
+                          ),
+                        ),
+                      ],
+                    ))
+                  ]);
+                })),
+                Container(child: Builder(builder: (BuildContext context) {
+                  return CustomScrollView(slivers: <Widget>[
+                    SliverOverlapInjector(
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context),
+                    ),
+                    _getVideoBody()
+                  ]);
+                })),
+                Container(child: Builder(builder: (BuildContext context) {
+                  return CustomScrollView(slivers: <Widget>[
+                    SliverOverlapInjector(
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context),
+                    ),
+                    _getImageBody()
+                  ]);
+                })),
+                Container(child: Builder(builder: (BuildContext context) {
+                  return CustomScrollView(slivers: <Widget>[
+                    SliverOverlapInjector(
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context),
+                    ),
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                          (BuildContext contxt, int index) {
+                        return GestureDetector(
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(
-                                Adapt.px(30), Adapt.px(30), Adapt.px(30), 0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text('OverView',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: Adapt.px(40),
-                                        fontWeight: FontWeight.w800)),
-                                SizedBox(
-                                  height: Adapt.px(30),
+                                Adapt.px(30), 0, Adapt.px(30), Adapt.px(30)),
+                            child: Card(
+                              child: Container(
+                                padding: EdgeInsets.all(Adapt.px(30)),
+                                height: 300,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      'A Review by ${state.reviewModel.results[index].author}',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: Adapt.px(30),
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    SizedBox(
+                                      height: Adapt.px(20),
+                                    ),
+                                    new Expanded(
+                                      child: new LayoutBuilder(builder:
+                                          (BuildContext context,
+                                              BoxConstraints constraints) {
+                                        print(constraints);
+                                        return new Text(
+                                          state.reviewModel.results[index]
+                                              .content,
+                                          overflow: TextOverflow.fade,
+                                          maxLines: (constraints.maxHeight /
+                                                  Theme.of(context)
+                                                      .textTheme
+                                                      .body1
+                                                      .fontSize)
+                                              .floor(),
+                                        );
+                                      }),
+                                    ),
+                                  ],
                                 ),
-                                _getOverWatch(),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
-                        SliverToBoxAdapter(
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.all(Adapt.px(30)),
-                              child: Text('Top Billed Cast',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: Adapt.px(40),
-                                      fontWeight: FontWeight.w800)),
-                            ),
-                            Container(
-                              height: Adapt.px(450),
-                              child: _getCreditsCells(),
-                            ),
-                          ],
-                        )),
-                        SliverToBoxAdapter(
-                          child: viewService.buildComponent('keywords'),
-                        ),
-                        SliverToBoxAdapter(
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.all(Adapt.px(30)),
-                              child: Text('Recommendations',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: Adapt.px(40),
-                                      fontWeight: FontWeight.w800)),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(bottom: Adapt.px(70)),
-                              height: Adapt.px(400) * 9 / 16,
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: _buildRecommendationBody(),
-                              ),
-                            ),
-                          ],
-                        ))
-                      ]);
-                    })),
-                    Container(child: Builder(builder: (BuildContext context) {
-                      return CustomScrollView(slivers: <Widget>[
-                        SliverOverlapInjector(
-                          handle:
-                              NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                  context),
-                        ),
-                        SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                                (BuildContext contxt, int index) {
-                          return _buildVideoCell(
-                              state.videomodel.results[index]);
-                        }, childCount: state.videomodel.results.length))
-                      ]);
-                    })),
-                    Container(child: Builder(builder: (BuildContext context) {
-                      var allimage = new List<ImageData>()
-                        ..addAll(state.imagesmodel.backdrops)
-                        ..addAll(state.imagesmodel.posters);
-                      return CustomScrollView(slivers: <Widget>[
-                        SliverOverlapInjector(
-                          handle:
-                              NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                  context),
-                        ),
-                        SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                                (BuildContext contxt, int index) {
-                          return _buildImageCell(allimage[index]);
-                        }, childCount: allimage.length))
-                      ]);
-                    })),
-                    Container(child: Builder(builder: (BuildContext context) {
-                      return CustomScrollView(slivers: <Widget>[
-                        SliverOverlapInjector(
-                          handle:
-                              NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                  context),
-                        ),
-                        SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                              (BuildContext contxt, int index) {
-                            return GestureDetector(
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(Adapt.px(30), 0,
-                                    Adapt.px(30), Adapt.px(30)),
-                                child: Card(
-                                  child: Container(
-                                    padding: EdgeInsets.all(Adapt.px(30)),
-                                    height: 300,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          'A Review by ${state.reviewModel.results[index].author}',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: Adapt.px(30),
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                        SizedBox(
-                                          height: Adapt.px(20),
-                                        ),
-                                        new Expanded(
-                                          child: new LayoutBuilder(builder:
-                                              (BuildContext context,
-                                                  BoxConstraints constraints) {
-                                            print(constraints);
-                                            return new Text(
-                                              state.reviewModel.results[index]
-                                                  .content,
-                                              overflow: TextOverflow.fade,
-                                              maxLines: (constraints.maxHeight /
-                                                      Theme.of(context)
-                                                          .textTheme
-                                                          .body1
-                                                          .fontSize)
-                                                  .floor(),
-                                            );
-                                          }),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              onTap: () async {
-                                var url = state.reviewModel.results[index].url;
-                                if (await canLaunch(url)) {
-                                  await launch(url);
-                                }
-                              },
-                            );
-                          }, childCount: state.reviewModel.results.length),
-                        ),
-                      ]);
-                    })),
-                  ],
-                )))),
+                          onTap: () async {
+                            var url = state.reviewModel.results[index].url;
+                            if (await canLaunch(url)) {
+                              await launch(url);
+                            }
+                          },
+                        );
+                      }, childCount: state.reviewModel.results.length),
+                    ),
+                  ]);
+                })),
+              ],
+            ))),
   );
 }

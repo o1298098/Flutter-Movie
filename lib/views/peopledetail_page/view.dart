@@ -23,6 +23,7 @@ Widget buildView(
     body: ListView.builder(
       itemBuilder:adapter.itemBuilder ,
       itemCount: adapter.itemCount,
+      physics: state.pageScrollPhysics,
     ),
   );
 }

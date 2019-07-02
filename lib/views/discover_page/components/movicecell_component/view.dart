@@ -95,7 +95,7 @@ Widget buildView(
                           Container(
                             width: Adapt.screenW() - Adapt.px(450),
                             child: Text(
-                              d.original_title,
+                              d.title,
                               maxLines: 2,
                               softWrap: true,
                               overflow: TextOverflow.ellipsis,
@@ -107,7 +107,7 @@ Widget buildView(
                           ),
                           Text(
                             DateFormat.yMMMd()
-                                .format(DateTime.parse(d.release_date)),
+                                .format(DateTime.parse((d.release_date==null||d.release_date?.isEmpty==true)?'1970-01-01':d.release_date)),
                             style: TextStyle(
                                 color: Colors.grey[800],
                                 fontSize: Adapt.px(20)),

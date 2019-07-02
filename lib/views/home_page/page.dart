@@ -1,8 +1,10 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/views/home_page/components/movie_component/component.dart';
+import 'package:movie/views/home_page/components/popular_cpmponent/component.dart';
 import 'package:movie/views/home_page/components/searchbar_component/component.dart';
 
 import 'components/movie_component/state.dart';
+import 'components/popular_cpmponent/state.dart';
 import 'components/searchbar_component/state.dart';
 import 'components/tv_component/component.dart';
 import 'components/tv_component/state.dart';
@@ -23,7 +25,8 @@ class HomePage extends Page<HomePageState, Map<String, dynamic>> {
                 slots: <String, Dependent<HomePageState>>{
                   'searchbar':SearchBarComponent().asDependent(SearchBarConnector()),
                   'moviecells':MovieCellsComponent().asDependent(MovieCellsConnector()),
-                  'tvcells':TVCellsComponent().asDependent(TVCellsConnector())
+                  'tvcells':TVCellsComponent().asDependent(TVCellsConnector()),
+                  'popular':PopularComponent().asDependent(PopularConnector())
                 }),
             middleware: <Middleware<HomePageState>>[
             ],);

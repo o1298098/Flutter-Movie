@@ -1,5 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gzx_dropdown_menu/gzx_dropdown_menu.dart';
 import 'package:intl/intl.dart';
@@ -18,6 +19,11 @@ import 'state.dart';
 
 Widget buildView(
     DiscoverPageState state, Dispatch dispatch, ViewService viewService) {
+ SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle.dark.copyWith(statusBarBrightness: Brightness.dark));
+    String _changDatetime(String s1){
+      return s1==null||s1?.isEmpty==true?'1900-01-01':s1;
+    }
   Widget _buildShimmerCell() {
     return SizedBox(
         height: Adapt.px(400),
@@ -209,9 +215,8 @@ Widget buildView(
                             Text(
                               DateFormat.yMMMd().format(DateTime.tryParse(
                                   (ismovie
-                                          ? d.release_date
-                                          : d.first_air_date) ??
-                                      '1900-01-01')),
+                                          ? _changDatetime(d.release_date)
+                                          : _changDatetime(d.first_air_date)))),
                               style: TextStyle(
                                   color: Colors.grey[800],
                                   fontSize: Adapt.px(20)),
@@ -265,7 +270,7 @@ Widget buildView(
                     child: GZXDropDownHeader(
                       items: [
                         GZXDropDownHeaderItem(state.filterTabNames[0]),
-                        GZXDropDownHeaderItem('Filter',
+                        GZXDropDownHeaderItem(I18n.of(viewService.context).filter,
                             iconData: Icons.filter_list, iconSize: 13),
                       ],
                       style: TextStyle(

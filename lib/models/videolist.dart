@@ -57,6 +57,7 @@ class VideoListResult {
   double vote_average;
   bool adult;
   bool video;
+  double rating;
   String backdrop_path;
   String original_language;
   List<String> origin_country;
@@ -69,14 +70,19 @@ class VideoListResult {
   String release_date;
   String title;
   List<int> genre_ids;
+  String season;
+  String nextEpisodeName;
+  String nextEpisodeNumber;
+  String nextAirDate;
 
-  VideoListResult.fromParams({this.id, this.vote_count, this.popularity, this.vote_average, this.adult, this.video, this.backdrop_path, this.original_language, this.original_title, this.overview, this.poster_path, this.release_date, this.title, this.genre_ids,this.first_air_date, this.name, this.original_name, this.origin_country});
+  VideoListResult.fromParams({this.id,this.rating,this.nextEpisodeName,this.nextEpisodeNumber,this.nextAirDate,this.season, this.vote_count, this.popularity, this.vote_average, this.adult, this.video, this.backdrop_path, this.original_language, this.original_title, this.overview, this.poster_path, this.release_date, this.title, this.genre_ids,this.first_air_date, this.name, this.original_name, this.origin_country});
   
   VideoListResult.fromJson(jsonRes) {
     id = jsonRes['id'];
     vote_count = jsonRes['vote_count'];
     popularity =double.tryParse(jsonRes['popularity'].toString());
     vote_average =double.parse(jsonRes['vote_average'].toString());
+    rating =double.parse(jsonRes['rating']?.toString()??'0.0');
     adult = jsonRes['adult'];
     video = jsonRes['video'];
     backdrop_path = jsonRes['backdrop_path'];
@@ -103,7 +109,7 @@ class VideoListResult {
 
   @override
   String toString() {
-    return '{"id": $id,"vote_count": $vote_count,"popularity": $popularity,"vote_average": $vote_average,"adult": $adult,"video": $video,"backdrop_path": ${backdrop_path != null?'${json.encode(backdrop_path)}':'null'},"original_language": ${original_language != null?'${json.encode(original_language)}':'null'},"original_title": ${original_title != null?'${json.encode(original_title)}':'null'},"overview": ${overview != null?'${json.encode(overview)}':'null'},"poster_path": ${poster_path != null?'${json.encode(poster_path)}':'null'},"release_date": ${release_date != null?'${json.encode(release_date)}':'null'},"title": ${title != null?'${json.encode(title)}':'null'},"genre_ids": $genre_ids,"first_air_date": ${first_air_date != null?'${json.encode(first_air_date)}':'null'},"name": ${name != null?'${json.encode(name)}':'null'},"original_language": ${original_language != null?'${json.encode(original_language)}':'null'},"original_name": ${original_name != null?'${json.encode(original_name)}':'null'},"origin_country": $origin_country}';
+    return '{"id": $id,"rating": $rating,"vote_count": $vote_count,"popularity": $popularity,"vote_average": $vote_average,"adult": $adult,"video": $video,"backdrop_path": ${backdrop_path != null?'${json.encode(backdrop_path)}':'null'},"original_language": ${original_language != null?'${json.encode(original_language)}':'null'},"original_title": ${original_title != null?'${json.encode(original_title)}':'null'},"overview": ${overview != null?'${json.encode(overview)}':'null'},"poster_path": ${poster_path != null?'${json.encode(poster_path)}':'null'},"release_date": ${release_date != null?'${json.encode(release_date)}':'null'},"title": ${title != null?'${json.encode(title)}':'null'},"genre_ids": $genre_ids,"first_air_date": ${first_air_date != null?'${json.encode(first_air_date)}':'null'},"name": ${name != null?'${json.encode(name)}':'null'},"original_language": ${original_language != null?'${json.encode(original_language)}':'null'},"original_name": ${original_name != null?'${json.encode(original_name)}':'null'},"origin_country": $origin_country}';
   }
 }
 

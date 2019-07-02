@@ -2,6 +2,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
+import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -123,7 +124,7 @@ Widget buildView(
             alignment: Alignment.centerLeft,
           padding: EdgeInsets.only(bottom: Adapt.px(30)),
           child: Text(
-            'Biography',
+            I18n.of(viewService.context).biography,
             softWrap: true,
             style: TextStyle(
                 color: Colors.black,

@@ -35,6 +35,80 @@ class I18n implements WidgetsLocalizations {
 
   /// "Movie"
   String get appname => "Movie";
+  /// "Search for a movie,tv show,person"
+  String get searchbartxt => "Search for a movie,tv show,person";
+  /// "Home"
+  String get home => "Home";
+  /// "Discover"
+  String get discover => "Discover";
+  /// "Coming"
+  String get coming => "Coming";
+  /// "Account"
+  String get account => "Account";
+  /// "In Theaters"
+  String get inTheaters => "In Theaters";
+  /// "On TV"
+  String get onTV => "On TV";
+  /// "OverView"
+  String get overView => "OverView";
+  /// "Top Billed Cast"
+  String get topBilledCast => "Top Billed Cast";
+  /// "User Score"
+  String get userScore => "User Score";
+  /// "Play Traller"
+  String get playTraller => "Play Traller";
+  /// "Main"
+  String get main => "Main";
+  /// "Videos"
+  String get videos => "Videos";
+  /// "Images"
+  String get images => "Images";
+  /// "Reviews"
+  String get reviews => "Reviews";
+  /// "Tags"
+  String get tags => "Tags";
+  /// "Recommendations"
+  String get recommendations => "Recommendations";
+  /// "Biography"
+  String get biography => "Biography";
+  /// "Known For"
+  String get knownFor => "Known For";
+  /// "Acting"
+  String get acting => "Acting";
+  /// "Movies"
+  String get movies => "Movies";
+  /// "TV Shows"
+  String get tvShows => "TV Shows";
+  /// "Personal Info"
+  String get personalInfo => "Personal Info";
+  /// "Gender"
+  String get gender => "Gender";
+  /// "Birthday"
+  String get birthday => "Birthday";
+  /// "Known Credits"
+  String get knownCredits => "Known Credits";
+  /// "Place of Birth"
+  String get placeOfBirth => "Place of Birth";
+  /// "official Site"
+  String get officialSite => "official Site";
+  /// "Also Known As"
+  String get alsoKnownAs => "Also Known As";
+  /// "Sort By"
+  String get sortBy => "Sort By";
+  /// "Filter"
+  String get filter => "Filter";
+  /// "Watchlist"
+  String get watchlist => "Watchlist";
+  /// "Lists"
+  String get lists => "Lists";
+  /// "Favorites"
+  String get favorites => "Favorites";
+  /// "Ratings&Reviews"
+  String get ratingsReviews => "Ratings&Reviews";
+  /// "Popular"
+  String get popular => "Popular";
+  /// "More"
+  String get more => "More";
 }
 
 class _I18n_en_US extends I18n {
@@ -50,6 +124,117 @@ class _I18n_zh_CN extends I18n {
   /// "电影"
   @override
   String get appname => "电影";
+  /// "搜索电影、电视剧、演员"
+  @override
+  String get searchbartxt => "搜索电影、电视剧、演员";
+  /// "主页"
+  @override
+  String get home => "主页";
+  /// "发现"
+  @override
+  String get discover => "发现";
+  /// "预播"
+  @override
+  String get coming => "预播";
+  /// "账号"
+  @override
+  String get account => "账号";
+  /// "上映中"
+  @override
+  String get inTheaters => "上映中";
+  /// "放送中"
+  @override
+  String get onTV => "放送中";
+  /// "概要"
+  @override
+  String get overView => "概要";
+  /// "主要演员"
+  @override
+  String get topBilledCast => "主要演员";
+  /// "用户评分"
+  @override
+  String get userScore => "用户评分";
+  /// "播放预告"
+  @override
+  String get playTraller => "播放预告";
+  /// "主要"
+  @override
+  String get main => "主要";
+  /// "视频"
+  @override
+  String get videos => "视频";
+  /// "图片"
+  @override
+  String get images => "图片";
+  /// "评论"
+  @override
+  String get reviews => "评论";
+  /// "标签"
+  @override
+  String get tags => "标签";
+  /// "推荐"
+  @override
+  String get recommendations => "推荐";
+  /// "经历"
+  @override
+  String get biography => "经历";
+  /// "被认识"
+  @override
+  String get knownFor => "被认识";
+  /// "Acting"
+  @override
+  String get acting => "Acting";
+  /// "电影"
+  @override
+  String get movies => "电影";
+  /// "电视剧"
+  @override
+  String get tvShows => "电视剧";
+  /// "个人信息"
+  @override
+  String get personalInfo => "个人信息";
+  /// "性别"
+  @override
+  String get gender => "性别";
+  /// "生日"
+  @override
+  String get birthday => "生日";
+  /// "作品"
+  @override
+  String get knownCredits => "作品";
+  /// "出生地"
+  @override
+  String get placeOfBirth => "出生地";
+  /// "个人主页"
+  @override
+  String get officialSite => "个人主页";
+  /// "被称为"
+  @override
+  String get alsoKnownAs => "被称为";
+  /// "排序"
+  @override
+  String get sortBy => "排序";
+  /// "过滤"
+  @override
+  String get filter => "过滤";
+  /// "待看清单"
+  @override
+  String get watchlist => "待看清单";
+  /// "收藏表"
+  @override
+  String get lists => "收藏表";
+  /// "我的最爱"
+  @override
+  String get favorites => "我的最爱";
+  /// "评分"
+  @override
+  String get ratingsReviews => "评分";
+  /// "热门"
+  @override
+  String get popular => "热门";
+  /// "更多"
+  @override
+  String get more => "更多";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
@@ -58,6 +243,120 @@ class _I18n_zh_CN extends I18n {
 class _I18n_ja_JP extends I18n {
   const _I18n_ja_JP();
 
+  /// "Movie"
+  @override
+  String get appname => "Movie";
+  /// "映画名、テレビ番組名、人物名で検索"
+  @override
+  String get searchbartxt => "映画名、テレビ番組名、人物名で検索";
+  /// "ホーム"
+  @override
+  String get home => "ホーム";
+  /// "発見"
+  @override
+  String get discover => "発見";
+  /// "Coming"
+  @override
+  String get coming => "Coming";
+  /// "アカウント"
+  @override
+  String get account => "アカウント";
+  /// "上映中"
+  @override
+  String get inTheaters => "上映中";
+  /// "放送中"
+  @override
+  String get onTV => "放送中";
+  /// "概要"
+  @override
+  String get overView => "概要";
+  /// "主な出演者"
+  @override
+  String get topBilledCast => "主な出演者";
+  /// "ユーザースコア"
+  @override
+  String get userScore => "ユーザースコア";
+  /// "予告編を再生"
+  @override
+  String get playTraller => "予告編を再生";
+  /// "メイン"
+  @override
+  String get main => "メイン";
+  /// "動画"
+  @override
+  String get videos => "動画";
+  /// "画像"
+  @override
+  String get images => "画像";
+  /// "レビュー"
+  @override
+  String get reviews => "レビュー";
+  /// "キーワード"
+  @override
+  String get tags => "キーワード";
+  /// "おすすめ"
+  @override
+  String get recommendations => "おすすめ";
+  /// "経歴"
+  @override
+  String get biography => "経歴";
+  /// "仕事"
+  @override
+  String get knownFor => "仕事";
+  /// "演技"
+  @override
+  String get acting => "演技";
+  /// "映画"
+  @override
+  String get movies => "映画";
+  /// "テレビ番組"
+  @override
+  String get tvShows => "テレビ番組";
+  /// "プロフィール"
+  @override
+  String get personalInfo => "プロフィール";
+  /// "性別"
+  @override
+  String get gender => "性別";
+  /// "誕生日"
+  @override
+  String get birthday => "誕生日";
+  /// "既知のクレジット"
+  @override
+  String get knownCredits => "既知のクレジット";
+  /// "出生地"
+  @override
+  String get placeOfBirth => "出生地";
+  /// "公式サイト"
+  @override
+  String get officialSite => "公式サイト";
+  /// "別の呼び方"
+  @override
+  String get alsoKnownAs => "別の呼び方";
+  /// "並び替え"
+  @override
+  String get sortBy => "並び替え";
+  /// "フィルタ"
+  @override
+  String get filter => "フィルタ";
+  /// "ウォッチリスト"
+  @override
+  String get watchlist => "ウォッチリスト";
+  /// "リスト"
+  @override
+  String get lists => "リスト";
+  /// "お気に入り"
+  @override
+  String get favorites => "お気に入り";
+  /// "評価とレビュー"
+  @override
+  String get ratingsReviews => "評価とレビュー";
+  /// "人気の"
+  @override
+  String get popular => "人気の";
+  /// "もっと"
+  @override
+  String get more => "もっと";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;

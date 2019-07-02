@@ -1,6 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
+import 'package:movie/generated/i18n.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'action.dart';
@@ -89,7 +90,7 @@ Widget buildView(
         Padding(
           padding: EdgeInsets.only(bottom: Adapt.px(30)),
           child: Text(
-            'Personal Info',
+            I18n.of(viewService.context).personalInfo,
             softWrap: true,
             style: TextStyle(
                 color: Colors.black,
@@ -97,7 +98,7 @@ Widget buildView(
                 fontSize: Adapt.px(40)),
           ),
         ),
-        SizedBox(height: Adapt.px(10),),
+        SizedBox(height: Adapt.px(20),),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -107,7 +108,7 @@ Widget buildView(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'Gender',
+                    I18n.of(viewService.context).gender,
                     softWrap: true,
                     style: TextStyle(
                         color: Colors.black,
@@ -128,7 +129,7 @@ Widget buildView(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  'Birthday',
+                  I18n.of(viewService.context).birthday,
                   softWrap: true,
                   style: TextStyle(
                       color: Colors.black,
@@ -143,7 +144,7 @@ Widget buildView(
             )
           ],
         ),
-        SizedBox(height: Adapt.px(10),),
+        SizedBox(height: Adapt.px(20),),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -153,7 +154,7 @@ Widget buildView(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'Known For',
+                    I18n.of(viewService.context).knownFor,
                     softWrap: true,
                     style: TextStyle(
                         color: Colors.black,
@@ -174,7 +175,7 @@ Widget buildView(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  'Known Credits',
+                  I18n.of(viewService.context).knownCredits,
                   softWrap: true,
                   style: TextStyle(
                       color: Colors.black,
@@ -189,35 +190,31 @@ Widget buildView(
             )
           ],
         ),
-       SizedBox(height: Adapt.px(10),),
+        SizedBox(height: Adapt.px(20),),
         Text(
-          'Place of Birth',
+          I18n.of(viewService.context).placeOfBirth,
           softWrap: true,
           style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: Adapt.px(30)),
         ),
-        SizedBox(
-          height: Adapt.px(10),
-        ),
+        SizedBox(height: Adapt.px(20),),
         _getPlaceOfBirth(),
-        SizedBox(height: Adapt.px(10),),
+        SizedBox(height: Adapt.px(20),),
         Text(
-          'Official Site',
+          I18n.of(viewService.context).officialSite,
           softWrap: true,
           style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: Adapt.px(30)),
         ),
-        SizedBox(
-          height: Adapt.px(10),
-        ),
+        SizedBox(height: Adapt.px(20),),
         _getOfficialSite(),
-        SizedBox(height: Adapt.px(10),),
+        SizedBox(height: Adapt.px(20),),
         Text(
-          'Also Known As',
+          I18n.of(viewService.context).alsoKnownAs,
           softWrap: true,
           style: TextStyle(
               color: Colors.black,

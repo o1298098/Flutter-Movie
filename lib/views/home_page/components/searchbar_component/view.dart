@@ -2,6 +2,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:movie/actions/Adapt.dart';
+import 'package:movie/generated/i18n.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -23,7 +24,8 @@ Widget buildView(
         keyboardAppearance: Brightness.light,
         cursorColor: Colors.grey,
         decoration: new InputDecoration(
-            hintText: "Search for a movie,tv show,person",
+            hintText: I18n.of(viewService.context).searchbartxt,
+            hintStyle: TextStyle(color: Colors.grey,fontSize: Adapt.px(28)),
             prefixIcon: Icon(
               Icons.search,
               color: Colors.grey,

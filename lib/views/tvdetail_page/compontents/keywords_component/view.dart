@@ -1,6 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
+import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/keyword.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -57,7 +58,7 @@ Widget buildView(
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(Adapt.px(30)),
-            child: Text('Tags',
+            child: Text(I18n.of(viewService.context).tags,
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: Adapt.px(40),

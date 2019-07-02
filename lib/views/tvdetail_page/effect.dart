@@ -46,5 +46,5 @@ Future _onInit(Action action, Context<TVDetailPageState> ctx) async {
 
 
   Future _onRecommendationTapped(Action action, Context<TVDetailPageState> ctx) async{
-    await Navigator.of(ctx.context).pushNamed('TVDetailpage',arguments: {'tvid':action.payload[0],'bgpic':action.payload[1]});
+    await Navigator.of(ctx.context).pushNamed('tvdetailpage',arguments: {'tvid':action.payload[0],'bgpic':action.payload[1]});
   }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
@@ -5,6 +6,7 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/actions/videourl.dart';
 import 'package:movie/actions/votecolorhelper.dart';
 import 'package:movie/customwidgets/videoplayeritem.dart';
+import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/imagemodel.dart';
@@ -25,7 +27,7 @@ Widget buildView(
 
   Widget _buildCreditsCell(CastData p) {
     return GestureDetector(
-      onTap: (){},
+      onTap: () {},
       child: Container(
         margin: EdgeInsets.only(left: Adapt.px(20)),
         width: Adapt.px(240),
@@ -108,7 +110,7 @@ Widget buildView(
                 padding: EdgeInsets.all(Adapt.px(10)),
                 alignment: Alignment.bottomLeft,
                 child: Text(
-                  d.name??'',
+                  d.name ?? '',
                   softWrap: false,
                   style: TextStyle(
                       color: Colors.white,
@@ -147,8 +149,8 @@ Widget buildView(
               ),
             ],
           )),
-      onTap: () =>
-          dispatch(TVDetailPageActionCreator.onRecommendationTapped(d.id,d.backdrop_path)),
+      onTap: () => dispatch(TVDetailPageActionCreator.onRecommendationTapped(
+          d.id, d.backdrop_path)),
     );
   }
 
@@ -197,17 +199,18 @@ Widget buildView(
             ),
             Container(
               height: Adapt.px(24),
-              margin: EdgeInsets.fromLTRB(0,Adapt.px(15),Adapt.px(20),0),
+              margin: EdgeInsets.fromLTRB(0, Adapt.px(15), Adapt.px(20), 0),
               color: Colors.grey[200],
             ),
             Container(
               height: Adapt.px(24),
-              margin: EdgeInsets.fromLTRB(0,Adapt.px(5),Adapt.px(20),0),
+              margin: EdgeInsets.fromLTRB(0, Adapt.px(5), Adapt.px(20), 0),
               color: Colors.grey[200],
             ),
             Container(
               height: Adapt.px(24),
-              margin: EdgeInsets.fromLTRB(0,Adapt.px(5),Adapt.px(70),Adapt.px(20)),
+              margin: EdgeInsets.fromLTRB(
+                  0, Adapt.px(5), Adapt.px(70), Adapt.px(20)),
               color: Colors.grey[200],
             ),
           ],
@@ -251,7 +254,7 @@ Widget buildView(
     );
   }
 
-  Widget _buildRecommendationShimmer(){
+  Widget _buildRecommendationShimmer() {
     return SizedBox(
       child: Shimmer.fromColors(
         baseColor: Colors.grey[200],
@@ -259,7 +262,7 @@ Widget buildView(
         child: Container(
           width: Adapt.px(400),
           height: Adapt.px(400) * 9 / 16,
-          margin: EdgeInsets.only(left:Adapt.px(30)),
+          margin: EdgeInsets.only(left: Adapt.px(30)),
           decoration: BoxDecoration(
             color: Colors.grey[200],
             borderRadius: BorderRadius.circular(Adapt.px(10)),
@@ -269,37 +272,48 @@ Widget buildView(
     );
   }
 
-  List<Widget> _buildRecommendationBody(){
-    if(state.recommendations.results.length>0)
-    return state.recommendations.results.map(_buildRecommendationCell).toList();
+  List<Widget> _buildRecommendationBody() {
+    if (state.recommendations.results.length > 0)
+      return state.recommendations.results
+          .map(_buildRecommendationCell)
+          .toList();
     else
-    return <Widget>[
-      _buildRecommendationShimmer(),
-      _buildRecommendationShimmer(),
-      _buildRecommendationShimmer(),
-    ];
+      return <Widget>[
+        _buildRecommendationShimmer(),
+        _buildRecommendationShimmer(),
+        _buildRecommendationShimmer(),
+      ];
   }
 
   Widget _getPosterPic() {
     if (state.tvDetailModel.poster_path == null)
       return SizedBox(
           child: Shimmer.fromColors(
-        baseColor: Colors.grey[200],
+        baseColor: Colors.grey[400],
         highlightColor: Colors.grey[100],
         child: Container(
           height: Adapt.px(300),
           width: Adapt.px(200),
-          color: Colors.grey[200],
+          color: Colors.grey[400],
         ),
       ));
     else
       return Card(
         elevation: 20.0,
-        child: Image.network(
-          ImageUrl.getUrl(state.tvDetailModel.poster_path, ImageSize.w500),
+        child: CachedNetworkImage(
+          fadeInDuration: Duration(milliseconds: 1000),
           height: Adapt.px(300),
           width: Adapt.px(200),
           fit: BoxFit.cover,
+          imageUrl:
+              ImageUrl.getUrl(state.tvDetailModel.poster_path, ImageSize.w500),
+          placeholder: (c, s) {
+            return Container(
+              height: Adapt.px(300),
+              width: Adapt.px(200),
+              color: Colors.grey,
+            );
+          },
         ),
       );
   }
@@ -412,6 +426,7 @@ Widget buildView(
     else
       return Text(s.overview,
           style: TextStyle(
+              height: 1.2,
               color: Colors.black,
               fontSize: Adapt.px(30),
               fontWeight: FontWeight.w400));
@@ -424,14 +439,20 @@ Widget buildView(
         children: state.creditsModel.cast.map(_buildCreditsCell).toList(),
       );
     else
-     return ListView(
+      return ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[
-          SizedBox(width: Adapt.px(30),),
+          SizedBox(
+            width: Adapt.px(30),
+          ),
           _buildCreditsShimmerCell(),
-          SizedBox(width: Adapt.px(30),),
+          SizedBox(
+            width: Adapt.px(30),
+          ),
           _buildCreditsShimmerCell(),
-          SizedBox(width: Adapt.px(30),),
+          SizedBox(
+            width: Adapt.px(30),
+          ),
           _buildCreditsShimmerCell(),
         ],
       );
@@ -442,15 +463,16 @@ Widget buildView(
       child: Stack(
         children: <Widget>[
           Container(
-              width: Adapt.screenW(),
-              height: Adapt.px(400),
-              child: SizedBox.expand(
-                child: FadeInImage.assetNetwork(
-                  placeholder: 'images/CacheBG.jpg',
-                  image: ImageUrl.getUrl(state.backdropPic, ImageSize.w500),
-                  fit: BoxFit.cover,
-                ),
-              )),
+            width: Adapt.screenW(),
+            height: Adapt.px(400),
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    colorFilter:
+                        ColorFilter.mode(dominantColor, BlendMode.color),
+                    image: NetworkImage(ImageUrl.getUrl(
+                        state.backdropPic ?? '', ImageSize.w500)),
+                    fit: BoxFit.cover)),
+          ),
           Container(
             width: Adapt.screenW(),
             height: Adapt.px(401),
@@ -520,7 +542,7 @@ Widget buildView(
                       SizedBox(
                         width: Adapt.px(30),
                       ),
-                      Text('User Score',
+                      Text(I18n.of(viewService.context).userScore,
                           style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: Adapt.px(30),
@@ -537,7 +559,7 @@ Widget buildView(
                   child: Row(
                     children: <Widget>[
                       Icon(Icons.play_arrow, color: Colors.white),
-                      Text('Play Traller',
+                      Text(I18n.of(viewService.context).playTraller,
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: Adapt.px(30),
@@ -570,7 +592,7 @@ Widget buildView(
                                   Colors.black87,
                           expandedHeight: Adapt.px(700),
                           centerTitle: false,
-                          title: Text(de ? s.name??'' : ''),
+                          title: Text(de ? s.name ?? '' : ''),
                           actions: <Widget>[
                             IconButton(
                               icon: Icon(Icons.more_vert),
@@ -596,10 +618,18 @@ Widget buildView(
                                       fontSize: Adapt.px(35),
                                       fontWeight: FontWeight.w600),
                                   tabs: <Widget>[
-                                    Tab(text: 'Main'),
-                                    Tab(text: 'Videos'),
-                                    Tab(text: 'Images'),
-                                    Tab(text: 'Reviews'),
+                                    Tab(
+                                        text:
+                                            I18n.of(viewService.context).main),
+                                    Tab(
+                                        text: I18n.of(viewService.context)
+                                            .videos),
+                                    Tab(
+                                        text: I18n.of(viewService.context)
+                                            .images),
+                                    Tab(
+                                        text: I18n.of(viewService.context)
+                                            .reviews),
                                   ],
                                 )),
                           ),
@@ -626,7 +656,7 @@ Widget buildView(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text('OverView',
+                                Text(I18n.of(viewService.context).overView,
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: Adapt.px(40),
@@ -645,7 +675,8 @@ Widget buildView(
                           children: <Widget>[
                             Padding(
                               padding: EdgeInsets.all(Adapt.px(30)),
-                              child: Text('Top Billed Cast',
+                              child: Text(
+                                  I18n.of(viewService.context).topBilledCast,
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: Adapt.px(40),
@@ -666,7 +697,8 @@ Widget buildView(
                           children: <Widget>[
                             Padding(
                               padding: EdgeInsets.all(Adapt.px(30)),
-                              child: Text('Recommendations',
+                              child: Text(
+                                  I18n.of(viewService.context).recommendations,
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: Adapt.px(40),

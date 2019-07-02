@@ -9,7 +9,8 @@ import 'package:movie/views/moviedetail_page/page.dart';
 import 'package:movie/views/peopledetail_page/page.dart';
 import 'package:movie/views/tvdetail_page/page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'generated/i18n.dart';
 import 'globalbasestate/state.dart';
 import 'globalbasestate/store.dart';
 
@@ -64,6 +65,13 @@ Future<Widget> createApp() async {
     theme: ThemeData(
       primarySwatch: Colors.blue,
     ),
+    localizationsDelegates: [
+      I18n.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+    ],
+    supportedLocales: I18n.delegate.supportedLocales,
+    localeResolutionCallback: I18n.delegate.resolution(fallback: new Locale("en", "US")),
     home: routes.buildPage('mainpage', null),
     onGenerateRoute: (RouteSettings settings) {
       return MaterialPageRoute<Object>(builder: (BuildContext context) {

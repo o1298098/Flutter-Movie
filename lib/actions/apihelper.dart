@@ -7,7 +7,6 @@ import 'package:movie/models/accountdetail.dart';
 import 'package:movie/models/certification.dart';
 import 'package:movie/models/combinedcredits.dart';
 import 'package:movie/models/creditsmodel.dart';
-import 'package:movie/models/discoversorttype.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/keyword.dart';
 import 'package:movie/models/moviechange.dart';
@@ -33,7 +32,8 @@ class ApiHelper {
   static SharedPreferences prefs;
   static String _appDocPath;
   static CookieJar _cj;
-  static String language = ui.window.locale.toLanguageTag();
+  static String language = ui.window.locale.languageCode;
+  static String region = ui.window.locale.countryCode;
 
   static Future<void> getCookieDir() async {
     prefs = await SharedPreferences.getInstance();
@@ -79,8 +79,6 @@ class ApiHelper {
     if (r != null) {
       var jsonobject = json.decode(r);
       if (jsonobject['success']) {
-        prefs.setString('account', account);
-        prefs.setString('password', pwd);
         await createNewSession(_requestToken);
       }
     }
@@ -94,8 +92,9 @@ class ApiHelper {
       if (r != null) {
         var jsonobject = json.decode(r);
         if (jsonobject['success']) {
-          session = jsonobject['request_token'];
+          session = jsonobject['session_id'];
           prefs.setString('loginsession', session);
+          await getAccountDetail();
         }
       }
     }
@@ -126,9 +125,56 @@ class ApiHelper {
       var r = await httpGet(param);
       if (r != null) accountDetailModel = AccountDetailModel(r);
       prefs.setInt('accountid', accountDetailModel.id);
-      prefs.setString('accountname', accountDetailModel.name);
+      prefs.setBool('islogin', true);
+      prefs.setString('accountname', accountDetailModel.username);
+      prefs.setString('accountgravatar',
+          'https://www.gravatar.com/avatar/${accountDetailModel.avatar.gravatar.hash}?size=200');
     }
     return accountDetailModel;
+  }
+
+  static Future<bool> deleteSession() async {
+    String param = '/authentication/session';
+    if (session != null) {
+      FormData formData = new FormData.from({"session_id": session});
+      var r = await httpDelete(param, formData);
+      if (r != null) {
+        var jsonobject = json.decode(r);
+        if (jsonobject['success']) {
+          prefs.remove('loginsession');
+          prefs.remove('accountid');
+          prefs.remove('accountname');
+          prefs.remove('accountgravatar');
+          prefs.remove('islogin');
+        } else
+          return false;
+      }
+    }
+    return true;
+  }
+
+  ///Get a list of all the movies you have rated.
+  static Future<VideoListModel> getRatedMovies({int page = 1}) async {
+    int accountid = prefs.getInt('accountid');
+    if (accountid == null) return null;
+    VideoListModel model;
+    String param =
+        '/account/$accountid/rated/movies?api_key=$_apikey&language=$language&session_id=$session&sort_by=created_at.asc&page=$page';
+    var r = await httpGet(param);
+    if (r != null) model = VideoListModel(r);
+    return model;
+  }
+
+  ///Get a list of all the movies you have rated.
+  static Future<VideoListModel> getRatedTVShows({int page = 1}) async {
+    int accountid = prefs.getInt('accountid');
+    if (accountid == null) return null;
+    VideoListModel model;
+    String param =
+        '/account/$accountid/rated/tv?api_key=$_apikey&language=$language&session_id=$session&sort_by=created_at.asc&page=$page';
+    var r = await httpGet(param);
+    if (r != null) model = VideoListModel(r);
+    return model;
   }
 
   static Future<CertificationModel> getMovieCertifications() async {
@@ -151,12 +197,29 @@ class ApiHelper {
     return certificationModel;
   }
 
+  static Future<VideoListModel> getPopularMovies({int page = 1}) async {
+    VideoListModel model;
+    String param =
+        "/movie/popular?api_key=$_apikey&language=$language&page=$page";
+    var r = await httpGet(param);
+    if (r != null) model = VideoListModel(r);
+    return model;
+  }
+
+  static Future<VideoListModel> getPopularTVShows({int page = 1}) async {
+    VideoListModel model;
+    String param = "/tv/popular?api_key=$_apikey&language=$language&page=$page";
+    var r = await httpGet(param);
+    if (r != null) model = VideoListModel(r);
+    return model;
+  }
+
   static Future<MovieDetailModel> getMovieDetail(int mvid,
       {String appendtoresponse}) async {
     MovieDetailModel model;
     String param = '/movie/$mvid?api_key=$_apikey&language=$language';
     if (appendtoresponse != null)
-      param = param + 'append_to_response=$appendtoresponse';
+      param = param + '&append_to_response=$appendtoresponse';
     var r = await httpGet(param);
     if (r != null) model = MovieDetailModel(r);
     return model;
@@ -186,22 +249,20 @@ class ApiHelper {
   }
 
   ///Get a list of upcoming movies in theatres. This is a release type query that looks for all movies that have a release type of 2 or 3 within the specified date range.You can optionally specify a region prameter which will narrow the search to only look for theatrical release dates within the specified country.
-  static Future<VideoListModel> getMoviceUpComing(
-      {String region, int page = 1}) async {
+  static Future<VideoListModel> getMoviceUpComing({int page = 1}) async {
     VideoListModel model;
     String param =
-        '/movie/upcoming?api_key=$_apikey&language=$language&page=$page';
+        '/movie/upcoming?api_key=$_apikey&language=$language&page=$page&region=$region';
     var r = await httpGet(param);
     if (r != null) model = VideoListModel(r);
     return model;
   }
 
   ///Get a list of movies in theatres. This is a release type query that looks for all movies that have a release type of 2 or 3 within the specified date range.You can optionally specify a region prameter which will narrow the search to only look for theatrical release dates within the specified country.
-  static Future<VideoListModel> getNowPlayingMovie(
-      {String region, int page = 1}) async {
+  static Future<VideoListModel> getNowPlayingMovie({int page = 1}) async {
     VideoListModel model;
     String param =
-        '/movie/now_playing?api_key=$_apikey&language=$language&page=$page';
+        '/movie/now_playing?api_key=$_apikey&language=$language&page=$page&region=$region';
     var r = await httpGet(param);
     if (r != null) model = VideoListModel(r);
     return model;
@@ -216,6 +277,7 @@ class ApiHelper {
     if (r != null) model = VideoListModel(r);
     return model;
   }
+
   static Future<VideoListModel> getRecommendationsTV(int tvid,
       {int page = 1}) async {
     VideoListModel model;
@@ -234,15 +296,14 @@ class ApiHelper {
     if (r != null) model = VideoModel(r);
     return model;
   }
-  
-   static Future<VideoModel> getTVVideo(int tvid) async {
+
+  static Future<VideoModel> getTVVideo(int tvid) async {
     VideoModel model;
     String param = '/tv/$tvid/videos?api_key=$_apikey';
     var r = await httpGet(param);
     if (r != null) model = VideoModel(r);
     return model;
   }
-
 
   ///Get a list of shows that are currently on the air.This query looks for any TV show that has an episode with an air date in the next 7 days.
   static Future<VideoListModel> getTVOnTheAir({int page = 1}) async {
@@ -274,11 +335,10 @@ class ApiHelper {
     if (r != null) model = CreditsModel(r);
     return model;
   }
-  
+
   static Future<CreditsModel> getTVCredits(int tvid) async {
     CreditsModel model;
-    String param =
-        '/tv/$tvid/credits?api_key=$_apikey&language=$language';
+    String param = '/tv/$tvid/credits?api_key=$_apikey&language=$language';
     var r = await httpGet(param);
     if (r != null) model = CreditsModel(r);
     return model;
@@ -294,8 +354,7 @@ class ApiHelper {
     return model;
   }
 
-  static Future<ReviewModel> getTVReviews(int tvid,
-      {int page = 1}) async {
+  static Future<ReviewModel> getTVReviews(int tvid, {int page = 1}) async {
     ReviewModel model;
     String param = '/tv/$tvid/reviews?api_key=$_apikey&page=$page';
     var r = await httpGet(param);
@@ -331,7 +390,7 @@ class ApiHelper {
     return model;
   }
 
-   static Future<KeyWordModel> getTVKeyWords(int tvid) async {
+  static Future<KeyWordModel> getTVKeyWords(int tvid) async {
     KeyWordModel model;
     String param = '/tv/$tvid/keywords?api_key=$_apikey';
     var r = await httpGet(param);
@@ -339,12 +398,42 @@ class ApiHelper {
     return model;
   }
 
-///Discover movies by different types of data like average rating, number of votes, genres and certifications. You can get a valid list of certifications from the certifications list method.Discover also supports a nice list of sort options. See below for all of the available options.Please note, when using certification \ certification.lte you must also specify certification_country. These two parameters work together in order to filter the results. You can only filter results with the countries we have added to our certifications list.If you specify the region parameter, the regional release date will be used instead of the primary release date. The date returned will be the first date based on your query (ie. if a with_release_type is specified). It's important to note the order of the release types that are used. Specifying "2|3" would return the limited theatrical release date as opposed to "3|2" which would return the theatrical date.Also note that a number of filters support being comma (,) or pipe (|) separated. Comma's are treated like an AND and query while pipe's are an OR.
-  static Future<VideoListModel> getMovieDiscover({String lan,String region,String sortBy,String certificationCountry,String certification,String certificationLte,bool includeAdult = false,bool includeVideo = false,int page = 1,int primaryReleaseYear,String primaryReleaseDateGte,String primaryReleaseDateLte,String releaseDateGte,String releaseDateLte,int voteCountGte,int voteCountLte,double voteAverageGte,double voteAverageLte,String withCast,String withCrew,String withCompanies,String withGenres,String withKeywords,String withPeople,int year,String withoutGenres,int withRuntimeGte,int withRuntimeLte,int withReleaseType,String withOriginalLanguage,String withoutKeywords}) async {
+  ///Discover movies by different types of data like average rating, number of votes, genres and certifications. You can get a valid list of certifications from the certifications list method.Discover also supports a nice list of sort options. See below for all of the available options.Please note, when using certification \ certification.lte you must also specify certification_country. These two parameters work together in order to filter the results. You can only filter results with the countries we have added to our certifications list.If you specify the region parameter, the regional release date will be used instead of the primary release date. The date returned will be the first date based on your query (ie. if a with_release_type is specified). It's important to note the order of the release types that are used. Specifying "2|3" would return the limited theatrical release date as opposed to "3|2" which would return the theatrical date.Also note that a number of filters support being comma (,) or pipe (|) separated. Comma's are treated like an AND and query while pipe's are an OR.
+  static Future<VideoListModel> getMovieDiscover(
+      {String lan,
+      String region,
+      String sortBy,
+      String certificationCountry,
+      String certification,
+      String certificationLte,
+      bool includeAdult = false,
+      bool includeVideo = false,
+      int page = 1,
+      int primaryReleaseYear,
+      String primaryReleaseDateGte,
+      String primaryReleaseDateLte,
+      String releaseDateGte,
+      String releaseDateLte,
+      int voteCountGte,
+      int voteCountLte,
+      double voteAverageGte,
+      double voteAverageLte,
+      String withCast,
+      String withCrew,
+      String withCompanies,
+      String withGenres,
+      String withKeywords,
+      String withPeople,
+      int year,
+      String withoutGenres,
+      int withRuntimeGte,
+      int withRuntimeLte,
+      int withReleaseType,
+      String withOriginalLanguage,
+      String withoutKeywords}) async {
     VideoListModel model;
     String param =
         '/discover/movie?api_key=$_apikey&page=$page&language=$language';
-    param += region == null ? '' : '&region=$region';
     param += sortBy == null ? '' : '&sort_by=$sortBy';
     param += certification == null ? '' : '&certification=$certification';
     param += certificationCountry == null
@@ -387,58 +476,82 @@ class ApiHelper {
     param +=
         withoutKeywords == null ? '' : '&without_keywords=$withoutKeywords';
     var r = await httpGet(param);
-    if(r!=null)model=VideoListModel(r);
+    if (r != null) model = VideoListModel(r);
     return model;
   }
 
-  static Future<VideoListModel> getTVDiscover({String lan,int page,String sortBy,String airDateGte,String airDateLte,String firstAirDateGte,String firstAirDateLte,String timezone='America/New_York',String withGenres,String withKeywords})async{
-     VideoListModel model;
-     String param ='/discover/tv?api_key=$_apikey&page=$page&timezone=$timezone&language=$language';
-     param += sortBy == null ? '' : '&sort_by=$sortBy';
-     param += airDateGte == null ? '' : '&air_ate.gte=$airDateGte';
-     param += airDateLte == null ? '' : '&air_ate.lte=$airDateLte';
-     param += firstAirDateGte == null ? '' : '&first_air_ate.gte=$firstAirDateGte';
-     param += firstAirDateLte == null ? '' : '&first_air_ate.lte=$firstAirDateLte';
-     param += withGenres == null ? '' : '&with_genres=$withGenres';
-     param += withKeywords == null ? '' : '&with_keywords=$withKeywords';
-     var r=await httpGet(param);
-     if(r!=null)model=VideoListModel(r);
-     return model;
+  static Future<VideoListModel> getTVDiscover(
+      {String lan,
+      int page,
+      String sortBy,
+      String airDateGte,
+      String airDateLte,
+      String firstAirDateGte,
+      String firstAirDateLte,
+      String timezone = 'America/New_York',
+      String withGenres,
+      String withKeywords}) async {
+    VideoListModel model;
+    String param =
+        '/discover/tv?api_key=$_apikey&page=$page&timezone=$timezone&language=$language';
+    param += sortBy == null ? '' : '&sort_by=$sortBy';
+    param += airDateGte == null ? '' : '&air_ate.gte=$airDateGte';
+    param += airDateLte == null ? '' : '&air_ate.lte=$airDateLte';
+    param +=
+        firstAirDateGte == null ? '' : '&first_air_ate.gte=$firstAirDateGte';
+    param +=
+        firstAirDateLte == null ? '' : '&first_air_ate.lte=$firstAirDateLte';
+    param += withGenres == null ? '' : '&with_genres=$withGenres';
+    param += withKeywords == null ? '' : '&with_keywords=$withKeywords';
+    var r = await httpGet(param);
+    if (r != null) model = VideoListModel(r);
+    return model;
   }
 
-///Search for movies.
-  static Future<VideoListModel> searchMovie(String keyword,{String lan,int page=1,bool includeAdult=false,String region,int year, int primaryReleaseYear})async{
+  ///Search for movies.
+  static Future<VideoListModel> searchMovie(String keyword,
+      {String lan,
+      int page = 1,
+      bool includeAdult = false,
+      String region,
+      int year,
+      int primaryReleaseYear}) async {
     VideoListModel model;
-    String param='/search/movie?api_key=$_apikey&page=$page&include_adult=$includeAdult';
+    String param =
+        '/search/movie?api_key=$_apikey&page=$page&include_adult=$includeAdult';
     param += region == null ? '' : '&region=$region';
     param += year == null ? '' : '&year=$year';
     param += primaryReleaseYear == null
         ? ''
         : '&primary_release_year=$primaryReleaseYear';
-    var r=httpGet(param);
-    if(r!=null)model=VideoListModel(r);
+    var r = httpGet(param);
+    if (r != null) model = VideoListModel(r);
     return model;
   }
 
-  static Future<PeopleDetailModel> getPeopleDetail(int peopleid)async{
+  static Future<PeopleDetailModel> getPeopleDetail(int peopleid) async {
     PeopleDetailModel model;
-    String param='/person/$peopleid?api_key=$_apikey&language=$language';
+    String param = '/person/$peopleid?api_key=$_apikey&language=$language';
     var r = await httpGet(param);
-    if(r!=null)model=PeopleDetailModel(r);
+    if (r != null) model = PeopleDetailModel(r);
     return model;
   }
-  static Future<CreditsModel> getPeopleMovieCredits(int peopleid)async{
+
+  static Future<CreditsModel> getPeopleMovieCredits(int peopleid) async {
     CreditsModel model;
-    String param='/person/$peopleid/movie_credits?api_key=$_apikey&language=$language';
+    String param =
+        '/person/$peopleid/movie_credits?api_key=$_apikey&language=$language';
     var r = await httpGet(param);
-    if(r!=null)model=CreditsModel(r);
+    if (r != null) model = CreditsModel(r);
     return model;
   }
-  static Future<CombinedCreditsModel> getCombinedCredits(int peopleid)async{
+
+  static Future<CombinedCreditsModel> getCombinedCredits(int peopleid) async {
     CombinedCreditsModel model;
-    String param='/person/$peopleid/combined_credits?api_key=$_apikey&language=$language';
-    var r=await httpGet(param);
-    if(r!=null)model=CombinedCreditsModel(r);
+    String param =
+        '/person/$peopleid/combined_credits?api_key=$_apikey&language=$language';
+    var r = await httpGet(param);
+    if (r != null) model = CombinedCreditsModel(r);
     return model;
   }
 
@@ -466,6 +579,19 @@ class ApiHelper {
       dio.options.cookies = _cj.loadForRequest(Uri.parse(_apihost));
       var response = await dio.post(_apihost + params + '?api_key=' + _apikey,
           data: formData);
+      var _content = json.encode(response.data);
+      return _content;
+    } on DioError catch (e) {
+      return null;
+    }
+  }
+
+  static Future<String> httpDelete(String params, FormData formData) async {
+    try {
+      var dio = new Dio();
+      //dio.options.cookies = _cj.loadForRequest(Uri.parse(_apihost));
+      var response = await dio.delete(_apihost + params + '?api_key=' + _apikey,
+          queryParameters: formData);
       var _content = json.encode(response.data);
       return _content;
     } on DioError catch (e) {

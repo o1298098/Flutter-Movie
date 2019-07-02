@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
+import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/combinedcredits.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:shimmer/shimmer.dart';
@@ -113,7 +114,7 @@ Widget buildView(
         Padding(
           padding: EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(30)),
           child: Text(
-            'Known For',
+            I18n.of(viewService.context).knownFor,
             softWrap: true,
             style: TextStyle(
                 color: Colors.black,
