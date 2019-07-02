@@ -43,7 +43,7 @@
 	<false/>
 	<key>CFBundleLocalizations</key>
   <array>
-    <string>English</string>
+    <string>en</string>
     <string>pt</string>
     <string>es</string>
     <string>ja</string>

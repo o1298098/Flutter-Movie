@@ -13,5 +13,5 @@ Effect<MovieCellsState> buildEffect() {
 void _onAction(Action action, Context<MovieCellsState> ctx) {
 }
 Future _onCellTapped(Action action, Context<MovieCellsState> ctx) async{
-  await Navigator.of(ctx.context).pushNamed('moviedetailpage',arguments:{'movieid':action.payload[0],'bgpic':action.payload[1]});
+  await Navigator.of(ctx.context).pushNamed('moviedetailpage',arguments:{'movieid':action.payload[0],'bgpic':action.payload[1],'title':action.payload[2],'posterpic':action.payload[3]});
 }

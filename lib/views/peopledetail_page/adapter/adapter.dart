@@ -1,4 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:movie/models/combinedcredits.dart';
 import 'package:movie/views/peopledetail_page/components/header_component/component.dart';
 import 'package:movie/views/peopledetail_page/components/header_component/state.dart';
@@ -54,7 +55,7 @@ class _PeopleConnector extends ConnOp<PeopleDetailPageState, List<ItemBean>> {
         (time2.month>time1.month?1:-1):
         (time2.year>time1.year?1:-1);
         });
-      items.add(ItemBean('timeline',TimeLineState(creditsModel: m2, department: state.peopleDetailModel.known_for_department,showmovie: state.showmovie)));
+      items.add(ItemBean('timeline',TimeLineState(creditsModel: m2, department: state.peopleDetailModel.known_for_department,showmovie: state.showmovie,scrollPhysics:PageScrollPhysics(parent:state.pageScrollPhysics))));
       items.add(ItemBean('personalinfo',PersonalInfoState(peopleDetailModel: state.peopleDetailModel,creditcount: state.creditsModel.cast.length+state.creditsModel.crew.length)));
     return items;
   }

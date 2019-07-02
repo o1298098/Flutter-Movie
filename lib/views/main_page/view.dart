@@ -1,6 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/customwidgets/keepalivewidget.dart';
+import 'package:movie/generated/i18n.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -22,18 +23,22 @@ Widget buildView(MainPageState state, Dispatch dispatch, ViewService viewService
         ),
         bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Home'),
+            title: Text(I18n.of(viewService.context).home),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.movie_creation),
-            title: Text('Discvoer'),
+            title: Text(I18n.of(viewService.context).discover),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            title: Text(I18n.of(viewService.context).coming),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),
-            title: Text('Account'),
+            title: Text(I18n.of(viewService.context).account),
           ), 
         ],
         currentIndex: state.selectedIndex,

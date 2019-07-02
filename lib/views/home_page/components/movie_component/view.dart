@@ -5,6 +5,7 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -13,18 +14,24 @@ Widget buildView(
     MovieCellsState state, Dispatch dispatch, ViewService viewService) {
   Widget _bulidcell(VideoListResult d) {
     return GestureDetector(
-      onTap: ()=>dispatch(MovieCellsActionCreator.onCellTapped(d.id,d.backdrop_path)),
+      onTap: ()=>dispatch(MovieCellsActionCreator.onCellTapped(d.id,d.backdrop_path,d.title,d.poster_path)),
       child: Container(
         child: Stack(
           children: <Widget>[
-            FadeInImage.assetNetwork(
+            CachedNetworkImage(
+              fadeInDuration: Duration(milliseconds: 1000),
+              fadeOutDuration: Duration(milliseconds: 1000),
               width: Adapt.screenW(),
               height: Adapt.screenW() * 9 / 16,
               fit: BoxFit.cover,
-              placeholder: 'images/CacheBG.jpg',
-              image: ImageUrl.getUrl(
+              imageUrl: ImageUrl.getUrl(
                   d.backdrop_path ?? '/p60VSQL7usdxztIGokJPpHmKWdU.jpg',
                   ImageSize.w500),
+                  placeholder: (ctx,str){return Container(
+                    width: Adapt.screenW(),
+                    height: Adapt.screenW() * 9 / 16,
+                    color: Colors.grey,
+                  );},
             ),
             Container(
               padding: EdgeInsets.all(Adapt.px(20)),

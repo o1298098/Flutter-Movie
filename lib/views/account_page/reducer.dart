@@ -8,9 +8,7 @@ Reducer<AccountPageState> buildReducer() {
   return asReducer(
     <Object, Reducer<AccountPageState>>{
       AccountPageAction.action: _onAction,
-
-      AccountPageAction.loadData:_onLoadData,
-      AccountPageAction.loadMore:_onLoadMore,
+      AccountPageAction.init:_onInit,
     },
   );
 }
@@ -19,16 +17,13 @@ AccountPageState _onAction(AccountPageState state, Action action) {
   final AccountPageState newState = state.clone();
   return newState;
 }
-AccountPageState _onLoadData(AccountPageState state, Action action) {
-  VideoListModel m=action.payload??VideoListModel.fromParams(results: List<VideoListResult>());
+AccountPageState _onInit(AccountPageState state, Action action) {
+  final String name=action.payload[0]??'Guest';
+  final String avatar=action.payload[1]??'https://www.gravatar.com/avatar/';
+  final bool islogin=action.payload[2]??false;
   final AccountPageState newState = state.clone();
-  newState.moiveListModel=m;
-  return newState;
-}
-AccountPageState _onLoadMore(AccountPageState state, Action action) {
-  final List<VideoListResult> m=action.payload??List<VideoListResult>();
-  final AccountPageState newState = state.clone();
-  newState.moiveListModel.page++;
-  newState.moiveListModel.results.addAll(m);
+  newState.name=name;
+  newState.avatar=avatar;
+  newState.islogin=islogin;
   return newState;
 }

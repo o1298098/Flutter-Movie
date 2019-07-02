@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
@@ -17,14 +18,20 @@ Widget buildView(
       child: Container(
         child: Stack(
           children: <Widget>[
-            FadeInImage.assetNetwork(
+            CachedNetworkImage(
+              fadeInDuration: Duration(milliseconds: 1000),
+              fadeOutDuration: Duration(milliseconds: 1000),
               width: Adapt.screenW(),
               height: Adapt.screenW() * 9 / 16,
               fit: BoxFit.cover,
-              placeholder: 'images/CacheBG.jpg',
-              image: ImageUrl.getUrl(
+              imageUrl: ImageUrl.getUrl(
                   d.backdrop_path ?? '/p60VSQL7usdxztIGokJPpHmKWdU.jpg',
                   ImageSize.w500),
+                  placeholder: (ctx,str){return Container(
+                    width: Adapt.screenW(),
+                    height: Adapt.screenW() * 9 / 16,
+                    color: Colors.grey,
+                  );},
             ),
             Container(
               padding: EdgeInsets.all(Adapt.px(20)),

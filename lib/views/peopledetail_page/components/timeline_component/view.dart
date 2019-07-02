@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
+import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/combinedcredits.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:shimmer/shimmer.dart';
@@ -162,7 +163,7 @@ Widget buildView(
   Widget _timeLineBody() {
     if (state.creditsModel.cast.length > 0)
       return ListView(
-          physics: PageScrollPhysics(),
+          physics: state.scrollPhysics,
           shrinkWrap: true,
           children: state.creditsModel.cast
               .where((d) => d.media_type == filter)
@@ -171,7 +172,7 @@ Widget buildView(
               .toList());
     else
       return ListView(
-        physics: PageScrollPhysics(),
+        physics: state.scrollPhysics,
         shrinkWrap: true,
         children: <Widget>[
           _buildShimmerCell(),
@@ -217,7 +218,7 @@ Widget buildView(
               GestureDetector(
                 onTap: () =>
                     dispatch(TimeLineActionCreator.onActingChanged(true)),
-                child: Text('Movies',
+                child: Text(I18n.of(viewService.context).movies,
                     style: TextStyle(
                         color: state.showmovie ? Colors.black : Colors.grey)),
               ),
@@ -227,7 +228,7 @@ Widget buildView(
               GestureDetector(
                 onTap: () =>
                     dispatch(TimeLineActionCreator.onActingChanged(false)),
-                child: Text("TV Shows",
+                child: Text(I18n.of(viewService.context).tvShows,
                     style: TextStyle(
                         color: state.showmovie ? Colors.grey : Colors.black)),
               )

@@ -7,13 +7,16 @@ import 'package:movie/models/videolist.dart';
 
 class AccountPageState implements GlobalBaseState<AccountPageState> {
 
-  VideoListModel moiveListModel;
-  ScrollController scrollController;
+  String name;
+  String avatar;
+  bool islogin;
+
   @override
   AccountPageState clone() {
     return AccountPageState()
-    ..moiveListModel=moiveListModel
-    ..scrollController=scrollController;
+    ..name=name
+    ..avatar=avatar
+    ..islogin=islogin;
   }
 
   @override
@@ -21,5 +24,5 @@ class AccountPageState implements GlobalBaseState<AccountPageState> {
 }
 
 AccountPageState initState(Map<String, dynamic> args) {
-  return AccountPageState();
+  return AccountPageState()..name=''..islogin=true;
 }

@@ -1,12 +1,12 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/enums/genres.dart';
 import 'package:movie/models/sortcondition.dart';
-import 'package:movie/models/enums/gernes.dart';
 import '../../state.dart';
 
 class FilterState implements Cloneable<FilterState> {
   bool isMovie=true;
-  List<SortCondition> genres=new List<SortCondition>()..addAll(Gernes.gernes.keys.map((i){
-    return SortCondition(name: Gernes.gernes[i],isSelected: false,value: i);
+  List<SortCondition> genres=new List<SortCondition>()..addAll(Genres.genres.keys.map((i){
+    return SortCondition(name: Genres.genres[i],isSelected: false,value: i);
   }).toList());
   String keywords;
   @override

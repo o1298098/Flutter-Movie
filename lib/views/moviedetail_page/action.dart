@@ -15,12 +15,9 @@ enum MovieDetailPageAction {
   action,
   init,
   setbgcolor,
-  setCredits,
   setVideos,
   setImages,
   setReviews,
-  setRecommendation,
-  setKeyWords,
   recommendationTapped,
   castCellTapped,
 }
@@ -37,23 +34,12 @@ class MovieDetailPageActionCreator {
   static Action onsetColor(PaletteGenerator c) {
     return Action(MovieDetailPageAction.setbgcolor, payload: c);
   }
-
-  static Action onCredits(CreditsModel c) {
-    return Action(MovieDetailPageAction.setCredits, payload: c);
-  }
-
   static Action onSetImages(ImageModel c) {
     return Action(MovieDetailPageAction.setImages, payload: c);
   }
 
   static Action onSetReviews(ReviewModel c) {
     return Action(MovieDetailPageAction.setReviews, payload: c);
-  }
-  static Action onSetRecommendations(VideoListModel c) {
-    return Action(MovieDetailPageAction.setRecommendation, payload: c);
-  }
-  static Action onKeyWords(KeyWordModel c) {
-    return Action(MovieDetailPageAction.setKeyWords, payload: c);
   }
   static Action onSetVideos(VideoModel c) {
     return Action(MovieDetailPageAction.setVideos, payload: c);

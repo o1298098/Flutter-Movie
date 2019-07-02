@@ -20,11 +20,8 @@ Reducer<MovieDetailPageState> buildReducer() {
       MovieDetailPageAction.action: _onAction,
       MovieDetailPageAction.init:_onInit,
       MovieDetailPageAction.setbgcolor:_onSetColor,
-      MovieDetailPageAction.setCredits:_onCredits,
       MovieDetailPageAction.setImages:_onSetImages,
       MovieDetailPageAction.setReviews:_onSetReviews,
-      MovieDetailPageAction.setRecommendation:_onSetRecommendations,
-      MovieDetailPageAction.setKeyWords:_onSetKeyWords,
       MovieDetailPageAction.setVideos:_onSetVideos,
     },
   );
@@ -39,18 +36,14 @@ MovieDetailPageState _onInit(MovieDetailPageState state, Action action) {
   final MovieDetailPageState newState = state.clone();
   newState.movieDetailModel=model;
   newState.backdropPic=model.backdrop_path;
+  newState.posterPic=model.poster_path;
+  newState.title=model.title;
   return newState;
 }
 MovieDetailPageState _onSetColor(MovieDetailPageState state, Action action) {
   PaletteGenerator c=action.payload;
   final MovieDetailPageState newState = state.clone();
   newState.palette=c;
-  return newState;
-}
-MovieDetailPageState _onCredits(MovieDetailPageState state, Action action) {
-  CreditsModel c=action.payload;
-  final MovieDetailPageState newState = state.clone();
-  newState.creditsModel=c;
   return newState;
 }
 MovieDetailPageState _onSetImages(MovieDetailPageState state, Action action) {
@@ -63,18 +56,6 @@ MovieDetailPageState _onSetReviews(MovieDetailPageState state, Action action) {
   ReviewModel c=action.payload;
   final MovieDetailPageState newState = state.clone();
   newState.reviewModel=c;
-  return newState;
-}
-MovieDetailPageState _onSetRecommendations(MovieDetailPageState state, Action action) {
-  VideoListModel c=action.payload;
-  final MovieDetailPageState newState = state.clone();
-  newState.recommendations=c;
-  return newState;
-}
-MovieDetailPageState _onSetKeyWords(MovieDetailPageState state, Action action) {
-  KeyWordModel c=action.payload?? new KeyWordModel.fromParams(keywords: List<KeyWordData>());
-  final MovieDetailPageState newState = state.clone();
-  newState.keywords=c;
   return newState;
 }
 MovieDetailPageState _onSetVideos(MovieDetailPageState state, Action action) {

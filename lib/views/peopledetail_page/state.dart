@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:fish_redux/fish_redux.dart';
+import 'package:flutter/widgets.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/combinedcredits.dart';
@@ -15,6 +16,7 @@ class PeopleDetailPageState implements GlobalBaseState<PeopleDetailPageState> {
   bool showmovie;
   String profilePath;
   String profileName;
+  ScrollPhysics pageScrollPhysics;
   @override
   PeopleDetailPageState clone() {
     return PeopleDetailPageState()
@@ -25,7 +27,8 @@ class PeopleDetailPageState implements GlobalBaseState<PeopleDetailPageState> {
     ..creditsModel=creditsModel
     ..isBiographyOpen=isBiographyOpen
     ..biographyHeight=biographyHeight
-    ..showmovie=showmovie;
+    ..showmovie=showmovie
+    ..pageScrollPhysics=pageScrollPhysics;
   }
 
   @override
@@ -39,6 +42,7 @@ PeopleDetailPageState initState(Map<String, dynamic> args) {
   state.biographyHeight=Adapt.px(200.0);
   state.isBiographyOpen=false;
   state.showmovie=true;
+  state.pageScrollPhysics=new ScrollPhysics();
   state.peopleid=args['peopleid'];
   state.profilePath=args['profilePath'];
   state.profileName=args['profileName'];
