@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/actions/apihelper.dart';
+import 'package:movie/views/episodedetail_page/page.dart';
 import 'package:movie/views/login_page/page.dart';
 import 'package:movie/views/main_page/page.dart';
 import 'package:movie/views/moviedetail_page/page.dart';
 import 'package:movie/views/peopledetail_page/page.dart';
+import 'package:movie/views/seasondetail_page/page.dart';
 import 'package:movie/views/tvdetail_page/page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -55,6 +57,8 @@ Future<Widget> createApp() async {
         'moviedetailpage':pageConfiguration(MovieDetailPage()),
         'tvdetailpage':pageConfiguration(TVDetailPage()),
         'peopledetailpage':pageConfiguration(PeopleDetailPage()),
+        'seasondetailpage':pageConfiguration(SeasonDetailPage()),
+        'episodedetailpage':pageConfiguration(EpisodeDetailPage()),
       },
     ),
   ]);

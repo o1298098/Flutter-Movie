@@ -1,4 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:movie/actions/apihelper.dart';
 import 'action.dart';
@@ -21,6 +22,7 @@ void _onAction(Action action, Context<HomePageState> ctx) {
 }
 
 Future _onInit(Action action, Context<HomePageState> ctx) async{
+  ctx.state.scrollController=new ScrollController();
    var r=await ApiHelper.getNowPlayingMovie();
    if(r!=null)ctx.dispatch(HomePageActionCreator.onInitMovie(r));
    var s=await ApiHelper.getTVOnTheAir();

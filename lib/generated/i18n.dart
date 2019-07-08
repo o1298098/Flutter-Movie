@@ -109,6 +109,12 @@ class I18n implements WidgetsLocalizations {
   String get popular => "Popular";
   /// "More"
   String get more => "More";
+  /// "Featured Crew"
+  String get featuredCrew => "Featured Crew";
+  /// "Creator"
+  String get creator => "Creator";
+  /// "Current Season"
+  String get currentSeason => "Current Season";
 }
 
 class _I18n_en_US extends I18n {
@@ -235,6 +241,15 @@ class _I18n_zh_CN extends I18n {
   /// "更多"
   @override
   String get more => "更多";
+  /// "主创人员"
+  @override
+  String get featuredCrew => "主创人员";
+  /// "创作者"
+  @override
+  String get creator => "创作者";
+  /// "当前季"
+  @override
+  String get currentSeason => "当前季";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
@@ -357,6 +372,12 @@ class _I18n_ja_JP extends I18n {
   /// "もっと"
   @override
   String get more => "もっと";
+  /// "主なスタッフ"
+  @override
+  String get featuredCrew => "主なスタッフ";
+  /// "Creator"
+  @override
+  String get creator => "Creator";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;

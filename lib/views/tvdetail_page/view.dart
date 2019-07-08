@@ -670,6 +670,9 @@ Widget buildView(
                           ),
                         ),
                         SliverToBoxAdapter(
+                          child:viewService.buildComponent('featuredCrew'),
+                        ),
+                        SliverToBoxAdapter(
                             child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -688,6 +691,9 @@ Widget buildView(
                             ),
                           ],
                         )),
+                        SliverToBoxAdapter(
+                          child: viewService.buildComponent('currentSeason'),
+                        ),
                         SliverToBoxAdapter(
                           child: viewService.buildComponent('keywords'),
                         ),
