@@ -12,6 +12,7 @@ import 'package:movie/models/keyword.dart';
 import 'package:movie/models/moviechange.dart';
 import 'package:movie/models/moviedetail.dart';
 import 'package:movie/models/peopledetail.dart';
+import 'package:movie/models/seasondetail.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:movie/models/review.dart';
 import 'package:movie/models/searchresult.dart';
@@ -526,6 +527,16 @@ class ApiHelper {
         : '&primary_release_year=$primaryReleaseYear';
     var r = httpGet(param);
     if (r != null) model = VideoListModel(r);
+    return model;
+  }
+
+  static Future<SeasonDetailModel> getTVSeasonDetail(int tvid,int seasonNumber,{String appendToResponse}) async {
+    SeasonDetailModel model;
+    String param='/tv/$tvid/season/$seasonNumber?api_key=$_apikey&language=$language';
+    if(appendToResponse!=null)
+    param+="&append_to_response=$appendToResponse";
+    var r=await httpGet(param);
+    if(r!=null)model=SeasonDetailModel(r);
     return model;
   }
 

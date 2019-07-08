@@ -1,4 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:flutter/widgets.dart';
 import 'package:movie/models/videolist.dart';
 
 class HomePageState implements Cloneable<HomePageState> {
@@ -7,6 +8,7 @@ VideoListModel movie;
 VideoListModel tv;
 VideoListModel popularMovies;
 VideoListModel popularTVShows;
+ScrollController scrollController;
 bool showmovie;
   @override
   HomePageState clone() {
@@ -15,7 +17,8 @@ bool showmovie;
     ..movie=movie
     ..popularMovies=popularMovies
     ..popularTVShows=popularTVShows
-    ..showmovie=showmovie;
+    ..showmovie=showmovie
+    ..scrollController=scrollController;
   }
 }
 HomePageState initState(Map<String, dynamic> args) {

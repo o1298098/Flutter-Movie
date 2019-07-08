@@ -40,6 +40,7 @@ Widget buildView(
 
   return SafeArea(
     child: CustomScrollView(
+      controller: state.scrollController,
       slivers: <Widget>[
         SliverPersistentHeader(
           pinned: true,

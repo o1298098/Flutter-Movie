@@ -28,8 +28,8 @@ class TVDetailModel {
   List<String> origin_country;
   List<ProductionCompanie> production_companies;
   List<Season> seasons;
-  LastToAirData last_episode_to_air;
-  NextToAirData next_episode_to_air;
+  AirData last_episode_to_air;
+  AirData next_episode_to_air;
 
   TVDetailModel.fromParams({this.id, this.number_of_episodes, this.number_of_seasons, this.vote_average, this.vote_count, this.popularity, this.in_production, this.backdrop_path, this.first_air_date, this.homepage, this.last_air_date, this.name, this.original_language, this.original_name, this.overview, this.poster_path, this.status, this.type, this.created_by, this.episode_run_time, this.genres, this.languages, this.networks, this.origin_country, this.production_companies, this.seasons, this.last_episode_to_air, this.next_episode_to_air});
 
@@ -102,8 +102,8 @@ class TVDetailModel {
             seasons.add(seasonsItem == null ? null : new Season.fromJson(seasonsItem));
     }
 
-    last_episode_to_air = jsonRes['last_episode_to_air'] == null ? null : new LastToAirData.fromJson(jsonRes['last_episode_to_air']);
-    next_episode_to_air = jsonRes['next_episode_to_air'] == null ? null : new NextToAirData.fromJson(jsonRes['next_episode_to_air']);
+    last_episode_to_air = jsonRes['last_episode_to_air'] == null ? null : new AirData.fromJson(jsonRes['last_episode_to_air']);
+    next_episode_to_air = jsonRes['next_episode_to_air'] == null ? null : new AirData.fromJson(jsonRes['next_episode_to_air']);
   }
 
   @override
@@ -112,7 +112,7 @@ class TVDetailModel {
   }
 }
 
-class NextToAirData {
+class AirData {
 
   Object still_path;
   int episode_number;
@@ -126,9 +126,9 @@ class NextToAirData {
   String overview;
   String production_code;
 
-  NextToAirData.fromParams({this.still_path, this.episode_number, this.id, this.season_number, this.show_id, this.vote_average, this.vote_count, this.air_date, this.name, this.overview, this.production_code});
+  AirData.fromParams({this.still_path, this.episode_number, this.id, this.season_number, this.show_id, this.vote_average, this.vote_count, this.air_date, this.name, this.overview, this.production_code});
   
-  NextToAirData.fromJson(jsonRes) {
+  AirData.fromJson(jsonRes) {
     still_path = jsonRes['still_path'];
     episode_number = jsonRes['episode_number'];
     id = jsonRes['id'];
@@ -145,42 +145,6 @@ class NextToAirData {
   @override
   String toString() {
     return '{"still_path": $still_path,"episode_number": $episode_number,"id": $id,"season_number": $season_number,"show_id": $show_id,"vote_average": $vote_average,"vote_count": $vote_count,"air_date": ${air_date != null?'${json.encode(air_date)}':'null'},"name": ${name != null?'${json.encode(name)}':'null'},"overview": ${overview != null?'${json.encode(overview)}':'null'},"production_code": ${production_code != null?'${json.encode(production_code)}':'null'}}';
-  }
-}
-
-class LastToAirData {
-
-  int episode_number;
-  int id;
-  int season_number;
-  int show_id;
-  double vote_average;
-  int vote_count;
-  String air_date;
-  String name;
-  String overview;
-  String production_code;
-  String still_path;
-
-  LastToAirData.fromParams({this.episode_number, this.id, this.season_number, this.show_id, this.vote_average, this.vote_count, this.air_date, this.name, this.overview, this.production_code, this.still_path});
-  
-  LastToAirData.fromJson(jsonRes) {
-    episode_number = jsonRes['episode_number'];
-    id = jsonRes['id'];
-    season_number = jsonRes['season_number'];
-    show_id = jsonRes['show_id'];
-    vote_average =double.parse(jsonRes['vote_average'].toString());
-    vote_count = jsonRes['vote_count'];
-    air_date = jsonRes['air_date'];
-    name = jsonRes['name'];
-    overview = jsonRes['overview'];
-    production_code = jsonRes['production_code'];
-    still_path = jsonRes['still_path'];
-  }
-
-  @override
-  String toString() {
-    return '{"episode_number": $episode_number,"id": $id,"season_number": $season_number,"show_id": $show_id,"vote_average": $vote_average,"vote_count": $vote_count,"air_date": ${air_date != null?'${json.encode(air_date)}':'null'},"name": ${name != null?'${json.encode(name)}':'null'},"overview": ${overview != null?'${json.encode(overview)}':'null'},"production_code": ${production_code != null?'${json.encode(production_code)}':'null'},"still_path": ${still_path != null?'${json.encode(still_path)}':'null'}}';
   }
 }
 
