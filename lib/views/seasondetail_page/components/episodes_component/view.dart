@@ -9,6 +9,7 @@ import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
+import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/seasondetail.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -17,7 +18,6 @@ import 'state.dart';
 
 Widget buildView(
     EpisodesState state, Dispatch dispatch, ViewService viewService) {
-  
   Random random = Random(DateTime.now().millisecondsSinceEpoch);
 
   Widget _buildEpisodeCell(Episode d) {
@@ -31,38 +31,49 @@ Widget buildView(
                 side: BorderSide(
               color: Colors.grey[300],
             )),
-            child: Hero(
-                tag: 'episode' + d.episode_number.toString(),
-                child: Material(
-                  color: Colors.transparent,
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      width: Adapt.screenW() - Adapt.px(40),
-                      height: (Adapt.screenW() - Adapt.px(40)) * 9 / 16,
-                      decoration: BoxDecoration(
-                          color: Color.fromRGBO(
-                              random.nextInt(255),
-                              random.nextInt(255),
-                              random.nextInt(255),
-                              random.nextDouble()),
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: CachedNetworkImageProvider(
-                                  d.still_path == null
-                                      ? ImageUrl.emptyimage
-                                      : ImageUrl.getUrl(
-                                          d.still_path, ImageSize.w300)))),
-                    ),
-                    Padding(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Hero(
+                  tag: 'pic' + d.episode_number.toString(),
+                  child: Container(
+                    width: Adapt.screenW() - Adapt.px(40),
+                    height: (Adapt.screenW() - Adapt.px(40)) * 9 / 16,
+                    decoration: BoxDecoration(
+                        color: Color.fromRGBO(
+                            random.nextInt(255),
+                            random.nextInt(255),
+                            random.nextInt(255),
+                            random.nextDouble()),
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: CachedNetworkImageProvider(
+                                d.still_path == null
+                                    ? ImageUrl.emptyimage
+                                    : ImageUrl.getUrl(
+                                        d.still_path, ImageSize.w300)))),
+                  ),
+                ),
+                Hero(
+                  tag: 'episodeDate' + d.episode_number.toString(),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Container(
+                        alignment: Alignment.centerLeft,
+                        height: Adapt.px(50),
                         padding: EdgeInsets.fromLTRB(Adapt.px(20), Adapt.px(10),
                             Adapt.px(20), Adapt.px(10)),
                         child: Text(
-                          DateFormat.yMMMd().format(DateTime.parse(d.air_date)),
+                          DateFormat.yMMMd().format(DateTime.parse(d.air_date??'1990-01-01')),
                           style: TextStyle(fontSize: Adapt.px(24)),
                         )),
-                    Row(
+                  ),
+                ),
+                Hero(
+                  tag: 'episodetitle' + d.episode_number.toString(),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Row(
                       children: <Widget>[
                         SizedBox(
                           width: Adapt.px(20),
@@ -108,13 +119,21 @@ Widget buildView(
                         ),
                       ],
                     ),
-                    Container(
+                  ),
+                ),
+                Hero(
+                  tag: 'episodeoverWatch' + d.episode_number.toString(),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Container(
                       padding: EdgeInsets.fromLTRB(Adapt.px(20), Adapt.px(10),
                           Adapt.px(20), Adapt.px(20)),
                       child: Text(d.overview ?? '-'),
-                    )
-                  ],
-                )))),
+                    ),
+                  ),
+                ),
+              ],
+            )),
       ),
     );
   }
@@ -203,7 +222,7 @@ Widget buildView(
           padding: EdgeInsets.all(Adapt.px(30)),
           child: Text.rich(TextSpan(children: [
             TextSpan(
-                text: 'Episodes',
+                text: I18n.of(viewService.context).episodes,
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: Adapt.px(35),

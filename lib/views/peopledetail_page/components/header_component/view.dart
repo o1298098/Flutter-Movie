@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
@@ -26,13 +27,15 @@ Widget buildView(
     else
       return Hero(
         tag: 'Actor' + state.peopleid.toString(),
-        child: Text(
+        child:Material(
+          child:Text(
           state.profileName ?? '',
           style: TextStyle(
               color: Colors.black,
               fontSize: Adapt.px(35),
               fontWeight: FontWeight.bold),
         ),
+        ) ,
       );
   }
 
@@ -91,7 +94,7 @@ Widget buildView(
       ));
     else
       return Text(
-        state.biography==null||state.biography?.isEmpty==true ? '-':state.biography,
+        state.biography==null||state.biography?.isEmpty==true ? "We don't have a biography for ${state.profileName}":state.biography,
         style: TextStyle(fontSize: Adapt.px(30)),
       );
   }
@@ -103,15 +106,19 @@ Widget buildView(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Hero(
-            tag: 'people' + state.peopleid.toString(),
-            child: FadeInImage.assetNetwork(
-              width: Adapt.px(300),
-              fit: BoxFit.cover,
-              placeholder: 'images/CacheBG.jpg',
-              image: ImageUrl.getUrl(
-                  state.profilePath ?? '/eIkFHNlfretLS1spAcIoihKUS62.jpg',
-                  ImageSize.w300),
-            ),
+            tag: 'people${state.peopleid}${state.character??''}',
+            child: Container(
+                width: Adapt.px(300),
+                height: Adapt.px(450),
+                decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: CachedNetworkImageProvider(state.profilePath == null
+                          ? ImageUrl.emptyimage
+                          : ImageUrl.getUrl(state.profilePath, ImageSize.w300)),
+                    )),
+              )
           ),
           SizedBox(
             height: Adapt.px(20),

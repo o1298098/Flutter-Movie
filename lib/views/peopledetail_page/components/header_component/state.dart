@@ -5,8 +5,9 @@ class HeaderState implements Cloneable<HeaderState> {
   String profilePath;
   String profileName;
   String biography;
+  String character;
   int peopleid;
-  HeaderState({this.peopleid,this.biography,this.profileName,this.profilePath});
+  HeaderState({this.peopleid,this.biography,this.profileName,this.profilePath,this.character});
 
   @override
   HeaderState clone() {

@@ -6,7 +6,7 @@ import 'package:movie/models/review.dart';
 import 'package:movie/models/tvdetail.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:movie/models/videomodel.dart';
-import 'package:palette_generator/palette_generator.dart';
+//import 'package:palette_generator/palette_generator.dart';
 
 //TODO replace with your own action
 enum TVDetailPageAction { 
@@ -19,7 +19,8 @@ enum TVDetailPageAction {
   setReviews,
   setRecommendation,
   setKeyWords,
-  recommendationTapped, }
+  recommendationTapped, 
+  castCellTapped,}
 
 class TVDetailPageActionCreator {
   static Action onAction() {
@@ -29,9 +30,9 @@ class TVDetailPageActionCreator {
     return Action(TVDetailPageAction.init, payload: model);
   }
 
-  static Action onsetColor(PaletteGenerator c) {
+  /*static Action onsetColor(PaletteGenerator c) {
     return Action(TVDetailPageAction.setbgcolor, payload: c);
-  }
+  }*/
 
   static Action onCredits(CreditsModel c) {
     return Action(TVDetailPageAction.setCredits, payload: c);
@@ -55,5 +56,8 @@ class TVDetailPageActionCreator {
   }
   static Action onRecommendationTapped(int movieid,String backpic) {
     return Action(TVDetailPageAction.recommendationTapped, payload:[movieid,backpic]);
+  }
+  static Action onCastCellTapped(int peopleid,String profilePath,String profileName) {
+    return Action(TVDetailPageAction.castCellTapped, payload:[peopleid,profilePath,profileName]);
   }
 }

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:movie/globalbasestate/state.dart';
+import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/seasondetail.dart';
 
 import 'components/seasoncast_component/state.dart';

@@ -19,8 +19,8 @@ class ComingPage extends Page<ComingPageState, Map<String, dynamic>> {
             dependencies: Dependencies<ComingPageState>(
                 adapter: null,
                 slots: <String, Dependent<ComingPageState>>{
-                  'movielist':MovieListComponent().asDependent(MovieListConnector()),
-                  'tvlist':TVListComponent().asDependent(TVListConnector())
+                  'movielist':MovieListConnector()+MovieListComponent(),
+                  'tvlist':TVListConnector()+TVListComponent()
                 }),
             middleware: <Middleware<ComingPageState>>[
             ],);

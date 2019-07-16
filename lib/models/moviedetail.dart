@@ -1,9 +1,11 @@
 import 'dart:convert' show json;
 
+import 'package:movie/models/releasedatemodel.dart';
 import 'package:movie/models/review.dart';
 import 'package:movie/models/videolist.dart';
 
 import 'creditsmodel.dart';
+import 'externalidsmodel.dart';
 import 'imagemodel.dart';
 import 'keyword.dart';
 
@@ -39,8 +41,10 @@ class MovieDetailModel {
   KeyWordModel keywords;
   VideoListModel recommendations;
   ReviewModel reviews;
+  ExternalIdsModel externalids;
+  ReleaseDateModel releaseDates;
 
-  MovieDetailModel.fromParams({this.homepage, this.budget, this.id, this.revenue, this.runtime, this.vote_count, this.popularity, this.vote_average, this.adult, this.video, this.backdrop_path, this.imdb_id, this.original_language, this.original_title, this.overview, this.poster_path, this.release_date, this.status, this.tagline, this.title, this.genres, this.production_companies, this.production_countries, this.spoken_languages, this.belongs_to_collection, this.credits, this.images, this.keywords, this.recommendations, this.reviews});
+  MovieDetailModel.fromParams({this.homepage, this.budget, this.id, this.revenue, this.runtime, this.vote_count, this.popularity, this.vote_average, this.adult, this.video, this.backdrop_path, this.imdb_id, this.original_language, this.original_title, this.overview, this.poster_path, this.release_date, this.status, this.tagline, this.title, this.genres, this.production_companies, this.production_countries, this.spoken_languages, this.belongs_to_collection, this.credits, this.images, this.keywords, this.recommendations, this.reviews,this.externalids,this.releaseDates});
 
   factory MovieDetailModel(jsonStr) => jsonStr == null ? null : jsonStr is String ? new MovieDetailModel.fromJson(json.decode(jsonStr)) : new MovieDetailModel.fromJson(jsonStr);
   
@@ -95,11 +99,13 @@ class MovieDetailModel {
     keywords = jsonRes['keywords'] == null ? null : new KeyWordModel.fromJson(jsonRes['keywords']);
     recommendations = jsonRes['recommendations'] == null ? null : new VideoListModel.fromJson(jsonRes['recommendations']);
     reviews = jsonRes['reviews'] == null ? null : new ReviewModel.fromJson(jsonRes['reviews']);
+    externalids = jsonRes['external_ids'] == null ? null : new ExternalIdsModel.fromJson(jsonRes['external_ids']);
+    releaseDates = jsonRes['release_dates'] == null ? null : new ReleaseDateModel.fromJson(jsonRes['release_dates']);
   }
 
   @override
   String toString() {
-    return '{"homepage": $homepage,"budget": $budget,"id": $id,"revenue": $revenue,"runtime": $runtime,"vote_count": $vote_count,"popularity": $popularity,"vote_average": $vote_average,"adult": $adult,"video": $video,"backdrop_path": ${backdrop_path != null?'${json.encode(backdrop_path)}':'null'},"imdb_id": ${imdb_id != null?'${json.encode(imdb_id)}':'null'},"original_language": ${original_language != null?'${json.encode(original_language)}':'null'},"original_title": ${original_title != null?'${json.encode(original_title)}':'null'},"overview": ${overview != null?'${json.encode(overview)}':'null'},"poster_path": ${poster_path != null?'${json.encode(poster_path)}':'null'},"release_date": ${release_date != null?'${json.encode(release_date)}':'null'},"status": ${status != null?'${json.encode(status)}':'null'},"tagline": ${tagline != null?'${json.encode(tagline)}':'null'},"title": ${title != null?'${json.encode(title)}':'null'},"genres": $genres,"production_companies": $production_companies,"production_countries": $production_countries,"spoken_languages": $spoken_languages,"belongs_to_collection": $belongs_to_collection,"credits": $credits,"images": $images,"keywords": $keywords,"recommendations": $recommendations,"reviews": $reviews}';
+    return '{"homepage": $homepage,"budget": $budget,"id": $id,"revenue": $revenue,"runtime": $runtime,"vote_count": $vote_count,"popularity": $popularity,"vote_average": $vote_average,"adult": $adult,"video": $video,"backdrop_path": ${backdrop_path != null?'${json.encode(backdrop_path)}':'null'},"imdb_id": ${imdb_id != null?'${json.encode(imdb_id)}':'null'},"original_language": ${original_language != null?'${json.encode(original_language)}':'null'},"original_title": ${original_title != null?'${json.encode(original_title)}':'null'},"overview": ${overview != null?'${json.encode(overview)}':'null'},"poster_path": ${poster_path != null?'${json.encode(poster_path)}':'null'},"release_date": ${release_date != null?'${json.encode(release_date)}':'null'},"status": ${status != null?'${json.encode(status)}':'null'},"tagline": ${tagline != null?'${json.encode(tagline)}':'null'},"title": ${title != null?'${json.encode(title)}':'null'},"genres": $genres,"production_companies": $production_companies,"production_countries": $production_countries,"spoken_languages": $spoken_languages,"belongs_to_collection": $belongs_to_collection,"credits": $credits,"images": $images,"keywords": $keywords,"recommendations": $recommendations,"reviews": $reviews,"externalids":$externalids,"releaseDates":$releaseDates}';
   }
 }
 class BelongsToCollection {

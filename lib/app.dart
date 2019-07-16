@@ -1,5 +1,5 @@
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Action;
 
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/actions/apihelper.dart';
@@ -8,6 +8,7 @@ import 'package:movie/views/login_page/page.dart';
 import 'package:movie/views/main_page/page.dart';
 import 'package:movie/views/moviedetail_page/page.dart';
 import 'package:movie/views/peopledetail_page/page.dart';
+import 'package:movie/views/search_page/page.dart';
 import 'package:movie/views/seasondetail_page/page.dart';
 import 'package:movie/views/tvdetail_page/page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,28 +17,6 @@ import 'generated/i18n.dart';
 import 'globalbasestate/state.dart';
 import 'globalbasestate/store.dart';
 
-//create global page helper
-Page<T, dynamic> pageConfiguration<T extends GlobalBaseState<T>>(
-    Page<T, dynamic> page) {
-  return page
-
-    ///connect with app-store
-    ..connectExtraStore(GlobalStore.store, (T pagestate, GlobalState appState) {
-      return pagestate.themeColor == appState.themeColor
-          ? pagestate
-          : ((pagestate.clone())..themeColor = appState.themeColor);
-    })
-
-    ///updateMiddleware
-    ..updateMiddleware(
-      view: (List<ViewMiddleware<T>> viewMiddleware) {
-        viewMiddleware.add(safetyView<T>());
-      },
-      adapter: (List<AdapterMiddleware<T>> adapterMiddleware) {
-        adapterMiddleware.add(safetyAdapter<T>());
-      },
-    );
-}
 
 Future getSeesion() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -49,19 +28,60 @@ Future getSeesion() async {
   }
 }
 Future<Widget> createApp() async {
-  final AbstractRoutes routes = HybridRoutes(routes: <AbstractRoutes>[
+  final AbstractRoutes routes =
     PageRoutes(
       pages: <String, Page<Object, dynamic>>{
-        'mainpage': pageConfiguration(MainPage()),
-        'loginpage': pageConfiguration(LoginPage()),
-        'moviedetailpage':pageConfiguration(MovieDetailPage()),
-        'tvdetailpage':pageConfiguration(TVDetailPage()),
-        'peopledetailpage':pageConfiguration(PeopleDetailPage()),
-        'seasondetailpage':pageConfiguration(SeasonDetailPage()),
-        'episodedetailpage':pageConfiguration(EpisodeDetailPage()),
+        'mainpage': MainPage(),
+        'loginpage':LoginPage(),
+        'moviedetailpage':MovieDetailPage(),
+        'tvdetailpage':TVDetailPage(),
+        'searchpage':SearchPage(),
+        'peopledetailpage':PeopleDetailPage(),
+        'seasondetailpage':SeasonDetailPage(),
+        'episodedetailpage':EpisodeDetailPage(),
       },
-    ),
-  ]);
+      visitor: (String path, Page<Object, dynamic> page) {
+      if (page.isTypeof<GlobalBaseState>()) {
+        page.connectExtraStore<GlobalState>(
+          GlobalStore.store,
+          (Object pagestate, GlobalState appState) {
+            final GlobalBaseState p = pagestate;
+            if (p.themeColor != appState.themeColor) {
+              if (pagestate is Cloneable) {
+                final Object copy = pagestate.clone();
+                final GlobalBaseState newState = copy;
+                newState.themeColor = appState.themeColor;
+                return newState;
+              }
+            }
+            return pagestate;
+          },
+        );
+      }
+      page.enhancer.append(
+        /// View AOP
+        viewMiddleware: <ViewMiddleware<dynamic>>[
+          safetyView<dynamic>(),
+        ],
+
+        /// Adapter AOP
+        adapterMiddleware: <AdapterMiddleware<dynamic>>[
+          safetyAdapter<dynamic>()
+        ],
+
+        /// Effect AOP
+        effectMiddleware: [
+          _pageAnalyticsMiddleware<dynamic>(),
+        ],
+
+        /// Store AOP
+        middleware: <Middleware<dynamic>>[
+          logMiddleware<dynamic>(tag: page.runtimeType.toString()),
+        ],
+      );
+    },
+    );
+    
   await getSeesion();
   return MaterialApp(
     title: 'Movie',
@@ -83,4 +103,17 @@ Future<Widget> createApp() async {
       });
     },
   );
+}
+
+EffectMiddleware<T> _pageAnalyticsMiddleware<T>({String tag = 'redux'}) {
+  return (AbstractLogic<dynamic> logic, Store<T> store) {
+    return (Effect<dynamic> effect) {
+      return (Action action, Context<dynamic> ctx) {
+        if (logic is Page<dynamic, dynamic> && action.type is Lifecycle) {
+          print('${logic.runtimeType} ${action.type.toString()} ');
+        }
+        return effect?.call(action, ctx);
+      };
+    };
+  };
 }

@@ -14,7 +14,7 @@ class SeasonDetailPage extends Page<SeasonDetailPageState, Map<String, dynamic>>
             reducer: buildReducer(),
             view: buildView,
             dependencies: Dependencies<SeasonDetailPageState>(
-                adapter: SeasonDetailAdapter(),
+                adapter: NoneConn<SeasonDetailPageState>() +SeasonDetailAdapter(),
                 slots: <String, Dependent<SeasonDetailPageState>>{
                 }),
             middleware: <Middleware<SeasonDetailPageState>>[

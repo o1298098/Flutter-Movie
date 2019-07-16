@@ -11,12 +11,10 @@ import 'state.dart';
 
 Widget buildView(
     HomePageState state, Dispatch dispatch, ViewService viewService) {
-      SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle.dark.copyWith(statusBarBrightness: Brightness.dark));
   Widget _buildTitle(String title, void buttonTap(),
       {IconData d = Icons.more_vert}) {
     return Padding(
-      padding: EdgeInsets.all(Adapt.px(20)),
+      padding: EdgeInsets.fromLTRB(Adapt.px(20),0,Adapt.px(20),0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -38,21 +36,18 @@ Widget buildView(
     );
   }
 
-  return SafeArea(
-    child: CustomScrollView(
+  return Scaffold(
+    backgroundColor: Colors.white,
+    appBar: AppBar(
+      brightness: Brightness.light,
+      elevation: 0.0,
+      backgroundColor: Colors.white,
+      automaticallyImplyLeading: false,
+      title: viewService.buildComponent('searchbar'),
+    ),
+    body: CustomScrollView(
       controller: state.scrollController,
       slivers: <Widget>[
-        SliverPersistentHeader(
-          pinned: true,
-          delegate: SliverAppBarDelegate(
-            minHeight: Adapt.px(120),
-            maxHeight: Adapt.px(120),
-            child: Container(
-              color: Colors.white,
-              child: viewService.buildComponent('searchbar'),
-            ),
-          ),
-        ),
         SliverToBoxAdapter(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,6 +76,8 @@ Widget buildView(
                           HomePageActionCreator.onPopularFilterChanged(true)),
                       child: Text(I18n.of(viewService.context).movies,
                           style: TextStyle(
+                              fontSize: Adapt.px(24),
+                              fontWeight: state.showmovie? FontWeight.bold:FontWeight.normal,
                               color: state.showmovie
                                   ? Colors.black
                                   : Colors.grey)),
@@ -93,6 +90,8 @@ Widget buildView(
                           HomePageActionCreator.onPopularFilterChanged(false)),
                       child: Text(I18n.of(viewService.context).tvShows,
                           style: TextStyle(
+                             fontSize: Adapt.px(24),
+                             fontWeight: state.showmovie? FontWeight.normal:FontWeight.bold,
                               color: state.showmovie
                                   ? Colors.grey
                                   : Colors.black)),

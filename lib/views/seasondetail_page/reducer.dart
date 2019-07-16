@@ -1,4 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/seasondetail.dart';
 import 'package:movie/views/seasondetail_page/components/seasoncast_component/state.dart';
 

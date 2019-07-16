@@ -1,9 +1,11 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/views/tvdetail_page/components/featuredcrew_component/component.dart';
+import 'package:movie/views/tvdetail_page/components/info_component/component.dart';
 
 import 'components/currentseason_component/component.dart';
 import 'components/currentseason_component/state.dart';
 import 'components/featuredcrew_component/state.dart';
+import 'components/info_component/state.dart';
 import 'components/keywords_component/component.dart';
 import 'components/keywords_component/state.dart';
 import 'effect.dart';
@@ -21,9 +23,10 @@ class TVDetailPage extends Page<TVDetailPageState, Map<String, dynamic>> {
             dependencies: Dependencies<TVDetailPageState>(
                 adapter: null,
                 slots: <String, Dependent<TVDetailPageState>>{
-                  'keywords':KeyWordsComponent().asDependent(KeyWordsConnector()),
-                  'featuredCrew':FeatureCrewComponent().asDependent(FeatureCrewConnector()),
-                  'currentSeason':CurrentSeasonComponent().asDependent(CurrentSeasonConnector()),
+                  'keywords':KeyWordsConnector()+KeyWordsComponent(),
+                  'featuredCrew':FeatureCrewConnector()+FeatureCrewComponent(),
+                  'currentSeason':CurrentSeasonConnector()+CurrentSeasonComponent(),
+                  'info':InfoConnector()+InfoComponent(),
                 }),
             middleware: <Middleware<TVDetailPageState>>[
             ],);

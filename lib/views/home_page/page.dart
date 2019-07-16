@@ -23,10 +23,10 @@ class HomePage extends Page<HomePageState, Map<String, dynamic>> {
             dependencies: Dependencies<HomePageState>(
                 adapter: null,
                 slots: <String, Dependent<HomePageState>>{
-                  'searchbar':SearchBarComponent().asDependent(SearchBarConnector()),
-                  'moviecells':MovieCellsComponent().asDependent(MovieCellsConnector()),
-                  'tvcells':TVCellsComponent().asDependent(TVCellsConnector()),
-                  'popular':PopularComponent().asDependent(PopularConnector())
+                  'searchbar':SearchBarConnector()+SearchBarComponent(),
+                  'moviecells':MovieCellsConnector()+MovieCellsComponent(),
+                  'tvcells':TVCellsConnector()+TVCellsComponent(),
+                  'popular':PopularConnector()+PopularComponent()
                 }),
             middleware: <Middleware<HomePageState>>[
             ],);

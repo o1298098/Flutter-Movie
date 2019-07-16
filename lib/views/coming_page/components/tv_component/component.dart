@@ -13,7 +13,7 @@ class TVListComponent extends Component<TVListState> {
             reducer: buildReducer(),
             view: buildView,
             dependencies: Dependencies<TVListState>(
-                adapter: TVlistAdapter(),
+                adapter:NoneConn<TVListState>()+ TVlistAdapter(),
                 slots: <String, Dependent<TVListState>>{
                 }),);
 

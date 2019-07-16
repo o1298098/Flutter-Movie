@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/seasondetail.dart';
+import 'package:movie/models/episodemodel.dart';
 
 class EpisodesState implements Cloneable<EpisodesState> {
 
