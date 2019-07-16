@@ -115,6 +115,48 @@ class I18n implements WidgetsLocalizations {
   String get creator => "Creator";
   /// "Current Season"
   String get currentSeason => "Current Season";
+  /// "View All Seasons"
+  String get viewAllSeasons => "View All Seasons";
+  /// "Season Detail"
+  String get seasonDetail => "Season Detail";
+  /// "Season Cast"
+  String get seasonCast => "Season Cast";
+  /// "Episodes"
+  String get episodes => "Episodes";
+  /// "Guest Stars"
+  String get guestStars => "Guest Stars";
+  /// "No guest star have been added"
+  String get guestStarsEmpty => "No guest star have been added";
+  /// "Crew"
+  String get crew => "Crew";
+  /// "No crew have been added"
+  String get crewEmpty => "No crew have been added";
+  /// "Episode Images"
+  String get episodeImages => "Episode Images";
+  /// "No episode image have been added"
+  String get episodeImagesEmpty => "No episode image have been added";
+  /// "Facts"
+  String get facts => "Facts";
+  /// "Network"
+  String get network => "Network";
+  /// "Status"
+  String get status => "Status";
+  /// "Type"
+  String get type => "Type";
+  /// "Original Language"
+  String get originalLanguage => "Original Language";
+  /// "Runtime"
+  String get runtime => "Runtime";
+  /// "Genders"
+  String get genders => "Genders";
+  /// "Release Information"
+  String get releaseInformation => "Release Information";
+  /// "Budget"
+  String get budget => "Budget";
+  /// "Revenue"
+  String get revenue => "Revenue";
+  /// "Company"
+  String get company => "Company";
 }
 
 class _I18n_en_US extends I18n {
@@ -250,6 +292,66 @@ class _I18n_zh_CN extends I18n {
   /// "当前季"
   @override
   String get currentSeason => "当前季";
+  /// "View All Seasons"
+  @override
+  String get viewAllSeasons => "View All Seasons";
+  /// "Season Detail"
+  @override
+  String get seasonDetail => "Season Detail";
+  /// "Season Cast"
+  @override
+  String get seasonCast => "Season Cast";
+  /// "Episodes"
+  @override
+  String get episodes => "Episodes";
+  /// "Guest Stars"
+  @override
+  String get guestStars => "Guest Stars";
+  /// "No guest star have been added"
+  @override
+  String get guestStarsEmpty => "No guest star have been added";
+  /// "Crew"
+  @override
+  String get crew => "Crew";
+  /// "No crew have been added"
+  @override
+  String get crewEmpty => "No crew have been added";
+  /// "Episode Images"
+  @override
+  String get episodeImages => "Episode Images";
+  /// "No episode image have been added"
+  @override
+  String get episodeImagesEmpty => "No episode image have been added";
+  /// "Facts"
+  @override
+  String get facts => "Facts";
+  /// "Network"
+  @override
+  String get network => "Network";
+  /// "Status"
+  @override
+  String get status => "Status";
+  /// "Type"
+  @override
+  String get type => "Type";
+  /// "Original Language"
+  @override
+  String get originalLanguage => "Original Language";
+  /// "Runtime"
+  @override
+  String get runtime => "Runtime";
+  /// "Genders"
+  @override
+  String get genders => "Genders";
+  /// "Release Information"
+  @override
+  String get releaseInformation => "Release Information";
+  /// "Budget"
+  @override
+  String get budget => "Budget";
+  /// "Revenue"
+  @override
+  String get revenue => "Revenue";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
@@ -378,6 +480,60 @@ class _I18n_ja_JP extends I18n {
   /// "Creator"
   @override
   String get creator => "Creator";
+  /// "現在のシーズン"
+  @override
+  String get currentSeason => "現在のシーズン";
+  /// "View All Seasons"
+  @override
+  String get viewAllSeasons => "View All Seasons";
+  /// "Season Detail"
+  @override
+  String get seasonDetail => "Season Detail";
+  /// "Season Cast"
+  @override
+  String get seasonCast => "Season Cast";
+  /// "Episodes"
+  @override
+  String get episodes => "Episodes";
+  /// "Guest Stars"
+  @override
+  String get guestStars => "Guest Stars";
+  /// "No guest star have been added"
+  @override
+  String get guestStarsEmpty => "No guest star have been added";
+  /// "Crew"
+  @override
+  String get crew => "Crew";
+  /// "No crew have been added"
+  @override
+  String get crewEmpty => "No crew have been added";
+  /// "Episode Images"
+  @override
+  String get episodeImages => "Episode Images";
+  /// "No episode image have been added"
+  @override
+  String get episodeImagesEmpty => "No episode image have been added";
+  /// "Facts"
+  @override
+  String get facts => "Facts";
+  /// "Network"
+  @override
+  String get network => "Network";
+  /// "Status"
+  @override
+  String get status => "Status";
+  /// "Type"
+  @override
+  String get type => "Type";
+  /// "Original Language"
+  @override
+  String get originalLanguage => "Original Language";
+  /// "Runtime"
+  @override
+  String get runtime => "Runtime";
+  /// "Genders"
+  @override
+  String get genders => "Genders";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;

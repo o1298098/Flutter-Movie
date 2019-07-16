@@ -1,3 +1,6 @@
+import 'dart:collection';
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,17 +18,21 @@ import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:movie/models/videomodel.dart';
+import 'package:parallax_image/parallax_image.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
     MovieDetailPageState state, Dispatch dispatch, ViewService viewService) {
+  Random random=new Random(DateTime.now().millisecondsSinceEpoch);
   var s = state.movieDetailModel;
-  var dominantColor = state.palette?.dominantColor?.color ?? Colors.black38;
+  //var dominantColor = state.palette?.dominantColor?.color ?? Colors.black38;
+  var dominantColor=state.mainColor;
   double evote = 0.0;
 
   Widget _buildCreditsCell(CastData p) {
@@ -45,14 +52,17 @@ Widget buildView(
             children: <Widget>[
               Hero(
                 tag: 'people' + p.id.toString(),
-                child: FadeInImage.assetNetwork(
-                  fit: BoxFit.cover,
+                child:Container(
                   width: Adapt.px(240),
                   height: Adapt.px(260),
-                  placeholder: 'images/CacheBG.jpg',
-                  image: ImageUrl.getUrl(
-                      p.profile_path ?? '/eIkFHNlfretLS1spAcIoihKUS62.jpg',
-                      ImageSize.w300),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: CachedNetworkImageProvider(p.profile_path==null?ImageUrl.emptyimage: ImageUrl.getUrl(
+                      p.profile_path,
+                      ImageSize.w300)))
+                  ),
                 ),
               ),
               Padding(
@@ -60,13 +70,15 @@ Widget buildView(
                     top: Adapt.px(20), left: Adapt.px(20), right: Adapt.px(20)),
                 child: Hero(
                   tag: 'Actor' + p.id.toString(),
-                  child: Text(
+                  child:Material(
+                    child: Text(
                     p.name,
                     maxLines: 2,
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: Adapt.px(30),
                         fontWeight: FontWeight.w600),
+                  ),
                   ),
                 ),
               ),
@@ -223,7 +235,9 @@ Widget buildView(
     );
   }
 
-  Widget _buildImageCell(ImageData d) {
+  Widget _buildImageCell_1(ImageData d) {
+    double w = Adapt.screenW() - Adapt.px(80);
+    double h = w / d.aspect_ratio;
     return Container(
       padding: EdgeInsets.fromLTRB(Adapt.px(30), 0, Adapt.px(30), Adapt.px(20)),
       child: Card(
@@ -231,9 +245,21 @@ Widget buildView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            FadeInImage.assetNetwork(
-              placeholder: 'images/CacheBG.jpg',
-              image: ImageUrl.getUrl(d.file_path, ImageSize.w400),
+            Container(
+              width: w,
+              height: h,
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(random.nextInt(255), random.nextInt(255),
+                    random.nextInt(255), random.nextDouble()),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: CachedNetworkImageProvider(
+                      ImageUrl.getUrl(d.file_path, ImageSize.w300)))
+              ),
+              /*child: ParallaxImage(
+                  extent: h,
+                  image: CachedNetworkImageProvider(
+                      ImageUrl.getUrl(d.file_path, ImageSize.w300))),*/
             ),
             Padding(
               padding: EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(30)),
@@ -255,6 +281,23 @@ Widget buildView(
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildImageCell(ImageData d) {
+    double w = (Adapt.screenW() - Adapt.px(100)) / 2;
+    double h = w / d.aspect_ratio ;
+    return Container(
+      width: w,
+      height: h,
+      decoration: BoxDecoration(
+        color: Color.fromRGBO(random.nextInt(255), random.nextInt(255),
+            random.nextInt(255), random.nextDouble()),
+      ),
+      child: ParallaxImage(
+          extent: h,
+          image: CachedNetworkImageProvider(
+              ImageUrl.getUrl(d.file_path, ImageSize.w300))),
     );
   }
 
@@ -342,21 +385,32 @@ Widget buildView(
   }
 
   Widget _getImageBody() {
-    var allimage = new List<ImageData>()
+    var hset = new HashSet<ImageData>()
       ..addAll(state.imagesmodel.backdrops)
       ..addAll(state.imagesmodel.posters);
-    if(allimage.length>0)
-    return SliverList(
-        delegate: SliverChildBuilderDelegate((BuildContext contxt, int index) {
-      return _buildImageCell(allimage[index]);
-    }, childCount: allimage.length));
+    var allimage = hset.toList();
+    if (allimage.length > 0)
+      return SliverStaggeredGrid.countBuilder(
+        crossAxisCount: 4,
+        staggeredTileBuilder: (int index) =>StaggeredTile.fit(2),
+        mainAxisSpacing: Adapt.px(20),
+        crossAxisSpacing: Adapt.px(20),
+        itemCount: allimage.length,
+        itemBuilder: (BuildContext contxt, int index) {
+          return _buildImageCell(allimage[index]);
+        },
+      );
+      /*return SliverList(
+          delegate:
+              SliverChildBuilderDelegate((BuildContext contxt, int index) {
+        return _buildImageCell(allimage[index]);
+      }, childCount: allimage.length));*/
     else
       return SliverList(
           delegate:
               SliverChildBuilderDelegate((BuildContext contxt, int index) {
         return _buildShimmerVideoCell();
       }, childCount: 3));
-
   }
 
   Widget _getPosterPic() {
@@ -379,8 +433,7 @@ Widget buildView(
           height: Adapt.px(300),
           width: Adapt.px(200),
           fit: BoxFit.cover,
-          imageUrl: ImageUrl.getUrl(
-              state.posterPic, ImageSize.w500),
+          imageUrl: ImageUrl.getUrl(state.posterPic, ImageSize.w500),
           placeholder: (c, s) {
             return Container(
               height: Adapt.px(300),
@@ -421,7 +474,9 @@ Widget buildView(
                     ),
                   ])),
           TextSpan(
-              text:s.title==null?' (-)':' (${DateTime.tryParse(s.release_date)?.year.toString()})',
+              text: s.title == null
+                  ? ' (-)'
+                  : ' (${DateTime.tryParse(s.release_date)?.year.toString()})',
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Adapt.px(30),
@@ -654,6 +709,7 @@ Widget buildView(
     body: DefaultTabController(
         length: 4,
         child: NestedScrollView(
+          controller: state.scrollController,
             headerSliverBuilder: (BuildContext context, bool de) {
               return <Widget>[
                 SliverOverlapAbsorber(
@@ -661,8 +717,9 @@ Widget buildView(
                       NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                   child: SliverAppBar(
                       pinned: true,
-                      backgroundColor: state.palette.darkVibrantColor?.color ??
-                          Colors.black87,
+                      /*backgroundColor: state.palette.darkVibrantColor?.color ??
+                          Colors.black87,*/
+                      backgroundColor:dominantColor,
                       expandedHeight: Adapt.px(700),
                       centerTitle: false,
                       title: Text(de ? state.title ?? '' : ''),
@@ -681,9 +738,10 @@ Widget buildView(
                             color: Colors.white,
                             child: TabBar(
                               labelColor: Colors.black,
-                              indicatorColor:
+                              /*indicatorColor:
                                   state.palette.lightVibrantColor?.color ??
-                                      Colors.black,
+                                      Colors.black,*/
+                              indicatorColor:Color.fromRGBO(random.nextInt(255), random.nextInt(255), random.nextInt(255), random.nextDouble()),
                               indicatorSize: TabBarIndicatorSize.label,
                               isScrollable: true,
                               labelStyle: TextStyle(
@@ -768,7 +826,7 @@ Widget buildView(
                                   fontWeight: FontWeight.w800)),
                         ),
                         Container(
-                          margin: EdgeInsets.only(bottom: Adapt.px(70)),
+                          margin: EdgeInsets.only(bottom: Adapt.px(30)),
                           height: Adapt.px(400) * 9 / 16,
                           child: ListView(
                             scrollDirection: Axis.horizontal,
@@ -776,7 +834,10 @@ Widget buildView(
                           ),
                         ),
                       ],
-                    ))
+                    )),
+                     SliverToBoxAdapter(
+                          child: viewService.buildComponent('info'),
+                        ),
                   ]);
                 })),
                 Container(child: Builder(builder: (BuildContext context) {
@@ -789,7 +850,8 @@ Widget buildView(
                   ]);
                 })),
                 Container(child: Builder(builder: (BuildContext context) {
-                  return CustomScrollView(slivers: <Widget>[
+                  return CustomScrollView(
+                    slivers: <Widget>[
                     SliverOverlapInjector(
                       handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
                           context),

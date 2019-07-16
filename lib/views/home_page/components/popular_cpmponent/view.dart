@@ -38,7 +38,7 @@ Widget buildView(
     return Padding(
       padding: EdgeInsets.only(left: Adapt.px(20)),
       child:GestureDetector(
-        onTap: ()=>dispatch(PopularActionCreator.onCellTapped(d.id, d.backdrop_path)),
+        onTap: ()=>dispatch(PopularActionCreator.onCellTapped(d.id, d.backdrop_path,state.showmovie?d.title:d.name,d.poster_path)),
         child: Stack(
         children: <Widget>[
           ClipRRect(

@@ -14,7 +14,7 @@ class PeopleDetailPage extends Page<PeopleDetailPageState, Map<String, dynamic>>
             reducer: buildReducer(),
             view: buildView,
             dependencies: Dependencies<PeopleDetailPageState>(
-                adapter: PeopleAdapter(),
+                adapter:NoneConn<PeopleDetailPageState>()+ PeopleAdapter(),
                 slots: <String, Dependent<PeopleDetailPageState>>{
                 }),
             middleware: <Middleware<PeopleDetailPageState>>[

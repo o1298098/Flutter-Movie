@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/widgets.dart' hide Action;
 import 'package:movie/views/episodedetail_page/page.dart';
 import 'action.dart';
 import 'state.dart';
@@ -25,7 +25,6 @@ Future _onCellTapped(Action action, Context<EpisodesState> ctx) async {
               'tvid': ctx.state.tvid,
               'episode': action.payload
             }));
-
             /*SlideTransition(
           position: Tween<Offset>(
             begin: Offset.zero,
@@ -38,7 +37,7 @@ Future _onCellTapped(Action action, Context<EpisodesState> ctx) async {
               ).animate(secondaryAnimation),
               child: EpisodeDetailPage().buildPage(
                   {'tvid': ctx.state.tvid, 'episode': action.payload})),
-        ) */
+        );*/
       }));
   /*await Navigator.of(ctx.context).pushNamed('episodedetailpage', arguments: {
     'tvid': ctx.state.tvid,

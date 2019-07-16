@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/globalbasestate/state.dart';
+import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/seasondetail.dart';
 
 class EpisodeDetailPageState implements GlobalBaseState<EpisodeDetailPageState> {

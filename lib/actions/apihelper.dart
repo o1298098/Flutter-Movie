@@ -7,6 +7,7 @@ import 'package:movie/models/accountdetail.dart';
 import 'package:movie/models/certification.dart';
 import 'package:movie/models/combinedcredits.dart';
 import 'package:movie/models/creditsmodel.dart';
+import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/keyword.dart';
 import 'package:movie/models/moviechange.dart';
@@ -231,7 +232,7 @@ class ApiHelper {
     TVDetailModel model;
     String param = '/tv/$mvid?api_key=$_apikey&language=$language';
     if (appendtoresponse != null)
-      param = param + 'append_to_response=$appendtoresponse';
+      param = param + '&append_to_response=$appendtoresponse';
     var r = await httpGet(param);
     if (r != null) model = TVDetailModel(r);
     return model;
@@ -317,11 +318,11 @@ class ApiHelper {
   }
 
   ///Search multiple models in a single request. Multi search currently supports searching for movies, tv shows and people in a single request.
-  static Future<SearchResultModel> searchMulit(
+  static Future<SearchResultModel> searchMulit(String query,
       {int page = 1, bool searchadult = false}) async {
     SearchResultModel model;
     String param =
-        '/search/multi?api_key=$_apikey&page=$page&include_adult=$searchadult';
+        '/search/multi?api_key=$_apikey&query=$query&page=$page&include_adult=$searchadult&language=$language';
     var r = await httpGet(param);
     if (r != null) model = SearchResultModel(r);
     return model;
@@ -537,6 +538,16 @@ class ApiHelper {
     param+="&append_to_response=$appendToResponse";
     var r=await httpGet(param);
     if(r!=null)model=SeasonDetailModel(r);
+    return model;
+  }
+
+  static Future<Episode> getTVEpisodeDetail(int tvid ,int seasonNumber, int episodeNumber,{String appendToResponse}) async{
+    Episode model ;
+    String param='/tv/$tvid/season/$seasonNumber/episode/$episodeNumber?api_key=$_apikey&language=$language';
+    if(appendToResponse!=null)
+    param+='&append_to_response=$appendToResponse';
+    var r= await httpGet(param);
+    if(r!=null)model = Episode(r);
     return model;
   }
 

@@ -1,0 +1,29 @@
+{
+  "name": "keyboard_visibility",
+  "version": "0.5.0",
+  "summary": "Flutter keyboard visibility project.",
+  "description": "Flutter keyboard visibility project.",
+  "homepage": "http://github.com/adee42/keyboard_visibility",
+  "license": {
+    "file": "../LICENSE"
+  },
+  "authors": {
+    "Your Company": "email@example.com"
+  },
+  "source": {
+    "path": "."
+  },
+  "source_files": "Classes/**/*",
+  "public_header_files": "Classes/**/*.h",
+  "dependencies": {
+    "Flutter": [
+
+    ],
+    "Reachability": [
+
+    ]
+  },
+  "platforms": {
+    "ios": "8.0"
+  }
+}

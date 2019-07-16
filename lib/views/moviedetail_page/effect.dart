@@ -1,10 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Action;
+import 'package:flutter/widgets.dart' hide Action;
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
-import 'package:palette_generator/palette_generator.dart';
+//import 'package:palette_generator/palette_generator.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -21,12 +22,13 @@ void _onAction(Action action, Context<MovieDetailPageState> ctx) {}
 
 Future _onInit(Action action, Context<MovieDetailPageState> ctx) async {
   try {
-    var r = await ApiHelper.getMovieDetail(ctx.state.movieid,appendtoresponse: 'keywords,recommendations,credits');
+    ctx.state.scrollController=new ScrollController();
+    var r = await ApiHelper.getMovieDetail(ctx.state.movieid,appendtoresponse: 'keywords,recommendations,credits,external_ids,release_dates');
     if (r != null) {
       ctx.dispatch(MovieDetailPageActionCreator.onInit(r));
-      var paletteGenerator = await PaletteGenerator.fromImageProvider(
+      /*var paletteGenerator = await PaletteGenerator.fromImageProvider(
          CachedNetworkImageProvider(ImageUrl.getUrl(r.poster_path, ImageSize.w400)));
-      ctx.dispatch(MovieDetailPageActionCreator.onsetColor(paletteGenerator));
+      ctx.dispatch(MovieDetailPageActionCreator.onsetColor(paletteGenerator));*/
     }
     var l = await ApiHelper.getMovieReviews(ctx.state.movieid);
     if (l != null) ctx.dispatch(MovieDetailPageActionCreator.onSetReviews(l));

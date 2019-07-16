@@ -20,7 +20,7 @@ class KeyWordsConnector
   @override
   KeyWordsState get(TVDetailPageState state) {
     KeyWordsState mstate = KeyWordsState();
-    mstate.keywords = state.keywords;
+    mstate.keywords = state.tvDetailModel.keywords??KeyWordModel.fromParams(results: List<KeyWordData>());
     return mstate;
   }
 }

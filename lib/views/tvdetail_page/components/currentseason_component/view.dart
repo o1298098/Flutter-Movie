@@ -109,13 +109,15 @@ Widget buildView(
                   children: <Widget>[
                     Hero(
                       tag: 'seasonname',
-                      child: Text(
+                      child: Container(
+                        width: Adapt.screenW() - Adapt.px(340),
+                        child:Text(
                         state.nowseason.name ?? '',
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: Adapt.px(35),
                             fontWeight: FontWeight.bold),
-                      ),
+                      )),
                     ),
                     Container(
                         width: Adapt.screenW() - Adapt.px(340),

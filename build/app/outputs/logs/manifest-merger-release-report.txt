@@ -1,0 +1,153 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:1:1-29:12
+INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:1:1-29:12
+INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:1:1-29:12
+INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:1:1-29:12
+MERGED from [:video_player] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/video_player/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:2:1-7:12
+MERGED from [:shared_preferences] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/shared_preferences/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:2:1-7:12
+MERGED from [:screen] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/screen/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:2:1-11:12
+MERGED from [:url_launcher] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/url_launcher/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:2:1-14:12
+MERGED from [:sqflite] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/sqflite/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:2:1-7:12
+MERGED from [:path_provider] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/path_provider/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.android.exoplayer:exoplayer-hls:2.9.6] /Users/hezhibin/.gradle/caches/transforms-1/files-1.1/exoplayer-hls-2.9.6.aar/90193e58527bc5a0c7948e0d8f0bf346/AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-dash:2.9.6] /Users/hezhibin/.gradle/caches/transforms-1/files-1.1/exoplayer-dash-2.9.6.aar/fd2ac714e9e6645faa42b745f9ad0cfb/AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.9.6] /Users/hezhibin/.gradle/caches/transforms-1/files-1.1/exoplayer-smoothstreaming-2.9.6.aar/c02c5a81f70e420472ab6fd8ee8d2295/AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.9.6] /Users/hezhibin/.gradle/caches/transforms-1/files-1.1/exoplayer-core-2.9.6.aar/9e4b749185606c45cc15e8d84b6c6c9a/AndroidManifest.xml:17:1-26:12
+INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:1:1-29:12
+INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:1:1-29:12
+INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:1:1-29:12
+	package
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:1:70-97
+		INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:1:1-29:12
+		INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:1:1-29:12
+		INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:1:11-69
+uses-permission#android.permission.READ_PHONE_STATE
+ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:2:5-75
+	android:name
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:2:22-72
+uses-permission#android.permission.INTERNET
+ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:3:5-67
+	android:name
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:3:22-64
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:4:5-79
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.9.6] /Users/hezhibin/.gradle/caches/transforms-1/files-1.1/exoplayer-core-2.9.6.aar/9e4b749185606c45cc15e8d84b6c6c9a/AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.9.6] /Users/hezhibin/.gradle/caches/transforms-1/files-1.1/exoplayer-core-2.9.6.aar/9e4b749185606c45cc15e8d84b6c6c9a/AndroidManifest.xml:24:5-79
+	android:name
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:4:22-76
+uses-permission#android.permission.ACCESS_WIFI_STATE
+ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:5:5-76
+	android:name
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:5:22-73
+uses-permission#android.permission.CAMERA
+ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:6:5-64
+	android:name
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:6:22-62
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:7:5-80
+	android:name
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:7:22-78
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:8:5-78
+	android:name
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:8:22-76
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:9:5-81
+	android:name
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:9:22-78
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:10:5-80
+	android:name
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:10:22-77
+application
+ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:16:5-28:19
+MERGED from [:url_launcher] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/url_launcher/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:7:5-12:19
+MERGED from [:url_launcher] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/url_launcher/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:7:5-12:19
+	android:label
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:16:67-88
+	android:icon
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:16:89-123
+	android:name
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:16:18-66
+activity#com.example.movie.MainActivity
+ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:17:9-27:20
+	android:launchMode
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:17:48-78
+	android:hardwareAccelerated
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:17:246-280
+	android:windowSoftInputMode
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:17:281-323
+	android:configChanges
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:17:114-245
+	android:theme
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:17:79-113
+	android:name
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:17:19-47
+meta-data#io.flutter.app.android.SplashScreenUntilFirstFrame
+ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:22:13-113
+	android:value
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:22:90-110
+	android:name
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:22:24-89
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:23:13-26:29
+action#android.intent.action.MAIN
+ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:24:17-68
+	android:name
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:24:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:25:17-76
+	android:name
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml:25:27-74
+uses-sdk
+INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml
+INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml
+MERGED from [:video_player] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/video_player/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:5:5-44
+MERGED from [:video_player] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/video_player/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/shared_preferences/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/shared_preferences/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:5:5-44
+MERGED from [:screen] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/screen/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:7:5-9:41
+MERGED from [:screen] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/screen/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:7:5-9:41
+MERGED from [:url_launcher] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/url_launcher/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:5:5-44
+MERGED from [:url_launcher] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/url_launcher/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:5:5-44
+MERGED from [:sqflite] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/sqflite/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:5:5-44
+MERGED from [:sqflite] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/sqflite/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:5:5-44
+MERGED from [:path_provider] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/path_provider/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:5:5-44
+MERGED from [:path_provider] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/path_provider/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.exoplayer:exoplayer-hls:2.9.6] /Users/hezhibin/.gradle/caches/transforms-1/files-1.1/exoplayer-hls-2.9.6.aar/90193e58527bc5a0c7948e0d8f0bf346/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-hls:2.9.6] /Users/hezhibin/.gradle/caches/transforms-1/files-1.1/exoplayer-hls-2.9.6.aar/90193e58527bc5a0c7948e0d8f0bf346/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-dash:2.9.6] /Users/hezhibin/.gradle/caches/transforms-1/files-1.1/exoplayer-dash-2.9.6.aar/fd2ac714e9e6645faa42b745f9ad0cfb/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-dash:2.9.6] /Users/hezhibin/.gradle/caches/transforms-1/files-1.1/exoplayer-dash-2.9.6.aar/fd2ac714e9e6645faa42b745f9ad0cfb/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.9.6] /Users/hezhibin/.gradle/caches/transforms-1/files-1.1/exoplayer-smoothstreaming-2.9.6.aar/c02c5a81f70e420472ab6fd8ee8d2295/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.9.6] /Users/hezhibin/.gradle/caches/transforms-1/files-1.1/exoplayer-smoothstreaming-2.9.6.aar/c02c5a81f70e420472ab6fd8ee8d2295/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.9.6] /Users/hezhibin/.gradle/caches/transforms-1/files-1.1/exoplayer-core-2.9.6.aar/9e4b749185606c45cc15e8d84b6c6c9a/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.9.6] /Users/hezhibin/.gradle/caches/transforms-1/files-1.1/exoplayer-core-2.9.6.aar/9e4b749185606c45cc15e8d84b6c6c9a/AndroidManifest.xml:20:5-22:41
+INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml
+INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/hezhibin/Projects/o1298098/Flutter-Movie/android/app/src/main/AndroidManifest.xml
+activity#io.flutter.plugins.urllauncher.UrlLauncherPlugin$WebViewActivity
+ADDED from [:url_launcher] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/url_launcher/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:8:9-11:74
+	android:exported
+		ADDED from [:url_launcher] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/url_launcher/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:10:13-37
+	android:theme
+		ADDED from [:url_launcher] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/url_launcher/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:11:13-71
+	android:name
+		ADDED from [:url_launcher] /Users/hezhibin/Projects/o1298098/Flutter-Movie/build/url_launcher/intermediates/merged_manifests/release/processReleaseManifest/merged/AndroidManifest.xml:9:13-92

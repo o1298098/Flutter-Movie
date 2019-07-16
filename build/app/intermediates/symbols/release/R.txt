@@ -1,0 +1,3 @@
+int drawable launch_background 0x7f010000
+int mipmap ic_launcher 0x7f020000
+int style LaunchTheme 0x7f030000

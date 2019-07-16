@@ -6,7 +6,7 @@ import 'package:movie/models/review.dart';
 import 'package:movie/models/tvdetail.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:movie/models/videomodel.dart';
-import 'package:palette_generator/palette_generator.dart';
+//import 'package:palette_generator/palette_generator.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -16,7 +16,7 @@ Reducer<TVDetailPageState> buildReducer() {
     <Object, Reducer<TVDetailPageState>>{
       TVDetailPageAction.action: _onAction,
       TVDetailPageAction.init:_onInit,
-      TVDetailPageAction.setbgcolor:_onSetColor,
+      //TVDetailPageAction.setbgcolor:_onSetColor,
       TVDetailPageAction.setCredits:_onCredits,
       TVDetailPageAction.setImages:_onSetImages,
       TVDetailPageAction.setReviews:_onSetReviews,
@@ -36,14 +36,16 @@ TVDetailPageState _onInit(TVDetailPageState state, Action action) {
   final TVDetailPageState newState = state.clone();
   newState.tvDetailModel=model;
   newState.backdropPic=model.backdrop_path;
+  newState.posterPic=model.poster_path;
+  newState.name=model.name;
   return newState;
 }
-TVDetailPageState _onSetColor(TVDetailPageState state, Action action) {
+/*TVDetailPageState _onSetColor(TVDetailPageState state, Action action) {
   PaletteGenerator c=action.payload;
   final TVDetailPageState newState = state.clone();
   newState.palette=c;
   return newState;
-}
+}*/
 TVDetailPageState _onCredits(TVDetailPageState state, Action action) {
   CreditsModel c=action.payload;
   final TVDetailPageState newState = state.clone();

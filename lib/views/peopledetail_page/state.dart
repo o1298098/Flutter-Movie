@@ -16,6 +16,7 @@ class PeopleDetailPageState implements GlobalBaseState<PeopleDetailPageState> {
   bool showmovie;
   String profilePath;
   String profileName;
+  String character;
   ScrollPhysics pageScrollPhysics;
   @override
   PeopleDetailPageState clone() {
@@ -46,5 +47,6 @@ PeopleDetailPageState initState(Map<String, dynamic> args) {
   state.peopleid=args['peopleid'];
   state.profilePath=args['profilePath'];
   state.profileName=args['profileName'];
+  state.character=args['character'];
   return state;
 }

@@ -37,7 +37,8 @@ class _PeopleConnector extends ConnOp<PeopleDetailPageState, List<ItemBean>> {
               peopleid: state.peopleid,
               biography: state.peopleDetailModel.biography,
               profileName: state.profileName,
-              profilePath: state.profilePath,)));
+              profilePath: state.profilePath,
+              character: state.character)));
       var m=state.clone().creditsModel;
       m.cast=new List<CastData>()..addAll(m.cast);
       m.cast.sort((a,b)=>b.vote_count.compareTo(a.vote_count));

@@ -8,7 +8,7 @@ import 'package:movie/models/moviedetail.dart';
 import 'package:movie/models/review.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:movie/models/videomodel.dart';
-import 'package:palette_generator/palette_generator.dart';
+//import 'package:palette_generator/palette_generator.dart';
 
 //TODO replace with your own action
 enum MovieDetailPageAction {
@@ -31,9 +31,9 @@ class MovieDetailPageActionCreator {
     return Action(MovieDetailPageAction.init, payload: model);
   }
 
-  static Action onsetColor(PaletteGenerator c) {
-    return Action(MovieDetailPageAction.setbgcolor, payload: c);
-  }
+  //static Action onsetColor(PaletteGenerator c) {
+  //  return Action(MovieDetailPageAction.setbgcolor, payload: c);
+  //}
   static Action onSetImages(ImageModel c) {
     return Action(MovieDetailPageAction.setImages, payload: c);
   }

@@ -52,7 +52,6 @@ Widget buildView(
   }
 
   Widget _getKeyWordCell() {
-    
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

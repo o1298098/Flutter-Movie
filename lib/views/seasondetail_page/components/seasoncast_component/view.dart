@@ -3,6 +3,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
+import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:shimmer/shimmer.dart';
@@ -15,7 +16,7 @@ Widget buildView(
  
  Widget _buildCreditsShimmerCell() {
     return SizedBox(
-      width: Adapt.px(200),
+      width: Adapt.px(220),
       height: Adapt.px(450),
       child: Shimmer.fromColors(
         baseColor: Colors.grey[200],
@@ -24,7 +25,7 @@ Widget buildView(
           children: <Widget>[
             Container(
               color: Colors.grey[200],
-              width: Adapt.px(200),
+              width: Adapt.px(220),
               height: Adapt.px(300),
             ),
             Container(
@@ -50,32 +51,37 @@ Widget buildView(
   }
 
  Widget _buildCastCell(CastData d) {
-    return Container(
+    return GestureDetector(
+      onTap:()=> dispatch(SeasonCastActionCreator.onCastCellTapped(d.id, d.profile_path, d.name)),
+      child: 
+    Container(
       padding: EdgeInsets.only(left: Adapt.px(30)),
       child: Card(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            CachedNetworkImage(
-              width: Adapt.px(200),
+            Hero(
+                tag: 'people' + d.id.toString(),
+             child:  CachedNetworkImage(
+              width: Adapt.px(220),
               height: Adapt.px(300),
               fit: BoxFit.cover,
               placeholder: (ctx, s) {
                 return Image.asset(
                   'images/CacheBG.jpg',
                   fit: BoxFit.cover,
-                  width: Adapt.px(200),
+                  width: Adapt.px(220),
                   height: Adapt.px(300),
                 );
               },
               imageUrl: d.profile_path == null
                   ? ImageUrl.emptyimage
                   : ImageUrl.getUrl(d.profile_path, ImageSize.w200),
-            ),
+            )),
             Container(
               padding: EdgeInsets.fromLTRB(
                   Adapt.px(8), Adapt.px(10), Adapt.px(8), 0),
-              width: Adapt.px(200),
+              width: Adapt.px(220),
               child: Text(
                 d.name,
                 style: TextStyle(
@@ -86,7 +92,7 @@ Widget buildView(
             ),
             Container(
               padding: EdgeInsets.fromLTRB(Adapt.px(8), 0, Adapt.px(8), 0),
-              width: Adapt.px(200),
+              width: Adapt.px(220),
               child: Text(d.character,
                   maxLines: 2,
                   style: TextStyle(color: Colors.grey, fontSize: Adapt.px(26))),
@@ -94,6 +100,7 @@ Widget buildView(
           ],
         ),
       ),
+    ),
     );
   }
 
@@ -133,7 +140,7 @@ Widget buildView(
         padding: EdgeInsets.all(Adapt.px(30)),
         child: Text.rich(TextSpan(children: [
           TextSpan(
-              text: 'Season Cast',
+              text: I18n.of(viewService.context).seasonCast,
               style: TextStyle(
                   color: Colors.black,
                   fontSize: Adapt.px(35),

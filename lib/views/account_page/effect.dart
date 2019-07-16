@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/apihelper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'action.dart';

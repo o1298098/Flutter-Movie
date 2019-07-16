@@ -5,6 +5,7 @@ class CreditsModel {
   int id;
   List<CastData> cast;
   List<CrewData> crew;
+  List<CastData> guest_stars;
 
   CreditsModel.fromParams({this.id, this.cast, this.crew});
 
@@ -23,11 +24,16 @@ class CreditsModel {
     for (var crewItem in crew == null ? [] : jsonRes['crew']){
             crew.add(crewItem == null ? null : new CrewData.fromJson(crewItem));
     }
+    guest_stars = jsonRes['guest_stars'] == null ? null : [];
+
+    for (var guest_starsItem in guest_stars == null ? [] : jsonRes['guest_stars']){
+            guest_stars.add(guest_starsItem == null ? null : new CastData.fromJson(guest_starsItem));
+    }
   }
 
   @override
   String toString() {
-    return '{"id": $id,"cast": $cast,"crew": $crew}';
+    return '{"id": $id,"cast": $cast,"crew": $crew,"guest_stars": $guest_stars}';
   }
 }
 

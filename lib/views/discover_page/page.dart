@@ -17,7 +17,7 @@ class DiscoverPage extends Page<DiscoverPageState, Map<String, dynamic>> {
             dependencies: Dependencies<DiscoverPageState>(
                 adapter: null,
                 slots: <String, Dependent<DiscoverPageState>>{
-                  'filter':FilterComponent().asDependent(filter.FilterConnector())
+                  'filter':filter.FilterConnector()+FilterComponent()
                 }),
             middleware: <Middleware<DiscoverPageState>>[
             ],);

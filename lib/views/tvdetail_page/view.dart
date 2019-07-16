@@ -1,6 +1,10 @@
+import 'dart:collection';
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/actions/videourl.dart';
@@ -12,6 +16,7 @@ import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:movie/models/videomodel.dart';
+import 'package:parallax_image/parallax_image.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
@@ -21,13 +26,16 @@ import 'state.dart';
 
 Widget buildView(
     TVDetailPageState state, Dispatch dispatch, ViewService viewService) {
+  Random random = new Random(DateTime.now().millisecondsSinceEpoch);
   var s = state.tvDetailModel;
-  var dominantColor = state.palette?.dominantColor?.color ?? Colors.black38;
+  //var dominantColor = state.palette?.dominantColor?.color ?? Colors.black38;
+  var dominantColor=state.mainColor;
   double evote = 0.0;
 
   Widget _buildCreditsCell(CastData p) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => dispatch(TVDetailPageActionCreator.onCastCellTapped(
+          p.id, p.profile_path, p.name)),
       child: Container(
         margin: EdgeInsets.only(left: Adapt.px(20)),
         width: Adapt.px(240),
@@ -41,14 +49,17 @@ Widget buildView(
             children: <Widget>[
               Hero(
                 tag: 'people' + p.id.toString(),
-                child: FadeInImage.assetNetwork(
-                  fit: BoxFit.cover,
+                child: Container(
                   width: Adapt.px(240),
                   height: Adapt.px(260),
-                  placeholder: 'images/CacheBG.jpg',
-                  image: ImageUrl.getUrl(
-                      p.profile_path ?? '/eIkFHNlfretLS1spAcIoihKUS62.jpg',
-                      ImageSize.w300),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: CachedNetworkImageProvider(p.profile_path==null?ImageUrl.emptyimage: ImageUrl.getUrl(
+                      p.profile_path,
+                      ImageSize.w300)))
+                  ),
                 ),
               ),
               Padding(
@@ -56,13 +67,15 @@ Widget buildView(
                     top: Adapt.px(20), left: Adapt.px(20), right: Adapt.px(20)),
                 child: Hero(
                   tag: 'Actor' + p.id.toString(),
-                  child: Text(
-                    p.name,
-                    maxLines: 2,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: Adapt.px(30),
-                        fontWeight: FontWeight.w600),
+                  child: Material(
+                    child: Text(
+                      p.name,
+                      maxLines: 2,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: Adapt.px(30),
+                          fontWeight: FontWeight.w600),
+                    ),
                   ),
                 ),
               ),
@@ -183,6 +196,56 @@ Widget buildView(
     );
   }
 
+  Widget _buildShimmerVideoCell() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(Adapt.px(30), 0, Adapt.px(30), Adapt.px(30)),
+      child: Shimmer.fromColors(
+        highlightColor: Colors.grey[100],
+        baseColor: Colors.grey[200],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              height: Adapt.px(10),
+            ),
+            Container(
+              height: (Adapt.screenW() - Adapt.px(60)) * 9 / 16,
+              color: Colors.grey[200],
+            ),
+            SizedBox(
+              height: Adapt.px(20),
+            ),
+            Container(
+              height: Adapt.px(35),
+              color: Colors.grey[200],
+            ),
+            SizedBox(
+              height: Adapt.px(8),
+            ),
+            Container(
+              margin: EdgeInsets.only(right: Adapt.px(200)),
+              height: Adapt.px(35),
+              color: Colors.grey[200],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildShimmerImageCell(double h) {
+    double w = (Adapt.screenW() - Adapt.px(100)) / 2;
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[200],
+      highlightColor: Colors.grey[100],
+      child: Container(
+        width: w,
+        height: h,
+        color: Colors.grey[200],
+      ),
+    );
+  }
+
   Widget _buildCreditsShimmerCell() {
     return SizedBox(
       width: Adapt.px(240),
@@ -220,37 +283,19 @@ Widget buildView(
   }
 
   Widget _buildImageCell(ImageData d) {
+    double w = (Adapt.screenW() - Adapt.px(100)) / 2;
+    double h = w / d.aspect_ratio;
     return Container(
-      padding: EdgeInsets.fromLTRB(Adapt.px(30), 0, Adapt.px(30), Adapt.px(20)),
-      child: Card(
-        elevation: 1.0,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            FadeInImage.assetNetwork(
-              placeholder: 'images/CacheBG.jpg',
-              image: ImageUrl.getUrl(d.file_path, ImageSize.w400),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(30)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'Size:${d.width}x${d.height}',
-                    style:
-                        TextStyle(color: Colors.black, fontSize: Adapt.px(30)),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.cloud_download),
-                    onPressed: () {},
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+      width: w,
+      height: h,
+      decoration: BoxDecoration(
+        color: Color.fromRGBO(random.nextInt(255), random.nextInt(255),
+            random.nextInt(255), random.nextDouble()),
       ),
+      child: ParallaxImage(
+          extent: h,
+          image: CachedNetworkImageProvider(
+              ImageUrl.getUrl(d.file_path, ImageSize.w400))),
     );
   }
 
@@ -273,8 +318,8 @@ Widget buildView(
   }
 
   List<Widget> _buildRecommendationBody() {
-    if (state.recommendations.results.length > 0)
-      return state.recommendations.results
+    if (state.tvDetailModel.recommendations != null)
+      return state.tvDetailModel.recommendations.results
           .map(_buildRecommendationCell)
           .toList();
     else
@@ -286,7 +331,7 @@ Widget buildView(
   }
 
   Widget _getPosterPic() {
-    if (state.tvDetailModel.poster_path == null)
+    if (state.posterPic == null)
       return SizedBox(
           child: Shimmer.fromColors(
         baseColor: Colors.grey[400],
@@ -305,8 +350,7 @@ Widget buildView(
           height: Adapt.px(300),
           width: Adapt.px(200),
           fit: BoxFit.cover,
-          imageUrl:
-              ImageUrl.getUrl(state.tvDetailModel.poster_path, ImageSize.w500),
+          imageUrl: ImageUrl.getUrl(state.posterPic, ImageSize.w500),
           placeholder: (c, s) {
             return Container(
               height: Adapt.px(300),
@@ -319,7 +363,7 @@ Widget buildView(
   }
 
   Widget _getTitle() {
-    if (state.tvDetailModel.name == null)
+    if (state.name == null)
       return SizedBox(
           child: Shimmer.fromColors(
         baseColor: Colors.grey[200],
@@ -334,7 +378,7 @@ Widget buildView(
       return RichText(
         text: TextSpan(children: <TextSpan>[
           TextSpan(
-              text: s.name,
+              text: state.name,
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Adapt.px(50),
@@ -347,7 +391,9 @@ Widget buildView(
                     ),
                   ])),
           TextSpan(
-              text: ' (${DateTime.tryParse(s.first_air_date).year.toString()})',
+              text: s.name == null
+                  ? ' (-)'
+                  : ' (${DateTime.tryParse(s.first_air_date)?.year.toString()})',
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Adapt.px(30),
@@ -360,6 +406,50 @@ Widget buildView(
                     ),
                   ])),
         ]),
+      );
+  }
+
+  Widget _getVideoBody() {
+    if (state.videomodel.results.length > 0)
+      return SliverList(
+          delegate:
+              SliverChildBuilderDelegate((BuildContext contxt, int index) {
+        return _buildVideoCell(state.videomodel.results[index]);
+      }, childCount: state.videomodel.results.length));
+    else
+      return SliverList(
+          delegate:
+              SliverChildBuilderDelegate((BuildContext contxt, int index) {
+        return _buildShimmerVideoCell();
+      }, childCount: 3));
+  }
+
+  Widget _getImageBody() {
+    var hset = new HashSet<ImageData>()
+      ..addAll(state.imagesmodel.backdrops)
+      ..addAll(state.imagesmodel.posters);
+    var allimage = hset.toList();
+    if (allimage.length > 0)
+      return SliverStaggeredGrid.countBuilder(
+        crossAxisCount: 4,
+        staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
+        mainAxisSpacing: Adapt.px(20),
+        crossAxisSpacing: Adapt.px(20),
+        itemCount: allimage.length,
+        itemBuilder: (BuildContext contxt, int index) {
+          return _buildImageCell(allimage[index]);
+        },
+      );
+    else
+      return SliverStaggeredGrid.countBuilder(
+        crossAxisCount: 4,
+        staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
+        mainAxisSpacing: Adapt.px(20),
+        crossAxisSpacing: Adapt.px(20),
+        itemCount: 6,
+        itemBuilder: (BuildContext contxt, int index) {
+          return _buildShimmerImageCell(80.0 * index);
+        },
       );
   }
 
@@ -433,10 +523,11 @@ Widget buildView(
   }
 
   Widget _getCreditsCells() {
-    if (state.creditsModel.cast.length > 0)
+    if (state.tvDetailModel.credits != null)
       return ListView(
         scrollDirection: Axis.horizontal,
-        children: state.creditsModel.cast.map(_buildCreditsCell).toList(),
+        children:
+            state.tvDetailModel.credits.cast.map(_buildCreditsCell).toList(),
       );
     else
       return ListView(
@@ -587,9 +678,10 @@ Widget buildView(
                           context),
                       child: SliverAppBar(
                           pinned: true,
-                          backgroundColor:
+                          /*backgroundColor:
                               state.palette.darkVibrantColor?.color ??
-                                  Colors.black87,
+                                  Colors.black87,*/
+                          backgroundColor:dominantColor,
                           expandedHeight: Adapt.px(700),
                           centerTitle: false,
                           title: Text(de ? s.name ?? '' : ''),
@@ -609,9 +701,10 @@ Widget buildView(
                                 color: Colors.white,
                                 child: TabBar(
                                   labelColor: Colors.black,
-                                  indicatorColor:
+                                  /*indicatorColor:
                                       state.palette.lightVibrantColor?.color ??
-                                          Colors.black,
+                                          Colors.black,*/
+                                  indicatorColor:Color.fromRGBO(random.nextInt(255), random.nextInt(255), random.nextInt(255), random.nextDouble()),
                                   indicatorSize: TabBarIndicatorSize.label,
                                   isScrollable: true,
                                   labelStyle: TextStyle(
@@ -670,7 +763,7 @@ Widget buildView(
                           ),
                         ),
                         SliverToBoxAdapter(
-                          child:viewService.buildComponent('featuredCrew'),
+                          child: viewService.buildComponent('featuredCrew'),
                         ),
                         SliverToBoxAdapter(
                             child: Column(
@@ -711,7 +804,7 @@ Widget buildView(
                                       fontWeight: FontWeight.w800)),
                             ),
                             Container(
-                              margin: EdgeInsets.only(bottom: Adapt.px(70)),
+                              margin: EdgeInsets.only(bottom: Adapt.px(30)),
                               height: Adapt.px(400) * 9 / 16,
                               child: ListView(
                                 scrollDirection: Axis.horizontal,
@@ -719,7 +812,10 @@ Widget buildView(
                               ),
                             ),
                           ],
-                        ))
+                        )),
+                        SliverToBoxAdapter(
+                          child: viewService.buildComponent('info'),
+                        ),
                       ]);
                     })),
                     Container(child: Builder(builder: (BuildContext context) {
@@ -729,29 +825,17 @@ Widget buildView(
                               NestedScrollView.sliverOverlapAbsorberHandleFor(
                                   context),
                         ),
-                        SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                                (BuildContext contxt, int index) {
-                          return _buildVideoCell(
-                              state.videomodel.results[index]);
-                        }, childCount: state.videomodel.results.length))
+                        _getVideoBody()
                       ]);
                     })),
                     Container(child: Builder(builder: (BuildContext context) {
-                      var allimage = new List<ImageData>()
-                        ..addAll(state.imagesmodel.backdrops)
-                        ..addAll(state.imagesmodel.posters);
                       return CustomScrollView(slivers: <Widget>[
                         SliverOverlapInjector(
                           handle:
                               NestedScrollView.sliverOverlapAbsorberHandleFor(
                                   context),
                         ),
-                        SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                                (BuildContext contxt, int index) {
-                          return _buildImageCell(allimage[index]);
-                        }, childCount: allimage.length))
+                        _getImageBody()
                       ]);
                     })),
                     Container(child: Builder(builder: (BuildContext context) {

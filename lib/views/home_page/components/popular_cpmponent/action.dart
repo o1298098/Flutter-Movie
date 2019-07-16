@@ -7,7 +7,7 @@ class PopularActionCreator {
   static Action onAction() {
     return const Action(PopularAction.action);
   }
-  static Action onCellTapped(int id,String bgpic) {
-    return Action(PopularAction.cellTapped,payload:[id,bgpic]);
+  static Action onCellTapped(int id,String bgpic,String title,String posterpic) {
+    return Action(PopularAction.cellTapped,payload:[id,bgpic,title,posterpic]);
   }
 }

@@ -1,5 +1,4 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/seasondetail.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -22,6 +21,5 @@ EpisodesState _onExpansionOpen(EpisodesState state, Action action) {
  final int index=action.payload[0]??0;
  final bool opened=action.payload[1];
   final EpisodesState newState = state.clone();
-  newState.episodes[index].expansionPanelOpened=opened;
   return newState;
 }

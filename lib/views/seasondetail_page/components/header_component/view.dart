@@ -60,7 +60,7 @@ Widget buildView(
     if (state.overwatch != null)
       return Container(
         width: Adapt.screenW() - Adapt.px(310),
-        child: Text(state.overwatch ?? ''),
+        child: Text(state.overwatch?.isEmpty==true||state.overwatch==null ?'No OverWatch have been added.':state.overwatch),
       );
       else
       return _buildOverWatchShimmerCell();
