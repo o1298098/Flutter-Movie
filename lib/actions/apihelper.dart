@@ -72,7 +72,8 @@ class ApiHelper {
     }
   }
 
-  static Future createSessionWithLogin(String account, String pwd) async {
+  static Future<bool> createSessionWithLogin(String account, String pwd) async {
+    bool result=false;
     if (_requestToken == null) await createRequestToken();
     String param = '/authentication/token/validate_with_login';
     FormData formData = new FormData.from(
@@ -81,12 +82,14 @@ class ApiHelper {
     if (r != null) {
       var jsonobject = json.decode(r);
       if (jsonobject['success']) {
-        await createNewSession(_requestToken);
+       result= await createNewSession(_requestToken);
       }
     }
+    return result;
   }
 
-  static Future createNewSession(String sessionToken) async {
+  static Future<bool> createNewSession(String sessionToken) async {
+    bool result=false;
     if (session != null) {
       String param = '/authentication/session/new';
       FormData formData = new FormData.from({"request_token": sessionToken});
@@ -96,10 +99,13 @@ class ApiHelper {
         if (jsonobject['success']) {
           session = jsonobject['session_id'];
           prefs.setString('loginsession', session);
-          await getAccountDetail();
+          var detail= await getAccountDetail();
+          if(detail!=null)
+            result=true;
         }
       }
     }
+    return result;
   }
 
   static Future createSessionWithV4(String sessionToken) async {

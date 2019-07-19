@@ -74,12 +74,12 @@ Widget buildView(
           width: Adapt.px(30),
         ),
         Hero(
-          tag: 'seasonpic',
+          tag: 'seasonpic${state.seasonNumber}',
           child: CachedNetworkImage(
             width: Adapt.px(250),
             imageUrl: state.posterurl == null
                 ? ImageUrl.emptyimage
-                : ImageUrl.getUrl(state.posterurl, ImageSize.w200),
+                : ImageUrl.getUrl(state.posterurl, ImageSize.w300),
           ),
         ),
         SizedBox(
@@ -90,7 +90,7 @@ Widget buildView(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Hero(
-              tag: 'seasonname',
+              tag: 'seasonname${state.seasonNumber}',
               child: Container(
                 width: Adapt.screenW() - Adapt.px(310),
                 child: Text(

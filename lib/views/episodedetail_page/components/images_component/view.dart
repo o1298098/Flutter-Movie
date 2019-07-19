@@ -112,7 +112,10 @@ Widget buildView(
       SizedBox(
         height: Adapt.px(30),
       ),
-      _getImagesBody()
+      _getImagesBody(),
+      SizedBox(
+        height: Adapt.px(30),
+      ),
     ],
   );
 }

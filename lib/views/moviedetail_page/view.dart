@@ -433,7 +433,7 @@ Widget buildView(
           height: Adapt.px(300),
           width: Adapt.px(200),
           fit: BoxFit.cover,
-          imageUrl: ImageUrl.getUrl(state.posterPic, ImageSize.w500),
+          imageUrl: ImageUrl.getUrl(state.posterPic, ImageSize.w300),
           placeholder: (c, s) {
             return Container(
               height: Adapt.px(300),
@@ -599,14 +599,14 @@ Widget buildView(
                 image: DecorationImage(
                     colorFilter:
                         ColorFilter.mode(dominantColor, BlendMode.color),
-                    image: NetworkImage(ImageUrl.getUrl(
-                        state.backdropPic ?? '', ImageSize.w500)),
+                    image:CachedNetworkImageProvider(state.backdropPic==null ?ImageUrl.emptyimage: ImageUrl.getUrl(
+                        state.backdropPic, ImageSize.w500)),
                     fit: BoxFit.cover)),
           ),
           Container(
             width: Adapt.screenW(),
             height: Adapt.px(401),
-            color: dominantColor.withOpacity(.9),
+            color: dominantColor.withOpacity(.8),
           ),
           Container(
             alignment: Alignment.bottomLeft,

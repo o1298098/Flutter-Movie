@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/customwidgets/sliverappbardelegate.dart';
 import 'package:movie/generated/i18n.dart';
+import 'package:movie/models/enums/media_type.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -52,9 +53,9 @@ Widget buildView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _buildTitle(I18n.of(viewService.context).inTheaters, () {}),
+              _buildTitle(I18n.of(viewService.context).inTheaters,()=>dispatch(HomePageActionCreator.onMoreTapped(state.movie,MediaType.movie))),
               viewService.buildComponent('moviecells'),
-              _buildTitle(I18n.of(viewService.context).onTV, () {}),
+              _buildTitle(I18n.of(viewService.context).onTV, ()=>dispatch(HomePageActionCreator.onMoreTapped(state.tv,MediaType.tv))),
               viewService.buildComponent('tvcells'),
               Padding(
                 padding: EdgeInsets.all(Adapt.px(20)),

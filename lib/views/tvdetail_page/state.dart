@@ -59,7 +59,7 @@ TVDetailPageState initState(Map<String, dynamic> args) {
   state.tvDetailModel = new TVDetailModel.fromParams();
   state.creditsModel = new CreditsModel.fromParams(
       cast: List<CastData>(), crew: List<CrewData>());
-  state.mainColor=Color.fromRGBO(random.nextInt(255), random.nextInt(255), random.nextInt(255), 1);
+  state.mainColor=Color.fromRGBO(random.nextInt(200), random.nextInt(100), random.nextInt(200), 1);
   /*state.palette = new PaletteGenerator.fromColors(
       List<PaletteColor>()..add(new PaletteColor(Colors.black87, 0)));*/
   state.imagesmodel = new ImageModel.fromParams(

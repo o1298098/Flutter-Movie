@@ -6,15 +6,17 @@ class HeaderState implements Cloneable<HeaderState> {
   String name;
   String overwatch;
   String airDate;
+  int seasonNumber;
 
-  HeaderState({this.name,this.overwatch,this.posterurl,this.airDate});
+  HeaderState({this.name,this.overwatch,this.posterurl,this.airDate,this.seasonNumber});
 
   @override
   HeaderState clone() {
     return HeaderState()
     ..posterurl=posterurl
     ..name=name
-    ..overwatch;
+    ..overwatch
+    ..seasonNumber=seasonNumber;
   }
 }
 

@@ -13,6 +13,7 @@ import 'state.dart';
 
 Widget buildView(
     CurrentSeasonState state, Dispatch dispatch, ViewService viewService) {
+  
   Widget _buildShimmerCell() {
     return SizedBox(
       height: Adapt.px(360),
@@ -90,7 +91,7 @@ Widget buildView(
             child: Row(
               children: <Widget>[
                 Hero(
-                  tag: 'seasonpic',
+                  tag: 'seasonpic${state.nowseason.season_number}',
                   child: CachedNetworkImage(
                     width: Adapt.px(250),
                     height: Adapt.px(375),
@@ -98,7 +99,7 @@ Widget buildView(
                     imageUrl: state.nowseason.poster_path == null
                         ? ImageUrl.emptyimage
                         : ImageUrl.getUrl(
-                            state.nowseason.poster_path, ImageSize.w200),
+                            state.nowseason.poster_path, ImageSize.w300),
                   ),
                 ),
                 SizedBox(
@@ -108,7 +109,7 @@ Widget buildView(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Hero(
-                      tag: 'seasonname',
+                      tag: 'seasonname${state.nowseason.season_number}',
                       child: Container(
                         width: Adapt.screenW() - Adapt.px(340),
                         child:Text(
@@ -170,7 +171,10 @@ Widget buildView(
                       color: Colors.black,
                       fontSize: Adapt.px(40),
                       fontWeight: FontWeight.w800)),
-              Text('View All Seasons')
+              GestureDetector(
+                child: Text('View All Seasons',style: TextStyle(color:Colors.grey),),
+                onTap: ()=>dispatch(CurrentSeasonActionCreator.onAllSeasonsTapped(state.tvid, state.seasons)),
+              ) 
             ],
           )),
       _buildCell()

@@ -19,7 +19,6 @@ import 'action.dart';
 import 'state.dart';
 
 Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
-  
   Widget _buildInfoCell(String title, String value) {
     return Container(
       width: Adapt.px(300),
@@ -73,17 +72,19 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
   }
 
   Widget _buildProductionCompanieCell(ProductionCompanie d) {
-    if(d.logo_path!=null)
-    return Container(
-      margin: EdgeInsets.only(bottom: Adapt.px(20)),
-      width: Adapt.px(120),
-      height: Adapt.px(60),
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              fit: BoxFit.scaleDown,
-              image: CachedNetworkImageProvider(ImageUrl.getUrl(d.logo_path, ImageSize.w300)))),
-    );
-    else return Container();
+    if (d.logo_path != null)
+      return Container(
+        margin: EdgeInsets.only(bottom: Adapt.px(20)),
+        width: Adapt.px(120),
+        height: Adapt.px(60),
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.scaleDown,
+                image: CachedNetworkImageProvider(
+                    ImageUrl.getUrl(d.logo_path, ImageSize.w300)))),
+      );
+    else
+      return Container();
   }
 
   Widget _buildReleaseDateCell(ReleaseDateInfo d) {
@@ -149,21 +150,24 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
 
   Widget _getReleaseDate() {
     if (state.movieDetailModel?.releaseDates != null) {
-      ReleaseDateResult data = state.movieDetailModel.releaseDates.results
-          .where((d) => d.iso31661 == ui.window.locale.countryCode)
-          .first;
-      return Wrap(
-          spacing: Adapt.px(20),
-          children: data.releaseDates.map(_buildReleaseDateCell).toList());
-    } else {
-      return Wrap(
-        spacing: Adapt.px(40),
-        children: <Widget>[
-          ShimmerCell(Adapt.px(120), Adapt.px(60), 0),
-          ShimmerCell(Adapt.px(120), Adapt.px(60), 0)
-        ],
-      );
+      var q = state?.movieDetailModel?.releaseDates?.results
+          ?.where((d) => d.iso31661 == ui.window.locale.countryCode)
+          ?.toList();
+      ReleaseDateResult data;
+      if (q != null && q.length > 0) {
+        data = q.first;
+        return Wrap(
+            spacing: Adapt.px(20),
+            children: data.releaseDates.map(_buildReleaseDateCell).toList());
+      }
     }
+    return Wrap(
+      spacing: Adapt.px(40),
+      children: <Widget>[
+        ShimmerCell(Adapt.px(120), Adapt.px(60), 0),
+        ShimmerCell(Adapt.px(120), Adapt.px(60), 0)
+      ],
+    );
   }
 
   Widget _getExternal() {
@@ -315,10 +319,14 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
           ),
           Row(
             children: <Widget>[
-              _buildInfoCell(I18n.of(viewService.context).budget,
-                 '\$'+moneyformat.format(state.movieDetailModel?.budget??0)),
-              _buildInfoCell(I18n.of(viewService.context).revenue,
-                  "\$"+moneyformat.format(state.movieDetailModel?.revenue??0)),
+              _buildInfoCell(
+                  I18n.of(viewService.context).budget,
+                  '\$' +
+                      moneyformat.format(state.movieDetailModel?.budget ?? 0)),
+              _buildInfoCell(
+                  I18n.of(viewService.context).revenue,
+                  "\$" +
+                      moneyformat.format(state.movieDetailModel?.revenue ?? 0)),
             ],
           ),
           SizedBox(

@@ -28,6 +28,7 @@ Widget buildView(
       return Hero(
         tag: 'Actor' + state.peopleid.toString(),
         child:Material(
+          color: Colors.transparent,
           child:Text(
           state.profileName ?? '',
           style: TextStyle(

@@ -27,12 +27,17 @@ Future _onImageTapped(Action action, Context<ImagesState> ctx) async {
 }
 
 Future _onGalleryImageTapped(Action action, Context<ImagesState> ctx) async {
-  await Navigator.of(ctx.context).push(MaterialPageRoute(
-    builder: (context) => GalleryPhotoViewWrapper(
+  await Navigator.of(ctx.context).push(PageRouteBuilder(
+      transitionDuration: Duration(milliseconds: 300),
+      pageBuilder: (BuildContext context, Animation animation,
+          Animation secondaryAnimation) {
+        return new FadeTransition(
+            opacity: animation,
+            child:  GalleryPhotoViewWrapper(
       imageSize: ImageSize.w500,
       galleryItems: ctx.state.images.stills,
       initialIndex: action.payload,
-        ),
-  ));
+        ));
+      }));
 }
 
