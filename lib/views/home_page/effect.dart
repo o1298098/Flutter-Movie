@@ -8,14 +8,9 @@ import 'state.dart';
 Effect<HomePageState> buildEffect() {
   return combineEffects(<Object, Effect<HomePageState>>{
     HomePageAction.action: _onAction,
+    HomePageAction.moreTapped:_moreTapped,
     Lifecycle.initState:_onInit,
-    Lifecycle.appear:_onAppear,
   });
-}
-void _onAppear(Action action, Context<HomePageState> ctx){
-  SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle.light.copyWith(statusBarBrightness: Brightness.light));
-
 }
 
 void _onAction(Action action, Context<HomePageState> ctx) {
@@ -31,4 +26,8 @@ Future _onInit(Action action, Context<HomePageState> ctx) async{
    if(p!=null)ctx.dispatch(HomePageActionCreator.onInitPopularMovie(p));
    var t=await ApiHelper.getPopularTVShows();
    if(t!=null)ctx.dispatch(HomePageActionCreator.onInitPopularTV(t));
+}
+
+Future _moreTapped(Action action, Context<HomePageState> ctx) async{
+  await Navigator.of(ctx.context).pushNamed('MoreMediaPage',arguments: {'list':action.payload[0],'type':action.payload[1]});
 }

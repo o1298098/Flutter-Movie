@@ -10,12 +10,14 @@ import 'package:movie/views/moviedetail_page/page.dart';
 import 'package:movie/views/peopledetail_page/page.dart';
 import 'package:movie/views/search_page/page.dart';
 import 'package:movie/views/seasondetail_page/page.dart';
+import 'package:movie/views/seasons_page/page.dart';
 import 'package:movie/views/tvdetail_page/page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'generated/i18n.dart';
 import 'globalbasestate/state.dart';
 import 'globalbasestate/store.dart';
+import 'views/moremedia_page/page.dart';
 
 
 Future getSeesion() async {
@@ -39,6 +41,8 @@ Future<Widget> createApp() async {
         'peopledetailpage':PeopleDetailPage(),
         'seasondetailpage':SeasonDetailPage(),
         'episodedetailpage':EpisodeDetailPage(),
+        'MoreMediaPage':MoreMediaPage(),
+        'SeasonsPage':SeasonsPage(),
       },
       visitor: (String path, Page<Object, dynamic> page) {
       if (page.isTypeof<GlobalBaseState>()) {

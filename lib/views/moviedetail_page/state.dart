@@ -54,7 +54,7 @@ MovieDetailPageState initState(Map<String, dynamic> args) {
   if(args['posterpic']!=null)state.posterPic = args['posterpic'];
   if(args['title']!=null)state.title = args['title'];
   state.movieDetailModel = new MovieDetailModel.fromParams();
-  state.mainColor=Color.fromRGBO(random.nextInt(255), random.nextInt(255), random.nextInt(255), 1);
+  state.mainColor=Color.fromRGBO(random.nextInt(200), random.nextInt(100), random.nextInt(255), 1);
   /*state.palette = new PaletteGenerator.fromColors(
       List<PaletteColor>()..add(new PaletteColor(Colors.black87, 0)));*/
   state.imagesmodel = new ImageModel.fromParams(

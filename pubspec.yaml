@@ -43,6 +43,7 @@ dependencies:
   collection: ^1.14.11
   photo_view: ^0.4.1
   loader_search_bar: ^1.0.3+3
+  toast: ^0.1.5
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,8 @@ flutter:
   - images/twitter_circle.png
   - images/instagram_circle.png
   - images/link_bold.png
+  - images/tmdb_blue.png
+  - images/tmdb_green.png
   
 
   # An image asset can refer to one or more resolution-specific "variants", see

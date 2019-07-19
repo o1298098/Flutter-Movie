@@ -75,7 +75,7 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
       decoration: BoxDecoration(
           image: DecorationImage(
               fit: BoxFit.scaleDown,
-              image: CachedNetworkImageProvider(
+              image: CachedNetworkImageProvider(d.logo_path==null?ImageUrl.emptyimage:
                   ImageUrl.getUrl(d.logo_path, ImageSize.w300)))),
     );
   }

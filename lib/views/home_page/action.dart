@@ -1,9 +1,10 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/moviechange.dart';
 import 'package:movie/models/videolist.dart';
 
 //TODO replace with your own action
-enum HomePageAction { action ,initMovie,initTV,initPopularMovies,initPopularTVShows,popularFilterChanged}
+enum HomePageAction { action ,initMovie,initTV,initPopularMovies,initPopularTVShows,popularFilterChanged,moreTapped}
 
 class HomePageActionCreator {
   static Action onAction() {
@@ -23,5 +24,8 @@ class HomePageActionCreator {
   }
   static Action onPopularFilterChanged(bool e) {
     return Action(HomePageAction.popularFilterChanged,payload: e);
+  }
+  static Action onMoreTapped(VideoListModel model,MediaType t) {
+    return Action(HomePageAction.moreTapped,payload: [model,t]);
   }
 }

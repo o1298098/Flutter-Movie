@@ -9,6 +9,7 @@ class CurrentSeasonState implements Cloneable<CurrentSeasonState> {
   Season nowseason;
   AirData nextToAirData;
   AirData lastToAirData;
+  List<Season> seasons;
 
   @override
   CurrentSeasonState clone() {
@@ -26,6 +27,7 @@ class CurrentSeasonConnector extends ConnOp<TVDetailPageState,CurrentSeasonState
     substate.lastToAirData=state.tvDetailModel?.last_episode_to_air;
     substate.name=state.tvDetailModel.name;
     substate.tvid=state.tvDetailModel.id;
+    substate.seasons=state.tvDetailModel.seasons;
     return substate;
   }
 }

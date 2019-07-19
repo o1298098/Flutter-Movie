@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 
 //TODO replace with your own action
-enum LoginPageAction { action ,loginclicked,accoutChanged,pwdChanged}
+enum LoginPageAction { action ,loginclicked,accoutChanged,pwdChanged,signUp}
 
 class LoginPageActionCreator {
   static Action onAction() {
@@ -15,5 +15,8 @@ class LoginPageActionCreator {
   }
   static Action onPwdChange(String pwd) {
     return Action(LoginPageAction.pwdChanged,payload: pwd);
+  }
+  static Action onSignUp() {
+    return Action(LoginPageAction.signUp);
   }
 }

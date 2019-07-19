@@ -16,7 +16,9 @@ Effect<AccountPageState> buildEffect() {
 void _onAction(Action action, Context<AccountPageState> ctx) {
 }
 Future _onLogin(Action action, Context<AccountPageState> ctx) async{
-   await Navigator.of(ctx.context).pushNamed('loginpage');
+  var r= await Navigator.of(ctx.context).pushNamed('loginpage');
+  if(r==true)
+    _onInit(action,ctx);
 }
 Future _onInit(Action action, Context<AccountPageState> ctx) async{
     var prefs = await SharedPreferences.getInstance();

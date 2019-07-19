@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:fish_redux/fish_redux.dart';
+import 'package:flutter/widgets.dart';
 import 'package:movie/globalbasestate/state.dart';
 
 class LoginPageState implements GlobalBaseState<LoginPageState> {
@@ -8,12 +9,16 @@ class LoginPageState implements GlobalBaseState<LoginPageState> {
   
   String account='';
   String pwd='';
+  AnimationController animationController;
+  AnimationController submitAnimationController;
  
   @override
   LoginPageState clone() {
     return  LoginPageState()
     ..account=account
-    ..pwd=pwd;
+    ..pwd=pwd
+    ..animationController=animationController
+    ..submitAnimationController=submitAnimationController;
   }
 
   @override

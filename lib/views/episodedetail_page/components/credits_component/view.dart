@@ -219,7 +219,7 @@ Widget buildView(
         return Container(
           padding: EdgeInsets.only(bottom: Adapt.px(30)),
           width: Adapt.screenW() - Adapt.px(60),
-          child: Text(I18n.of(viewService.context).guestStars),
+          child: Text(I18n.of(viewService.context).guestStarsEmpty),
         );
     } else
       return Wrap(

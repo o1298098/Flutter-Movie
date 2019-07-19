@@ -68,6 +68,7 @@ Widget buildView(
                 child: Hero(
                   tag: 'Actor' + p.id.toString(),
                   child: Material(
+                    color: Colors.transparent,
                     child: Text(
                       p.name,
                       maxLines: 2,
@@ -560,14 +561,14 @@ Widget buildView(
                 image: DecorationImage(
                     colorFilter:
                         ColorFilter.mode(dominantColor, BlendMode.color),
-                    image: NetworkImage(ImageUrl.getUrl(
-                        state.backdropPic ?? '', ImageSize.w500)),
+                    image: CachedNetworkImageProvider(state.backdropPic==null?ImageUrl.emptyimage: ImageUrl.getUrl(
+                        state.backdropPic, ImageSize.w500)),
                     fit: BoxFit.cover)),
           ),
           Container(
             width: Adapt.screenW(),
             height: Adapt.px(401),
-            color: dominantColor.withOpacity(.9),
+            color: dominantColor.withOpacity(.8),
           ),
           Container(
             alignment: Alignment.bottomLeft,

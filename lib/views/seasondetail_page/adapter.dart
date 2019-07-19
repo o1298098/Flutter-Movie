@@ -34,7 +34,8 @@ class _SeasonDetailConnector
             name: state.name,
             posterurl: state.seasonpic,
             airDate: state.seasonDetailModel.air_date,
-            overwatch: state.seasonDetailModel.overview)));
+            overwatch: state.seasonDetailModel.overview,
+            seasonNumber: state.seasonNumber)));
     items.add(ItemBean('seasonCast', state.seasonCastState));
     items.add(ItemBean('seasonCrew', SeasonCrewState()));
     items.add(ItemBean('episodes', EpisodesState(episodes: state.seasonDetailModel.episodes,tvid: state.tvid)));

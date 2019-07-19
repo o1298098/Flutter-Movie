@@ -48,7 +48,7 @@ Widget buildView(
                width: Adapt.px(400),
               height: Adapt.px(225),
               fit: BoxFit.cover,
-              imageUrl: ImageUrl.getUrl(d.backdrop_path, ImageSize.w400),
+              imageUrl:d.backdrop_path==null?ImageUrl.emptyimage: ImageUrl.getUrl(d.backdrop_path, ImageSize.w400),
               placeholder: (ctx,s){
                 return Image.asset('images/CacheBG.jpg',  
                 fit: BoxFit.cover,
