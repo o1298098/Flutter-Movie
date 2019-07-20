@@ -19,8 +19,6 @@ Widget buildView(
         child: Stack(
           children: <Widget>[
             CachedNetworkImage(
-              fadeInDuration: Duration(milliseconds: 1000),
-              fadeOutDuration: Duration(milliseconds: 1000),
               width: Adapt.screenW(),
               height: Adapt.screenW() * 9 / 16,
               fit: BoxFit.cover,

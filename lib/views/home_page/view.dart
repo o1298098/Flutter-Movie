@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:movie/actions/Adapt.dart';
-import 'package:movie/customwidgets/sliverappbardelegate.dart';
+import 'package:movie/customwidgets/sliverappbar_delegate.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/media_type.dart';
 

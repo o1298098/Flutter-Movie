@@ -1,8 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter/widgets.dart' hide Action;
-import 'package:movie/customwidgets/galleryphotoviewwrapper.dart';
-import 'package:movie/customwidgets/imageviewwrapper.dart';
+import 'package:movie/customwidgets/gallery_photoview_wrapper.dart';
+import 'package:movie/customwidgets/imageview_wrapper.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'action.dart';
 import 'state.dart';

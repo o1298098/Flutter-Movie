@@ -3,8 +3,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:movie/actions/Adapt.dart';
-import 'dart:math' as math;
-import 'package:movie/views/account_page/action.dart';
+import 'package:movie/customwidgets/customcliper_path.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -54,7 +53,8 @@ Widget buildView(
                           fontSize: Tween<double>(begin: Adapt.px(35), end: 0.0)
                               .animate(submitWidth)
                               .value)),
-                  onPressed: ()=>dispatch(LoginPageActionCreator.onLoginClicked()),
+                  onPressed: () =>
+                      dispatch(LoginPageActionCreator.onLoginClicked()),
                 ),
               ),
               ScaleTransition(
@@ -119,7 +119,7 @@ Widget buildView(
           child: Card(
             elevation: 10,
             child: Container(
-              height: Adapt.px(800),
+              height: Adapt.screenH() / 2,
               width: Adapt.screenW() * 0.9,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -133,7 +133,9 @@ Widget buildView(
                         child: Padding(
                           padding: EdgeInsets.all(Adapt.px(40)),
                           child: TextField(
+                            focusNode: state.accountFocusNode,
                             keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.next,
                             style: TextStyle(
                                 color: Colors.black, fontSize: Adapt.px(35)),
                             cursorColor: Colors.black,
@@ -150,6 +152,9 @@ Widget buildView(
                                         new BorderSide(color: Colors.black87))),
                             onChanged: (String t) => dispatch(
                                 LoginPageActionCreator.onAccountChange(t)),
+                            onSubmitted: (s) {
+                              state.accountFocusNode.nextFocus();
+                            },
                           ),
                         )),
                   ),
@@ -162,6 +167,7 @@ Widget buildView(
                           child: Padding(
                             padding: EdgeInsets.all(Adapt.px(40)),
                             child: TextField(
+                              focusNode: state.pwdFocusNode,
                               style: TextStyle(
                                   color: Colors.black, fontSize: Adapt.px(35)),
                               cursorColor: Colors.black,
@@ -179,6 +185,8 @@ Widget buildView(
                                           color: Colors.black87))),
                               onChanged: (String t) => dispatch(
                                   LoginPageActionCreator.onPwdChange(t)),
+                              onSubmitted: (s) => dispatch(
+                                  LoginPageActionCreator.onLoginClicked()),
                             ),
                           ))),
                   SlideTransition(
@@ -212,7 +220,6 @@ Widget buildView(
                           ),
                         ),
                       )),
-                  
                 ],
               ),
             ),
@@ -226,7 +233,7 @@ Widget buildView(
     body: Stack(
       children: <Widget>[
         ClipPath(
-          clipper: _CustomCliperPath(
+          clipper: CustomCliperPath(
               height: headerHeight,
               width: Adapt.screenW(),
               radius: Adapt.px(1000)),
@@ -299,31 +306,4 @@ Widget buildView(
   );
 }
 
-class _CustomCliperPath extends CustomClipper<Path> {
-  final double radius;
-  final double height;
-  final double width;
 
-  _CustomCliperPath({this.radius, this.height, this.width});
-
-  double degree2Radian(int degree) {
-    return (math.pi * degree / 180);
-  }
-
-  @override
-  getClip(Size size) {
-    Path path = Path();
-    path.moveTo(0, height);
-    path.addArc(
-        Rect.fromCircle(
-            radius: radius, center: Offset(width / 2, height - radius)),
-        0,
-        180);
-    return path;
-  }
-
-  @override
-  bool shouldReclip(_CustomCliperPath oldClipper) {
-    return this.radius != oldClipper.radius;
-  }
-}

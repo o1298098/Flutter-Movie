@@ -319,7 +319,7 @@ Widget buildView(
   }
 
   List<Widget> _buildRecommendationBody() {
-    if (state.tvDetailModel.recommendations != null)
+    if (state.tvDetailModel.recommendations != null&&state.tvDetailModel.recommendations.results.length>0)
       return state.tvDetailModel.recommendations.results
           .map(_buildRecommendationCell)
           .toList();
@@ -347,7 +347,6 @@ Widget buildView(
       return Card(
         elevation: 20.0,
         child: CachedNetworkImage(
-          fadeInDuration: Duration(milliseconds: 1000),
           height: Adapt.px(300),
           width: Adapt.px(200),
           fit: BoxFit.cover,

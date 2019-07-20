@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie/actions/Adapt.dart';
+import 'package:movie/customwidgets/customcliper_path.dart';
 import 'package:movie/generated/i18n.dart';
 
 import 'action.dart';
@@ -14,23 +15,39 @@ Widget buildView(
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.dark.copyWith(statusBarBrightness: Brightness.dark));
 
-  Widget _buildTapCell(String name, void ontap()) {
-    return GestureDetector(
-      onTap: () => ontap(),
-      child: Container(
-        padding: EdgeInsets.all(Adapt.px(30)),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget _buildTapCell(String name, double begin, double end, void ontap()) {
+    return SlideTransition(
+        position: Tween<Offset>(begin: Offset(-1, 0), end: Offset.zero)
+            .animate(CurvedAnimation(
+                parent: state.animationController,
+                curve: Interval(
+                  begin,
+                  end,
+                  curve: Curves.ease,
+                ))),
+        child: GestureDetector(
+          onTap: () => ontap(),
+          child: Column(
             children: <Widget>[
-              Text(name,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: Adapt.px(40))),
-              Icon(Icons.keyboard_arrow_right),
-            ]),
-      ),
-    );
+              Container(
+                padding: EdgeInsets.all(Adapt.px(30)),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(name,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: Adapt.px(40))),
+                      Icon(Icons.keyboard_arrow_right),
+                    ]),
+              ),
+              Divider(
+                height: 1,
+              ),
+            ],
+          ),
+        ));
   }
 
   Widget _buildHeader() {
@@ -69,9 +86,14 @@ Widget buildView(
   return Container(
     child: Column(
       children: <Widget>[
-        Stack(
+         ClipPath(
+          clipper: CustomCliperPath(
+              height: Adapt.px(450),
+              width: Adapt.screenW(),
+              radius: Adapt.px(2000)),
+          child:Stack(
           children: <Widget>[
-            Container(
+             Container(
               width: Adapt.screenW(),
               decoration: BoxDecoration(
                 color: Colors.black,
@@ -90,42 +112,31 @@ Widget buildView(
             ),
             _buildHeader(),
             SafeArea(
-              child:Container(
+                child: Container(
               margin: EdgeInsets.only(right: Adapt.px(20)),
               alignment: Alignment.topRight,
               child: IconButton(
-                onPressed: (){
-                  if(state.islogin)
-                  dispatch(AccountPageActionCreator.onLogout());
+                onPressed: () {
+                  if (state.islogin)
+                    dispatch(AccountPageActionCreator.onLogout());
                   else
-                  dispatch(AccountPageActionCreator.onLogin());
+                    dispatch(AccountPageActionCreator.onLogin());
                 },
-                icon: Icon(state.islogin?Icons.input: Icons.person,color: Colors.white,),
+                icon: Icon(
+                  state.islogin ? Icons.exit_to_app : Icons.person_outline,
+                  color: Colors.white,
+                ),
               ),
             ))
           ],
-        ),
-        _buildTapCell(I18n.of(viewService.context).watchlist, () {}),
-        Divider(
-          height: 1,
-        ),
-        _buildTapCell(I18n.of(viewService.context).lists, () {}),
-        Divider(
-          height: 1,
-        ),
-        _buildTapCell(I18n.of(viewService.context).favorites, () {}),
-        Divider(
-          height: 1,
-        ),
-        _buildTapCell(I18n.of(viewService.context).recommendations, () {}),
-        Divider(
-          height: 1,
-        ),
-        _buildTapCell(I18n.of(viewService.context).ratingsReviews, () {}),
-        Divider(
-          height: 1,
-        ),
-        
+        )),
+        _buildTapCell(I18n.of(viewService.context).watchlist, 0, 0.2, () {}),
+        _buildTapCell(I18n.of(viewService.context).lists, 0.1, 0.3, () {}),
+        _buildTapCell(I18n.of(viewService.context).favorites, 0.2, 0.4, () {}),
+        _buildTapCell(
+            I18n.of(viewService.context).recommendations, 0.3, 0.5, () {}),
+        _buildTapCell(
+            I18n.of(viewService.context).ratingsReviews, 0.4, 0.6, () {}),
       ],
     ),
   );

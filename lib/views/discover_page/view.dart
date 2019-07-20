@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/actions/votecolorhelper.dart';
-import 'package:movie/customwidgets/sliverappbardelegate.dart';
+import 'package:movie/customwidgets/sliverappbar_delegate.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/sortcondition.dart';

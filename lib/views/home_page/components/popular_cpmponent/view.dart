@@ -16,7 +16,7 @@ Widget buildView(
     PopularState state, Dispatch dispatch, ViewService viewService) {
   Widget _buildMoreCell() {
     return Container(
-      margin: EdgeInsets.only(left: Adapt.px(20)),
+      margin: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
       decoration: BoxDecoration(
         color: Colors.grey[200],
         borderRadius: BorderRadius.circular(Adapt.px(15)),
@@ -44,7 +44,8 @@ Widget buildView(
           ClipRRect(
             borderRadius: BorderRadius.circular(Adapt.px(15)),
             child: CachedNetworkImage(
-              fadeInDuration: Duration(milliseconds: 1000),
+              fadeOutDuration:Duration(milliseconds: 200),
+              fadeInDuration: Duration(milliseconds: 200),
                width: Adapt.px(400),
               height: Adapt.px(225),
               fit: BoxFit.cover,

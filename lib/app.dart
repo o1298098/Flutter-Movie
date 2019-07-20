@@ -1,3 +1,4 @@
+import 'dart:io';
 
 import 'package:flutter/material.dart' hide Action;
 
@@ -18,9 +19,13 @@ import 'generated/i18n.dart';
 import 'globalbasestate/state.dart';
 import 'globalbasestate/store.dart';
 import 'views/moremedia_page/page.dart';
-
+import 'package:permission_handler/permission_handler.dart';
 
 Future getSeesion() async {
+  if (Platform.isAndroid)
+    Map<PermissionGroup, PermissionStatus> permissions =
+        await PermissionHandler()
+            .requestPermissions([PermissionGroup.contacts]);
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var session = prefs.getString('loginsession');
   if (session == null) {
@@ -29,22 +34,22 @@ Future getSeesion() async {
     ApiHelper.session = session;
   }
 }
+
 Future<Widget> createApp() async {
-  final AbstractRoutes routes =
-    PageRoutes(
-      pages: <String, Page<Object, dynamic>>{
-        'mainpage': MainPage(),
-        'loginpage':LoginPage(),
-        'moviedetailpage':MovieDetailPage(),
-        'tvdetailpage':TVDetailPage(),
-        'searchpage':SearchPage(),
-        'peopledetailpage':PeopleDetailPage(),
-        'seasondetailpage':SeasonDetailPage(),
-        'episodedetailpage':EpisodeDetailPage(),
-        'MoreMediaPage':MoreMediaPage(),
-        'SeasonsPage':SeasonsPage(),
-      },
-      visitor: (String path, Page<Object, dynamic> page) {
+  final AbstractRoutes routes = PageRoutes(
+    pages: <String, Page<Object, dynamic>>{
+      'mainpage': MainPage(),
+      'loginpage': LoginPage(),
+      'moviedetailpage': MovieDetailPage(),
+      'tvdetailpage': TVDetailPage(),
+      'searchpage': SearchPage(),
+      'peopledetailpage': PeopleDetailPage(),
+      'seasondetailpage': SeasonDetailPage(),
+      'episodedetailpage': EpisodeDetailPage(),
+      'MoreMediaPage': MoreMediaPage(),
+      'SeasonsPage': SeasonsPage(),
+    },
+    visitor: (String path, Page<Object, dynamic> page) {
       if (page.isTypeof<GlobalBaseState>()) {
         page.connectExtraStore<GlobalState>(
           GlobalStore.store,
@@ -84,8 +89,8 @@ Future<Widget> createApp() async {
         ],
       );
     },
-    );
-    
+  );
+
   await getSeesion();
   return MaterialApp(
     title: 'Movie',
@@ -99,7 +104,8 @@ Future<Widget> createApp() async {
       GlobalWidgetsLocalizations.delegate,
     ],
     supportedLocales: I18n.delegate.supportedLocales,
-    localeResolutionCallback: I18n.delegate.resolution(fallback: new Locale("en", "US")),
+    localeResolutionCallback:
+        I18n.delegate.resolution(fallback: new Locale("en", "US")),
     home: routes.buildPage('mainpage', null),
     onGenerateRoute: (RouteSettings settings) {
       return MaterialPageRoute<Object>(builder: (BuildContext context) {

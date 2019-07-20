@@ -10,13 +10,15 @@ class AccountPageState implements GlobalBaseState<AccountPageState> {
   String name;
   String avatar;
   bool islogin;
+  AnimationController animationController;
 
   @override
   AccountPageState clone() {
     return AccountPageState()
     ..name=name
     ..avatar=avatar
-    ..islogin=islogin;
+    ..islogin=islogin
+    ..animationController=animationController;
   }
 
   @override

@@ -19,6 +19,8 @@ Effect<LoginPageState> buildEffect() {
 }
 
 void _onInit(Action action, Context<LoginPageState> ctx) {
+  ctx.state.accountFocusNode=FocusNode();
+  ctx.state.pwdFocusNode=FocusNode();
   final ticker = ctx.stfState as CustomstfState;
   ctx.state.animationController = AnimationController(
       vsync: ticker, duration: Duration(milliseconds: 2000));
@@ -27,11 +29,13 @@ void _onInit(Action action, Context<LoginPageState> ctx) {
 }
 
 void _onBuild(Action action, Context<LoginPageState> ctx) {
-  ctx.state.animationController.forward();
+ Future.delayed(Duration(milliseconds: 150),()=> ctx.state.animationController.forward());
 }
 
 void _onDispose(Action action, Context<LoginPageState> ctx) {
   ctx.state.animationController.dispose();
+  ctx.state.accountFocusNode.dispose();
+  ctx.state.pwdFocusNode.dispose();
   ctx.state.submitAnimationController.dispose();
 }
 

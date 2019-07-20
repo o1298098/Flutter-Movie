@@ -11,12 +11,16 @@ class LoginPageState implements GlobalBaseState<LoginPageState> {
   String pwd='';
   AnimationController animationController;
   AnimationController submitAnimationController;
+  FocusNode accountFocusNode;
+  FocusNode pwdFocusNode;
  
   @override
   LoginPageState clone() {
     return  LoginPageState()
     ..account=account
     ..pwd=pwd
+    ..accountFocusNode=accountFocusNode
+    ..pwdFocusNode=pwdFocusNode
     ..animationController=animationController
     ..submitAnimationController=submitAnimationController;
   }
