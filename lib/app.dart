@@ -1,13 +1,16 @@
 import 'dart:io';
 
+import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart' hide Action;
 
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/views/episodedetail_page/page.dart';
+import 'package:movie/views/listdetail_page/page.dart';
 import 'package:movie/views/login_page/page.dart';
 import 'package:movie/views/main_page/page.dart';
 import 'package:movie/views/moviedetail_page/page.dart';
+import 'package:movie/views/mylists_page/page.dart';
 import 'package:movie/views/peopledetail_page/page.dart';
 import 'package:movie/views/search_page/page.dart';
 import 'package:movie/views/seasondetail_page/page.dart';
@@ -15,24 +18,30 @@ import 'package:movie/views/seasons_page/page.dart';
 import 'package:movie/views/tvdetail_page/page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'actions/timeline.dart';
 import 'generated/i18n.dart';
 import 'globalbasestate/state.dart';
 import 'globalbasestate/store.dart';
 import 'views/moremedia_page/page.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-Future getSeesion() async {
+Future _init() async {
   if (Platform.isAndroid)
     Map<PermissionGroup, PermissionStatus> permissions =
         await PermissionHandler()
             .requestPermissions([PermissionGroup.contacts]);
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var session = prefs.getString('loginsession');
+  String accessToken = prefs.getString('accessTokenV4');
   if (session == null) {
     await ApiHelper.createGuestSession();
   } else {
     ApiHelper.session = session;
   }
+  if (accessToken != null)ApiHelper.accessTokenV4=accessToken;
+  setLocaleInfo('zh', TimelineInfoCN());
+  setLocaleInfo('en', TimelineInfoEN());
+  setLocaleInfo('Ja', TimelineInfoJA());
 }
 
 Future<Widget> createApp() async {
@@ -48,6 +57,8 @@ Future<Widget> createApp() async {
       'episodedetailpage': EpisodeDetailPage(),
       'MoreMediaPage': MoreMediaPage(),
       'SeasonsPage': SeasonsPage(),
+      'MyListsPage':MyListsPage(),
+      'ListDetailPage':ListDetailPage(),
     },
     visitor: (String path, Page<Object, dynamic> page) {
       if (page.isTypeof<GlobalBaseState>()) {
@@ -91,7 +102,7 @@ Future<Widget> createApp() async {
     },
   );
 
-  await getSeesion();
+  await _init();
   return MaterialApp(
     title: 'Movie',
     debugShowCheckedModeBanner: false,

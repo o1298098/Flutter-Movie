@@ -10,6 +10,8 @@ class AccountPageState implements GlobalBaseState<AccountPageState> {
   String name;
   String avatar;
   bool islogin;
+  int acountIdV3;
+  String acountIdV4;
   AnimationController animationController;
 
   @override
@@ -18,7 +20,9 @@ class AccountPageState implements GlobalBaseState<AccountPageState> {
     ..name=name
     ..avatar=avatar
     ..islogin=islogin
-    ..animationController=animationController;
+    ..animationController=animationController
+    ..acountIdV3=acountIdV3
+    ..acountIdV4=acountIdV4;
   }
 
   @override

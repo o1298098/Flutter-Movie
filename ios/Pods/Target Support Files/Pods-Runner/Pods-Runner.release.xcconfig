@@ -1,9 +1,9 @@
 FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/../.symlinks/flutter/ios"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/FMDB" "${PODS_ROOT}/Headers/Public/path_provider" "${PODS_ROOT}/Headers/Public/permission_handler" "${PODS_ROOT}/Headers/Public/screen" "${PODS_ROOT}/Headers/Public/shared_preferences" "${PODS_ROOT}/Headers/Public/sqflite" "${PODS_ROOT}/Headers/Public/url_launcher" "${PODS_ROOT}/Headers/Public/video_player"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/FMDB" "${PODS_ROOT}/Headers/Public/path_provider" "${PODS_ROOT}/Headers/Public/permission_handler" "${PODS_ROOT}/Headers/Public/screen" "${PODS_ROOT}/Headers/Public/shared_preferences" "${PODS_ROOT}/Headers/Public/sqflite" "${PODS_ROOT}/Headers/Public/url_launcher" "${PODS_ROOT}/Headers/Public/video_player" "${PODS_ROOT}/Headers/Public/webview_flutter"
 LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
-LIBRARY_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/FMDB" "${PODS_CONFIGURATION_BUILD_DIR}/path_provider" "${PODS_CONFIGURATION_BUILD_DIR}/permission_handler" "${PODS_CONFIGURATION_BUILD_DIR}/screen" "${PODS_CONFIGURATION_BUILD_DIR}/shared_preferences" "${PODS_CONFIGURATION_BUILD_DIR}/sqflite" "${PODS_CONFIGURATION_BUILD_DIR}/url_launcher" "${PODS_CONFIGURATION_BUILD_DIR}/video_player"
-OTHER_LDFLAGS = $(inherited) -ObjC -l"FMDB" -l"path_provider" -l"permission_handler" -l"screen" -l"shared_preferences" -l"sqflite" -l"sqlite3" -l"url_launcher" -l"video_player" -framework "Flutter"
+LIBRARY_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/FMDB" "${PODS_CONFIGURATION_BUILD_DIR}/path_provider" "${PODS_CONFIGURATION_BUILD_DIR}/permission_handler" "${PODS_CONFIGURATION_BUILD_DIR}/screen" "${PODS_CONFIGURATION_BUILD_DIR}/shared_preferences" "${PODS_CONFIGURATION_BUILD_DIR}/sqflite" "${PODS_CONFIGURATION_BUILD_DIR}/url_launcher" "${PODS_CONFIGURATION_BUILD_DIR}/video_player" "${PODS_CONFIGURATION_BUILD_DIR}/webview_flutter"
+OTHER_LDFLAGS = $(inherited) -ObjC -l"FMDB" -l"path_provider" -l"permission_handler" -l"screen" -l"shared_preferences" -l"sqflite" -l"sqlite3" -l"url_launcher" -l"video_player" -l"webview_flutter" -framework "Flutter"
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_PODFILE_DIR_PATH = ${SRCROOT}/.

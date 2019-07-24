@@ -45,6 +45,7 @@ dependencies:
   loader_search_bar: ^1.0.3+3
   toast: ^0.1.5
   permission_handler: '^3.2.0'
+  webview_flutter: ^0.3.10+3
 
 dev_dependencies:
   flutter_test:

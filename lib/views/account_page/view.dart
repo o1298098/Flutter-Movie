@@ -25,29 +25,22 @@ Widget buildView(
                   end,
                   curve: Curves.ease,
                 ))),
-        child: GestureDetector(
-          onTap: () => ontap(),
-          child: Column(
+        child: Column(
             children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(Adapt.px(30)),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(name,
+              ListTile(title: Text(name,
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
                               fontSize: Adapt.px(40))),
-                      Icon(Icons.keyboard_arrow_right),
-                    ]),
-              ),
+                        trailing: Icon(Icons.keyboard_arrow_right),
+                        onTap: ontap,
+                      ),
               Divider(
                 height: 1,
               ),
             ],
           ),
-        ));
+        );
   }
 
   Widget _buildHeader() {
@@ -131,12 +124,10 @@ Widget buildView(
           ],
         )),
         _buildTapCell(I18n.of(viewService.context).watchlist, 0, 0.2, () {}),
-        _buildTapCell(I18n.of(viewService.context).lists, 0.1, 0.3, () {}),
+        _buildTapCell(I18n.of(viewService.context).lists, 0.1, 0.3, ()=>dispatch(AccountPageActionCreator.myListsTapped(state.acountIdV4))),
         _buildTapCell(I18n.of(viewService.context).favorites, 0.2, 0.4, () {}),
-        _buildTapCell(
-            I18n.of(viewService.context).recommendations, 0.3, 0.5, () {}),
-        _buildTapCell(
-            I18n.of(viewService.context).ratingsReviews, 0.4, 0.6, () {}),
+        _buildTapCell(I18n.of(viewService.context).recommendations, 0.3, 0.5, () {}),
+        _buildTapCell(I18n.of(viewService.context).ratingsReviews, 0.4, 0.6, () {}),
       ],
     ),
   );
