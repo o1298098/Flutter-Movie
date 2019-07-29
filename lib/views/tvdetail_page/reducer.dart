@@ -2,11 +2,12 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/keyword.dart';
+import 'package:movie/models/media_accountstatemodel.dart';
 import 'package:movie/models/review.dart';
 import 'package:movie/models/tvdetail.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:movie/models/videomodel.dart';
-//import 'package:palette_generator/palette_generator.dart';
+import 'package:palette_generator/palette_generator.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -16,13 +17,14 @@ Reducer<TVDetailPageState> buildReducer() {
     <Object, Reducer<TVDetailPageState>>{
       TVDetailPageAction.action: _onAction,
       TVDetailPageAction.init:_onInit,
-      //TVDetailPageAction.setbgcolor:_onSetColor,
+      TVDetailPageAction.setbgcolor:_onSetColor,
       TVDetailPageAction.setCredits:_onCredits,
       TVDetailPageAction.setImages:_onSetImages,
       TVDetailPageAction.setReviews:_onSetReviews,
       TVDetailPageAction.setRecommendation:_onSetRecommendations,
       TVDetailPageAction.setKeyWords:_onSetKeyWords,
       TVDetailPageAction.setVideos:_onSetVideos,
+      TVDetailPageAction.setAccountState:_onSetAccountState
     },
   );
 }
@@ -40,12 +42,12 @@ TVDetailPageState _onInit(TVDetailPageState state, Action action) {
   newState.name=model.name;
   return newState;
 }
-/*TVDetailPageState _onSetColor(TVDetailPageState state, Action action) {
+TVDetailPageState _onSetColor(TVDetailPageState state, Action action) {
   PaletteGenerator c=action.payload;
   final TVDetailPageState newState = state.clone();
   newState.palette=c;
   return newState;
-}*/
+}
 TVDetailPageState _onCredits(TVDetailPageState state, Action action) {
   CreditsModel c=action.payload;
   final TVDetailPageState newState = state.clone();
@@ -80,5 +82,11 @@ TVDetailPageState _onSetVideos(TVDetailPageState state, Action action) {
   VideoModel c=action.payload;
   final TVDetailPageState newState = state.clone();
   newState.videomodel=c;
+  return newState;
+}
+TVDetailPageState _onSetAccountState(TVDetailPageState state, Action action) {
+  MediaAccountStateModel c=action.payload;
+  final TVDetailPageState newState = state.clone();
+  newState.accountState=c;
   return newState;
 }

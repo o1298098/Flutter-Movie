@@ -47,8 +47,9 @@ class MyListResult {
   String posterPath;
   String revenue;
   String updatedAt;
+  bool selected;
 
-  MyListResult.fromParams({this.adult, this.featured, this.id, this.numberOfItems, this.public, this.runtime, this.sortBy, this.averageRating, this.backdropPath, this.createdAt, this.description, this.iso31661, this.iso6391, this.name, this.posterPath, this.revenue, this.updatedAt});
+  MyListResult.fromParams({this.adult, this.featured, this.id, this.numberOfItems, this.public, this.runtime, this.sortBy, this.averageRating, this.backdropPath, this.createdAt, this.description, this.iso31661, this.iso6391, this.name, this.posterPath, this.revenue, this.updatedAt,this.selected});
   
   MyListResult.fromJson(jsonRes) {
     adult = jsonRes['adult'];
@@ -68,11 +69,12 @@ class MyListResult {
     posterPath = jsonRes['poster_path'];
     revenue = jsonRes['revenue'];
     updatedAt = jsonRes['updated_at'];
+    selected=false;
   }
 
   @override
   String toString() {
-    return '{"adult": $adult,"featured": $featured,"id": $id,"number_of_items": $numberOfItems,"public": $public,"runtime": $runtime,"sort_by": $sortBy,"average_rating": $averageRating,"backdrop_path": ${backdropPath != null?'${json.encode(backdropPath)}':'null'},"created_at": ${createdAt != null?'${json.encode(createdAt)}':'null'},"description": ${description != null?'${json.encode(description)}':'null'},"iso_3166_1": ${iso31661 != null?'${json.encode(iso31661)}':'null'},"iso_639_1": ${iso6391 != null?'${json.encode(iso6391)}':'null'},"name": ${name != null?'${json.encode(name)}':'null'},"poster_path": ${posterPath != null?'${json.encode(posterPath)}':'null'},"revenue": ${revenue != null?'${json.encode(revenue)}':'null'},"updated_at": ${updatedAt != null?'${json.encode(updatedAt)}':'null'}}';
+    return '{"adult": $adult,"featured": $featured,"id": $id,"number_of_items": $numberOfItems,"public": $public,"runtime": $runtime,"sort_by": $sortBy,"average_rating": $averageRating,"backdrop_path": ${backdropPath != null?'${json.encode(backdropPath)}':'null'},"created_at": ${createdAt != null?'${json.encode(createdAt)}':'null'},"description": ${description != null?'${json.encode(description)}':'null'},"iso_3166_1": ${iso31661 != null?'${json.encode(iso31661)}':'null'},"iso_639_1": ${iso6391 != null?'${json.encode(iso6391)}':'null'},"name": ${name != null?'${json.encode(name)}':'null'},"poster_path": ${posterPath != null?'${json.encode(posterPath)}':'null'},"revenue": ${revenue != null?'${json.encode(revenue)}':'null'},"updated_at": ${updatedAt != null?'${json.encode(updatedAt)}':'null'},"selected":$selected}';
   }
 }
 

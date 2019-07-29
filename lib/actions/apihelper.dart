@@ -8,10 +8,13 @@ import 'package:movie/models/certification.dart';
 import 'package:movie/models/combinedcredits.dart';
 import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/enums/list_sort_type.dart';
+import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/keyword.dart';
 import 'package:movie/models/listdetailmode.dart';
+import 'package:movie/models/listmediaitem.dart';
+import 'package:movie/models/media_accountstatemodel.dart';
 import 'package:movie/models/moviechange.dart';
 import 'package:movie/models/moviedetail.dart';
 import 'package:movie/models/mylistmodel.dart';
@@ -59,6 +62,17 @@ class ApiHelper {
         _sessionExpiresTime = DateTime.parse(jsonobject['expires_at']
             .toString()
             .replaceFirst(new RegExp(' UTC'), ''));
+        var date = DateTime.utc(
+            _sessionExpiresTime.year,
+            _sessionExpiresTime.month,
+            _sessionExpiresTime.day,
+            _sessionExpiresTime.hour,
+            _sessionExpiresTime.minute,
+            _sessionExpiresTime.second,
+            _sessionExpiresTime.millisecond,
+            _sessionExpiresTime.microsecond);
+        prefs.setString('guestSession', session);
+        prefs.setString('guestSessionExpires', date.toIso8601String());
       }
     }
   }
@@ -80,7 +94,7 @@ class ApiHelper {
   static Future<bool> createSessionWithLogin(String account, String pwd) async {
     bool result = false;
     if (_requestToken == null) await createRequestToken();
-    String param = '/authentication/token/validate_with_login';
+    String param = '/authentication/token/validate_with_login?api_key=$_apikey';
     FormData formData = new FormData.from(
         {"username": account, "password": pwd, "request_token": _requestToken});
     var r = await httpPost(param, formData);
@@ -96,7 +110,7 @@ class ApiHelper {
   static Future<bool> createNewSession(String sessionToken) async {
     bool result = false;
     if (session != null) {
-      String param = '/authentication/session/new';
+      String param = '/authentication/session/new?api_key=$_apikey';
       FormData formData = new FormData.from({"request_token": sessionToken});
       var r = await httpPost(param, formData);
       if (r != null) {
@@ -113,7 +127,7 @@ class ApiHelper {
   }
 
   static Future createSessionWithV4(String sessionToken) async {
-    String param = '/authentication/session/convert/4';
+    String param = '/authentication/session/convert/4?api_key=$_apikey';
     FormData formData = new FormData.from({"access_token": _apikeyV4});
     var r = await httpPost(param, formData);
     if (r != null) {
@@ -170,7 +184,7 @@ class ApiHelper {
     String result;
     String param = "/auth/request_token";
     FormData formData = new FormData.from({});
-    var r = await httpPostV4(param, formData);
+    var r = await httpPostV4(param, formData,_apikeyV4);
     if (r != null) {
       var jsonobject = json.decode(r);
       if (jsonobject['success']) {
@@ -179,18 +193,18 @@ class ApiHelper {
     }
     return result;
   }
-  
+
   static Future<bool> createAccessTokenV4(String requestTokenV4) async {
-    if(requestTokenV4==null)return false;
+    if (requestTokenV4 == null) return false;
     bool result = false;
     String param = "/auth/access_token";
     FormData formData = new FormData.from({"request_token": requestTokenV4});
-    var r = await httpPostV4(param, formData);
+    var r = await httpPostV4(param, formData,_apikeyV4);
     if (r != null) {
       var jsonobject = json.decode(r);
       if (jsonobject['success']) {
         String _accountid = jsonobject['account_id'];
-        accessTokenV4= jsonobject['access_token'];
+        accessTokenV4 = jsonobject['access_token'];
         prefs.setString('accountIdV4', _accountid);
         prefs.setString('accessTokenV4', accessTokenV4);
         result = true;
@@ -199,27 +213,29 @@ class ApiHelper {
     return result;
   }
 
-  static Future<MyListModel> getAccountListsV4(String acountid,{int page=1}) async{
+  static Future<MyListModel> getAccountListsV4(String acountid,
+      {int page = 1}) async {
     MyListModel model;
-    String param='/account/$acountid/lists?page=$page';
-    var r=await httpGetV4(param);
-    if(r!=null)model=MyListModel(r);
+    String param = '/account/$acountid/lists?page=$page';
+    var r = await httpGetV4(param);
+    if (r != null) model = MyListModel(r);
     return model;
   }
 
-  static Future<ListDetailModel> getListDetailV4(int listId,{int page=1,String sortBy})async{
-      ListDetailModel model;
-      String param='/list/$listId?page=$page&language=$language';
-      if(sortBy!=null)param+='&sort_by=$sortBy';
-      var r=await httpGetV4(param);
-      if(r!=null)model=ListDetailModel(r);
-      return model;
+  static Future<ListDetailModel> getListDetailV4(int listId,
+      {int page = 1, String sortBy}) async {
+    ListDetailModel model;
+    String param = '/list/$listId?page=$page&language=$language';
+    if (sortBy != null) param += '&sort_by=$sortBy';
+    var r = await httpGetV4(param);
+    if (r != null) model = ListDetailModel(r);
+    return model;
   }
 
   static Future<bool> deleteAccessTokenV4() async {
     String param = '/auth/access_token';
     if (session != null) {
-      FormData formData = new FormData.from({"access_token": accessTokenV4});
+      var formData = {"access_token": accessTokenV4};
       var r = await httpDeleteV4(param, formData);
       if (r != null) {
         var jsonobject = json.decode(r);
@@ -231,6 +247,64 @@ class ApiHelper {
       }
     }
     return true;
+  }
+
+  static Future<bool> markAsFavorite(
+      int id, MediaType type, bool isFavorite) async {
+    bool result = false;
+    int accountid = prefs.getInt('accountid');
+    if (accountid == null) return result;
+    String param =
+        '/account/$accountid/favorite?api_key=$_apikey&session_id=$session';
+    var formData = {
+      "media_type": type == MediaType.movie ? "movie" : "tv",
+      "media_id": id,
+      "favorite": isFavorite
+    };
+    var r = await httpPost(param, formData);
+    if (r != null) {
+      var jsonobject = json.decode(r);
+      if (jsonobject['status_code'] == 1 ||
+          jsonobject['status_code'] == 12 ||
+          jsonobject['status_code'] == 13) result = true;
+    }
+    return result;
+  }
+
+  static Future<bool> addToWatchlist(int id, MediaType type, bool isAdd) async {
+    bool result = false;
+    int accountid = prefs.getInt('accountid');
+    if (accountid == null) return result;
+    String param =
+        '/account/$accountid/watchlist?api_key=$_apikey&session_id=$session';
+    var formData = {
+      "media_type": type == MediaType.movie ? 'movie' : 'tv',
+      "media_id": id,
+      "watchlist": isAdd
+    };
+    var r = await httpPost(param, formData);
+    if (r != null) {
+      var jsonobject = json.decode(r);
+      if (jsonobject['status_code'] == 1 ||
+          jsonobject['status_code'] == 12 ||
+          jsonobject['status_code'] == 13) result = true;
+    }
+    return result;
+  }
+
+  static Future<bool> addToList(int listid,List<ListMediaItem> items) async {
+    bool result=false;
+    String param = '/list/$listid/items';
+    var data ={
+      "items": items
+    };
+    var r=await httpPostV4(param, data,accessTokenV4);
+    if(r!=null){
+      var jsonobject = json.decode(r);
+      if (jsonobject['status_code'] == 1)
+      result=true;
+    }
+    return result;
   }
 
   ///Get a list of all the movies you have rated.
@@ -255,6 +329,42 @@ class ApiHelper {
     var r = await httpGet(param);
     if (r != null) model = VideoListModel(r);
     return model;
+  }
+
+  static Future<bool> rateTVShow(int tvid, double rating) async {
+    bool result = false;
+    String param = '/tv/$tvid/rating?api_key=$_apikey';
+    int accountid = prefs.getInt('accountid');
+    if (accountid == null)
+      //param += '&guest_session_id=$session';
+      return false;
+    else
+      param += '&session_id=$session';
+    FormData formData = new FormData.from({"value": rating});
+    var r = await httpPost(param, formData);
+    if (r != null) {
+      var jsonobject = json.decode(r);
+      if (jsonobject['status_code'] == 1) result = true;
+    }
+    return result;
+  }
+
+  static Future<bool> rateMovie(int movieid, double rating) async {
+    bool result = false;
+    String param = '/movie/$movieid/rating?api_key=$_apikey';
+    int accountid = prefs.getInt('accountid');
+    if (accountid == null)
+      //param += '&guest_session_id=$session';
+      return false;
+    else
+      param += '&session_id=$session';
+    FormData formData = new FormData.from({"value": rating});
+    var r = await httpPost(param, formData);
+    if (r != null) {
+      var jsonobject = json.decode(r);
+      if (jsonobject['status_code'] == 1) result = true;
+    }
+    return result;
   }
 
   static Future<CertificationModel> getMovieCertifications() async {
@@ -305,14 +415,44 @@ class ApiHelper {
     return model;
   }
 
-  static Future<TVDetailModel> getTVDetail(int mvid,
+  static Future<TVDetailModel> getTVDetail(int tvid,
       {String appendtoresponse}) async {
     TVDetailModel model;
-    String param = '/tv/$mvid?api_key=$_apikey&language=$language';
+    String param = '/tv/$tvid?api_key=$_apikey&language=$language';
     if (appendtoresponse != null)
       param = param + '&append_to_response=$appendtoresponse';
     var r = await httpGet(param);
     if (r != null) model = TVDetailModel(r);
+    return model;
+  }
+
+  static Future<MediaAccountStateModel> getTVAccountState(int tvid) async {
+    MediaAccountStateModel model;
+    String param =
+        '/tv/$tvid/account_states?api_key=$_apikey&language=$language';
+    int accountid = prefs.getInt('accountid');
+    if (accountid != null)
+      param += '&session_id=$session';
+    else
+      //param += '&guest_session_id=$session';
+      return null;
+    var r = await httpGet(param);
+    if (r != null) model = MediaAccountStateModel(r);
+    return model;
+  }
+
+  static Future<MediaAccountStateModel> getMovieAccountState(
+      int movieid) async {
+    MediaAccountStateModel model;
+    String param =
+        '/movie/$movieid/account_states?api_key=$_apikey&language=$language';
+    int accountid = prefs.getInt('accountid');
+    if (accountid != null)
+      param += '&session_id=$session';
+    else
+      param += '&guest_session_id=$session';
+    var r = await httpGet(param);
+    if (r != null) model = MediaAccountStateModel(r);
     return model;
   }
 
@@ -675,32 +815,32 @@ class ApiHelper {
     }
   }
 
-  static Future<String> httpPost(String params, FormData formData) async {
-    try {
-      if (_appDocPath == null) {
-        await getCookieDir();
-      }
-      var dio = new Dio();
-      dio.options.cookies = _cj.loadForRequest(Uri.parse(_apihost));
-      var response = await dio.post(_apihost + params + '?api_key=' + _apikey,
-          data: formData);
-      var _content = json.encode(response.data);
-      return _content;
-    } on DioError catch (e) {
-      return null;
-    }
-  }
-  
-  static Future<String> httpGetV4(String param) async {
+  static Future<String> httpPost(String params, dynamic formData) async {
     try {
       if (_appDocPath == null) {
         await getCookieDir();
       }
       var dio = new Dio();
       dio.options.headers = {
-        'Authorization': 'Bearer $_apikeyV4'
+        'ContentType': 'application/json;charset=utf-8',
       };
       dio.options.cookies = _cj.loadForRequest(Uri.parse(_apihost));
+      var response = await dio.post(_apihost + params, data: formData);
+      var _content = json.encode(response.data);
+      return _content;
+    } on DioError catch (e) {
+      return null;
+    }
+  }
+
+  static Future<String> httpGetV4(String param) async {
+    try {
+      if (_appDocPath == null) {
+        await getCookieDir();
+      }
+      var dio = new Dio();
+      dio.options.headers = {'Authorization': 'Bearer $_apikeyV4'};
+      dio.options.cookies = _cj.loadForRequest(Uri.parse(_apihostV4));
       var response = await dio.get(_apihostV4 + param);
       var _content = json.encode(response.data);
       return _content;
@@ -709,17 +849,16 @@ class ApiHelper {
     }
   }
 
-  static Future<String> httpPostV4(String params, FormData formData) async {
+  static Future<String> httpPostV4(String params, dynamic formData,String token) async {
     try {
       if (_appDocPath == null) {
         await getCookieDir();
       }
       var dio = new Dio();
       dio.options.headers = {
-        'ContentType': 'application/json;charset=utf-8',
-        'Authorization': 'Bearer $_apikeyV4'
+        'Authorization': 'Bearer $token'
       };
-      dio.options.cookies = _cj.loadForRequest(Uri.parse(_apihost));
+      //dio.options.cookies = _cj.loadForRequest(Uri.parse(_apihostV4));
       var response = await dio.post(_apihostV4 + params, data: formData);
       var _content = json.encode(response.data);
       return _content;
@@ -728,7 +867,7 @@ class ApiHelper {
     }
   }
 
-  static Future<String> httpDelete(String params, FormData formData) async {
+  static Future<String> httpDelete(String params, dynamic formData) async {
     try {
       var dio = new Dio();
       //dio.options.cookies = _cj.loadForRequest(Uri.parse(_apihost));
@@ -741,15 +880,13 @@ class ApiHelper {
     }
   }
 
-  static Future<String> httpDeleteV4(String params, FormData formData) async {
+  static Future<String> httpDeleteV4(String params, dynamic formData) async {
     try {
       var dio = new Dio();
       dio.options.headers = {
-        'ContentType': 'application/json;charset=utf-8',
         'Authorization': 'Bearer $_apikeyV4'
       };
-      var response = await dio.delete(_apihostV4 + params,
-          queryParameters: formData);
+      var response = await dio.delete(_apihostV4 + params, data: formData);
       var _content = json.encode(response.data);
       return _content;
     } on DioError catch (e) {
@@ -757,5 +894,3 @@ class ApiHelper {
     }
   }
 }
-
-

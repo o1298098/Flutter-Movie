@@ -1,0 +1,4 @@
+enum ScreenShotType{
+  download,
+  share
+}

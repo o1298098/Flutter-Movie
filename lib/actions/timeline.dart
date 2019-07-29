@@ -5,8 +5,8 @@ class TimelineInfoEN implements TimelineInfo {
   String suffixAfter() => ' after';
   String lessThanTenSecond() => 'just now';
   String customYesterday() => 'Yesterday';
-  bool keepOneDay() => true;
-  bool keepTwoDays() => false;
+  bool keepOneDay() => false;
+  bool keepTwoDays() => true;
   String oneMinute(int minutes) => 'a minute';
   String minutes(int minutes) => '$minutes minutes';
   String anHour(int hours) => 'an hour';
@@ -21,8 +21,8 @@ class TimelineInfoCN implements TimelineInfo {
   String suffixAfter() => '后';
   String lessThanTenSecond() => '刚刚';
   String customYesterday() => '昨天';
-  bool keepOneDay() => true;
-  bool keepTwoDays() => false;
+  bool keepOneDay() => false;
+  bool keepTwoDays() => true;
   String oneMinute(int minutes) => '$minutes分钟';
   String minutes(int minutes) => '$minutes分钟';
   String anHour(int hours) => '$hours小时';
@@ -39,8 +39,8 @@ class TimelineInfoJA implements TimelineInfo {
   String suffixAfter() => ' after';
   String lessThanTenSecond() => 'just now';
   String customYesterday() => 'Yesterday';
-  bool keepOneDay() => true;
-  bool keepTwoDays() => false;
+  bool keepOneDay() => false;
+  bool keepTwoDays() => true;
   String oneMinute(int minutes) => 'a minute';
   String minutes(int minutes) => '$minutes minutes';
   String anHour(int hours) => 'an hour';

@@ -14,6 +14,7 @@ import 'state.dart';
 
 Widget buildView(
     MyListsPageState state, Dispatch dispatch, ViewService viewService) {
+ 
   Widget _buildListCell(MyListResult d) {
     var date = DateTime.parse(d.updatedAt);
     return GestureDetector(

@@ -706,6 +706,7 @@ Widget buildView(
   }
 
   return Scaffold(
+    key: state.scaffoldkey,
     body: DefaultTabController(
         length: 4,
         child: NestedScrollView(
@@ -728,7 +729,7 @@ Widget buildView(
                           icon: Icon(Icons.more_vert),
                           color: Colors.white,
                           iconSize: Adapt.px(50),
-                          onPressed: () {},
+                          onPressed: ()=>dispatch(MovieDetailPageActionCreator.openMenu()),
                         )
                       ],
                       bottom: PreferredSize(

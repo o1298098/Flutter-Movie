@@ -7,8 +7,6 @@ import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/combinedcredits.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:timeline_list/timeline.dart';
-import 'package:timeline_list/timeline_model.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -76,58 +74,7 @@ Widget buildView(
           ],
         ));
   }
-
-  TimelineModel _buildTimelineModel(CastData d) {
-    String date = d.media_type == 'movie' ? d.release_date : d.first_air_date;
-    date = date == null || date?.isEmpty == true ? '-' : date;
-    return TimelineModel(
-        Padding(
-          padding: EdgeInsets.only(bottom: Adapt.px(100)),
-          child: Card(
-            child: Container(
-              padding: EdgeInsets.all(Adapt.px(20)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  FadeInImage.assetNetwork(
-                    fit: BoxFit.cover,
-                    placeholder: 'images/CacheBG.jpg',
-                    image: ImageUrl.getUrl(
-                        (d.backdrop_path ?? d.poster_path) ??
-                            '/lrzvimkeL72qxHN1FaSmjIoztvj.jpg',
-                        ImageSize.w400),
-                  ),
-                  SizedBox(
-                    height: Adapt.px(20),
-                  ),
-                  SizedBox(width: Adapt.px(200), child: Text(date)),
-                  Container(
-                    width: Adapt.screenW() - Adapt.px(130),
-                    child: RichText(
-                      text: TextSpan(children: <TextSpan>[
-                        TextSpan(
-                            text: d.title ?? d.name,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold)),
-                        TextSpan(
-                            text: ' as ', style: TextStyle(color: Colors.grey)),
-                        TextSpan(
-                            text: d.character,
-                            style: TextStyle(color: Colors.black87)),
-                      ]),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        position: TimelineItemPosition.random,
-        iconBackground: Colors.black12,
-        icon: Icon(Icons.blur_circular));
-  }
-
+  
   Widget _buildShimmerCell() {
     return SizedBox(
         child: Shimmer.fromColors(

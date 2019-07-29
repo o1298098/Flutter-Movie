@@ -4,6 +4,8 @@ import 'package:movie/views/moviedetail_page/components/keywords_component/compo
 import 'package:movie/views/moviedetail_page/components/keywords_component/state.dart';
 
 import 'components/info_component/state.dart';
+import 'components/menu_component/component.dart';
+import 'components/menu_component/state.dart';
 import 'effect.dart';
 import 'reducer.dart';
 import 'state.dart';
@@ -20,7 +22,8 @@ class MovieDetailPage extends Page<MovieDetailPageState, Map<String, dynamic>> {
                 adapter: null,
                 slots: <String, Dependent<MovieDetailPageState>>{
                   'keywords':KeyWordsConnector()+KeyWordsComponent(),
-                  'info':InfoConnector()+InfoComponent()
+                  'info':InfoConnector()+InfoComponent(),
+                  'menu':MenuConnector()+MenuComponent()
                 }),
             middleware: <Middleware<MovieDetailPageState>>[
             ],);

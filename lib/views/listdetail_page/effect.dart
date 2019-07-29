@@ -1,7 +1,13 @@
+import 'dart:io';
+import 'dart:convert';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart' hide Action;
 import 'package:movie/actions/apihelper.dart';
+import 'package:movie/models/enums/screenshot_type.dart';
+import 'package:movie/models/sortcondition.dart';
 import 'package:movie/models/videolist.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:share_extend/share_extend.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -10,6 +16,7 @@ Effect<ListDetailPageState> buildEffect() {
     Lifecycle.initState: _onInit,
     ListDetailPageAction.action: _onAction,
     ListDetailPageAction.cellTapped: _cellTapped,
+    ListDetailPageAction.sortChanged: _sortChanged,
   });
 }
 
@@ -24,17 +31,15 @@ Future _onInit(Action action, Context<ListDetailPageState> ctx) async {
         if (ctx.state.listDetailModel.id != null) {
           int page = ctx.state.listDetailModel.page + 1;
           if (page <= ctx.state.listDetailModel.totalPages) {
-            var r =await ApiHelper.getListDetailV4(ctx.state.listId, page: page);
+            var r = await ApiHelper.getListDetailV4(ctx.state.listId,
+                page: page, sortBy: ctx.state.sortType);
             if (r != null)
               ctx.dispatch(ListDetailPageActionCreator.loadMore(r));
           }
         }
       }
     });
-  if (ctx.state.listId != null) {
-    var r = await ApiHelper.getListDetailV4(ctx.state.listId);
-    if (r != null) ctx.dispatch(ListDetailPageActionCreator.setListDetail(r));
-  }
+  _loadData(action, ctx);
 }
 
 Future _cellTapped(Action action, Context<ListDetailPageState> ctx) async {
@@ -54,5 +59,21 @@ Future _cellTapped(Action action, Context<ListDetailPageState> ctx) async {
         'name': d.name,
         'posterpic': d.poster_path
       });
+  }
+}
+
+Future _sortChanged(Action action, Context<ListDetailPageState> ctx) async {
+  final SortCondition model = action.payload;
+  if (model.value != ctx.state.sortType) {
+    ctx.dispatch(ListDetailPageActionCreator.setSort(model));
+    _loadData(action, ctx);
+  }
+}
+
+Future _loadData(Action action, Context<ListDetailPageState> ctx) async {
+  if (ctx.state.listId != null) {
+    var r = await ApiHelper.getListDetailV4(ctx.state.listId,
+        sortBy: ctx.state.sortType);
+    if (r != null) ctx.dispatch(ListDetailPageActionCreator.setListDetail(r));
   }
 }

@@ -6,6 +6,7 @@
 #import <path_provider/PathProviderPlugin.h>
 #import <permission_handler/PermissionHandlerPlugin.h>
 #import <screen/ScreenPlugin.h>
+#import <share_extend/ShareExtendPlugin.h>
 #import <shared_preferences/SharedPreferencesPlugin.h>
 #import <sqflite/SqflitePlugin.h>
 #import <url_launcher/UrlLauncherPlugin.h>
@@ -18,6 +19,7 @@
   [FLTPathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPathProviderPlugin"]];
   [PermissionHandlerPlugin registerWithRegistrar:[registry registrarForPlugin:@"PermissionHandlerPlugin"]];
   [ScreenPlugin registerWithRegistrar:[registry registrarForPlugin:@"ScreenPlugin"]];
+  [FLTShareExtendPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTShareExtendPlugin"]];
   [FLTSharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTSharedPreferencesPlugin"]];
   [SqflitePlugin registerWithRegistrar:[registry registrarForPlugin:@"SqflitePlugin"]];
   [FLTUrlLauncherPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTUrlLauncherPlugin"]];

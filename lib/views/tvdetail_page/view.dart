@@ -350,7 +350,7 @@ Widget buildView(
           height: Adapt.px(300),
           width: Adapt.px(200),
           fit: BoxFit.cover,
-          imageUrl: ImageUrl.getUrl(state.posterPic, ImageSize.w500),
+          imageUrl: ImageUrl.getUrl(state.posterPic, ImageSize.w300),
           placeholder: (c, s) {
             return Container(
               height: Adapt.px(300),
@@ -667,7 +667,7 @@ Widget buildView(
   }
 
   return Scaffold(
-    body: Scaffold(
+    key: state.scaffoldkey,
         body: DefaultTabController(
             length: 4,
             child: NestedScrollView(
@@ -690,7 +690,7 @@ Widget buildView(
                               icon: Icon(Icons.more_vert),
                               color: Colors.white,
                               iconSize: Adapt.px(50),
-                              onPressed: () {},
+                              onPressed: ()=>dispatch(TVDetailPageActionCreator.openMenu()),
                             )
                           ],
                           bottom: PreferredSize(
@@ -704,7 +704,7 @@ Widget buildView(
                                   /*indicatorColor:
                                       state.palette.lightVibrantColor?.color ??
                                           Colors.black,*/
-                                  indicatorColor:Color.fromRGBO(random.nextInt(255), random.nextInt(255), random.nextInt(255), random.nextDouble()),
+                                  indicatorColor:state.tabTintColor,
                                   indicatorSize: TabBarIndicatorSize.label,
                                   isScrollable: true,
                                   labelStyle: TextStyle(
@@ -905,6 +905,6 @@ Widget buildView(
                       ]);
                     })),
                   ],
-                )))),
+                ))),
   );
 }

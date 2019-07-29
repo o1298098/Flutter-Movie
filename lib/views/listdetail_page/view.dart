@@ -5,18 +5,22 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
+import 'package:movie/customwidgets/share_card.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/models/enums/imagesize.dart';
-import 'package:movie/models/enums/media_type.dart';
+import 'package:movie/models/enums/screenshot_type.dart';
+import 'package:movie/models/sortcondition.dart';
 import 'package:movie/models/videolist.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:palette_generator/palette_generator.dart';
 
 import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
     ListDetailPageState state, Dispatch dispatch, ViewService viewService) {
-  Color infoColor = Colors.black;
   String _covertDuration(int d) {
     String result = '';
     Duration duration = Duration(minutes: d);
@@ -35,15 +39,16 @@ Widget buildView(
     );
   }
 
-  Widget _buildInfoCell(String value, String title, {Widget valueChild}) {
+  Widget _buildInfoCell(String value, String title,
+      {Widget valueChild,
+      Color labelColor = Colors.black,
+      Color titleColor = Colors.black}) {
     var titleStyle = TextStyle(
-        fontSize: Adapt.px(26),
-        color: Colors.black87,
-        fontWeight: FontWeight.bold);
+        fontSize: Adapt.px(26), color: titleColor, fontWeight: FontWeight.bold);
     var valueStyle = TextStyle(
-        color: infoColor, fontWeight: FontWeight.bold, fontSize: Adapt.px(28));
+        color: labelColor, fontWeight: FontWeight.bold, fontSize: Adapt.px(28));
     return SizedBox(
-      width: Adapt.px(120),
+      width: Adapt.px(160),
       child: Column(
         children: <Widget>[
           valueChild == null
@@ -87,13 +92,13 @@ Widget buildView(
                   Text(
                     d?.averageRating?.toStringAsFixed(1) ?? '0.0',
                     style: TextStyle(
-                        color: infoColor,
+                        color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: Adapt.px(28)),
                   ),
                   Icon(
                     Icons.star,
-                    color: infoColor,
+                    color: Colors.black,
                     size: Adapt.px(20),
                   )
                 ],
@@ -109,7 +114,9 @@ Widget buildView(
             width: Adapt.px(1),
             height: Adapt.px(60),
           ),
-          _buildInfoCell(d?.revenue?.toString() ?? '0', 'REVENUE'),
+          _buildInfoCell(
+              '\$${((d?.revenue ?? 0) / 100000000).toStringAsFixed(1)} B',
+              'REVENUE'),
         ],
       ),
     );
@@ -212,6 +219,117 @@ Widget buildView(
     );
   }
 
+  Widget _buildShareCardHeader() {
+    var d = state.listDetailModel;
+    double cellwidth = Adapt.px(145);
+    return Column(
+      children: <Widget>[
+        SizedBox(
+          height: Adapt.px(20),
+        ),
+        Text(d.name,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: Adapt.px(45),
+                fontWeight: FontWeight.bold)),
+        SizedBox(
+          height: Adapt.px(20),
+        ),
+        Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                width: Adapt.px(150),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: Adapt.px(80),
+                      height: Adapt.px(80),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(Adapt.px(40)),
+                          image: DecorationImage(
+                              image: CachedNetworkImageProvider(
+                                  ImageUrl.getGravatarUrl(
+                                      d?.createdBy?.gravatarHash, 200)))),
+                    ),
+                    SizedBox(
+                      height: Adapt.px(10),
+                    ),
+                    Text(
+                      'A list by',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: Adapt.px(30)),
+                    ),
+                    SizedBox(
+                      height: Adapt.px(5),
+                    ),
+                    SizedBox(
+                      width: Adapt.px(130),
+                      child: Text(
+                        d?.createdBy?.username ?? '',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: Adapt.px(20),
+              ),
+              Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      _buildInfoCell(
+                        d?.totalResults?.toString() ?? '0',
+                        'ITEMS',
+                        labelColor: Colors.white,
+                        titleColor: Colors.white,
+                      ),
+                      SizedBox(
+                        width: Adapt.px(20),
+                      ),
+                      _buildInfoCell(
+                        d?.averageRating?.toStringAsFixed(1) ?? '0.0',
+                        'RATING',
+                        labelColor: Colors.white,
+                        titleColor: Colors.white,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: Adapt.px(20),
+                  ),
+                  Row(
+                    children: <Widget>[
+                      _buildInfoCell(
+                        _covertDuration(d?.runtime ?? 0),
+                        'RUNTIME',
+                        labelColor: Colors.white,
+                        titleColor: Colors.white,
+                      ),
+                      SizedBox(
+                        width: Adapt.px(20),
+                      ),
+                      _buildInfoCell(
+                        '\$${((d?.revenue ?? 0) / 100000000).toStringAsFixed(1)} B',
+                        'REVENUE',
+                        labelColor: Colors.white,
+                        titleColor: Colors.white,
+                      ),
+                    ],
+                  )
+                ],
+              )
+            ]),
+      ],
+    );
+  }
+
   Widget _buildHeader() {
     var d = state.listDetailModel;
     if (d.id != null)
@@ -233,51 +351,91 @@ Widget buildView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        width: Adapt.px(100),
-                        height: Adapt.px(100),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(Adapt.px(50)),
-                            image: DecorationImage(
-                                image: CachedNetworkImageProvider(
-                                    ImageUrl.getGravatarUrl(
-                                        d?.createdBy?.gravatarHash, 200)))),
-                      ),
-                      SizedBox(
-                        width: Adapt.px(20),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'A list by',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: Adapt.px(30)),
+                  Row(children: <Widget>[
+                    Container(
+                      width: Adapt.px(100),
+                      height: Adapt.px(100),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(Adapt.px(50)),
+                          image: DecorationImage(
+                              image: CachedNetworkImageProvider(
+                                  ImageUrl.getGravatarUrl(
+                                      d?.createdBy?.gravatarHash, 200)))),
+                    ),
+                    SizedBox(
+                      width: Adapt.px(20),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'A list by',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: Adapt.px(30)),
+                        ),
+                        SizedBox(
+                          height: Adapt.px(5),
+                        ),
+                        SizedBox(
+                          width: Adapt.px(200),
+                          child: Text(
+                            d?.createdBy?.username ?? '',
+                            style: TextStyle(color: Colors.white),
                           ),
-                          SizedBox(
-                            height: Adapt.px(5),
-                          ),
-                          SizedBox(
-                            width: Adapt.px(200),
-                            child: Text(
-                              d?.createdBy?.username ?? '',
-                              style: TextStyle(color: Colors.white),
+                        )
+                      ],
+                    ),
+                    Expanded(
+                      child: Container(),
+                    ),
+                    //_buildIconButton(Icons.edit, () {}),
+                    _buildIconButton(Icons.share, () {
+                      showDialog(
+                          context: viewService.context,
+                          builder: (ctx) {
+                            return ShareCard(
+                              backgroundImage: ImageUrl.getUrl(
+                                  state.listDetailModel.backdropPath,
+                                  ImageSize.w500),
+                              qrValue:
+                                  "https://www.themoviedb.org/list/${state.listDetailModel.id}",
+                              header: _buildShareCardHeader(),
+                            );
+                          });
+                    }),
+                    PopupMenuButton<SortCondition>(
+                      offset: Offset(0, Adapt.px(100)),
+                      icon: Icon(Icons.sort, color: Colors.white),
+                      onSelected: (selected) => dispatch(
+                          ListDetailPageActionCreator.sortChanged(selected)),
+                      itemBuilder: (ctx) {
+                        return state.sortBy.map((s) {
+                          var unSelectedStyle = TextStyle(color: Colors.grey);
+                          var selectedStyle = TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold);
+                          return PopupMenuItem<SortCondition>(
+                            value: s,
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  s.name,
+                                  style: s.isSelected
+                                      ? selectedStyle
+                                      : unSelectedStyle,
+                                ),
+                                Expanded(
+                                  child: Container(),
+                                ),
+                                s.isSelected ? Icon(Icons.check) : SizedBox()
+                              ],
                             ),
-                          )
-                        ],
-                      ),
-                      Expanded(
-                        child: Container(),
-                      ),
-                      _buildIconButton(Icons.edit, () {}),
-                      _buildIconButton(Icons.share, () {}),
-                      _buildIconButton(Icons.sort, () {}),
-                    ],
-                  ),
+                          );
+                        }).toList();
+                      },
+                    )
+                  ]),
                   SizedBox(
                     height: Adapt.px(20),
                   ),
@@ -346,10 +504,12 @@ Widget buildView(
 
   Widget _buildBody() {
     var d = state.listDetailModel;
+    var width = Adapt.screenW() / 3;
+    var height = Adapt.px(300);
     if (d.results.length > 0)
       return SliverGrid.extent(
         childAspectRatio: 2 / 3,
-        maxCrossAxisExtent: Adapt.screenW() / 3,
+        maxCrossAxisExtent: width,
         crossAxisSpacing: Adapt.px(10),
         mainAxisSpacing: Adapt.px(10),
         children: state.listDetailModel.results.map(_buildListCell).toList(),
@@ -357,19 +517,19 @@ Widget buildView(
     else
       return SliverGrid.extent(
         childAspectRatio: 2 / 3,
-        maxCrossAxisExtent: Adapt.screenW() / 3,
+        maxCrossAxisExtent: width,
         crossAxisSpacing: Adapt.px(10),
         mainAxisSpacing: Adapt.px(10),
         children: <Widget>[
-          ShimmerCell(Adapt.screenW()/3,Adapt.px(300),0),
-          ShimmerCell(Adapt.screenW()/3,Adapt.px(300),0),
-          ShimmerCell(Adapt.screenW()/3,Adapt.px(300),0),
-          ShimmerCell(Adapt.screenW()/3,Adapt.px(300),0),
-          ShimmerCell(Adapt.screenW()/3,Adapt.px(300),0),
-          ShimmerCell(Adapt.screenW()/3,Adapt.px(300),0),
-          ShimmerCell(Adapt.screenW()/3,Adapt.px(300),0),
-          ShimmerCell(Adapt.screenW()/3,Adapt.px(300),0),
-          ShimmerCell(Adapt.screenW()/3,Adapt.px(300),0),
+          ShimmerCell(width, height, 0),
+          ShimmerCell(width, height, 0),
+          ShimmerCell(width, height, 0),
+          ShimmerCell(width, height, 0),
+          ShimmerCell(width, height, 0),
+          ShimmerCell(width, height, 0),
+          ShimmerCell(width, height, 0),
+          ShimmerCell(width, height, 0),
+          ShimmerCell(width, height, 0),
         ],
       );
   }
@@ -410,7 +570,9 @@ Widget buildView(
           ),
         ),
         SliverToBoxAdapter(
-          child: SizedBox(height: Adapt.px(30),),
+          child: SizedBox(
+            height: Adapt.px(30),
+          ),
         )
       ],
     ),

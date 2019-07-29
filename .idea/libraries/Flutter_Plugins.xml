@@ -2,13 +2,14 @@
   <library name="Flutter Plugins" type="FlutterPluginsLibraryType">
     <CLASSES>
       <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/screen-0.0.5" />
-      <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-1.1.6+1" />
-      <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.3+2" />
-      <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-1.1.2" />
-      <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.0.5" />
-      <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/video_player-0.10.1+4" />
-      <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler-3.2.0" />
       <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/webview_flutter-0.3.10+3" />
+      <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-1.1.6+2" />
+      <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.3+4" />
+      <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-1.2.0" />
+      <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/share_extend-1.0.9" />
+      <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.1.0" />
+      <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler-3.2.1+1" />
+      <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/video_player-0.10.1+5" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
