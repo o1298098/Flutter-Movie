@@ -27,6 +27,8 @@ class CustomCliperPath extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomCliperPath oldClipper) {
-    return this.radius != oldClipper.radius;
+    return this.radius != oldClipper.radius ||
+        this.height != oldClipper.height ||
+        this.width != oldClipper.width;
   }
 }

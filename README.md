@@ -21,4 +21,5 @@ A Flutter movie app build with Fish-Redux and TMDB api.
 ### share(list、tvshow、movie)
 <img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios15.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios16.png" width="150">  
 ### other page  
-<img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios7.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios8.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios12.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios13.png" width="150"> 
+<img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios7.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios8.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios12.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios13.png" width="150">  
+<img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios17.png" width="150">

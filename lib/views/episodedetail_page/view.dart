@@ -13,7 +13,6 @@ import 'state.dart';
 
 Widget buildView(
     EpisodeDetailPageState state, Dispatch dispatch, ViewService viewService) {
-  Random random = Random(DateTime.now().millisecondsSinceEpoch);
   var adapter=viewService.buildAdapter();
   var d = state.episode;
   return Scaffold(

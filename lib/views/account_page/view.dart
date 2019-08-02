@@ -17,30 +17,31 @@ Widget buildView(
 
   Widget _buildTapCell(String name, double begin, double end, void ontap()) {
     return SlideTransition(
-        position: Tween<Offset>(begin: Offset(-1, 0), end: Offset.zero)
-            .animate(CurvedAnimation(
-                parent: state.animationController,
-                curve: Interval(
-                  begin,
-                  end,
-                  curve: Curves.ease,
-                ))),
-        child: Column(
-            children: <Widget>[
-              ListTile(title: Text(name,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: Adapt.px(40))),
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                        onTap: ontap,
-                      ),
-              Divider(
-                height: 1,
-              ),
-            ],
+      position: Tween<Offset>(begin: Offset(-1, 0), end: Offset.zero)
+          .animate(CurvedAnimation(
+              parent: state.animationController,
+              curve: Interval(
+                begin,
+                end,
+                curve: Curves.ease,
+              ))),
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            title: Text(name,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: Adapt.px(40))),
+            trailing: Icon(Icons.keyboard_arrow_right),
+            onTap: ontap,
           ),
-        );
+          Divider(
+            height: 1,
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildHeader() {
@@ -79,55 +80,75 @@ Widget buildView(
   return Container(
     child: Column(
       children: <Widget>[
-         ClipPath(
-          clipper: CustomCliperPath(
-              height: Adapt.px(450),
-              width: Adapt.screenW(),
-              radius: Adapt.px(2000)),
-          child:Stack(
-          children: <Widget>[
-             Container(
-              width: Adapt.screenW(),
-              decoration: BoxDecoration(
-                color: Colors.black,
-                image: DecorationImage(
-                  colorFilter: ColorFilter.mode(Colors.black, BlendMode.color),
-                  image: CachedNetworkImageProvider(
-                      'https://image.tmdb.org/t/p/w500_and_h282_face/9xzZBZ5VhIIhyKDKK3t89ggx7cS.jpg'),
-                  fit: BoxFit.cover,
+        ClipPath(
+            clipper: CustomCliperPath(
+                height: Adapt.px(450),
+                width: Adapt.screenW(),
+                radius: Adapt.px(2000)),
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  width: Adapt.screenW(),
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    image: DecorationImage(
+                      colorFilter:
+                          ColorFilter.mode(Colors.black, BlendMode.color),
+                      image: CachedNetworkImageProvider(
+                          'https://image.tmdb.org/t/p/w500_and_h282_face/9xzZBZ5VhIIhyKDKK3t89ggx7cS.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  height: Adapt.px(450),
                 ),
-              ),
-              height: Adapt.px(450),
-            ),
-            Container(
-              height: Adapt.px(450),
-              color: Color.fromRGBO(43, 58, 66, 0.9),
-            ),
-            _buildHeader(),
-            SafeArea(
-                child: Container(
-              margin: EdgeInsets.only(right: Adapt.px(20)),
-              alignment: Alignment.topRight,
-              child: IconButton(
-                onPressed: () {
-                  if (state.islogin)
-                    dispatch(AccountPageActionCreator.onLogout());
-                  else
-                    dispatch(AccountPageActionCreator.onLogin());
-                },
-                icon: Icon(
-                  state.islogin ? Icons.exit_to_app : Icons.person_outline,
-                  color: Colors.white,
+                Container(
+                  height: Adapt.px(450),
+                  color: Color.fromRGBO(43, 58, 66, 0.9),
                 ),
-              ),
-            ))
-          ],
-        )),
-        _buildTapCell(I18n.of(viewService.context).watchlist, 0, 0.2, () {}),
-        _buildTapCell(I18n.of(viewService.context).lists, 0.1, 0.3, ()=>dispatch(AccountPageActionCreator.myListsTapped(state.acountIdV4))),
-        _buildTapCell(I18n.of(viewService.context).favorites, 0.2, 0.4, () {}),
-        _buildTapCell(I18n.of(viewService.context).recommendations, 0.3, 0.5, () {}),
-        _buildTapCell(I18n.of(viewService.context).ratingsReviews, 0.4, 0.6, () {}),
+                _buildHeader(),
+                SafeArea(
+                    child: Container(
+                  margin: EdgeInsets.only(right: Adapt.px(20)),
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    onPressed: () {
+                      if (state.islogin)
+                        dispatch(AccountPageActionCreator.onLogout());
+                      else
+                        dispatch(AccountPageActionCreator.onLogin());
+                    },
+                    icon: Icon(
+                      state.islogin ? Icons.exit_to_app : Icons.person_outline,
+                      color: Colors.white,
+                    ),
+                  ),
+                ))
+              ],
+            )),
+        _buildTapCell(
+            I18n.of(viewService.context).watchlist,
+            0,
+            0.2,
+            () => dispatch(AccountPageActionCreator.navigatorPush(
+                'WatchlistPage',
+                arguments: {'accountid': state.acountIdV3}))),
+        _buildTapCell(
+            I18n.of(viewService.context).lists,
+            0.1,
+            0.3,
+            () => dispatch(AccountPageActionCreator.navigatorPush('MyListsPage',
+                arguments: {'accountid': state.acountIdV4}))),
+        _buildTapCell(
+            I18n.of(viewService.context).favorites,
+            0.2,
+            0.4,
+            () => dispatch(AccountPageActionCreator.navigatorPush(
+                'FavoritesPage',
+                arguments: {'accountid': state.acountIdV3}))),
+        _buildTapCell(
+            I18n.of(viewService.context).recommendations, 0.3, 0.5, () {}),
+        _buildTapCell(
+            I18n.of(viewService.context).ratingsReviews, 0.4, 0.6, () {}),
       ],
     ),
   );

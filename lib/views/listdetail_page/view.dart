@@ -115,7 +115,7 @@ Widget buildView(
             height: Adapt.px(60),
           ),
           _buildInfoCell(
-              '\$${((d?.revenue ?? 0) / 100000000).toStringAsFixed(1)} B',
+              '\$${((d?.revenue ?? 0) / 1000000000).toStringAsFixed(1)} B',
               'REVENUE'),
         ],
       ),
@@ -316,7 +316,7 @@ Widget buildView(
                         width: Adapt.px(20),
                       ),
                       _buildInfoCell(
-                        '\$${((d?.revenue ?? 0) / 100000000).toStringAsFixed(1)} B',
+                        '\$${((d?.revenue ?? 0) / 1000000000).toStringAsFixed(1)} B',
                         'REVENUE',
                         labelColor: Colors.white,
                         titleColor: Colors.white,

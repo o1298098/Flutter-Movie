@@ -7,7 +7,6 @@ import 'package:movie/models/accountdetail.dart';
 import 'package:movie/models/certification.dart';
 import 'package:movie/models/combinedcredits.dart';
 import 'package:movie/models/creditsmodel.dart';
-import 'package:movie/models/enums/list_sort_type.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/imagemodel.dart';
@@ -184,7 +183,7 @@ class ApiHelper {
     String result;
     String param = "/auth/request_token";
     FormData formData = new FormData.from({});
-    var r = await httpPostV4(param, formData,_apikeyV4);
+    var r = await httpPostV4(param, formData, _apikeyV4);
     if (r != null) {
       var jsonobject = json.decode(r);
       if (jsonobject['success']) {
@@ -199,7 +198,7 @@ class ApiHelper {
     bool result = false;
     String param = "/auth/access_token";
     FormData formData = new FormData.from({"request_token": requestTokenV4});
-    var r = await httpPostV4(param, formData,_apikeyV4);
+    var r = await httpPostV4(param, formData, _apikeyV4);
     if (r != null) {
       var jsonobject = json.decode(r);
       if (jsonobject['success']) {
@@ -292,40 +291,79 @@ class ApiHelper {
     return result;
   }
 
-  static Future<bool> addToList(int listid,List<ListMediaItem> items) async {
-    bool result=false;
+  static Future<bool> addToList(int listid, List<ListMediaItem> items) async {
+    bool result = false;
     String param = '/list/$listid/items';
-    var data ={
-      "items": items
-    };
-    var r=await httpPostV4(param, data,accessTokenV4);
-    if(r!=null){
+    var data = {"items": items};
+    var r = await httpPostV4(param, data, accessTokenV4);
+    if (r != null) {
       var jsonobject = json.decode(r);
-      if (jsonobject['status_code'] == 1)
-      result=true;
+      if (jsonobject['status_code'] == 1) result = true;
     }
     return result;
   }
 
-  ///Get a list of all the movies you have rated.
-  static Future<VideoListModel> getRatedMovies({int page = 1}) async {
-    int accountid = prefs.getInt('accountid');
-    if (accountid == null) return null;
+  ///Get the list of your favorite Movies.sortBy allowed values: created_at.asc, created_at.desc
+  static Future<VideoListModel> getFavoriteMovies(int accountid,
+      {int page = 1, String sortBy = 'created_at.asc'}) async {
     VideoListModel model;
     String param =
-        '/account/$accountid/rated/movies?api_key=$_apikey&language=$language&session_id=$session&sort_by=created_at.asc&page=$page';
+        '/account/$accountid/favorite/movies?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
+    var r = await httpGet(param);
+    if (r != null) model = VideoListModel(r);
+    return model;
+  }
+
+  ///Get the list of your favorite TV shows.
+  static Future<VideoListModel> getFavoriteTVShows(int accountid,
+      {int page = 1, String sortBy = 'created_at.asc'}) async {
+    VideoListModel model;
+    String param =
+        '/account/$accountid/favorite/tv?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
+    var r = await httpGet(param);
+    if (r != null) model = VideoListModel(r);
+    return model;
+  }
+
+  static Future<VideoListModel> getMoviesWatchlist(int accountid,
+      {int page = 1, String sortBy = 'created_at.asc'}) async {
+    VideoListModel model;
+    String param =
+        '/account/$accountid/watchlist/movies?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
+    var r = await httpGet(param);
+    if (r != null) model = VideoListModel(r);
+    return model;
+  }
+
+  static Future<VideoListModel> getTVShowsWacthlist(int accountid,
+      {int page = 1, String sortBy = 'created_at.asc'}) async {
+    VideoListModel model;
+    String param =
+        '/account/$accountid/watchlist/tv?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
     var r = await httpGet(param);
     if (r != null) model = VideoListModel(r);
     return model;
   }
 
   ///Get a list of all the movies you have rated.
-  static Future<VideoListModel> getRatedTVShows({int page = 1}) async {
+  static Future<VideoListModel> getRatedMovies({int page = 1, String sortBy = 'created_at.asc'}) async {
     int accountid = prefs.getInt('accountid');
     if (accountid == null) return null;
     VideoListModel model;
     String param =
-        '/account/$accountid/rated/tv?api_key=$_apikey&language=$language&session_id=$session&sort_by=created_at.asc&page=$page';
+        '/account/$accountid/rated/movies?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
+    var r = await httpGet(param);
+    if (r != null) model = VideoListModel(r);
+    return model;
+  }
+
+  ///Get a list of all the movies you have rated.
+  static Future<VideoListModel> getRatedTVShows({int page = 1,String sortBy = 'created_at.asc'}) async {
+    int accountid = prefs.getInt('accountid');
+    if (accountid == null) return null;
+    VideoListModel model;
+    String param =
+        '/account/$accountid/rated/tv?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
     var r = await httpGet(param);
     if (r != null) model = VideoListModel(r);
     return model;
@@ -360,6 +398,20 @@ class ApiHelper {
       param += '&session_id=$session';
     FormData formData = new FormData.from({"value": rating});
     var r = await httpPost(param, formData);
+    if (r != null) {
+      var jsonobject = json.decode(r);
+      if (jsonobject['status_code'] == 1) result = true;
+    }
+    return result;
+  }
+
+  static Future<bool> rateTVEpisode(
+      int tvid, int seasonid, int episodeid, double rating) async {
+    bool result = false;
+    String param =
+        '/tv/$tvid/season/$seasonid/episode/$episodeid/rating?api_key=$_apikey&session_id=$seasonid';
+    var data = {"value": rating};
+    var r = await httpPost(param, data);
     if (r != null) {
       var jsonobject = json.decode(r);
       if (jsonobject['status_code'] == 1) result = true;
@@ -849,15 +901,14 @@ class ApiHelper {
     }
   }
 
-  static Future<String> httpPostV4(String params, dynamic formData,String token) async {
+  static Future<String> httpPostV4(
+      String params, dynamic formData, String token) async {
     try {
       if (_appDocPath == null) {
         await getCookieDir();
       }
       var dio = new Dio();
-      dio.options.headers = {
-        'Authorization': 'Bearer $token'
-      };
+      dio.options.headers = {'Authorization': 'Bearer $token'};
       //dio.options.cookies = _cj.loadForRequest(Uri.parse(_apihostV4));
       var response = await dio.post(_apihostV4 + params, data: formData);
       var _content = json.encode(response.data);
@@ -883,9 +934,7 @@ class ApiHelper {
   static Future<String> httpDeleteV4(String params, dynamic formData) async {
     try {
       var dio = new Dio();
-      dio.options.headers = {
-        'Authorization': 'Bearer $_apikeyV4'
-      };
+      dio.options.headers = {'Authorization': 'Bearer $_apikeyV4'};
       var response = await dio.delete(_apihostV4 + params, data: formData);
       var _content = json.encode(response.data);
       return _content;

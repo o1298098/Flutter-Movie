@@ -2,7 +2,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/videolist.dart';
 
 //TODO replace with your own action
-enum AccountPageAction { action,login,init,logout,myListsTppped}
+enum AccountPageAction { action,login,init,logout,navigatorPush}
 
 class AccountPageActionCreator {
   static Action onAction() {
@@ -17,7 +17,7 @@ class AccountPageActionCreator {
   static Action onLogout() {
     return Action(AccountPageAction.logout);
   }
-  static Action myListsTapped(String accountid) {
-    return Action(AccountPageAction.myListsTppped,payload: accountid);
+  static Action navigatorPush(String routeName, {Object arguments}) {
+    return Action(AccountPageAction.navigatorPush,payload: [routeName,arguments]);
   }
 }

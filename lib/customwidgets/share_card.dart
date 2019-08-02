@@ -9,6 +9,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_extend/share_extend.dart';
 
+
 class ShareCard extends StatefulWidget {
   final String backgroundImage;
   final String qrValue;

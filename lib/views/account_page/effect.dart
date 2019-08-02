@@ -14,7 +14,7 @@ Effect<AccountPageState> buildEffect() {
     AccountPageAction.action: _onAction,
     AccountPageAction.login: _onLogin,
     AccountPageAction.logout: _onLogout,
-    AccountPageAction.myListsTppped:_myListsTapped,
+    AccountPageAction.navigatorPush:_navigatorPush,
   });
 }
 
@@ -51,8 +51,10 @@ void _onDispose(Action action, Context<AccountPageState> ctx) {
 Future _onLogout(Action action, Context<AccountPageState> ctx) async {
   var q = await ApiHelper.deleteSession();
   if (q) await _onInit(action, ctx);
-}
+} 
 
-Future _myListsTapped(Action action, Context<AccountPageState> ctx) async {
-  await Navigator.of(ctx.context).pushNamed('MyListsPage',arguments: {'accountid':action.payload});
+Future _navigatorPush(Action action, Context<AccountPageState> ctx) async {
+  String routerName=action.payload[0];
+  Object data=action.payload[1];
+  await Navigator.of(ctx.context).pushNamed(routerName,arguments: data);
 }
