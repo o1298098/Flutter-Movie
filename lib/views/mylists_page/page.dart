@@ -7,6 +7,8 @@ import 'state.dart';
 import 'view.dart';
 
 class MyListsPage extends Page<MyListsPageState, Map<String, dynamic>> {
+  @override
+  CustomstfState<MyListsPageState> createState()=>CustomstfState<MyListsPageState> ();
   MyListsPage()
       : super(
             initState: initState,

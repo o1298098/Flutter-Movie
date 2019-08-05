@@ -29,7 +29,7 @@ Future _onInit(Action action, Context<AccountPageState> ctx) async {
   if (ctx.state.animationController == null) {
     final CustomstfState ticker = ctx.stfState as CustomstfState;
     ctx.state.animationController = AnimationController(
-        vsync: ticker, duration: Duration(milliseconds: 1500));
+        vsync: ticker, duration: Duration(milliseconds: 1000));
   }
   var prefs = await SharedPreferences.getInstance();
   String name = prefs.getString('accountname');

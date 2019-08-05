@@ -11,6 +11,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 Effect<MyListsPageState> buildEffect() {
   return combineEffects(<Object, Effect<MyListsPageState>>{
     Lifecycle.initState: _onInit,
+    Lifecycle.deactivate: _onDeactivate,
     Lifecycle.dispose: _onDispose,
     MyListsPageAction.action: _onAction,
     MyListsPageAction.cellTapped: _cellTapped
@@ -20,6 +21,9 @@ Effect<MyListsPageState> buildEffect() {
 void _onAction(Action action, Context<MyListsPageState> ctx) {}
 
 Future _onInit(Action action, Context<MyListsPageState> ctx) async {
+  final ticker=ctx.stfState as CustomstfState;
+  ctx.state.animationController=AnimationController(vsync: ticker,duration: Duration(milliseconds: 300));
+  ctx.state.cellAnimationController=AnimationController(vsync: ticker,duration: Duration(milliseconds: 1000));
   String id= ctx.state.accountId;
   ctx.state.scrollController = ScrollController(keepScrollOffset: false)
     ..addListener(() async {
@@ -68,7 +72,15 @@ Future _onInit(Action action, Context<MyListsPageState> ctx) async {
 }
 
 void _onDispose(Action action, Context<MyListsPageState> ctx) {
+  ctx.state.cellAnimationController.stop();
   ctx.state.scrollController.dispose();
+  ctx.state.animationController.dispose();
+  ctx.state.cellAnimationController.dispose();
+}
+
+void _onDeactivate(Action action, Context<MyListsPageState> ctx) {
+  ctx.state.cellAnimationController.stop();
+  ctx.state.animationController.stop();
 }
 
 Future _loadMore(Action action, Context<MyListsPageState> ctx) async {

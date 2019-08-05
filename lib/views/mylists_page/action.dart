@@ -2,7 +2,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/mylistmodel.dart';
 
 //TODO replace with your own action
-enum MyListsPageAction { action,setAccount,setList,loadMore,cellTapped}
+enum MyListsPageAction { action,setAccount,setList,loadMore,cellTapped,onEdit}
 
 class MyListsPageActionCreator {
   static Action onAction() {
@@ -19,5 +19,8 @@ class MyListsPageActionCreator {
   }
   static Action cellTapped(int listid) {
     return Action(MyListsPageAction.cellTapped,payload: listid);
+  }
+  static Action onEdit(bool isEdit) {
+    return Action(MyListsPageAction.onEdit,payload: isEdit);
   }
 }
