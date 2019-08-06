@@ -29,7 +29,7 @@ Widget buildView(
   Random random = new Random(DateTime.now().millisecondsSinceEpoch);
   var s = state.tvDetailModel;
   //var dominantColor = state.palette?.dominantColor?.color ?? Colors.black38;
-  var dominantColor=state.mainColor;
+  var dominantColor = state.mainColor;
   double evote = 0.0;
 
   Widget _buildCreditsCell(CastData p) {
@@ -53,13 +53,14 @@ Widget buildView(
                   width: Adapt.px(240),
                   height: Adapt.px(260),
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: CachedNetworkImageProvider(p.profile_path==null?ImageUrl.emptyimage: ImageUrl.getUrl(
-                      p.profile_path,
-                      ImageSize.w300)))
-                  ),
+                      color: Colors.grey[200],
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: CachedNetworkImageProvider(
+                              p.profile_path == null
+                                  ? ImageUrl.emptyimage
+                                  : ImageUrl.getUrl(
+                                      p.profile_path, ImageSize.w300)))),
                 ),
               ),
               Padding(
@@ -319,7 +320,8 @@ Widget buildView(
   }
 
   List<Widget> _buildRecommendationBody() {
-    if (state.tvDetailModel.recommendations != null&&state.tvDetailModel.recommendations.results.length>0)
+    if (state.tvDetailModel.recommendations != null &&
+        state.tvDetailModel.recommendations.results.length > 0)
       return state.tvDetailModel.recommendations.results
           .map(_buildRecommendationCell)
           .toList();
@@ -560,8 +562,9 @@ Widget buildView(
                 image: DecorationImage(
                     colorFilter:
                         ColorFilter.mode(dominantColor, BlendMode.color),
-                    image: CachedNetworkImageProvider(state.backdropPic==null?ImageUrl.emptyimage: ImageUrl.getUrl(
-                        state.backdropPic, ImageSize.w500)),
+                    image: CachedNetworkImageProvider(state.backdropPic == null
+                        ? ImageUrl.emptyimage
+                        : ImageUrl.getUrl(state.backdropPic, ImageSize.w500)),
                     fit: BoxFit.cover)),
           ),
           Container(
@@ -597,38 +600,48 @@ Widget buildView(
                 Container(
                   child: Row(
                     children: <Widget>[
-                      Stack(
-                        children: <Widget>[
-                          Container(
-                              width: Adapt.px(80),
-                              height: Adapt.px(80),
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.circular(Adapt.px(40))),
-                              child: CircularProgressIndicator(
-                                strokeWidth: 6.0,
-                                valueColor: new AlwaysStoppedAnimation<Color>(
-                                    VoteColorHelper.getColor(
-                                        s.vote_average ?? evote)),
-                                backgroundColor: Colors.grey,
-                                value: (s.vote_average ?? evote) / 10,
-                              )),
-                          Container(
-                              width: Adapt.px(80),
-                              height: Adapt.px(80),
-                              child: Center(
-                                child: Text(
-                                  ((s.vote_average ?? evote) * 10)
-                                          .floor()
-                                          .toString() +
-                                      '%',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: Adapt.px(28),
-                                      color: Colors.white),
-                                ),
+                      AnimatedBuilder(
+                        animation: state.animationController,
+                        builder: (ctx, widget) {
+                          var animate = Tween<double>(
+                                  begin: 0.0, end: s.vote_average ?? evote)
+                              .animate(CurvedAnimation(
+                                parent: state.animationController,
+                                curve: Curves.ease,
                               ))
-                        ],
+                              .value;
+                          return Stack(
+                            children: <Widget>[
+                              Container(
+                                  width: Adapt.px(80),
+                                  height: Adapt.px(80),
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.circular(Adapt.px(40))),
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 6.0,
+                                    valueColor:
+                                        new AlwaysStoppedAnimation<Color>(
+                                            VoteColorHelper.getColor(
+                                                animate ?? evote)),
+                                    backgroundColor: Colors.grey,
+                                    value: animate / 10,
+                                  )),
+                              Container(
+                                  width: Adapt.px(80),
+                                  height: Adapt.px(80),
+                                  child: Center(
+                                    child: Text(
+                                      (animate * 10).floor().toString() + '%',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: Adapt.px(28),
+                                          color: Colors.white),
+                                    ),
+                                  ))
+                            ],
+                          );
+                        },
                       ),
                       SizedBox(
                         width: Adapt.px(30),
@@ -668,243 +681,236 @@ Widget buildView(
 
   return Scaffold(
     key: state.scaffoldkey,
-        body: DefaultTabController(
-            length: 4,
-            child: NestedScrollView(
-                headerSliverBuilder: (BuildContext context, bool de) {
-                  return <Widget>[
-                    SliverOverlapAbsorber(
-                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                          context),
-                      child: SliverAppBar(
-                          pinned: true,
-                          /*backgroundColor:
+    body: DefaultTabController(
+        length: 4,
+        child: NestedScrollView(
+            headerSliverBuilder: (BuildContext context, bool de) {
+              return <Widget>[
+                SliverOverlapAbsorber(
+                  handle:
+                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                  child: SliverAppBar(
+                      pinned: true,
+                      /*backgroundColor:
                               state.palette.darkVibrantColor?.color ??
                                   Colors.black87,*/
-                          backgroundColor:dominantColor,
-                          expandedHeight: Adapt.px(700),
-                          centerTitle: false,
-                          title: Text(de ? s.name ?? '' : ''),
-                          actions: <Widget>[
-                            IconButton(
-                              icon: Icon(Icons.more_vert),
-                              color: Colors.white,
-                              iconSize: Adapt.px(50),
-                              onPressed: ()=>dispatch(TVDetailPageActionCreator.openMenu()),
-                            )
-                          ],
-                          bottom: PreferredSize(
-                            preferredSize:
-                                new Size(double.infinity, Adapt.px(60)),
-                            child: Container(
-                                width: Adapt.screenW(),
-                                color: Colors.white,
-                                child: TabBar(
-                                  labelColor: Colors.black,
-                                  /*indicatorColor:
+                      backgroundColor: dominantColor,
+                      expandedHeight: Adapt.px(700),
+                      centerTitle: false,
+                      title: Text(de ? s.name ?? '' : ''),
+                      actions: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.more_vert),
+                          color: Colors.white,
+                          iconSize: Adapt.px(50),
+                          onPressed: () =>
+                              dispatch(TVDetailPageActionCreator.openMenu()),
+                        )
+                      ],
+                      bottom: PreferredSize(
+                        preferredSize: new Size(double.infinity, Adapt.px(60)),
+                        child: Container(
+                            width: Adapt.screenW(),
+                            color: Colors.white,
+                            child: TabBar(
+                              labelColor: Colors.black,
+                              /*indicatorColor:
                                       state.palette.lightVibrantColor?.color ??
                                           Colors.black,*/
-                                  indicatorColor:state.tabTintColor,
-                                  indicatorSize: TabBarIndicatorSize.label,
-                                  isScrollable: true,
-                                  labelStyle: TextStyle(
-                                      fontSize: Adapt.px(35),
-                                      fontWeight: FontWeight.w600),
-                                  tabs: <Widget>[
-                                    Tab(
-                                        text:
-                                            I18n.of(viewService.context).main),
-                                    Tab(
-                                        text: I18n.of(viewService.context)
-                                            .videos),
-                                    Tab(
-                                        text: I18n.of(viewService.context)
-                                            .images),
-                                    Tab(
-                                        text: I18n.of(viewService.context)
-                                            .reviews),
-                                  ],
-                                )),
-                          ),
-                          flexibleSpace: FlexibleSpaceBar(
-                            centerTitle: false,
-                            background: _buildHeader(),
-                          )),
-                    )
-                  ];
-                },
-                body: TabBarView(
-                  children: <Widget>[
-                    Container(child: Builder(builder: (BuildContext context) {
-                      return CustomScrollView(slivers: <Widget>[
-                        SliverOverlapInjector(
-                          handle:
-                              NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                  context),
+                              indicatorColor: state.tabTintColor,
+                              indicatorSize: TabBarIndicatorSize.label,
+                              isScrollable: true,
+                              labelStyle: TextStyle(
+                                  fontSize: Adapt.px(35),
+                                  fontWeight: FontWeight.w600),
+                              tabs: <Widget>[
+                                Tab(text: I18n.of(viewService.context).main),
+                                Tab(text: I18n.of(viewService.context).videos),
+                                Tab(text: I18n.of(viewService.context).images),
+                                Tab(text: I18n.of(viewService.context).reviews),
+                              ],
+                            )),
+                      ),
+                      flexibleSpace: FlexibleSpaceBar(
+                        centerTitle: false,
+                        background: _buildHeader(),
+                      )),
+                )
+              ];
+            },
+            body: TabBarView(
+              children: <Widget>[
+                Container(child: Builder(builder: (BuildContext context) {
+                  return CustomScrollView(slivers: <Widget>[
+                    SliverOverlapInjector(
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(
+                            Adapt.px(30), Adapt.px(30), Adapt.px(30), 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(I18n.of(viewService.context).overView,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: Adapt.px(40),
+                                    fontWeight: FontWeight.w800)),
+                            SizedBox(
+                              height: Adapt.px(30),
+                            ),
+                            _getOverWatch(),
+                          ],
                         ),
-                        SliverToBoxAdapter(
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: viewService.buildComponent('featuredCrew'),
+                    ),
+                    SliverToBoxAdapter(
+                        child: AnimatedSwitcher(
+                      switchInCurve: Curves.easeIn,
+                      switchOutCurve: Curves.easeOut,
+                      duration: Duration(milliseconds: 600),
+                      child: Column(
+                        key: ValueKey(state.tvDetailModel.id),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.all(Adapt.px(30)),
+                            child: Text(
+                                I18n.of(viewService.context).topBilledCast,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: Adapt.px(40),
+                                    fontWeight: FontWeight.w800)),
+                          ),
+                          Container(
+                            height: Adapt.px(450),
+                            child: _getCreditsCells(),
+                          ),
+                        ],
+                      ),
+                    )),
+                    SliverToBoxAdapter(
+                      child: viewService.buildComponent('currentSeason'),
+                    ),
+                    SliverToBoxAdapter(
+                      child: viewService.buildComponent('keywords'),
+                    ),
+                    SliverToBoxAdapter(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(Adapt.px(30)),
+                          child: Text(
+                              I18n.of(viewService.context).recommendations,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: Adapt.px(40),
+                                  fontWeight: FontWeight.w800)),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(bottom: Adapt.px(30)),
+                          height: Adapt.px(400) * 9 / 16,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: _buildRecommendationBody(),
+                          ),
+                        ),
+                      ],
+                    )),
+                    SliverToBoxAdapter(
+                      child: viewService.buildComponent('info'),
+                    ),
+                  ]);
+                })),
+                Container(child: Builder(builder: (BuildContext context) {
+                  return CustomScrollView(slivers: <Widget>[
+                    SliverOverlapInjector(
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context),
+                    ),
+                    _getVideoBody()
+                  ]);
+                })),
+                Container(child: Builder(builder: (BuildContext context) {
+                  return CustomScrollView(slivers: <Widget>[
+                    SliverOverlapInjector(
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context),
+                    ),
+                    _getImageBody()
+                  ]);
+                })),
+                Container(child: Builder(builder: (BuildContext context) {
+                  return CustomScrollView(slivers: <Widget>[
+                    SliverOverlapInjector(
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context),
+                    ),
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                          (BuildContext contxt, int index) {
+                        return GestureDetector(
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(
-                                Adapt.px(30), Adapt.px(30), Adapt.px(30), 0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(I18n.of(viewService.context).overView,
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: Adapt.px(40),
-                                        fontWeight: FontWeight.w800)),
-                                SizedBox(
-                                  height: Adapt.px(30),
+                                Adapt.px(30), 0, Adapt.px(30), Adapt.px(30)),
+                            child: Card(
+                              child: Container(
+                                padding: EdgeInsets.all(Adapt.px(30)),
+                                height: 300,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      'A Review by ${state.reviewModel.results[index].author}',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: Adapt.px(30),
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    SizedBox(
+                                      height: Adapt.px(20),
+                                    ),
+                                    new Expanded(
+                                      child: new LayoutBuilder(builder:
+                                          (BuildContext context,
+                                              BoxConstraints constraints) {
+                                        print(constraints);
+                                        return new Text(
+                                          state.reviewModel.results[index]
+                                              .content,
+                                          overflow: TextOverflow.fade,
+                                          maxLines: (constraints.maxHeight /
+                                                  Theme.of(context)
+                                                      .textTheme
+                                                      .body1
+                                                      .fontSize)
+                                              .floor(),
+                                        );
+                                      }),
+                                    ),
+                                  ],
                                 ),
-                                _getOverWatch(),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
-                        SliverToBoxAdapter(
-                          child: viewService.buildComponent('featuredCrew'),
-                        ),
-                        SliverToBoxAdapter(
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.all(Adapt.px(30)),
-                              child: Text(
-                                  I18n.of(viewService.context).topBilledCast,
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: Adapt.px(40),
-                                      fontWeight: FontWeight.w800)),
-                            ),
-                            Container(
-                              height: Adapt.px(450),
-                              child: _getCreditsCells(),
-                            ),
-                          ],
-                        )),
-                        SliverToBoxAdapter(
-                          child: viewService.buildComponent('currentSeason'),
-                        ),
-                        SliverToBoxAdapter(
-                          child: viewService.buildComponent('keywords'),
-                        ),
-                        SliverToBoxAdapter(
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.all(Adapt.px(30)),
-                              child: Text(
-                                  I18n.of(viewService.context).recommendations,
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: Adapt.px(40),
-                                      fontWeight: FontWeight.w800)),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(bottom: Adapt.px(30)),
-                              height: Adapt.px(400) * 9 / 16,
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: _buildRecommendationBody(),
-                              ),
-                            ),
-                          ],
-                        )),
-                        SliverToBoxAdapter(
-                          child: viewService.buildComponent('info'),
-                        ),
-                      ]);
-                    })),
-                    Container(child: Builder(builder: (BuildContext context) {
-                      return CustomScrollView(slivers: <Widget>[
-                        SliverOverlapInjector(
-                          handle:
-                              NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                  context),
-                        ),
-                        _getVideoBody()
-                      ]);
-                    })),
-                    Container(child: Builder(builder: (BuildContext context) {
-                      return CustomScrollView(slivers: <Widget>[
-                        SliverOverlapInjector(
-                          handle:
-                              NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                  context),
-                        ),
-                        _getImageBody()
-                      ]);
-                    })),
-                    Container(child: Builder(builder: (BuildContext context) {
-                      return CustomScrollView(slivers: <Widget>[
-                        SliverOverlapInjector(
-                          handle:
-                              NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                  context),
-                        ),
-                        SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                              (BuildContext contxt, int index) {
-                            return GestureDetector(
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(Adapt.px(30), 0,
-                                    Adapt.px(30), Adapt.px(30)),
-                                child: Card(
-                                  child: Container(
-                                    padding: EdgeInsets.all(Adapt.px(30)),
-                                    height: 300,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          'A Review by ${state.reviewModel.results[index].author}',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: Adapt.px(30),
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                        SizedBox(
-                                          height: Adapt.px(20),
-                                        ),
-                                        new Expanded(
-                                          child: new LayoutBuilder(builder:
-                                              (BuildContext context,
-                                                  BoxConstraints constraints) {
-                                            print(constraints);
-                                            return new Text(
-                                              state.reviewModel.results[index]
-                                                  .content,
-                                              overflow: TextOverflow.fade,
-                                              maxLines: (constraints.maxHeight /
-                                                      Theme.of(context)
-                                                          .textTheme
-                                                          .body1
-                                                          .fontSize)
-                                                  .floor(),
-                                            );
-                                          }),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              onTap: () async {
-                                var url = state.reviewModel.results[index].url;
-                                if (await canLaunch(url)) {
-                                  await launch(url);
-                                }
-                              },
-                            );
-                          }, childCount: state.reviewModel.results.length),
-                        ),
-                      ]);
-                    })),
-                  ],
-                ))),
+                          onTap: () async {
+                            var url = state.reviewModel.results[index].url;
+                            if (await canLaunch(url)) {
+                              await launch(url);
+                            }
+                          },
+                        );
+                      }, childCount: state.reviewModel.results.length),
+                    ),
+                  ]);
+                })),
+              ],
+            ))),
   );
 }

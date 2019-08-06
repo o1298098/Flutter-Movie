@@ -30,6 +30,7 @@ class TVDetailPageState implements GlobalBaseState<TVDetailPageState> {
   Color mainColor;
   Color tabTintColor;
   MediaAccountStateModel accountState;
+  AnimationController animationController;
 
   @override
   TVDetailPageState clone() {
@@ -49,7 +50,8 @@ class TVDetailPageState implements GlobalBaseState<TVDetailPageState> {
       ..backdropPic = backdropPic
       ..posterPic = posterPic
       ..name = name
-      ..accountState = accountState;
+      ..accountState = accountState
+      ..animationController=animationController;
   }
 
   @override

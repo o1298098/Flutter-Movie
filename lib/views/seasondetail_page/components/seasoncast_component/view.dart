@@ -13,8 +13,7 @@ import 'state.dart';
 
 Widget buildView(
     SeasonCastState state, Dispatch dispatch, ViewService viewService) {
- 
- Widget _buildCreditsShimmerCell() {
+  Widget _buildCreditsShimmerCell() {
     return SizedBox(
       width: Adapt.px(220),
       height: Adapt.px(450),
@@ -50,57 +49,59 @@ Widget buildView(
     );
   }
 
- Widget _buildCastCell(CastData d) {
+  Widget _buildCastCell(CastData d) {
     return GestureDetector(
-      onTap:()=> dispatch(SeasonCastActionCreator.onCastCellTapped(d.id, d.profile_path, d.name)),
-      child: 
-    Container(
-      padding: EdgeInsets.only(left: Adapt.px(30)),
-      child: Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Hero(
-                tag: 'people' + d.id.toString(),
-             child:  CachedNetworkImage(
-              width: Adapt.px(220),
-              height: Adapt.px(300),
-              fit: BoxFit.cover,
-              placeholder: (ctx, s) {
-                return Image.asset(
-                  'images/CacheBG.jpg',
-                  fit: BoxFit.cover,
-                  width: Adapt.px(220),
-                  height: Adapt.px(300),
-                );
-              },
-              imageUrl: d.profile_path == null
-                  ? ImageUrl.emptyimage
-                  : ImageUrl.getUrl(d.profile_path, ImageSize.w200),
-            )),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  Adapt.px(8), Adapt.px(10), Adapt.px(8), 0),
-              width: Adapt.px(220),
-              child: Text(
-                d.name,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: Adapt.px(26),
-                    fontWeight: FontWeight.bold),
+      key: ValueKey(d.id),
+      onTap: () => dispatch(SeasonCastActionCreator.onCastCellTapped(
+          d.id, d.profile_path, d.name)),
+      child: Container(
+        padding: EdgeInsets.only(left: Adapt.px(30)),
+        child: Card(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Hero(
+                  tag: 'people' + d.id.toString(),
+                  child: CachedNetworkImage(
+                    width: Adapt.px(220),
+                    height: Adapt.px(300),
+                    fit: BoxFit.cover,
+                    placeholder: (ctx, s) {
+                      return Image.asset(
+                        'images/CacheBG.jpg',
+                        fit: BoxFit.cover,
+                        width: Adapt.px(220),
+                        height: Adapt.px(300),
+                      );
+                    },
+                    imageUrl: d.profile_path == null
+                        ? ImageUrl.emptyimage
+                        : ImageUrl.getUrl(d.profile_path, ImageSize.w200),
+                  )),
+              Container(
+                padding: EdgeInsets.fromLTRB(
+                    Adapt.px(8), Adapt.px(10), Adapt.px(8), 0),
+                width: Adapt.px(220),
+                child: Text(
+                  d.name,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: Adapt.px(26),
+                      fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(Adapt.px(8), 0, Adapt.px(8), 0),
-              width: Adapt.px(220),
-              child: Text(d.character,
-                  maxLines: 2,
-                  style: TextStyle(color: Colors.grey, fontSize: Adapt.px(26))),
-            )
-          ],
+              Container(
+                padding: EdgeInsets.fromLTRB(Adapt.px(8), 0, Adapt.px(8), 0),
+                width: Adapt.px(220),
+                child: Text(d.character,
+                    maxLines: 2,
+                    style:
+                        TextStyle(color: Colors.grey, fontSize: Adapt.px(26))),
+              )
+            ],
+          ),
         ),
       ),
-    ),
     );
   }
 
@@ -121,37 +122,49 @@ Widget buildView(
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
           children: [
-            SizedBox(width: Adapt.px(30),),
+            SizedBox(
+              width: Adapt.px(30),
+            ),
             _buildCreditsShimmerCell(),
-            SizedBox(width: Adapt.px(30),),
+            SizedBox(
+              width: Adapt.px(30),
+            ),
             _buildCreditsShimmerCell(),
-            SizedBox(width: Adapt.px(30),),
+            SizedBox(
+              width: Adapt.px(30),
+            ),
             _buildCreditsShimmerCell()
           ],
         ),
       );
   }
 
-  return Container(
-      child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Padding(
-        padding: EdgeInsets.all(Adapt.px(30)),
-        child: Text.rich(TextSpan(children: [
-          TextSpan(
-              text: I18n.of(viewService.context).seasonCast,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: Adapt.px(35),
-                  fontWeight: FontWeight.bold)),
-          TextSpan(
-              text:
-                  ' ${state.castData != null ? state.castData.length.toString() : ''}',
-              style: TextStyle(color: Colors.grey, fontSize: Adapt.px(26)))
-        ])),
-      ),
-      _buildCastBody(),
-    ],
-  ));
+  return AnimatedSwitcher(
+    switchInCurve: Curves.easeIn,
+    switchOutCurve: Curves.easeOut,
+    duration: Duration(milliseconds: 600),
+    child: Container(
+      key: ValueKey(state.castData),
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.all(Adapt.px(30)),
+          child: Text.rich(TextSpan(children: [
+            TextSpan(
+                text: I18n.of(viewService.context).seasonCast,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: Adapt.px(35),
+                    fontWeight: FontWeight.bold)),
+            TextSpan(
+                text:
+                    ' ${state.castData != null ? state.castData.length.toString() : ''}',
+                style: TextStyle(color: Colors.grey, fontSize: Adapt.px(26)))
+          ])),
+        ),
+        _buildCastBody(),
+      ],
+    )),
+  );
 }

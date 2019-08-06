@@ -1,4 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/views/tvdetail_page/components/featuredcrew_component/component.dart';
 import 'package:movie/views/tvdetail_page/components/info_component/component.dart';
 import 'package:movie/views/tvdetail_page/components/menu_component/component.dart';
@@ -16,6 +17,8 @@ import 'state.dart';
 import 'view.dart';
 
 class TVDetailPage extends Page<TVDetailPageState, Map<String, dynamic>> {
+  @override
+  CustomstfState<TVDetailPageState> createState()=>CustomstfState<TVDetailPageState> ();
   TVDetailPage()
       : super(
             initState: initState,

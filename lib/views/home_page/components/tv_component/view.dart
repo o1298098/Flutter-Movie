@@ -14,22 +14,27 @@ Widget buildView(
     TVCellsState state, Dispatch dispatch, ViewService viewService) {
   Widget _bulidcell(VideoListResult d) {
     return GestureDetector(
-      onTap: () => dispatch(TVCellsActionCreator.onCellTapped(d.id,d.backdrop_path,d.name,d.poster_path)),
+      onTap: () => dispatch(TVCellsActionCreator.onCellTapped(
+          d.id, d.backdrop_path, d.name, d.poster_path)),
       child: Container(
         child: Stack(
           children: <Widget>[
             CachedNetworkImage(
+              fadeInDuration: Duration.zero,
+              fadeOutDuration: Duration.zero,
               width: Adapt.screenW(),
               height: Adapt.screenW() * 9 / 16,
               fit: BoxFit.cover,
               imageUrl: ImageUrl.getUrl(
                   d.backdrop_path ?? '/p60VSQL7usdxztIGokJPpHmKWdU.jpg',
                   ImageSize.w500),
-                  placeholder: (ctx,str){return Container(
-                    width: Adapt.screenW(),
-                    height: Adapt.screenW() * 9 / 16,
-                    color: Colors.grey,
-                  );},
+              placeholder: (ctx, str) {
+                return Container(
+                  width: Adapt.screenW(),
+                  height: Adapt.screenW() * 9 / 16,
+                  color: Colors.grey,
+                );
+              },
             ),
             Container(
               padding: EdgeInsets.all(Adapt.px(20)),
@@ -56,32 +61,41 @@ Widget buildView(
       ),
     );
   }
-  Widget _buildShimmerCell(){
+
+  Widget _buildShimmerCell() {
     return SizedBox(
       width: Adapt.screenW(),
       height: Adapt.screenW() * 9 / 16,
       child: Shimmer.fromColors(
         baseColor: Colors.grey[300],
         highlightColor: Colors.white,
-        child: Container(color: Colors.grey[300],
+        child: Container(
+          color: Colors.grey[300],
         ),
-        ),
+      ),
     );
   }
 
-  Widget _buildMian(){
-    if(state.tv.results.length>0)
-    return Column(
-      children: state.tv.results.take(3).map(_bulidcell).toList(),
-    );
-    else 
-    return Column(
-      children: <Widget>[
-         _buildShimmerCell(),
-         _buildShimmerCell(),
-         _buildShimmerCell()
-      ],
-    );
+  Widget _buildMian() {
+    if (state.tv.results.length > 0)
+      return Column(
+        key: ValueKey(state.tv),
+        children: state.tv.results.take(3).map(_bulidcell).toList(),
+      );
+    else
+      return Column(
+        key: ValueKey(state.tv),
+        children: <Widget>[
+          _buildShimmerCell(),
+          _buildShimmerCell(),
+          _buildShimmerCell()
+        ],
+      );
   }
-  return _buildMian();
+
+  return AnimatedSwitcher(
+      switchInCurve: Curves.easeIn,
+      switchOutCurve: Curves.easeOut,
+      duration: Duration(milliseconds: 600),
+      child: _buildMian());
 }

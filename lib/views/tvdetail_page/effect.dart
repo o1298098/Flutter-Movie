@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart' hide Action;
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/actions/imageurl.dart';
+import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'action.dart';
@@ -24,6 +25,8 @@ void _onAction(Action action, Context<TVDetailPageState> ctx) {}
 
 Future _onInit(Action action, Context<TVDetailPageState> ctx) async {
   try {
+    final ticker=ctx.stfState as CustomstfState;
+    ctx.state.animationController=AnimationController(vsync: ticker,duration: Duration(milliseconds: 1000));
     /*var paletteGenerator = await PaletteGenerator.fromImageProvider(
           CachedNetworkImageProvider(ImageUrl.getUrl(ctx.state.posterPic, ImageSize.w300)));
       ctx.dispatch(TVDetailPageActionCreator.onsetColor(paletteGenerator));*/
@@ -32,6 +35,7 @@ Future _onInit(Action action, Context<TVDetailPageState> ctx) async {
             'keywords,recommendations,credits,external_ids,content_ratings');
     if (r != null) {
       ctx.dispatch(TVDetailPageActionCreator.onInit(r));
+      ctx.state.animationController.forward();
     }
     var accountstate = await ApiHelper.getTVAccountState(ctx.state.tvid);
     if (accountstate != null)

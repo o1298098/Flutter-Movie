@@ -22,6 +22,7 @@ Widget buildView(
 
   Widget _buildEpisodeCell(Episode d) {
     return Container(
+      key: ValueKey(d.id),
       padding: EdgeInsets.only(bottom: Adapt.px(30)),
       child: GestureDetector(
         onTap: () => dispatch(EpisodesActionCreator.onCellTapped(d)),
@@ -215,7 +216,12 @@ Widget buildView(
     );
   }
 
-  return Column(
+  return  AnimatedSwitcher(
+    switchInCurve: Curves.easeIn,
+    switchOutCurve: Curves.easeOut,
+    duration: Duration(milliseconds: 600),
+    child: Column(
+      key: ValueKey(state.episodes),
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
@@ -251,5 +257,5 @@ Widget buildView(
                   ],
           ),
         )
-      ]);
+      ]));
 }

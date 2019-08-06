@@ -22,12 +22,14 @@ class MovieDetailPageState implements GlobalBaseState<MovieDetailPageState> {
   String posterPic;
   int movieid;
   Color mainColor;
+  Color tabTintColor;
   PaletteGenerator palette;
   ImageModel imagesmodel;
   ReviewModel reviewModel;
   VideoModel videomodel;
   ScrollController scrollController;
   MediaAccountStateModel accountState;
+  AnimationController animationController;
 
   @override
   MovieDetailPageState clone() {
@@ -35,6 +37,7 @@ class MovieDetailPageState implements GlobalBaseState<MovieDetailPageState> {
       ..scaffoldkey = scaffoldkey
       ..movieDetailModel = movieDetailModel
       ..mainColor = mainColor
+      ..tabTintColor=tabTintColor
       ..palette = palette
       ..movieid = movieid
       ..reviewModel = reviewModel
@@ -44,7 +47,8 @@ class MovieDetailPageState implements GlobalBaseState<MovieDetailPageState> {
       ..posterPic = posterPic
       ..title = title
       ..scrollController = scrollController
-      ..accountState = accountState;
+      ..accountState = accountState
+      ..animationController=animationController;
   }
 
   @override
@@ -61,6 +65,8 @@ MovieDetailPageState initState(Map<String, dynamic> args) {
   if (args['title'] != null) state.title = args['title'];
   state.movieDetailModel = new MovieDetailModel.fromParams();
   state.mainColor = Color.fromRGBO(
+      random.nextInt(200), random.nextInt(100), random.nextInt(255), 1);
+  state.tabTintColor=Color.fromRGBO(
       random.nextInt(200), random.nextInt(100), random.nextInt(255), 1);
   state.palette = new PaletteGenerator.fromColors(
       List<PaletteColor>()..add(new PaletteColor(Colors.black87, 0)));

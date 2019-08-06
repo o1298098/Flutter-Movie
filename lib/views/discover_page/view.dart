@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,7 +21,7 @@ import 'state.dart';
 Widget buildView(
     DiscoverPageState state, Dispatch dispatch, ViewService viewService) {
  SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle.dark.copyWith(statusBarBrightness: Brightness.dark));
+      SystemUiOverlayStyle.light.copyWith(statusBarBrightness: Brightness.light));
     String _changDatetime(String s1){
       return s1==null||s1?.isEmpty==true?'1900-01-01':s1;
     }
@@ -119,7 +120,7 @@ Widget buildView(
   Widget _buildListCell(VideoListResult d) {
     bool ismovie = state.filterState.isMovie;
     return GestureDetector(
-      key: Key(ismovie ? d.original_title : d.original_name),
+      key: ValueKey<int>(d.id),
       child: Container(
         padding:
             EdgeInsets.fromLTRB(Adapt.px(20), 0, Adapt.px(20), Adapt.px(30)),
@@ -130,13 +131,15 @@ Widget buildView(
               Container(
                   width: Adapt.px(260),
                   height: Adapt.px(400),
-                  child: FadeInImage.assetNetwork(
-                    fit: BoxFit.cover,
-                    placeholder: 'images/CacheBG.jpg',
-                    image: ImageUrl.getUrl(
-                        d.poster_path ?? '/lrzvimkeL72qxHN1FaSmjIoztvj.jpg',
-                        ImageSize.w300),
-                  )),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: CachedNetworkImageProvider(ImageUrl.getUrl(
+                        d.poster_path,
+                        ImageSize.w300))
+                    )
+                  ),),
               Container(
                 padding: EdgeInsets.all(Adapt.px(20)),
                 child: Column(

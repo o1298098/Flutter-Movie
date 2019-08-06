@@ -29,10 +29,10 @@ import 'state.dart';
 
 Widget buildView(
     MovieDetailPageState state, Dispatch dispatch, ViewService viewService) {
-  Random random=new Random(DateTime.now().millisecondsSinceEpoch);
+  Random random = new Random(DateTime.now().millisecondsSinceEpoch);
   var s = state.movieDetailModel;
   //var dominantColor = state.palette?.dominantColor?.color ?? Colors.black38;
-  var dominantColor=state.mainColor;
+  var dominantColor = state.mainColor;
   double evote = 0.0;
 
   Widget _buildCreditsCell(CastData p) {
@@ -52,17 +52,18 @@ Widget buildView(
             children: <Widget>[
               Hero(
                 tag: 'people' + p.id.toString(),
-                child:Container(
+                child: Container(
                   width: Adapt.px(240),
                   height: Adapt.px(260),
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: CachedNetworkImageProvider(p.profile_path==null?ImageUrl.emptyimage: ImageUrl.getUrl(
-                      p.profile_path,
-                      ImageSize.w300)))
-                  ),
+                      color: Colors.grey[200],
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: CachedNetworkImageProvider(
+                              p.profile_path == null
+                                  ? ImageUrl.emptyimage
+                                  : ImageUrl.getUrl(
+                                      p.profile_path, ImageSize.w300)))),
                 ),
               ),
               Padding(
@@ -70,15 +71,15 @@ Widget buildView(
                     top: Adapt.px(20), left: Adapt.px(20), right: Adapt.px(20)),
                 child: Hero(
                   tag: 'Actor' + p.id.toString(),
-                  child:Material(
+                  child: Material(
                     child: Text(
-                    p.name,
-                    maxLines: 2,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: Adapt.px(30),
-                        fontWeight: FontWeight.w600),
-                  ),
+                      p.name,
+                      maxLines: 2,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: Adapt.px(30),
+                          fontWeight: FontWeight.w600),
+                    ),
                   ),
                 ),
               ),
@@ -249,13 +250,15 @@ Widget buildView(
               width: w,
               height: h,
               decoration: BoxDecoration(
-                color: Color.fromRGBO(random.nextInt(255), random.nextInt(255),
-                    random.nextInt(255), random.nextDouble()),
-                    image: DecorationImage(
+                  color: Color.fromRGBO(
+                      random.nextInt(255),
+                      random.nextInt(255),
+                      random.nextInt(255),
+                      random.nextDouble()),
+                  image: DecorationImage(
                       fit: BoxFit.cover,
                       image: CachedNetworkImageProvider(
-                      ImageUrl.getUrl(d.file_path, ImageSize.w300)))
-              ),
+                          ImageUrl.getUrl(d.file_path, ImageSize.w300)))),
               /*child: ParallaxImage(
                   extent: h,
                   image: CachedNetworkImageProvider(
@@ -286,7 +289,7 @@ Widget buildView(
 
   Widget _buildImageCell(ImageData d) {
     double w = (Adapt.screenW() - Adapt.px(100)) / 2;
-    double h = w / d.aspect_ratio ;
+    double h = w / d.aspect_ratio;
     return Container(
       width: w,
       height: h,
@@ -392,7 +395,7 @@ Widget buildView(
     if (allimage.length > 0)
       return SliverStaggeredGrid.countBuilder(
         crossAxisCount: 4,
-        staggeredTileBuilder: (int index) =>StaggeredTile.fit(2),
+        staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
         mainAxisSpacing: Adapt.px(20),
         crossAxisSpacing: Adapt.px(20),
         itemCount: allimage.length,
@@ -400,7 +403,7 @@ Widget buildView(
           return _buildImageCell(allimage[index]);
         },
       );
-      /*return SliverList(
+    /*return SliverList(
           delegate:
               SliverChildBuilderDelegate((BuildContext contxt, int index) {
         return _buildImageCell(allimage[index]);
@@ -429,7 +432,6 @@ Widget buildView(
       return Card(
         elevation: 20.0,
         child: CachedNetworkImage(
-          fadeInDuration: Duration(milliseconds: 1000),
           height: Adapt.px(300),
           width: Adapt.px(200),
           fit: BoxFit.cover,
@@ -599,8 +601,9 @@ Widget buildView(
                 image: DecorationImage(
                     colorFilter:
                         ColorFilter.mode(dominantColor, BlendMode.color),
-                    image:CachedNetworkImageProvider(state.backdropPic==null ?ImageUrl.emptyimage: ImageUrl.getUrl(
-                        state.backdropPic, ImageSize.w500)),
+                    image: CachedNetworkImageProvider(state.backdropPic == null
+                        ? ImageUrl.emptyimage
+                        : ImageUrl.getUrl(state.backdropPic, ImageSize.w500)),
                     fit: BoxFit.cover)),
           ),
           Container(
@@ -636,38 +639,48 @@ Widget buildView(
                 Container(
                   child: Row(
                     children: <Widget>[
-                      Stack(
-                        children: <Widget>[
-                          Container(
-                              width: Adapt.px(80),
-                              height: Adapt.px(80),
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.circular(Adapt.px(40))),
-                              child: CircularProgressIndicator(
-                                strokeWidth: 6.0,
-                                valueColor: new AlwaysStoppedAnimation<Color>(
-                                    VoteColorHelper.getColor(
-                                        s.vote_average ?? evote)),
-                                backgroundColor: Colors.grey,
-                                value: (s.vote_average ?? evote) / 10,
-                              )),
-                          Container(
-                              width: Adapt.px(80),
-                              height: Adapt.px(80),
-                              child: Center(
-                                child: Text(
-                                  ((s.vote_average ?? evote) * 10)
-                                          .floor()
-                                          .toString() +
-                                      '%',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: Adapt.px(28),
-                                      color: Colors.white),
-                                ),
+                      AnimatedBuilder(
+                        animation: state.animationController,
+                        builder: (ctx, widget) {
+                          var animate = Tween<double>(
+                                  begin: 0.0, end: s.vote_average ?? evote)
+                              .animate(CurvedAnimation(
+                                parent: state.animationController,
+                                curve: Curves.ease,
                               ))
-                        ],
+                              .value;
+                          return Stack(
+                            children: <Widget>[
+                              Container(
+                                  width: Adapt.px(80),
+                                  height: Adapt.px(80),
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.circular(Adapt.px(40))),
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 6.0,
+                                    valueColor:
+                                        new AlwaysStoppedAnimation<Color>(
+                                            VoteColorHelper.getColor(
+                                                animate ?? evote)),
+                                    backgroundColor: Colors.grey,
+                                    value: animate / 10,
+                                  )),
+                              Container(
+                                  width: Adapt.px(80),
+                                  height: Adapt.px(80),
+                                  child: Center(
+                                    child: Text(
+                                      (animate * 10).floor().toString() + '%',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: Adapt.px(28),
+                                          color: Colors.white),
+                                    ),
+                                  ))
+                            ],
+                          );
+                        },
                       ),
                       SizedBox(
                         width: Adapt.px(30),
@@ -710,7 +723,7 @@ Widget buildView(
     body: DefaultTabController(
         length: 4,
         child: NestedScrollView(
-          controller: state.scrollController,
+            controller: state.scrollController,
             headerSliverBuilder: (BuildContext context, bool de) {
               return <Widget>[
                 SliverOverlapAbsorber(
@@ -720,7 +733,7 @@ Widget buildView(
                       pinned: true,
                       /*backgroundColor: state.palette.darkVibrantColor?.color ??
                           Colors.black87,*/
-                      backgroundColor:dominantColor,
+                      backgroundColor: dominantColor,
                       expandedHeight: Adapt.px(700),
                       centerTitle: false,
                       title: Text(de ? state.title ?? '' : ''),
@@ -729,7 +742,8 @@ Widget buildView(
                           icon: Icon(Icons.more_vert),
                           color: Colors.white,
                           iconSize: Adapt.px(50),
-                          onPressed: ()=>dispatch(MovieDetailPageActionCreator.openMenu()),
+                          onPressed: () =>
+                              dispatch(MovieDetailPageActionCreator.openMenu()),
                         )
                       ],
                       bottom: PreferredSize(
@@ -742,7 +756,7 @@ Widget buildView(
                               /*indicatorColor:
                                   state.palette.lightVibrantColor?.color ??
                                       Colors.black,*/
-                              indicatorColor:Color.fromRGBO(random.nextInt(255), random.nextInt(255), random.nextInt(255), random.nextDouble()),
+                              indicatorColor: state.tabTintColor,
                               indicatorSize: TabBarIndicatorSize.label,
                               isScrollable: true,
                               labelStyle: TextStyle(
@@ -792,24 +806,30 @@ Widget buildView(
                       ),
                     ),
                     SliverToBoxAdapter(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(Adapt.px(30)),
-                          child: Text(
-                              I18n.of(viewService.context).topBilledCast,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: Adapt.px(40),
-                                  fontWeight: FontWeight.w800)),
-                        ),
-                        Container(
-                          height: Adapt.px(450),
-                          child: _getCreditsCells(),
-                        ),
-                      ],
-                    )),
+                        child: AnimatedSwitcher(
+                            switchInCurve: Curves.easeIn,
+                            switchOutCurve: Curves.easeOut,
+                            duration: Duration(milliseconds: 600),
+                            child: Column(
+                              key: ValueKey(state.movieDetailModel.id),
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.all(Adapt.px(30)),
+                                  child: Text(
+                                      I18n.of(viewService.context)
+                                          .topBilledCast,
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: Adapt.px(40),
+                                          fontWeight: FontWeight.w800)),
+                                ),
+                                Container(
+                                  height: Adapt.px(450),
+                                  child: _getCreditsCells(),
+                                ),
+                              ],
+                            ))),
                     SliverToBoxAdapter(
                       child: viewService.buildComponent('keywords'),
                     ),
@@ -836,9 +856,9 @@ Widget buildView(
                         ),
                       ],
                     )),
-                     SliverToBoxAdapter(
-                          child: viewService.buildComponent('info'),
-                        ),
+                    SliverToBoxAdapter(
+                      child: viewService.buildComponent('info'),
+                    ),
                   ]);
                 })),
                 Container(child: Builder(builder: (BuildContext context) {
@@ -851,8 +871,7 @@ Widget buildView(
                   ]);
                 })),
                 Container(child: Builder(builder: (BuildContext context) {
-                  return CustomScrollView(
-                    slivers: <Widget>[
+                  return CustomScrollView(slivers: <Widget>[
                     SliverOverlapInjector(
                       handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
                           context),

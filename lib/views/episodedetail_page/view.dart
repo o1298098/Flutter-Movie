@@ -25,6 +25,7 @@ Widget buildView(
       title: Text(d.name,style:TextStyle(color:Colors.black)),
     ),
     body: Container(
+      alignment: Alignment.topLeft,
         height: Adapt.screenH(),
         child: ListView.builder(
           itemBuilder: adapter.itemBuilder,

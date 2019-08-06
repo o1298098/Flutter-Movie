@@ -36,6 +36,7 @@ Widget buildView(
 
   Widget _buildCell(VideoListResult d) {
     return Padding(
+      key: ValueKey(d.id),
       padding: EdgeInsets.only(left: Adapt.px(20)),
       child:GestureDetector(
         onTap: ()=>dispatch(PopularActionCreator.onCellTapped(d.id, d.backdrop_path,state.showmovie?d.title:d.name,d.poster_path)),
@@ -97,7 +98,18 @@ Widget buildView(
   Widget _buildbody() {
     VideoListModel model =
         state.showmovie ? state.popularMoives : state.popularTVShows;
-    return Container(
+    return AnimatedSwitcher(
+      transitionBuilder: (widget,animated){
+        return SlideTransition(
+          position: animated.drive(Tween(begin:Offset(1,0),end:Offset.zero)),
+          child: widget,
+        );
+      },
+      switchInCurve: Curves.easeIn,
+      switchOutCurve: Curves.easeOut,
+      duration: Duration(milliseconds: 300),
+      child:Container(
+        key: ValueKey(model),
       height: Adapt.px(225),
       child: ListView(
         scrollDirection: Axis.horizontal,
@@ -124,7 +136,8 @@ Widget buildView(
                 _buildShimmerCell()
               ],
       ),
-    );
+    )
+    ) ;
   }
 
   return _buildbody();

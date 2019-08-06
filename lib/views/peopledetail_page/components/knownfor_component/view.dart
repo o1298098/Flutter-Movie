@@ -15,6 +15,7 @@ Widget buildView(
     KnownForState state, Dispatch dispatch, ViewService viewService) {
   Widget _buildCastCell(CastData d) {
     return Container(
+      key: ValueKey(d.id),
       margin: EdgeInsets.only(left: Adapt.px(20)),
       width: Adapt.px(240),
       height: Adapt.px(400),
@@ -66,12 +67,13 @@ Widget buildView(
             ),
             Container(
               height: Adapt.px(24),
-              margin: EdgeInsets.fromLTRB(0,Adapt.px(15),Adapt.px(20),0),
+              margin: EdgeInsets.fromLTRB(0, Adapt.px(15), Adapt.px(20), 0),
               color: Colors.grey[200],
             ),
             Container(
               height: Adapt.px(24),
-              margin: EdgeInsets.fromLTRB(0,Adapt.px(5),Adapt.px(50),Adapt.px(20)),
+              margin: EdgeInsets.fromLTRB(
+                  0, Adapt.px(5), Adapt.px(50), Adapt.px(20)),
               color: Colors.grey[200],
             ),
           ],
@@ -95,38 +97,49 @@ Widget buildView(
         height: Adapt.px(480),
         child: ListView(
           scrollDirection: Axis.horizontal,
-          children:<Widget>[
-            SizedBox(width: Adapt.px(30),),
+          children: <Widget>[
+            SizedBox(
+              width: Adapt.px(30),
+            ),
             _buildShimmerCell(),
-            SizedBox(width: Adapt.px(20),),
+            SizedBox(
+              width: Adapt.px(20),
+            ),
             _buildShimmerCell(),
-            SizedBox(width: Adapt.px(20),),
+            SizedBox(
+              width: Adapt.px(20),
+            ),
             _buildShimmerCell(),
           ],
         ),
       );
   }
 
-  return Container(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(30)),
-          child: Text(
-            I18n.of(viewService.context).knownFor,
-            softWrap: true,
-            style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: Adapt.px(40)),
-          ),
+  return AnimatedSwitcher(
+      switchInCurve: Curves.easeIn,
+      switchOutCurve: Curves.easeOut,
+      duration: Duration(milliseconds: 600),
+      child: Container(
+        key:ValueKey(state.creditsModel),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(30)),
+              child: Text(
+                I18n.of(viewService.context).knownFor,
+                softWrap: true,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: Adapt.px(40)),
+              ),
+            ),
+            SizedBox(
+              height: Adapt.px(10),
+            ),
+            _buildKnownForCell(),
+          ],
         ),
-        SizedBox(
-          height: Adapt.px(10),
-        ),
-        _buildKnownForCell(),
-      ],
-    ),
-  );
+      ));
 }

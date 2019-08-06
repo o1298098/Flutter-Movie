@@ -28,7 +28,7 @@ Widget buildView(
         dispatch(ImagesActionCreator.onGalleryImageTapped(index));
       },
       child: Hero(
-        tag: url+index.toString(),
+        tag: url + index.toString(),
         child: Container(
           margin: EdgeInsets.only(right: Adapt.px(20)),
           height: Adapt.px(200),
@@ -53,8 +53,9 @@ Widget buildView(
           height: Adapt.px(200),
           width: Adapt.px(350),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(Adapt.px(15)),
-              color: Colors.grey[200],)),
+            borderRadius: BorderRadius.circular(Adapt.px(15)),
+            color: Colors.grey[200],
+          )),
     );
   }
 
@@ -75,6 +76,7 @@ Widget buildView(
         );
       } else
         return Container(
+          width: Adapt.screenW(),
           padding: EdgeInsets.only(left: Adapt.px(28)),
           child: Text(I18n.of(viewService.context).episodeImages),
         );
@@ -91,31 +93,37 @@ Widget buildView(
           ]));
   }
 
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Padding(
-        padding: EdgeInsets.fromLTRB(Adapt.px(28), 0, Adapt.px(28), 0),
-        child: Text.rich(TextSpan(children: [
-          TextSpan(
-              text: I18n.of(viewService.context).episodeImages,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: Adapt.px(35),
-                  fontWeight: FontWeight.bold)),
-          TextSpan(
-              text:
-                  ' ${state.images != null ? state.images.stills.length.toString() : ''}',
-              style: TextStyle(color: Colors.grey, fontSize: Adapt.px(26)))
-        ])),
+  return AnimatedSwitcher(
+    switchInCurve: Curves.easeIn,
+    switchOutCurve: Curves.easeOut,
+    duration: Duration(milliseconds: 600),
+    child: Column(
+        key: ValueKey(state.images),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(Adapt.px(28), 0, Adapt.px(28), 0),
+            child: Text.rich(TextSpan(children: [
+              TextSpan(
+                  text: I18n.of(viewService.context).episodeImages,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: Adapt.px(35),
+                      fontWeight: FontWeight.bold)),
+              TextSpan(
+                  text:
+                      ' ${state.images != null ? state.images.stills.length.toString() : ''}',
+                  style: TextStyle(color: Colors.grey, fontSize: Adapt.px(26)))
+            ])),
+          ),
+          SizedBox(
+            height: Adapt.px(30),
+          ),
+          _getImagesBody(),
+          SizedBox(
+            height: Adapt.px(30),
+          ),
+        ],
       ),
-      SizedBox(
-        height: Adapt.px(30),
-      ),
-      _getImagesBody(),
-      SizedBox(
-        height: Adapt.px(30),
-      ),
-    ],
   );
 }

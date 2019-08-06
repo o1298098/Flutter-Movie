@@ -71,15 +71,18 @@ Widget buildView(
                     height: Adapt.px(8),
                   ),
                   Container(
-                    width: Adapt.screenW()-Adapt.px(300),
+                    width: Adapt.screenW() - Adapt.px(300),
                     height: Adapt.px(24),
                     color: Colors.grey[200],
                   ),
-                  SizedBox(height: Adapt.px(8),),
-                  Container( 
-                    width: Adapt.screenW()-Adapt.px(300),
+                  SizedBox(
+                    height: Adapt.px(8),
+                  ),
+                  Container(
+                    width: Adapt.screenW() - Adapt.px(300),
                     height: Adapt.px(24),
-                    color: Colors.grey[200],)
+                    color: Colors.grey[200],
+                  )
                 ],
               )
             ],
@@ -91,6 +94,7 @@ Widget buildView(
 
   Widget _buildMovieCell(VideoListResult d) {
     return Column(
+      key: ValueKey<int>(d.id),
       children: <Widget>[
         Container(
           padding: EdgeInsets.all(Adapt.px(20)),
@@ -158,20 +162,23 @@ Widget buildView(
     );
   }
 
-  return keepAliveWrapper(ListView(
-    controller: state.movieController,
-    children: state.moviecoming.results.map(_buildMovieCell).toList()
-      ..add(
-        Offstage(
-          offstage: state.moviecoming.page==state.moviecoming.total_pages&&state.moviecoming.results.length>0,
-          child: Column(
-            children: <Widget>[
-          _buildShimmerCell(),
-          _buildShimmerCell(),
-          _buildShimmerCell(),
-          _buildShimmerCell(),],
-          ),
-        )
-      ),
-  ));
+  return keepAliveWrapper(AnimatedSwitcher(
+      duration: Duration(milliseconds: 600),
+      child: ListView(
+        key: ValueKey(state.moviecoming),
+        controller: state.movieController,
+        children: state.moviecoming.results.map(_buildMovieCell).toList()
+          ..add(Offstage(
+            offstage: state.moviecoming.page == state.moviecoming.total_pages &&
+                state.moviecoming.results.length > 0,
+            child: Column(
+              children: <Widget>[
+                _buildShimmerCell(),
+                _buildShimmerCell(),
+                _buildShimmerCell(),
+                _buildShimmerCell(),
+              ],
+            ),
+          )),
+      )));
 }

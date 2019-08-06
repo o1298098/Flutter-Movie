@@ -19,11 +19,13 @@ Widget buildView(
         child: Stack(
           children: <Widget>[
             CachedNetworkImage(
+              fadeInDuration: Duration.zero,
+              fadeOutDuration: Duration.zero,
               width: Adapt.screenW(),
               height: Adapt.screenW() * 9 / 16,
               fit: BoxFit.cover,
               imageUrl: ImageUrl.getUrl(
-                  d.backdrop_path ?? '/p60VSQL7usdxztIGokJPpHmKWdU.jpg',
+                  d.backdrop_path,
                   ImageSize.w500),
                   placeholder: (ctx,str){return Container(
                     width: Adapt.screenW(),
@@ -73,10 +75,12 @@ Widget buildView(
   Widget _buildMian(){
     if(state.movie.results.length>0)
     return Column(
+      key: ValueKey(state.movie),
       children: state.movie.results.take(3).map(_bulidcell).toList(),
     );
     else 
     return Column(
+      key: ValueKey(state.movie),
       children: <Widget>[
          _buildShimmerCell(),
          _buildShimmerCell(),
@@ -84,5 +88,9 @@ Widget buildView(
       ],
     );
   }
-  return _buildMian();
+  return AnimatedSwitcher(
+    switchInCurve: Curves.easeIn,
+    switchOutCurve: Curves.easeOut,
+    duration: Duration(milliseconds: 600),
+    child: _buildMian());
 }
