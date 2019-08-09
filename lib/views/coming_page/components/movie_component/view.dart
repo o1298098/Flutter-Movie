@@ -111,9 +111,8 @@ Widget buildView(
                         random.nextDouble()),
                     image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: CachedNetworkImageProvider(d.poster_path == null
-                            ? ImageUrl.emptyimage
-                            : ImageUrl.getUrl(d.poster_path, ImageSize.w300)))),
+                        image: CachedNetworkImageProvider(
+                            ImageUrl.getUrl(d.poster_path, ImageSize.w300)))),
               ),
               SizedBox(
                 width: Adapt.px(20),
@@ -167,6 +166,7 @@ Widget buildView(
       child: ListView(
         key: ValueKey(state.moviecoming),
         controller: state.movieController,
+        cacheExtent: Adapt.px(180),
         children: state.moviecoming.results.map(_buildMovieCell).toList()
           ..add(Offstage(
             offstage: state.moviecoming.page == state.moviecoming.total_pages &&

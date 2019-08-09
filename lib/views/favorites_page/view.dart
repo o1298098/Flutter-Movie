@@ -179,6 +179,7 @@ Widget buildView(
           opacity:
               Tween(begin: 0.0, end: 1.0).animate(state.animationController),
           child: Container(
+            height: Adapt.px(550),
             padding: EdgeInsets.all(Adapt.px(30)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -309,16 +310,13 @@ Widget buildView(
                   height: Adapt.px(100),
                 ),
                 _buildHeader(),
-                Expanded(
-                  child: Container(),
-                ),
                 _buildSwitchTitle(),
                 SizedBox(
                   height: Adapt.px(40),
                 ),
                 _buildSwiper(),
-                SizedBox(
-                  height: Adapt.px(150),
+                Expanded(
+                  child: Container(),
                 ),
               ],
             ),

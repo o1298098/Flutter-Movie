@@ -30,9 +30,8 @@ Widget buildView(
                     color: Colors.grey[100],
                     image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: CachedNetworkImageProvider(d.poster_path == null
-                            ? ImageUrl.emptyimage
-                            : ImageUrl.getUrl(d.poster_path, ImageSize.w300)))),
+                        image: CachedNetworkImageProvider(
+                            ImageUrl.getUrl(d.poster_path, ImageSize.w300)))),
               ),
               SizedBox(
                 width: Adapt.px(20),
@@ -42,7 +41,7 @@ Widget buildView(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    width: Adapt.screenW()-Adapt.px(180),
+                    width: Adapt.screenW() - Adapt.px(180),
                     child: RichText(
                       text: TextSpan(children: <TextSpan>[
                         TextSpan(
@@ -52,11 +51,9 @@ Widget buildView(
                                 fontSize: Adapt.px(30),
                                 fontWeight: FontWeight.bold)),
                         TextSpan(
-                          text: ' (${d.nextEpisodeNumber??'-'})',
-                          style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: Adapt.px(30))
-                        )
+                            text: ' (${d.nextEpisodeNumber ?? '-'})',
+                            style: TextStyle(
+                                color: Colors.grey, fontSize: Adapt.px(30)))
                       ]),
                     ),
                   ),

@@ -65,7 +65,8 @@ Widget buildView(
                         padding: EdgeInsets.fromLTRB(Adapt.px(20), Adapt.px(10),
                             Adapt.px(20), Adapt.px(10)),
                         child: Text(
-                          DateFormat.yMMMd().format(DateTime.parse(d.air_date??'1990-01-01')),
+                          DateFormat.yMMMd().format(
+                              DateTime.parse(d.air_date ?? '1990-01-01')),
                           style: TextStyle(fontSize: Adapt.px(24)),
                         )),
                   ),
@@ -216,11 +217,7 @@ Widget buildView(
     );
   }
 
-  return  AnimatedSwitcher(
-    switchInCurve: Curves.easeIn,
-    switchOutCurve: Curves.easeOut,
-    duration: Duration(milliseconds: 600),
-    child: Column(
+  return Column(
       key: ValueKey(state.episodes),
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -257,5 +254,5 @@ Widget buildView(
                   ],
           ),
         )
-      ]));
+      ]);
 }

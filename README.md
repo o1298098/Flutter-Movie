@@ -2,6 +2,7 @@
 
 A Flutter movie app build with Fish-Redux and TMDB api.  
 ## ToDos
+- [ ] Redesign UI
 - [ ] customize theme
 - [ ] account detail
 - [x] localization

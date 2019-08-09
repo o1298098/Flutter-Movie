@@ -10,6 +10,7 @@ import 'package:movie/models/peopledetail.dart';
 class PeopleDetailPageState implements GlobalBaseState<PeopleDetailPageState> {
   PeopleDetailModel peopleDetailModel;
   CombinedCreditsModel creditsModel;
+  List<CastData> knowForCast;
   int peopleid;
   double biographyHeight;
   bool isBiographyOpen;
@@ -21,15 +22,16 @@ class PeopleDetailPageState implements GlobalBaseState<PeopleDetailPageState> {
   @override
   PeopleDetailPageState clone() {
     return PeopleDetailPageState()
-    ..peopleDetailModel=peopleDetailModel
-    ..peopleid=peopleid
-    ..profilePath=profilePath
-    ..profileName=profileName
-    ..creditsModel=creditsModel
-    ..isBiographyOpen=isBiographyOpen
-    ..biographyHeight=biographyHeight
-    ..showmovie=showmovie
-    ..pageScrollPhysics=pageScrollPhysics;
+      ..peopleDetailModel = peopleDetailModel
+      ..peopleid = peopleid
+      ..profilePath = profilePath
+      ..profileName = profileName
+      ..creditsModel = creditsModel
+      ..isBiographyOpen = isBiographyOpen
+      ..biographyHeight = biographyHeight
+      ..showmovie = showmovie
+      ..knowForCast = knowForCast
+      ..pageScrollPhysics = pageScrollPhysics;
   }
 
   @override
@@ -37,16 +39,19 @@ class PeopleDetailPageState implements GlobalBaseState<PeopleDetailPageState> {
 }
 
 PeopleDetailPageState initState(Map<String, dynamic> args) {
-  var state=PeopleDetailPageState();
-  state.peopleDetailModel=PeopleDetailModel.fromParams(also_known_as: List<String>());
-  state.creditsModel=CombinedCreditsModel.fromParams(cast: List<CastData>(),crew:List<CrewData>());
-  state.biographyHeight=Adapt.px(200.0);
-  state.isBiographyOpen=false;
-  state.showmovie=true;
-  state.pageScrollPhysics=new ScrollPhysics();
-  state.peopleid=args['peopleid'];
-  state.profilePath=args['profilePath'];
-  state.profileName=args['profileName'];
-  state.character=args['character'];
+  var state = PeopleDetailPageState();
+  state.peopleDetailModel =
+      PeopleDetailModel.fromParams(also_known_as: List<String>());
+  state.creditsModel = CombinedCreditsModel.fromParams(
+      cast: List<CastData>(), crew: List<CrewData>());
+  state.biographyHeight = Adapt.px(200.0);
+  state.isBiographyOpen = false;
+  state.showmovie = true;
+  state.pageScrollPhysics = new ScrollPhysics();
+  state.knowForCast = [];
+  state.peopleid = args['peopleid'];
+  state.profilePath = args['profilePath'];
+  state.profileName = args['profileName'];
+  state.character = args['character'];
   return state;
 }

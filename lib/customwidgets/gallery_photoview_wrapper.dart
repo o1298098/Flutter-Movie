@@ -59,15 +59,20 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
           ),
           child: Stack(
             children: <Widget>[
-              PhotoViewGallery.builder(
-                scrollPhysics: const BouncingScrollPhysics(),
-                builder: _buildItem,
-                itemCount: widget.galleryItems.length,
-                loadingChild: widget.loadingChild,
-                backgroundDecoration: widget.backgroundDecoration,
-                pageController: widget.pageController,
-                onPageChanged: onPageChanged,
-              ),
+              GestureDetector(
+                  onVerticalDragUpdate: (dragUpdateDetails) {
+                    Navigator.of(context).pop();
+                  },
+                  behavior: HitTestBehavior.translucent,
+                  child: PhotoViewGallery.builder(
+                    scrollPhysics: const BouncingScrollPhysics(),
+                    builder: _buildItem,
+                    itemCount: widget.galleryItems.length,
+                    loadingChild: widget.loadingChild,
+                    backgroundDecoration: widget.backgroundDecoration,
+                    pageController: widget.pageController,
+                    onPageChanged: onPageChanged,
+                  )),
               Container(
                 alignment: Alignment.bottomRight,
                 padding: const EdgeInsets.all(20.0),

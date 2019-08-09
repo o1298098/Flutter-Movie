@@ -18,6 +18,7 @@ Effect<FavoritesPageState> buildEffect() {
     FavoritesPageAction.action: _onAction,
     FavoritesPageAction.setColor: _setColor,
     Lifecycle.initState: _onInit,
+    Lifecycle.dispose: _onDispose
   });
 }
 
@@ -33,13 +34,18 @@ Future _onInit(Action action, Context<FavoritesPageState> ctx) async {
     if (movie != null) {
       ctx.dispatch(FavoritesPageActionCreator.setFavoriteMovies(movie));
       if (movie.results.length > 0)
-        ctx.dispatch(FavoritesPageActionCreator.setBackground(movie.results[0],Colors.black));
-        ctx.state.animationController.forward(from: 0.0);
-        //ctx.dispatch(FavoritesPageActionCreator.setColor(r.results[0].poster_path));
+        ctx.dispatch(FavoritesPageActionCreator.setBackground(
+            movie.results[0], Colors.black));
+      ctx.state.animationController.forward(from: 0.0);
+      //ctx.dispatch(FavoritesPageActionCreator.setColor(r.results[0].poster_path));
     }
-    var tv=await ApiHelper.getFavoriteTVShows(accountid);
+    var tv = await ApiHelper.getFavoriteTVShows(accountid);
     if (tv != null) ctx.dispatch(FavoritesPageActionCreator.setFavoriteTV(tv));
   }
+}
+
+void _onDispose(Action action, Context<FavoritesPageState> ctx) {
+  ctx.state.animationController.dispose();
 }
 
 Future _setColor(Action action, Context<FavoritesPageState> ctx) async {
@@ -49,6 +55,7 @@ Future _setColor(Action action, Context<FavoritesPageState> ctx) async {
         await PaletteGenerator.fromImageProvider(CachedNetworkImageProvider(
       ImageUrl.getUrl(url, ImageSize.w300),
     ));
-      if (palette!=null)ctx.dispatch(FavoritesPageActionCreator.updateColor(palette));
+    if (palette != null)
+      ctx.dispatch(FavoritesPageActionCreator.updateColor(palette));
   }
 }

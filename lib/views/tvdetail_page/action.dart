@@ -10,7 +10,7 @@ import 'package:movie/models/videomodel.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 //TODO replace with your own action
-enum TVDetailPageAction { 
+enum TVDetailPageAction {
   action,
   init,
   setbgcolor,
@@ -21,15 +21,18 @@ enum TVDetailPageAction {
   setRecommendation,
   setKeyWords,
   setAccountState,
-  recommendationTapped, 
+  recommendationTapped,
   castCellTapped,
   openMenu,
-  showSnackBar}
+  showSnackBar,
+  onImageCellTapped
+}
 
 class TVDetailPageActionCreator {
   static Action onAction() {
     return const Action(TVDetailPageAction.action);
   }
+
   static Action onInit(TVDetailModel model) {
     return Action(TVDetailPageAction.init, payload: model);
   }
@@ -49,28 +52,43 @@ class TVDetailPageActionCreator {
   static Action onSetReviews(ReviewModel c) {
     return Action(TVDetailPageAction.setReviews, payload: c);
   }
+
   static Action onSetRecommendations(VideoListModel c) {
     return Action(TVDetailPageAction.setRecommendation, payload: c);
   }
+
   static Action onKeyWords(KeyWordModel c) {
     return Action(TVDetailPageAction.setKeyWords, payload: c);
   }
+
   static Action onSetVideos(VideoModel c) {
     return Action(TVDetailPageAction.setVideos, payload: c);
   }
-  static Action onRecommendationTapped(int movieid,String backpic) {
-    return Action(TVDetailPageAction.recommendationTapped, payload:[movieid,backpic]);
+
+  static Action onRecommendationTapped(int movieid, String backpic) {
+    return Action(TVDetailPageAction.recommendationTapped,
+        payload: [movieid, backpic]);
   }
-  static Action onCastCellTapped(int peopleid,String profilePath,String profileName) {
-    return Action(TVDetailPageAction.castCellTapped, payload:[peopleid,profilePath,profileName]);
+
+  static Action onCastCellTapped(
+      int peopleid, String profilePath, String profileName) {
+    return Action(TVDetailPageAction.castCellTapped,
+        payload: [peopleid, profilePath, profileName]);
   }
+
   static Action onSetAccountState(MediaAccountStateModel model) {
-    return Action(TVDetailPageAction.setAccountState, payload:model);
+    return Action(TVDetailPageAction.setAccountState, payload: model);
   }
+
   static Action openMenu() {
     return Action(TVDetailPageAction.openMenu);
   }
+
   static Action showSnackBar(String message) {
-    return Action(TVDetailPageAction.showSnackBar,payload: message);
+    return Action(TVDetailPageAction.showSnackBar, payload: message);
+  }
+
+  static Action onImageCellTapped(int index, List<ImageData> data) {
+    return Action(TVDetailPageAction.onImageCellTapped, payload: [index, data]);
   }
 }

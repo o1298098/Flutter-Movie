@@ -35,8 +35,11 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
         builder: (ctx) {
           var width = (Adapt.screenW() - Adapt.px(60)).floorToDouble();
           var height = ((width - Adapt.px(40)) / 2).floorToDouble();
-          return MediaListCardDialog(type: MediaType.tv,mediaId: state.id,);
-          });
+          return MediaListCardDialog(
+            type: MediaType.tv,
+            mediaId: state.id,
+          );
+        });
   }
 
   void _rateIt() {

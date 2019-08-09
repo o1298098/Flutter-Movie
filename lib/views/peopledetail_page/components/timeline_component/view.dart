@@ -44,6 +44,7 @@ Widget buildView(
         ? '-'
         : DateTime.parse(date).year.toString();
     return Container(
+        key: ValueKey(d.credit_id),
         padding: EdgeInsets.only(bottom: Adapt.px(50)),
         child: Row(
           children: <Widget>[
@@ -74,7 +75,7 @@ Widget buildView(
           ],
         ));
   }
-  
+
   Widget _buildShimmerCell() {
     return SizedBox(
         child: Shimmer.fromColors(

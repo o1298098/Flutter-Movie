@@ -5,7 +5,9 @@ import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
+import 'package:movie/customwidgets/gallery_photoview_wrapper.dart';
 import 'package:movie/models/enums/imagesize.dart';
+import 'package:movie/models/imagemodel.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'action.dart';
 import 'state.dart';
@@ -17,6 +19,7 @@ Effect<TVDetailPageState> buildEffect() {
     TVDetailPageAction.castCellTapped: _onCastCellTapped,
     TVDetailPageAction.openMenu: _openMenu,
     TVDetailPageAction.showSnackBar: _showSnackBar,
+    TVDetailPageAction.onImageCellTapped: _onImageCellTapped,
     Lifecycle.initState: _onInit,
   });
 }
@@ -25,8 +28,9 @@ void _onAction(Action action, Context<TVDetailPageState> ctx) {}
 
 Future _onInit(Action action, Context<TVDetailPageState> ctx) async {
   try {
-    final ticker=ctx.stfState as CustomstfState;
-    ctx.state.animationController=AnimationController(vsync: ticker,duration: Duration(milliseconds: 1000));
+    final ticker = ctx.stfState as CustomstfState;
+    ctx.state.animationController = AnimationController(
+        vsync: ticker, duration: Duration(milliseconds: 1000));
     /*var paletteGenerator = await PaletteGenerator.fromImageProvider(
           CachedNetworkImageProvider(ImageUrl.getUrl(ctx.state.posterPic, ImageSize.w300)));
       ctx.dispatch(TVDetailPageActionCreator.onsetColor(paletteGenerator));*/
@@ -77,4 +81,21 @@ void _showSnackBar(Action action, Context<TVDetailPageState> ctx) {
   ctx.state.scaffoldkey.currentState.showSnackBar(SnackBar(
     content: Text(action.payload ?? ''),
   ));
+}
+
+Future _onImageCellTapped(Action action, Context<TVDetailPageState> ctx) async {
+  final int _index = action.payload[0];
+  final List<ImageData> _images = action.payload[1];
+  await Navigator.of(ctx.context).push(PageRouteBuilder(
+      transitionDuration: Duration(milliseconds: 300),
+      pageBuilder: (BuildContext context, Animation animation,
+          Animation secondaryAnimation) {
+        return new FadeTransition(
+            opacity: animation,
+            child: GalleryPhotoViewWrapper(
+              imageSize: ImageSize.w400,
+              galleryItems: _images,
+              initialIndex: _index,
+            ));
+      }));
 }

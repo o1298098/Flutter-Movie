@@ -2,19 +2,18 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/combinedcredits.dart';
 
 class KnownForState implements Cloneable<KnownForState> {
-  
-  CombinedCreditsModel creditsModel;
+  List<CastData> cast;
 
-  KnownForState({this.creditsModel});
+  KnownForState({this.cast});
 
   @override
   KnownForState clone() {
-    return KnownForState()..creditsModel=creditsModel;
+    return KnownForState()..cast = cast;
   }
 }
 
 KnownForState initState(Map<String, dynamic> args) {
-  var state= KnownForState();
-  state.creditsModel=CombinedCreditsModel.fromParams(cast: List<CastData>(),crew:List<CrewData>());
+  var state = KnownForState();
+  state.cast = List<CastData>();
   return state;
 }

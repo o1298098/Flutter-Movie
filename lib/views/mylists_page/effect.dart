@@ -21,10 +21,12 @@ Effect<MyListsPageState> buildEffect() {
 void _onAction(Action action, Context<MyListsPageState> ctx) {}
 
 Future _onInit(Action action, Context<MyListsPageState> ctx) async {
-  final ticker=ctx.stfState as CustomstfState;
-  ctx.state.animationController=AnimationController(vsync: ticker,duration: Duration(milliseconds: 300));
-  ctx.state.cellAnimationController=AnimationController(vsync: ticker,duration: Duration(milliseconds: 1000));
-  String id= ctx.state.accountId;
+  final ticker = ctx.stfState as CustomstfState;
+  ctx.state.animationController =
+      AnimationController(vsync: ticker, duration: Duration(milliseconds: 300));
+  ctx.state.cellAnimationController = AnimationController(
+      vsync: ticker, duration: Duration(milliseconds: 1000));
+  String id = ctx.state.accountId;
   ctx.state.scrollController = ScrollController(keepScrollOffset: false)
     ..addListener(() async {
       bool isBottom = ctx.state.scrollController.position.pixels ==
@@ -59,13 +61,13 @@ Future _onInit(Action action, Context<MyListsPageState> ctx) async {
       var result = await ApiHelper.createAccessTokenV4(token);
       if (result) {
         var prefs = await SharedPreferences.getInstance();
-        id=prefs.getString('accountIdV4');
+        id = prefs.getString('accountIdV4');
         ctx.dispatch(MyListsPageActionCreator.setAccount(id));
         shouldLoad = true;
       }
     }
   }
-  if (shouldLoad&&id!=null) {
+  if (shouldLoad && id != null) {
     var r = await ApiHelper.getAccountListsV4(id);
     if (r != null) ctx.dispatch(MyListsPageActionCreator.setList(r));
   }

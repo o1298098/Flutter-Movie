@@ -16,7 +16,7 @@ Widget buildView(
     MyListsPageState state, Dispatch dispatch, ViewService viewService) {
   var animate = TweenSequence([
     TweenSequenceItem(
-        tween: Tween<double>(begin: 0.0, end: 0.005), weight: 0.5),
+        tween: Tween<double>(begin: 0.0, end: 0.003), weight: 0.5),
     TweenSequenceItem(tween: Tween<double>(begin: 0.003, end: 0.0), weight: 1),
     TweenSequenceItem(
         tween: Tween<double>(begin: 0.0, end: -0.003), weight: 0.5),
@@ -273,10 +273,15 @@ Widget buildView(
         iconTheme: IconThemeData(color: Colors.black),
         actions: <Widget>[
           IconButton(
-            icon:AnimatedSwitcher(
-              child:state.isEdit?Icon(Icons.check,key: ValueKey(state.isEdit),): Icon(Icons.edit,key: ValueKey(state.isEdit)),
+            icon: AnimatedSwitcher(
+              child: state.isEdit
+                  ? Icon(
+                      Icons.check,
+                      key: ValueKey(state.isEdit),
+                    )
+                  : Icon(Icons.edit, key: ValueKey(state.isEdit)),
               duration: Duration(milliseconds: 200),
-            ) ,
+            ),
             onPressed: () async {
               await state.scrollController.position.animateTo(0.0,
                   curve: Curves.ease, duration: Duration(milliseconds: 200));

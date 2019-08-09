@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 import 'dart:io';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:movie/models/accountdetail.dart';
 import 'package:movie/models/certification.dart';
 import 'package:movie/models/combinedcredits.dart';
@@ -53,7 +54,7 @@ class ApiHelper {
 
   static Future createGuestSession() async {
     String param = '/authentication/guest_session/new?api_key=$_apikey';
-    var r = await httpGet(param);
+    var r = await httpGet(param, cached: false);
     if (r != null) {
       var jsonobject = json.decode(r);
       if (jsonobject['success']) {
@@ -78,7 +79,7 @@ class ApiHelper {
 
   static Future createRequestToken() async {
     String param = '/authentication/token/new?api_key=$_apikey';
-    var r = await httpGet(param);
+    var r = await httpGet(param, cached: false);
     if (r != null) {
       var jsonobject = json.decode(r);
       if (jsonobject['success']) {
@@ -147,7 +148,7 @@ class ApiHelper {
     AccountDetailModel accountDetailModel;
     if (session != null) {
       String param = '/account?api_key=$_apikey&session_id=$session';
-      var r = await httpGet(param);
+      var r = await httpGet(param, cached: false);
       if (r != null) accountDetailModel = AccountDetailModel(r);
       prefs.setInt('accountid', accountDetailModel.id);
       prefs.setBool('islogin', true);
@@ -346,7 +347,8 @@ class ApiHelper {
   }
 
   ///Get a list of all the movies you have rated.
-  static Future<VideoListModel> getRatedMovies({int page = 1, String sortBy = 'created_at.asc'}) async {
+  static Future<VideoListModel> getRatedMovies(
+      {int page = 1, String sortBy = 'created_at.asc'}) async {
     int accountid = prefs.getInt('accountid');
     if (accountid == null) return null;
     VideoListModel model;
@@ -358,7 +360,8 @@ class ApiHelper {
   }
 
   ///Get a list of all the movies you have rated.
-  static Future<VideoListModel> getRatedTVShows({int page = 1,String sortBy = 'created_at.asc'}) async {
+  static Future<VideoListModel> getRatedTVShows(
+      {int page = 1, String sortBy = 'created_at.asc'}) async {
     int accountid = prefs.getInt('accountid');
     if (accountid == null) return null;
     VideoListModel model;
@@ -503,7 +506,7 @@ class ApiHelper {
       param += '&session_id=$session';
     else
       param += '&guest_session_id=$session';
-    var r = await httpGet(param);
+    var r = await httpGet(param, cached: false);
     if (r != null) model = MediaAccountStateModel(r);
     return model;
   }
@@ -852,14 +855,25 @@ class ApiHelper {
     return model;
   }
 
-  static Future<String> httpGet(String param) async {
+  static Future<String> httpGet(String param,
+      {bool cached = true,
+      cacheDuration = const Duration(days: 1),
+      maxStale = const Duration(days: 30)}) async {
     try {
       if (_appDocPath == null) {
         await getCookieDir();
       }
       var dio = new Dio();
+      if (cached)
+        dio.interceptors.add(DioCacheManager(CacheConfig()).interceptor);
       dio.options.cookies = _cj.loadForRequest(Uri.parse(_apihost));
-      var response = await dio.get(_apihost + param);
+      var response = await dio.get(
+        _apihost + param,
+        options: buildCacheOptions(
+          cacheDuration,
+          maxStale: maxStale,
+        ),
+      );
       var _content = json.encode(response.data);
       return _content;
     } on DioError catch (e) {

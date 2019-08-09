@@ -662,7 +662,7 @@ Widget buildView(
                                     valueColor:
                                         new AlwaysStoppedAnimation<Color>(
                                             VoteColorHelper.getColor(
-                                                animate ?? evote)),
+                                                animate)),
                                     backgroundColor: Colors.grey,
                                     value: animate / 10,
                                   )),

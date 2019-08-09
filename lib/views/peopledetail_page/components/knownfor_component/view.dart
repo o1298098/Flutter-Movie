@@ -83,13 +83,12 @@ Widget buildView(
   }
 
   Widget _buildKnownForCell() {
-    if (state.creditsModel.cast.length > 0)
+    if (state.cast.length > 0)
       return Container(
         height: Adapt.px(480),
         child: ListView(
           scrollDirection: Axis.horizontal,
-          children:
-              state.creditsModel.cast.take(8).map(_buildCastCell).toList(),
+          children: state.cast.take(8).map(_buildCastCell).toList(),
         ),
       );
     else
@@ -120,7 +119,7 @@ Widget buildView(
       switchOutCurve: Curves.easeOut,
       duration: Duration(milliseconds: 600),
       child: Container(
-        key:ValueKey(state.creditsModel),
+        key: ValueKey(state.cast),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

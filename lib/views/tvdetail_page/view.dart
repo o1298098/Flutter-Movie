@@ -31,6 +31,7 @@ Widget buildView(
   //var dominantColor = state.palette?.dominantColor?.color ?? Colors.black38;
   var dominantColor = state.mainColor;
   double evote = 0.0;
+  List<ImageData> _allimage;
 
   Widget _buildCreditsCell(CastData p) {
     return GestureDetector(
@@ -284,20 +285,26 @@ Widget buildView(
     );
   }
 
-  Widget _buildImageCell(ImageData d) {
+  Widget _buildImageCell(int index) {
+    var d = _allimage[index];
     double w = (Adapt.screenW() - Adapt.px(100)) / 2;
     double h = w / d.aspect_ratio;
-    return Container(
-      width: w,
-      height: h,
-      decoration: BoxDecoration(
-        color: Color.fromRGBO(random.nextInt(255), random.nextInt(255),
-            random.nextInt(255), random.nextDouble()),
+    return GestureDetector(
+      key: ValueKey(d.file_path),
+      onTap: () => dispatch(
+          TVDetailPageActionCreator.onImageCellTapped(index, _allimage)),
+      child: Container(
+        width: w,
+        height: h,
+        decoration: BoxDecoration(
+          color: Color.fromRGBO(random.nextInt(255), random.nextInt(255),
+              random.nextInt(255), random.nextDouble()),
+        ),
+        child: ParallaxImage(
+            extent: h,
+            image: CachedNetworkImageProvider(
+                ImageUrl.getUrl(d.file_path, ImageSize.w400))),
       ),
-      child: ParallaxImage(
-          extent: h,
-          image: CachedNetworkImageProvider(
-              ImageUrl.getUrl(d.file_path, ImageSize.w400))),
     );
   }
 
@@ -430,16 +437,16 @@ Widget buildView(
     var hset = new HashSet<ImageData>()
       ..addAll(state.imagesmodel.backdrops)
       ..addAll(state.imagesmodel.posters);
-    var allimage = hset.toList();
-    if (allimage.length > 0)
+    _allimage = hset.toList();
+    if (_allimage.length > 0)
       return SliverStaggeredGrid.countBuilder(
         crossAxisCount: 4,
         staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
         mainAxisSpacing: Adapt.px(20),
         crossAxisSpacing: Adapt.px(20),
-        itemCount: allimage.length,
+        itemCount: _allimage.length,
         itemBuilder: (BuildContext contxt, int index) {
-          return _buildImageCell(allimage[index]);
+          return _buildImageCell(index);
         },
       );
     else
@@ -622,8 +629,7 @@ Widget buildView(
                                     strokeWidth: 6.0,
                                     valueColor:
                                         new AlwaysStoppedAnimation<Color>(
-                                            VoteColorHelper.getColor(
-                                                animate ?? evote)),
+                                            VoteColorHelper.getColor(animate)),
                                     backgroundColor: Colors.grey,
                                     value: animate / 10,
                                   )),

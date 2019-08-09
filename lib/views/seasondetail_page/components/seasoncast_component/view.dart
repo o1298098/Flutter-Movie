@@ -139,13 +139,9 @@ Widget buildView(
       );
   }
 
-  return AnimatedSwitcher(
-    switchInCurve: Curves.easeIn,
-    switchOutCurve: Curves.easeOut,
-    duration: Duration(milliseconds: 600),
-    child: Container(
-      key: ValueKey(state.castData),
-        child: Column(
+  return Container(
+    key: ValueKey(state.castData),
+    child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
@@ -165,6 +161,6 @@ Widget buildView(
         ),
         _buildCastBody(),
       ],
-    )),
+    ),
   );
 }

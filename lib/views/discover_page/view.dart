@@ -236,7 +236,7 @@ Widget buildView(
                       child: Text(
                         d.overview ?? '',
                         softWrap: true,
-                        maxLines: 8,
+                        maxLines: 7,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
