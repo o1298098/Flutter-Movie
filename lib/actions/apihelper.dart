@@ -9,6 +9,7 @@ import 'package:movie/models/certification.dart';
 import 'package:movie/models/combinedcredits.dart';
 import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/enums/media_type.dart';
+import 'package:movie/models/enums/time_window.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/keyword.dart';
@@ -442,6 +443,22 @@ class ApiHelper {
     return certificationModel;
   }
 
+  static Future<VideoListResult> getLastMovies() async {
+    VideoListResult model;
+    String param = "/movie/latest?api_key=$_apikey&language=$language";
+    var r = await httpGet(param);
+    if (r != null) model = VideoListResult.fromJson(r);
+    return model;
+  }
+
+  static Future<VideoListResult> getLastTVShows() async {
+    VideoListResult model;
+    String param = "/tv/latest?api_key=$_apikey&language=$language";
+    var r = await httpGet(param);
+    if (r != null) model = VideoListResult.fromJson(r);
+    return model;
+  }
+
   static Future<VideoListModel> getPopularMovies({int page = 1}) async {
     VideoListModel model;
     String param =
@@ -524,12 +541,23 @@ class ApiHelper {
   }
 
   ///Get a list of upcoming movies in theatres. This is a release type query that looks for all movies that have a release type of 2 or 3 within the specified date range.You can optionally specify a region prameter which will narrow the search to only look for theatrical release dates within the specified country.
-  static Future<VideoListModel> getMoviceUpComing({int page = 1}) async {
+  static Future<VideoListModel> getMovieUpComing({int page = 1}) async {
     VideoListModel model;
     String param =
         '/movie/upcoming?api_key=$_apikey&language=$language&page=$page&region=$region';
     var r = await httpGet(param);
     if (r != null) model = VideoListModel(r);
+    return model;
+  }
+
+  ///Get the daily or weekly trending items. The daily trending list tracks items over the period of a day while items have a 24 hour half life. The weekly list tracks items over a 7 day period, with a 7 day half life.
+  static Future<SearchResultModel> getTrending(MediaType type, TimeWindow time,
+      {int page = 1}) async {
+    SearchResultModel model;
+    String param =
+        '/trending/${type.toString().split('.').last}/${time.toString().split('.').last}?api_key=$_apikey&language=$language&page=$page';
+    var r = await httpGet(param);
+    if (r != null) model = SearchResultModel(r);
     return model;
   }
 

@@ -1,4 +1,6 @@
-enum MediaType{
+enum MediaType {
   movie,
   tv,
+  all,
+  person,
 }

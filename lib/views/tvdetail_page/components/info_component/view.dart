@@ -75,15 +75,18 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
       decoration: BoxDecoration(
           image: DecorationImage(
               fit: BoxFit.scaleDown,
-              image: CachedNetworkImageProvider(d.logo_path==null?ImageUrl.emptyimage:
-                  ImageUrl.getUrl(d.logo_path, ImageSize.w300)))),
+              image: CachedNetworkImageProvider(d.logo_path == null
+                  ? ImageUrl.emptyimage
+                  : ImageUrl.getUrl(d.logo_path, ImageSize.w300)))),
     );
   }
 
   Widget _buildCertification() {
-    var q=state?.tvDetailModel?.contentRatings?.results?.where((d) => d.iso31661 == ui.window.locale.countryCode)?.toList();
+    var q = state?.tvDetailModel?.contentRatings?.results
+        ?.where((d) => d.iso31661 == ui.window.locale.countryCode)
+        ?.toList();
     ContentRatingResult d;
-    if(q!=null&&q.length>0)d=q.first;
+    if (q != null && q.length > 0) d = q.first;
     if (d != null)
       return Row(
         children: <Widget>[
@@ -97,20 +100,22 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
                     image: CachedNetworkImageProvider(
                         'http://www.geonames.org/flags/x/${ui.window.locale.countryCode.toLowerCase()}.gif'))),
           ),
-          SizedBox(width: Adapt.px(20),),
+          SizedBox(
+            width: Adapt.px(20),
+          ),
           Container(
             margin: EdgeInsets.only(right: Adapt.px(10)),
             padding: EdgeInsets.all(Adapt.px(8)),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(Adapt.px(10)),
                 color: Colors.black87),
-            child: Text(d.rating??'',
+            child: Text(d.rating ?? '',
                 style: TextStyle(fontSize: Adapt.px(20), color: Colors.white)),
           )
         ],
       );
     else
-     return ShimmerCell(Adapt.px(80), Adapt.px(50), 0);
+      return ShimmerCell(Adapt.px(80), Adapt.px(50), 0);
   }
 
   Widget _getExternal() {

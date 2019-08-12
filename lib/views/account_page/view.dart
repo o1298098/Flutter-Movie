@@ -14,7 +14,7 @@ Widget buildView(
     AccountPageState state, Dispatch dispatch, ViewService viewService) {
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.dark.copyWith(statusBarBrightness: Brightness.dark));
-
+  final double _cellwidth = (Adapt.screenW() - Adapt.px(90)) / 2;
   Widget _buildTapCell(String name, double begin, double end, void ontap()) {
     return SlideTransition(
       position: Tween<Offset>(begin: Offset(-1, 0), end: Offset.zero)
@@ -63,6 +63,7 @@ Widget buildView(
                               'https://en.gravatar.com/userimage/159547793/1e81c1798f922e37511065a9c301fed9.jpg?size=200',
                           errorListener: () {}),
                       fit: BoxFit.cover),
+                  border: Border.all(width: Adapt.px(8), color: Colors.white),
                   color: Colors.grey,
                   borderRadius: BorderRadius.circular(Adapt.px(90))),
             ),
@@ -79,6 +80,7 @@ Widget buildView(
 
   return Container(
     child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         ClipPath(
             clipper: CustomCliperPath(
@@ -88,24 +90,22 @@ Widget buildView(
             child: Stack(
               children: <Widget>[
                 Container(
-                  width: Adapt.screenW(),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    image: DecorationImage(
-                      colorFilter:
-                          ColorFilter.mode(Colors.black, BlendMode.color),
-                      image: CachedNetworkImageProvider(
-                          'https://image.tmdb.org/t/p/w500_and_h282_face/9xzZBZ5VhIIhyKDKK3t89ggx7cS.jpg'),
-                      fit: BoxFit.cover,
+                    width: Adapt.screenW(),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      image: DecorationImage(
+                        colorFilter:
+                            ColorFilter.mode(Colors.black, BlendMode.color),
+                        image: CachedNetworkImageProvider(
+                            'https://image.tmdb.org/t/p/w500_and_h282_face/9xzZBZ5VhIIhyKDKK3t89ggx7cS.jpg'),
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
-                  height: Adapt.px(450),
-                ),
-                Container(
-                  height: Adapt.px(450),
-                  color: Color.fromRGBO(43, 58, 66, 0.9),
-                ),
-                _buildHeader(),
+                    height: Adapt.px(450),
+                    child: Container(
+                      color: Color.fromRGBO(43, 58, 66, 0.9),
+                      child: _buildHeader(),
+                    )),
                 SafeArea(
                     child: Container(
                   margin: EdgeInsets.only(right: Adapt.px(20)),

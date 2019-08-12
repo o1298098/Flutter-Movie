@@ -38,7 +38,7 @@ class SearchBarDelegate extends SearchDelegate<SearchResult> {
   }
 
   Future<SearchResultModel> _getData() {
-    if (query != '')
+    if (query != '' && query != null)
       return ApiHelper.searchMulit(query);
     else
       return null;
@@ -83,7 +83,7 @@ class SearchBarDelegate extends SearchDelegate<SearchResult> {
             if (snapshot.hasError) return Text('Error: ${snapshot.error}');
             return _ResultList(
               query: query,
-              results: snapshot.data?.results??[],
+              results: snapshot.data?.results ?? [],
             );
         }
         return null;
@@ -336,7 +336,8 @@ Widget _buildResultCell(SearchResult s, BuildContext ctx) {
                           s.overview ?? 'no description',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 7,
-                          style: TextStyle(fontSize: Adapt.px(26),wordSpacing: 1.2),
+                          style: TextStyle(
+                              fontSize: Adapt.px(26), wordSpacing: 1.2),
                         ),
                       )
                     : Container(

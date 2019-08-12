@@ -4,27 +4,25 @@ import 'package:movie/models/videolist.dart';
 import '../../state.dart';
 
 class PopularState implements Cloneable<PopularState> {
-
- VideoListModel popularMoives;
- VideoListModel popularTVShows;
- bool showmovie;
+  VideoListModel popularMoives;
+  VideoListModel popularTVShows;
+  bool showmovie;
   @override
   PopularState clone() {
     return PopularState()
-    ..popularMoives=popularMoives
-    ..popularTVShows=popularTVShows
-    ..showmovie=showmovie;
+      ..popularMoives = popularMoives
+      ..popularTVShows = popularTVShows
+      ..showmovie = showmovie;
   }
 }
 
-class PopularConnector
-    extends ConnOp<HomePageState, PopularState> {
+class PopularConnector extends ConnOp<HomePageState, PopularState> {
   @override
   PopularState get(HomePageState state) {
     PopularState mstate = PopularState();
-    mstate.popularMoives=state.popularMovies;
+    mstate.popularMoives = state.popularMovies;
     mstate.popularTVShows = state.popularTVShows;
-    mstate.showmovie=state.showmovie;
+    mstate.showmovie = state.showPopMovie;
     return mstate;
   }
 }
