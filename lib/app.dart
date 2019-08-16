@@ -27,6 +27,8 @@ import 'globalbasestate/store.dart';
 import 'views/moremedia_page/page.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'package:movie/views/detail_page/page.dart' as detail;
+
 Future _init() async {
   if (Platform.isAndroid)
     Map<PermissionGroup, PermissionStatus> permissions =
@@ -40,7 +42,7 @@ Future _init() async {
   } else {
     ApiHelper.session = session;
   }
-  if (accessToken != null)ApiHelper.accessTokenV4=accessToken;
+  if (accessToken != null) ApiHelper.accessTokenV4 = accessToken;
   setLocaleInfo('zh', TimelineInfoCN());
   setLocaleInfo('en', TimelineInfoEN());
   setLocaleInfo('Ja', TimelineInfoJA());
@@ -59,10 +61,11 @@ Future<Widget> createApp() async {
       'episodedetailpage': EpisodeDetailPage(),
       'MoreMediaPage': MoreMediaPage(),
       'SeasonsPage': SeasonsPage(),
-      'MyListsPage':MyListsPage(),
-      'ListDetailPage':ListDetailPage(),
-      'FavoritesPage':FavoritesPage(),
-      'WatchlistPage':WatchlistPage()
+      'MyListsPage': MyListsPage(),
+      'ListDetailPage': ListDetailPage(),
+      'FavoritesPage': FavoritesPage(),
+      'WatchlistPage': WatchlistPage(),
+      'detailpage': detail.MovieDetailPage(),
     },
     visitor: (String path, Page<Object, dynamic> page) {
       if (page.isTypeof<GlobalBaseState>()) {

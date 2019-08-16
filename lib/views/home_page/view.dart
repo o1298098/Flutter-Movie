@@ -231,6 +231,7 @@ Widget buildView(
                     width: Adapt.px(120),
                     height: Adapt.px(170),
                     decoration: BoxDecoration(
+                        color: Colors.grey[200],
                         image: DecorationImage(
                             fit: BoxFit.cover,
                             image: CachedNetworkImageProvider(ImageUrl.getUrl(
@@ -402,6 +403,7 @@ Widget buildView(
                     padding: EdgeInsets.symmetric(horizontal: Adapt.px(10)),
                     alignment: Alignment.bottomLeft,
                     decoration: BoxDecoration(
+                        color: Colors.grey[200],
                         image: DecorationImage(
                             fit: BoxFit.cover,
                             image: CachedNetworkImageProvider(ImageUrl.getUrl(

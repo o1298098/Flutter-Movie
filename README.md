@@ -17,8 +17,8 @@ A Flutter movie app build with Fish-Redux and TMDB api.
 ### tabbedpage
 <img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios1.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios2.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios3.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios4.png" width="150">  
 ### detailpage
-<img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios5.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios14.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios6.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios9.png" width="150">  
-<img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios10.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios11.png" width="150">  
+<img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios18.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios5.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios14.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios6.png" width="150">  
+<img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios9.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios10.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios11.png" width="150">  
 ### share(list、tvshow、movie)
 <img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios15.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios16.png" width="150">  
 ### other page  

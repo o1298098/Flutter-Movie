@@ -1,18 +1,15 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerCell extends StatelessWidget {
-  const ShimmerCell(
-   this.width,
-   this.height,
-    this.borderRadius);
+  const ShimmerCell(this.width, this.height, this.borderRadius,
+      {this.margin = EdgeInsets.zero});
 
   final double width;
   final double height;
   final double borderRadius;
+  final EdgeInsetsGeometry margin;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +19,7 @@ class ShimmerCell extends StatelessWidget {
       child: Container(
         width: width,
         height: height,
+        margin: margin,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(borderRadius),
           color: Colors.grey[200],

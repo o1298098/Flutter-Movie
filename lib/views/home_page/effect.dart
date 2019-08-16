@@ -61,9 +61,9 @@ Future _onCellTapped(Action action, Context<HomePageState> ctx) async {
   final String title = action.payload[2];
   final String posterpic = action.payload[3];
   final String pagename =
-      type == MediaType.movie ? 'moviedetailpage' : 'tvdetailpage';
+      type == MediaType.movie ? 'detailpage' : 'tvdetailpage';
   var data = {
-    type == MediaType.movie ? 'movieid' : 'tvid': id,
+    type == MediaType.movie ? 'id' : 'tvid': id,
     'bgpic': bgpic,
     type == MediaType.movie ? 'title' : 'name': title,
     'posterpic': posterpic
