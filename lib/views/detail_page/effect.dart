@@ -18,6 +18,10 @@ Effect<MovieDetailPageState> buildEffect() {
     MovieDetailPageAction.playTrailer: _playTrailer,
     MovieDetailPageAction.externalTapped: _onExternalTapped,
     MovieDetailPageAction.stillImageTapped: _stillImageTapped,
+    MovieDetailPageAction.movieCellTapped: _movieCellTapped,
+    MovieDetailPageAction.castCellTapped: _castCellTapped,
+    MovieDetailPageAction.openMenu: _openMenu,
+    MovieDetailPageAction.showSnackBar: _showSnackBar,
     Lifecycle.initState: _onInit,
     Lifecycle.dispose: _onDispose,
   });
@@ -26,15 +30,20 @@ Effect<MovieDetailPageState> buildEffect() {
 void _onAction(Action action, Context<MovieDetailPageState> ctx) {}
 
 Future _onInit(Action action, Context<MovieDetailPageState> ctx) async {
+  final _id = ctx.state.mediaId;
   final ticker = ctx.stfState as CustomstfState;
   ctx.state.animationController = AnimationController(
       vsync: ticker, duration: Duration(milliseconds: 2000));
   ctx.state.scrollController = ScrollController();
-  var r = await ApiHelper.getMovieDetail(ctx.state.mediaId,
+  if (_id == null) return;
+  var r = await ApiHelper.getMovieDetail(_id,
       appendtoresponse:
           'keywords,recommendations,credits,external_ids,release_dates,images,videos');
   if (r != null) ctx.dispatch(MovieDetailPageActionCreator.updateDetail(r));
-  var images = await ApiHelper.getMovieImages(ctx.state.mediaId);
+  var accountstate = await ApiHelper.getMovieAccountState(ctx.state.mediaId);
+  if (accountstate != null)
+    ctx.dispatch(MovieDetailPageActionCreator.onSetAccountState(accountstate));
+  var images = await ApiHelper.getMovieImages(_id);
   if (images != null)
     ctx.dispatch(MovieDetailPageActionCreator.onSetImages(images));
 }
@@ -97,4 +106,34 @@ Future _stillImageTapped(
               initialIndex: action.payload,
             ));
       }));
+}
+
+Future _movieCellTapped(
+    Action action, Context<MovieDetailPageState> ctx) async {
+  await Navigator.of(ctx.context).pushNamed('detailpage',
+      arguments: {'id': action.payload[0], 'bgpic': action.payload[1]});
+}
+
+Future _castCellTapped(Action action, Context<MovieDetailPageState> ctx) async {
+  await Navigator.of(ctx.context).pushNamed('peopledetailpage', arguments: {
+    'peopleid': action.payload[0],
+    'profilePath': action.payload[1],
+    'profileName': action.payload[2],
+    'character': action.payload[3]
+  });
+}
+
+void _openMenu(Action action, Context<MovieDetailPageState> ctx) {
+  showModalBottomSheet(
+      context: ctx.context,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return ctx.buildComponent('menu');
+      });
+}
+
+void _showSnackBar(Action action, Context<MovieDetailPageState> ctx) {
+  ctx.state.scaffoldkey.currentState.showSnackBar(SnackBar(
+    content: Text(action.payload ?? ''),
+  ));
 }

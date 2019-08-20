@@ -27,16 +27,16 @@ Widget buildView(
     else
       return Hero(
         tag: 'Actor' + state.peopleid.toString(),
-        child:Material(
+        child: Material(
           color: Colors.transparent,
-          child:Text(
-          state.profileName ?? '',
-          style: TextStyle(
-              color: Colors.black,
-              fontSize: Adapt.px(35),
-              fontWeight: FontWeight.bold),
+          child: Text(
+            state.profileName ?? '',
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: Adapt.px(35),
+                fontWeight: FontWeight.bold),
+          ),
         ),
-        ) ,
       );
   }
 
@@ -95,7 +95,9 @@ Widget buildView(
       ));
     else
       return Text(
-        state.biography==null||state.biography?.isEmpty==true ? "We don't have a biography for ${state.profileName}":state.biography,
+        state.biography == null || state.biography?.isEmpty == true
+            ? "We don't have a biography for ${state.profileName}"
+            : state.biography,
         style: TextStyle(fontSize: Adapt.px(30)),
       );
   }
@@ -107,20 +109,27 @@ Widget buildView(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Hero(
-            tag: 'people${state.peopleid}${state.character??''}',
-            child: Container(
-                width: Adapt.px(300),
-                height: Adapt.px(450),
+              tag: 'people${state.peopleid}${state.character ?? ''}',
+              child: Container(
+                width: Adapt.px(400),
+                height: Adapt.px(400),
                 decoration: BoxDecoration(
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                          blurRadius: 10,
+                          offset: Offset(0, 5),
+                          color: Colors.black38),
+                    ],
                     color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(Adapt.px(30)),
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: CachedNetworkImageProvider(state.profilePath == null
+                      image: CachedNetworkImageProvider(state.profilePath ==
+                              null
                           ? ImageUrl.emptyimage
                           : ImageUrl.getUrl(state.profilePath, ImageSize.w300)),
                     )),
-              )
-          ),
+              )),
           SizedBox(
             height: Adapt.px(20),
           ),
@@ -130,16 +139,16 @@ Widget buildView(
           ),
           Container(
             alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(bottom: Adapt.px(30)),
-          child: Text(
-            I18n.of(viewService.context).biography,
-            softWrap: true,
-            style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: Adapt.px(40)),
+            padding: EdgeInsets.only(bottom: Adapt.px(30)),
+            child: Text(
+              I18n.of(viewService.context).biography,
+              softWrap: true,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: Adapt.px(40)),
+            ),
           ),
-        ),
           _buildBiography(),
         ],
       ));

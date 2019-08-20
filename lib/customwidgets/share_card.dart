@@ -9,13 +9,16 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_extend/share_extend.dart';
 
-
 class ShareCard extends StatefulWidget {
   final String backgroundImage;
   final String qrValue;
   final Widget header;
   final double headerHeight;
-  ShareCard({@required this.backgroundImage,@required this.qrValue,@required this.header,this.headerHeight});
+  ShareCard(
+      {@required this.backgroundImage,
+      @required this.qrValue,
+      @required this.header,
+      this.headerHeight});
   @override
   ShareCardState createState() => ShareCardState();
 }
@@ -33,22 +36,29 @@ class ShareCardState extends State<ShareCard> {
     backgroundImage = widget.backgroundImage;
     qrValue = widget.qrValue;
     header = widget.header;
-    screenshotController=ScreenshotController();
-    headerHeight=widget.headerHeight??((width - Adapt.px(40)) / 2).floorToDouble();
+    screenshotController = ScreenshotController();
+    headerHeight =
+        widget.headerHeight ?? ((width - Adapt.px(40)) / 2).floorToDouble();
     super.initState();
   }
 
   Future<Widget> _buildShareCard() async {
-    var paletteGenerator = await PaletteGenerator.fromImageProvider(
-        CachedNetworkImageProvider(backgroundImage));
-    Color maincolor =
-        paletteGenerator.dominantColor?.color ?? Color.fromRGBO(50, 50, 50, 1);
-    return Screenshot(
-      controller: screenshotController,
-      child: Container(
-          width: width,
-          height: height,
-          margin: EdgeInsets.all(Adapt.px(20)),
+    //var paletteGenerator = await PaletteGenerator.fromImageProvider(CachedNetworkImageProvider(backgroundImage));
+    //Color maincolor = paletteGenerator==null?Color.fromRGBO(50, 50, 50, 1):paletteGenerator.dominantColor;
+    Color maincolor = Color.fromRGBO(70, 70, 70, 1);
+    return Container(
+      width: width,
+      height: height,
+      margin: EdgeInsets.all(Adapt.px(20)),
+      decoration: BoxDecoration(boxShadow: <BoxShadow>[
+        BoxShadow(
+            blurRadius: 20.0,
+            spreadRadius: 0.1,
+            offset: Offset(0, 5),
+            color: Colors.black45),
+      ]),
+      child: Screenshot(
+          controller: screenshotController,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -133,65 +143,77 @@ class ShareCardState extends State<ShareCard> {
           return null;
         });
   }
-  
-  void shareTapped(){
+
+  void shareTapped() {
     screenshotController.capture().then((File image) async {
       ShareExtend.share(image.path, "image");
     }).catchError((onError) {
       print(onError);
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
+      backgroundColor: Colors.transparent,
       contentPadding: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(Adapt.px(20))),
       children: <Widget>[
-        _showShareCard(),
-        Container(
-          padding: EdgeInsets.only(bottom: Adapt.px(20)),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                GestureDetector(
-                    onTap: () {},
-                    child: SizedBox(
-                      width: Adapt.px(200),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(Icons.file_download),
-                          Text(
-                            'DownLoad',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: Adapt.px(30),
-                                fontWeight: FontWeight.bold),
-                          )
-                        ],
+        Stack(
+          children: <Widget>[
+            Container(
+              height: height + Adapt.px(130),
+              padding: EdgeInsets.only(top: height / 2),
+              child: Container(
+                padding: EdgeInsets.only(top: height / 2 + Adapt.px(20)),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(Adapt.px(30))),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      GestureDetector(
+                          onTap: () {},
+                          child: SizedBox(
+                            width: Adapt.px(200),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(Icons.file_download),
+                                Text(
+                                  'DownLoad',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: Adapt.px(30),
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                          )),
+                      SizedBox(
+                        width: Adapt.px(30),
                       ),
-                    )),
-                SizedBox(
-                  width: Adapt.px(30),
-                ),
-                GestureDetector(
-                    onTap: shareTapped,
-                    child: SizedBox(
-                      width: Adapt.px(200),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(Icons.share),
-                            Text('Share',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: Adapt.px(30),
-                                    fontWeight: FontWeight.bold))
-                          ]),
-                    )),
-              ]),
+                      GestureDetector(
+                          onTap: shareTapped,
+                          child: SizedBox(
+                            width: Adapt.px(200),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(Icons.share),
+                                  Text('Share',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: Adapt.px(30),
+                                          fontWeight: FontWeight.bold))
+                                ]),
+                          )),
+                    ]),
+              ),
+            ),
+            _showShareCard(),
+          ],
         )
       ],
     );

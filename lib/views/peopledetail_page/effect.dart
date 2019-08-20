@@ -15,7 +15,7 @@ void _onAction(Action action, Context<PeopleDetailPageState> ctx) {}
 Future _onInit(Action action, Context<PeopleDetailPageState> ctx) async {
   int id = ctx.state.peopleid;
   await Future.delayed(Duration(milliseconds: 200), () async {
-    var r = await ApiHelper.getPeopleDetail(id);
+    var r = await ApiHelper.getPeopleDetail(id, appendToResponse: 'images');
     if (r != null) ctx.dispatch(PeopleDetailPageActionCreator.onInit(r));
     var r2 = await ApiHelper.getCombinedCredits(id);
     if (r2 != null) {

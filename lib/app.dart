@@ -18,6 +18,7 @@ import 'package:movie/views/seasondetail_page/page.dart';
 import 'package:movie/views/seasons_page/page.dart';
 import 'package:movie/views/tvdetail_page/page.dart';
 import 'package:movie/views/watchlist_page/page.dart';
+import 'package:movie/views/watchlistdetail_page/page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'actions/timeline.dart';
@@ -65,6 +66,7 @@ Future<Widget> createApp() async {
       'ListDetailPage': ListDetailPage(),
       'FavoritesPage': FavoritesPage(),
       'WatchlistPage': WatchlistPage(),
+      'WatchlistDetailPage': WatchlistDetailPage(),
       'detailpage': detail.MovieDetailPage(),
     },
     visitor: (String path, Page<Object, dynamic> page) {

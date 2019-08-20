@@ -179,40 +179,46 @@ Widget buildView(
 
   Widget _buildCastCell(CastData d) {
     double width = Adapt.px(150);
-    return Column(
-      key: ValueKey('Cast${d.id}'),
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.only(right: Adapt.px(30)),
-          width: width,
-          height: width,
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.grey[200],
-              image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: CachedNetworkImageProvider(
-                      ImageUrl.getUrl(d.profile_path, ImageSize.w200)))),
-        ),
-        SizedBox(
-          height: Adapt.px(10),
-        ),
-        Container(
-            width: width,
-            child: Text(
-              d.name ?? '',
-              maxLines: 2,
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-            )),
-        Container(
-            width: width,
-            child: Text(
-              d.character ?? '',
-              maxLines: 2,
-              style: TextStyle(color: Colors.grey, fontSize: Adapt.px(24)),
-            ))
-      ],
+    return GestureDetector(
+      onTap: () => dispatch(MovieDetailPageActionCreator.castCellTapped(
+          d.id, d.profile_path, d.name, d.character)),
+      child: Column(
+        key: ValueKey('Cast${d.id}'),
+        children: <Widget>[
+          Hero(
+              tag: 'people${d.id}${d.character ?? ''}',
+              child: Container(
+                margin: EdgeInsets.only(right: Adapt.px(30)),
+                width: width,
+                height: width,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.grey[200],
+                    image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: CachedNetworkImageProvider(
+                            ImageUrl.getUrl(d.profile_path, ImageSize.w300)))),
+              )),
+          SizedBox(
+            height: Adapt.px(10),
+          ),
+          Container(
+              width: width,
+              child: Text(
+                d.name ?? '',
+                maxLines: 2,
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              )),
+          Container(
+              width: width,
+              child: Text(
+                d.character ?? '',
+                maxLines: 2,
+                style: TextStyle(color: Colors.grey, fontSize: Adapt.px(24)),
+              ))
+        ],
+      ),
     );
   }
 
@@ -284,69 +290,73 @@ Widget buildView(
 
   Widget _buildRecommendationCell(VideoListResult d) {
     double _width = Adapt.px(220);
-    return Padding(
+    return GestureDetector(
       key: ValueKey('recommendation${d.id}'),
-      padding: EdgeInsets.only(right: Adapt.px(30)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          _buildImage(ImageUrl.getUrl(d.poster_path, ImageSize.w300), _width,
-              Adapt.px(320), Adapt.px(20)),
-          SizedBox(
-            height: Adapt.px(15),
-          ),
-          Container(
-            width: _width,
-            child: Text(
-              d.title,
-              softWrap: true,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: Adapt.px(24)),
+      onTap: () => dispatch(
+          MovieDetailPageActionCreator.movieCellTapped(d.id, d.poster_path)),
+      child: Padding(
+        padding: EdgeInsets.only(right: Adapt.px(30)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _buildImage(ImageUrl.getUrl(d.poster_path, ImageSize.w500), _width,
+                Adapt.px(320), Adapt.px(20)),
+            SizedBox(
+              height: Adapt.px(15),
             ),
-          ),
-          SizedBox(
-            height: Adapt.px(8),
-          ),
-          Text('${DateTime.parse(d.release_date ?? '1990-01-01').year}',
-              style: TextStyle(fontSize: Adapt.px(24))),
-          SizedBox(
-            height: Adapt.px(8),
-          ),
-          Container(
+            Container(
               width: _width,
-              child: FlutterRatingBarIndicator(
-                itemPadding: EdgeInsets.only(right: Adapt.px(5)),
-                itemSize: Adapt.px(25),
-                emptyColor: Colors.grey[300],
-                rating: d.vote_average / 2,
-              ))
-        ],
+              child: Text(
+                d.title,
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: Adapt.px(24)),
+              ),
+            ),
+            SizedBox(
+              height: Adapt.px(8),
+            ),
+            Text('${DateTime.parse(d.release_date ?? '1990-01-01').year}',
+                style: TextStyle(fontSize: Adapt.px(24))),
+            SizedBox(
+              height: Adapt.px(8),
+            ),
+            Container(
+                width: _width,
+                child: FlutterRatingBarIndicator(
+                  itemPadding: EdgeInsets.only(right: Adapt.px(5)),
+                  itemSize: Adapt.px(25),
+                  emptyColor: Colors.grey[300],
+                  rating: d.vote_average / 2,
+                ))
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildHeader() {
     Color _baseColor = Colors.grey[200];
-    Widget _bg = state.detail?.poster_path == null
+    Widget _bg = state.bgPic == null
         ? Container(
             key: ValueKey('bgEmpty'),
           )
         : Container(
             width: Adapt.screenW(),
-            key: ValueKey(state.detail.poster_path),
+            key: ValueKey(state.bgPic),
             decoration: BoxDecoration(
               image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: CachedNetworkImageProvider(ImageUrl.getUrl(
-                      state.detail.poster_path, ImageSize.w500))),
+                  image: CachedNetworkImageProvider(
+                      ImageUrl.getUrl(state.bgPic, ImageSize.w500))),
             ),
             child: ScrollViewBackGround(
               scrollController: state.scrollController,
-              height: Adapt.px(750),
+              height: Adapt.px(750).floorToDouble(),
               maxOpacity: 0.8,
             ));
     Widget _headerTitle = state.detail?.title == null
@@ -456,7 +466,7 @@ Widget buildView(
       expandedHeight: Adapt.px(1100).floorToDouble(),
       actions: <Widget>[
         IconButton(
-          onPressed: () {},
+          onPressed: () => dispatch(MovieDetailPageActionCreator.openMenu()),
           icon: Icon(Icons.more_vert),
         )
       ],
@@ -476,6 +486,7 @@ Widget buildView(
                     Adapt.px(40), Adapt.px(40), Adapt.px(40), 0),
                 decoration: BoxDecoration(
                     color: Colors.white,
+                    border: Border.all(color: Colors.transparent, width: 0.0),
                     borderRadius: BorderRadius.vertical(
                         top: Radius.circular(Adapt.px(50)))),
                 child: _headerTitle),
@@ -796,8 +807,8 @@ Widget buildView(
   }
 
   return Scaffold(
+    key: state.scaffoldkey,
     backgroundColor: Colors.white,
-    //appBar: AppBar(),
     body: CustomScrollView(
       controller: state.scrollController,
       physics: ClampingScrollPhysics(),

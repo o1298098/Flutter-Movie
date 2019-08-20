@@ -5,7 +5,7 @@ PODS:
   - FMDB/standard (2.7.5)
   - path_provider (0.0.1):
     - Flutter
-  - "permission_handler (3.2.1+1)":
+  - permission_handler (3.2.2):
     - Flutter
   - screen (0.0.1):
     - Flutter
@@ -65,7 +65,7 @@ SPEC CHECKSUMS:
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
-  permission_handler: 6a1b2f94f866da8bd19fa67f3c8f4b9f38580efb
+  permission_handler: d59f41439f5bc6c4d1005f3355e98f05ddc68ece
   screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0
   share_extend: b6748dc53695587891126a89533b862b92548c7b
   shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523

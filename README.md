@@ -12,7 +12,7 @@ A Flutter movie app build with Fish-Redux and TMDB api.
 - [x] rate movie or tv show
 - [x] login with TMDB account
 ## Demo
-<a href='https://raw.githubusercontent.com/o1298098/Flutter-Movie/master/build/app/outputs/apk/release/app-release.apk'>Download</a>
+<a href='https://github.com/o1298098/Flutter-Movie/releases/download/demo/demo.apk'>Download</a>
 ## Preview 
 ### tabbedpage
 <img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios1.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios2.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios3.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios4.png" width="150">  
@@ -23,7 +23,7 @@ A Flutter movie app build with Fish-Redux and TMDB api.
 <img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios15.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios16.png" width="150">  
 ### other page  
 <img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios7.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios8.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios12.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios13.png" width="150">  
-<img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios17.png" width="150">
+<img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios17.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios19.png" width="150">
 
 ## Other
 homepage based on https://dribbble.com/shots/6070474--Movie

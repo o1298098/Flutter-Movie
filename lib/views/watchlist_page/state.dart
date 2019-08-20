@@ -1,5 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:movie/models/videolist.dart';
 
 class WatchlistPageState implements Cloneable<WatchlistPageState> {
@@ -7,7 +8,9 @@ class WatchlistPageState implements Cloneable<WatchlistPageState> {
   AnimationController animationController;
   VideoListModel movieList;
   VideoListModel tvshowList;
-  bool isList;
+  VideoListResult selectMdeia;
+  bool isMovie;
+  SwiperController swiperController;
 
   @override
   WatchlistPageState clone() {
@@ -16,13 +19,15 @@ class WatchlistPageState implements Cloneable<WatchlistPageState> {
       ..animationController = animationController
       ..movieList = movieList
       ..tvshowList = tvshowList
-      ..isList = isList;
+      ..selectMdeia = selectMdeia
+      ..swiperController = swiperController
+      ..isMovie = isMovie;
   }
 }
 
 WatchlistPageState initState(Map<String, dynamic> args) {
   WatchlistPageState state = WatchlistPageState();
   state.accountId = args['accountid'];
-  state.isList = false;
+  state.isMovie = true;
   return state;
 }

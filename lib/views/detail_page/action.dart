@@ -1,5 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/imagemodel.dart';
+import 'package:movie/models/media_accountstatemodel.dart';
 import 'package:movie/models/moviedetail.dart';
 
 //TODO replace with your own action
@@ -10,6 +11,11 @@ enum MovieDetailPageAction {
   playTrailer,
   externalTapped,
   stillImageTapped,
+  movieCellTapped,
+  castCellTapped,
+  setAccountState,
+  openMenu,
+  showSnackBar
 }
 
 class MovieDetailPageActionCreator {
@@ -35,5 +41,27 @@ class MovieDetailPageActionCreator {
 
   static Action stillImageTapped(int index) {
     return Action(MovieDetailPageAction.stillImageTapped, payload: index);
+  }
+
+  static Action movieCellTapped(int id, String bgurl) {
+    return Action(MovieDetailPageAction.movieCellTapped, payload: [id, bgurl]);
+  }
+
+  static Action castCellTapped(
+      int id, String profilePath, String profileName, String character) {
+    return Action(MovieDetailPageAction.castCellTapped,
+        payload: [id, profilePath, profileName, character]);
+  }
+
+  static Action onSetAccountState(MediaAccountStateModel model) {
+    return Action(MovieDetailPageAction.setAccountState, payload: model);
+  }
+
+  static Action openMenu() {
+    return Action(MovieDetailPageAction.openMenu);
+  }
+
+  static Action showSnackBar(String message) {
+    return Action(MovieDetailPageAction.showSnackBar, payload: message);
   }
 }

@@ -1,6 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
 
+import 'components/menu_component/component.dart';
+import 'components/menu_component/state.dart';
 import 'effect.dart';
 import 'reducer.dart';
 import 'state.dart';
@@ -18,7 +20,9 @@ class MovieDetailPage extends Page<MovieDetailPageState, Map<String, dynamic>> {
           view: buildView,
           dependencies: Dependencies<MovieDetailPageState>(
               adapter: null,
-              slots: <String, Dependent<MovieDetailPageState>>{}),
+              slots: <String, Dependent<MovieDetailPageState>>{
+                'menu': MenuConnector() + MenuComponent()
+              }),
           middleware: <Middleware<MovieDetailPageState>>[],
         );
 }

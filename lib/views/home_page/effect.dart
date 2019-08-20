@@ -64,7 +64,7 @@ Future _onCellTapped(Action action, Context<HomePageState> ctx) async {
       type == MediaType.movie ? 'detailpage' : 'tvdetailpage';
   var data = {
     type == MediaType.movie ? 'id' : 'tvid': id,
-    'bgpic': bgpic,
+    'bgpic': type == MediaType.movie ? posterpic : bgpic,
     type == MediaType.movie ? 'title' : 'name': title,
     'posterpic': posterpic
   };

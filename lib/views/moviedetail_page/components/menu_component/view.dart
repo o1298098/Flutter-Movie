@@ -34,8 +34,11 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
         context: viewService.context,
         builder: (ctx) {
           var width = (Adapt.screenW() - Adapt.px(60)).floorToDouble();
-          return MediaListCardDialog(type: MediaType.movie,mediaId: state.id,);
-          });
+          return MediaListCardDialog(
+            type: MediaType.movie,
+            mediaId: state.id,
+          );
+        });
   }
 
   void _rateIt() {
@@ -88,7 +91,7 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
                     width: Adapt.px(20),
                   ),
                   Container(
-                    width: width - Adapt.px(285),
+                    width: width - Adapt.px(310),
                     child: Text(state.name,
                         maxLines: 2,
                         style: TextStyle(

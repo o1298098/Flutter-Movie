@@ -332,7 +332,8 @@ class ApiHelper {
     VideoListModel model;
     String param =
         '/account/$accountid/watchlist/movies?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
-    var r = await httpGet(param);
+    var r =
+        await httpGet(param, cached: false, cacheDuration: Duration(days: 0));
     if (r != null) model = VideoListModel(r);
     return model;
   }
@@ -857,9 +858,12 @@ class ApiHelper {
     return model;
   }
 
-  static Future<PeopleDetailModel> getPeopleDetail(int peopleid) async {
+  static Future<PeopleDetailModel> getPeopleDetail(int peopleid,
+      {String appendToResponse}) async {
     PeopleDetailModel model;
     String param = '/person/$peopleid?api_key=$_apikey&language=$language';
+    if (appendToResponse != null)
+      param += '&append_to_response=$appendToResponse';
     var r = await httpGet(param);
     if (r != null) model = PeopleDetailModel(r);
     return model;
