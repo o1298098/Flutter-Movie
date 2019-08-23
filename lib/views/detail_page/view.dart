@@ -186,18 +186,21 @@ Widget buildView(
         key: ValueKey('Cast${d.id}'),
         children: <Widget>[
           Hero(
-              tag: 'people${d.id}${d.character ?? ''}',
-              child: Container(
-                margin: EdgeInsets.only(right: Adapt.px(30)),
-                width: width,
-                height: width,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.grey[200],
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: CachedNetworkImageProvider(
-                            ImageUrl.getUrl(d.profile_path, ImageSize.w300)))),
+              tag: 'people${d.id}',
+              child: Material(
+                color: Colors.transparent,
+                child: Container(
+                  margin: EdgeInsets.only(right: Adapt.px(30)),
+                  width: width,
+                  height: width,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Adapt.px(15)),
+                      color: Colors.grey[200],
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: CachedNetworkImageProvider(ImageUrl.getUrl(
+                              d.profile_path, ImageSize.w300)))),
+                ),
               )),
           SizedBox(
             height: Adapt.px(10),

@@ -35,129 +35,113 @@ Widget buildView(
         softWrap: true,
         style: TextStyle(
             color: Colors.black,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w500,
             fontSize: Adapt.px(40)),
       );
   }
 
-  Widget _buildTimelineCell(CastData d) {
+  Widget _buildShimmerCell() {
+    Color _baseColor = Colors.grey[200];
+    return Shimmer.fromColors(
+      baseColor: _baseColor,
+      highlightColor: Colors.grey[100],
+      child: Row(
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                height: Adapt.px(24),
+                width: Adapt.px(500),
+                color: _baseColor,
+              ),
+              SizedBox(
+                height: Adapt.px(8),
+              ),
+              Container(
+                height: Adapt.px(24),
+                width: Adapt.px(150),
+                color: _baseColor,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActingCell(CastData d, bool hasline) {
+    double _leftwidth = (Adapt.screenW() - Adapt.px(120)) * 0.8;
     String date = d.media_type == 'movie' ? d.release_date : d.first_air_date;
     date = date == null || date?.isEmpty == true
         ? '-'
         : DateTime.parse(date).year.toString();
-    return Container(
-        key: ValueKey(d.credit_id),
-        padding: EdgeInsets.only(bottom: Adapt.px(50)),
-        child: Row(
+    return Column(
+      key: ValueKey('timelineCell${d.credit_id}'),
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            SizedBox(width: Adapt.px(80), child: Text(date)),
-            Icon(
-              Icons.radio_button_checked,
-              size: Adapt.px(30),
-              color: Colors.grey,
-            ),
-            SizedBox(
-              width: Adapt.px(20),
-            ),
-            Container(
-              width: Adapt.screenW() - Adapt.px(190),
-              child: RichText(
-                text: TextSpan(children: <TextSpan>[
-                  TextSpan(
-                      text: d.title ?? d.name,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  width: _leftwidth,
+                  child: Text(d.title ?? d.name,
                       style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold)),
-                  TextSpan(text: ' as ', style: TextStyle(color: Colors.grey)),
-                  TextSpan(
-                      text: d.character,
-                      style: TextStyle(color: Colors.black87)),
-                ]),
-              ),
+                          color: Colors.black, fontWeight: FontWeight.w600)),
+                ),
+                SizedBox(
+                    width: _leftwidth,
+                    child: Text(d.character.isEmpty == true ? '-' : d.character,
+                        style: TextStyle(color: Color(0xFF505050))))
+              ],
             ),
+            Text(date)
           ],
-        ));
+        ),
+        hasline ? SizedBox() : Divider()
+      ],
+    );
   }
 
-  Widget _buildShimmerCell() {
-    return SizedBox(
-        child: Shimmer.fromColors(
-      baseColor: Colors.grey[200],
-      highlightColor: Colors.grey[100],
-      child: Row(
-        children: <Widget>[
-          Container(
-            height: Adapt.px(30),
-            width: Adapt.px(60),
-            color: Colors.grey[200],
-          ),
-          SizedBox(
-            width: Adapt.px(20),
-          ),
-          Icon(
-            Icons.radio_button_checked,
-            size: Adapt.px(30),
-          ),
-          SizedBox(
-            width: Adapt.px(20),
-          ),
-          Container(
-            height: Adapt.px(30),
-            width: Adapt.px(500),
-            color: Colors.grey[200],
-          ),
-        ],
-      ),
-    ));
-  }
-
-  Widget _timeLineBody() {
-    if (state.creditsModel.cast.length > 0)
-      return ListView(
+  Widget _buildActingBody() {
+    var _model = state.creditsModel.cast ?? [];
+    var _data = _model.where((d) => d.media_type == filter).toList();
+    return Container(
+      padding: EdgeInsets.all(Adapt.px(30)),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(Adapt.px(30))),
+      child: ListView(
           physics: state.scrollPhysics,
           shrinkWrap: true,
-          children: state.creditsModel.cast
-              .where((d) => d.media_type == filter)
-              .toList()
-              .map(_buildTimelineCell)
-              .toList());
-    else
-      return ListView(
-        physics: state.scrollPhysics,
-        shrinkWrap: true,
-        children: <Widget>[
-          _buildShimmerCell(),
-          SizedBox(
-            height: Adapt.px(50),
-          ),
-          _buildShimmerCell(),
-          SizedBox(
-            height: Adapt.px(50),
-          ),
-          _buildShimmerCell(),
-          SizedBox(
-            height: Adapt.px(50),
-          ),
-          _buildShimmerCell(),
-          SizedBox(
-            height: Adapt.px(50),
-          ),
-          _buildShimmerCell(),
-          SizedBox(
-            height: Adapt.px(50),
-          ),
-          _buildShimmerCell(),
-          SizedBox(
-            height: Adapt.px(50),
-          ),
-        ],
-      );
+          children: _model.length > 0
+              ? _data
+                  .map((f) =>
+                      _buildActingCell(f, _data.indexOf(f) == _data.length - 1))
+                  .toList()
+              : <Widget>[
+                  _buildShimmerCell(),
+                  Divider(),
+                  _buildShimmerCell(),
+                  Divider(),
+                  _buildShimmerCell(),
+                  Divider(),
+                  _buildShimmerCell(),
+                  Divider(),
+                  _buildShimmerCell(),
+                ]),
+    );
   }
 
   return Container(
+    key: ValueKey('timeLine'),
     child:
         Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
       Padding(
-          padding: EdgeInsets.all(Adapt.px(30)),
+          padding:
+              EdgeInsets.fromLTRB(Adapt.px(30), 0, Adapt.px(30), Adapt.px(30)),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -184,22 +168,10 @@ Widget buildView(
               )
             ],
           )),
-      SizedBox(
-        height: Adapt.px(10),
-      ),
       Padding(
-        padding: EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(30)),
-        child: _timeLineBody(),
+        padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+        child: _buildActingBody(),
       ),
-      /*Padding(
-        padding: EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(30)),
-        child: Timeline(
-            shrinkWrap: true,
-            position: TimelinePosition.Center,
-            physics: PageScrollPhysics(),
-            children:
-                state.creditsModel.cast.map(_buildTimelineModel).toList()),
-      ),*/
     ]),
   );
 }

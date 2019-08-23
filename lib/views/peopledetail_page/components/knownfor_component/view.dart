@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -15,7 +16,7 @@ Widget buildView(
     KnownForState state, Dispatch dispatch, ViewService viewService) {
   Widget _buildCastCell(CastData d) {
     return Container(
-      key: ValueKey(d.id),
+      key: ValueKey('knowforCell${d.id}'),
       margin: EdgeInsets.only(left: Adapt.px(20)),
       width: Adapt.px(240),
       height: Adapt.px(400),
@@ -26,14 +27,15 @@ Widget buildView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            FadeInImage.assetNetwork(
-              fit: BoxFit.cover,
+            Container(
               width: Adapt.px(240),
               height: Adapt.px(342),
-              placeholder: 'images/CacheBG.jpg',
-              image: ImageUrl.getUrl(
-                  d.poster_path ?? '/eIkFHNlfretLS1spAcIoihKUS62.jpg',
-                  ImageSize.w300),
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  image: DecorationImage(
+                    image: CachedNetworkImageProvider(
+                        ImageUrl.getUrl(d.poster_path, ImageSize.w300)),
+                  )),
             ),
             Padding(
               padding: EdgeInsets.only(
@@ -115,6 +117,7 @@ Widget buildView(
   }
 
   return AnimatedSwitcher(
+      key: ValueKey('knownfor'),
       switchInCurve: Curves.easeIn,
       switchOutCurve: Curves.easeOut,
       duration: Duration(milliseconds: 600),
@@ -124,18 +127,18 @@ Widget buildView(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(30)),
+              padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
               child: Text(
                 I18n.of(viewService.context).knownFor,
                 softWrap: true,
                 style: TextStyle(
                     color: Colors.black,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w500,
                     fontSize: Adapt.px(40)),
               ),
             ),
             SizedBox(
-              height: Adapt.px(10),
+              height: Adapt.px(30),
             ),
             _buildKnownForCell(),
           ],

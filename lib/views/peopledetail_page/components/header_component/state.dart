@@ -1,13 +1,19 @@
 import 'package:fish_redux/fish_redux.dart';
 
 class HeaderState implements Cloneable<HeaderState> {
-
   String profilePath;
   String profileName;
   String biography;
   String character;
   int peopleid;
-  HeaderState({this.peopleid,this.biography,this.profileName,this.profilePath,this.character});
+  String birthday;
+  HeaderState(
+      {this.peopleid,
+      this.biography,
+      this.profileName,
+      this.profilePath,
+      this.character,
+      this.birthday});
 
   @override
   HeaderState clone() {
@@ -16,6 +22,6 @@ class HeaderState implements Cloneable<HeaderState> {
 }
 
 HeaderState initState(Map<String, dynamic> args) {
-  var state=HeaderState();
+  var state = HeaderState();
   return state;
 }

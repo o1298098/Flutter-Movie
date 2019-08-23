@@ -6,6 +6,8 @@ import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/customwidgets/searchbar_delegate.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/enums/time_window.dart';
+import 'package:movie/views/detail_page/page.dart';
+import 'package:movie/views/tvdetail_page/page.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -68,6 +70,13 @@ Future _onCellTapped(Action action, Context<HomePageState> ctx) async {
     type == MediaType.movie ? 'title' : 'name': title,
     'posterpic': posterpic
   };
-
-  await Navigator.of(ctx.context).pushNamed(pagename, arguments: data);
+  Page page = type == MediaType.movie ? MovieDetailPage() : TVDetailPage();
+  await Navigator.of(ctx.context)
+      .push(PageRouteBuilder(pageBuilder: (context, animation, secAnimation) {
+    return FadeTransition(
+      opacity: animation,
+      child: page.buildPage(data),
+    );
+  }));
+  //await Navigator.of(ctx.context).pushNamed(pagename, arguments: data);
 }

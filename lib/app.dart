@@ -7,6 +7,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/views/episodedetail_page/page.dart';
 import 'package:movie/views/favorites_page/page.dart';
+import 'package:movie/views/gallery_page/page.dart';
 import 'package:movie/views/listdetail_page/page.dart';
 import 'package:movie/views/login_page/page.dart';
 import 'package:movie/views/main_page/page.dart';
@@ -68,6 +69,7 @@ Future<Widget> createApp() async {
       'WatchlistPage': WatchlistPage(),
       'WatchlistDetailPage': WatchlistDetailPage(),
       'detailpage': detail.MovieDetailPage(),
+      'GalleryPage': GalleryPage()
     },
     visitor: (String path, Page<Object, dynamic> page) {
       if (page.isTypeof<GlobalBaseState>()) {

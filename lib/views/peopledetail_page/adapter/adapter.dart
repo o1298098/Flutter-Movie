@@ -1,6 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:movie/models/combinedcredits.dart';
+import 'package:movie/views/peopledetail_page/components/gallery_component/component.dart';
+import 'package:movie/views/peopledetail_page/components/gallery_component/state.dart';
 import 'package:movie/views/peopledetail_page/components/header_component/component.dart';
 import 'package:movie/views/peopledetail_page/components/header_component/state.dart';
 import 'package:movie/views/peopledetail_page/components/knownfor_component/component.dart';
@@ -20,7 +22,8 @@ class PeopleAdapter extends DynamicFlowAdapter<PeopleDetailPageState> {
             'header': HeaderComponent(),
             'knownfor': KnownForComponent(),
             'timeline': TimeLineComponent(),
-            'personalinfo': PersonalInfoComponent()
+            'personalinfo': PersonalInfoComponent(),
+            'gallery': GalleryComponent(),
           },
           connector: _PeopleConnector(),
           reducer: buildReducer(),
@@ -38,8 +41,17 @@ class _PeopleConnector extends ConnOp<PeopleDetailPageState, List<ItemBean>> {
             biography: state.peopleDetailModel.biography,
             profileName: state.profileName,
             profilePath: state.profilePath,
-            character: state.character)));
+            character: state.character,
+            birthday: state?.peopleDetailModel?.birthday)));
+    items.add(ItemBean(
+        'personalinfo',
+        PersonalInfoState(
+            peopleDetailModel: state.peopleDetailModel,
+            creditcount: state.creditsModel.cast.length +
+                state.creditsModel.crew.length)));
     items.add(ItemBean('knownfor', KnownForState(cast: state.knowForCast)));
+    items.add(ItemBean(
+        'gallery', GalleryState(images: state.peopleDetailModel.images)));
     items.add(ItemBean(
         'timeline',
         TimeLineState(
@@ -48,18 +60,13 @@ class _PeopleConnector extends ConnOp<PeopleDetailPageState, List<ItemBean>> {
             showmovie: state.showmovie,
             scrollPhysics:
                 PageScrollPhysics(parent: state.pageScrollPhysics))));
-    items.add(ItemBean(
-        'personalinfo',
-        PersonalInfoState(
-            peopleDetailModel: state.peopleDetailModel,
-            creditcount: state.creditsModel.cast.length +
-                state.creditsModel.crew.length)));
+
     return items;
   }
 
   @override
   void set(PeopleDetailPageState state, List<ItemBean> items) {
-    TimeLineState d = items[2].data;
+    TimeLineState d = items[4].data;
     state.showmovie = d.showmovie;
   }
 

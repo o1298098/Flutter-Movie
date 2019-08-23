@@ -76,9 +76,10 @@ Widget buildView(WatchlistDetailPageState state, Dispatch dispatch,
                         child: Text(
                           _d.title ?? _d.name,
                           maxLines: 1,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Color(0xFF333333),
-                              fontSize: Adapt.px(50),
+                              fontSize: Adapt.px(45),
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -198,7 +199,9 @@ Widget buildView(WatchlistDetailPageState state, Dispatch dispatch,
               ),
               onPressed: () async {
                 state.animationController.reverse().then((f) {
-                  Navigator.of(viewService.context).pop();
+                  Future.delayed(Duration(milliseconds: 80), () {
+                    Navigator.of(viewService.context).pop();
+                  });
                 });
               },
             ),

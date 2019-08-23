@@ -6,6 +6,7 @@ import 'package:movie/actions/apihelper.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/customwidgets/gallery_photoview_wrapper.dart';
 import 'package:movie/models/enums/imagesize.dart';
+import 'package:movie/views/peopledetail_page/page.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -115,12 +116,18 @@ Future _movieCellTapped(
 }
 
 Future _castCellTapped(Action action, Context<MovieDetailPageState> ctx) async {
-  await Navigator.of(ctx.context).pushNamed('peopledetailpage', arguments: {
-    'peopleid': action.payload[0],
-    'profilePath': action.payload[1],
-    'profileName': action.payload[2],
-    'character': action.payload[3]
-  });
+  await Navigator.of(ctx.context)
+      .push(PageRouteBuilder(pageBuilder: (context, animation, secAnimation) {
+    return FadeTransition(
+      opacity: animation,
+      child: PeopleDetailPage().buildPage({
+        'peopleid': action.payload[0],
+        'profilePath': action.payload[1],
+        'profileName': action.payload[2],
+        'character': action.payload[3]
+      }),
+    );
+  }));
 }
 
 void _openMenu(Action action, Context<MovieDetailPageState> ctx) {
