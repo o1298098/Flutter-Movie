@@ -57,28 +57,35 @@ void _onDispose(Action action, Context<MovieDetailPageState> ctx) {
 Future _playTrailer(Action action, Context<MovieDetailPageState> ctx) async {
   var _model = ctx.state?.detail?.videos?.results ?? [];
   if (_model.length > 0)
-    await showDialog(
+    await showGeneralDialog(
+        barrierLabel: 'Trailer',
+        barrierDismissible: true,
+        barrierColor: Colors.black87,
+        transitionDuration: Duration(milliseconds: 300),
         context: ctx.context,
-        builder: (context) {
-          return SimpleDialog(
-            contentPadding: EdgeInsets.zero,
-            children: <Widget>[
-              YoutubePlayer(
-                context: ctx.context,
-                videoId: _model[0].key,
-                flags: YoutubePlayerFlags(
-                  mute: false,
-                  autoPlay: true,
-                  forceHideAnnotation: true,
-                  showVideoProgressIndicator: true,
-                ),
-                videoProgressIndicatorColor: Colors.red,
-                progressColors: ProgressColors(
-                  playedColor: Colors.red,
-                  handleColor: Colors.redAccent,
+        pageBuilder: (_, __, ___) {
+          return Center(
+            child: Material(
+              child: Container(
+                width: Adapt.screenW(),
+                height: Adapt.screenW() * 9 / 16,
+                child: YoutubePlayer(
+                  context: ctx.context,
+                  videoId: _model[0].key,
+                  flags: YoutubePlayerFlags(
+                    mute: false,
+                    autoPlay: true,
+                    forceHideAnnotation: true,
+                    showVideoProgressIndicator: true,
+                  ),
+                  videoProgressIndicatorColor: Colors.red,
+                  progressColors: ProgressColors(
+                    playedColor: Colors.red,
+                    handleColor: Colors.redAccent,
+                  ),
                 ),
               ),
-            ],
+            ),
           );
         });
   else

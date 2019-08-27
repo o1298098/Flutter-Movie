@@ -5,7 +5,7 @@ import 'reducer.dart';
 import 'state.dart';
 import 'view.dart';
 
-class GalleryPage extends Page<GalleryPageState, Map<String, dynamic>> {
+class GalleryPage extends Page<GalleryPageState, Map<String, dynamic>> with SingleTickerProviderMixin{
   GalleryPage()
       : super(
           initState: initState,

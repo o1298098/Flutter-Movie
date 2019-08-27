@@ -4,7 +4,8 @@ import 'package:shimmer/shimmer.dart';
 
 class ShimmerCell extends StatelessWidget {
   const ShimmerCell(this.width, this.height, this.borderRadius,
-      {this.margin = EdgeInsets.zero});
+      {Key key, this.margin = EdgeInsets.zero})
+      : super(key: key);
 
   final double width;
   final double height;

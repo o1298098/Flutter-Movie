@@ -15,7 +15,13 @@ import 'state.dart';
 
 Widget buildView(
     TimeLineState state, Dispatch dispatch, ViewService viewService) {
-  String filter = state.showmovie ? "movie" : "tv";
+  List<CastData> _movies;
+  List<CastData> _tvshows;
+  void initList() {
+    var _model = state.creditsModel.cast ?? [];
+    _movies = _model.where((d) => d.media_type == 'movie').toList();
+    _tvshows = _model.where((d) => d.media_type == 'tv').toList();
+  }
 
   Widget _buildTitle() {
     if (state.department == null)
@@ -93,7 +99,10 @@ Widget buildView(
                 ),
                 SizedBox(
                     width: _leftwidth,
-                    child: Text(d.character.isEmpty == true ? '-' : d.character,
+                    child: Text(
+                        d?.character?.isEmpty == true || d.character == null
+                            ? '-'
+                            : d.character,
                         style: TextStyle(color: Color(0xFF505050))))
               ],
             ),
@@ -106,17 +115,17 @@ Widget buildView(
   }
 
   Widget _buildActingBody() {
-    var _model = state.creditsModel.cast ?? [];
-    var _data = _model.where((d) => d.media_type == filter).toList();
+    if (_movies == null || _tvshows == null) initList();
+    var _data = state.showmovie ? _movies : _tvshows;
     return Container(
       padding: EdgeInsets.all(Adapt.px(30)),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(Adapt.px(30))),
       child: ListView(
-          physics: state.scrollPhysics,
+          physics: PageScrollPhysics(),
           shrinkWrap: true,
-          children: _model.length > 0
+          children: _data.length > 0
               ? _data
                   .map((f) =>
                       _buildActingCell(f, _data.indexOf(f) == _data.length - 1))
@@ -135,43 +144,42 @@ Widget buildView(
     );
   }
 
-  return Container(
-    key: ValueKey('timeLine'),
-    child:
-        Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-      Padding(
-          padding:
-              EdgeInsets.fromLTRB(Adapt.px(30), 0, Adapt.px(30), Adapt.px(30)),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              _buildTitle(),
-              Expanded(
-                child: Container(),
-              ),
-              GestureDetector(
-                onTap: () =>
-                    dispatch(TimeLineActionCreator.onActingChanged(true)),
-                child: Text(I18n.of(viewService.context).movies,
-                    style: TextStyle(
-                        color: state.showmovie ? Colors.black : Colors.grey)),
-              ),
-              SizedBox(
-                width: Adapt.px(20),
-              ),
-              GestureDetector(
-                onTap: () =>
-                    dispatch(TimeLineActionCreator.onActingChanged(false)),
-                child: Text(I18n.of(viewService.context).tvShows,
-                    style: TextStyle(
-                        color: state.showmovie ? Colors.grey : Colors.black)),
-              )
-            ],
-          )),
-      Padding(
-        padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-        child: _buildActingBody(),
-      ),
-    ]),
-  );
+  return Column(
+      key: ValueKey('timeLine'),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+            padding: EdgeInsets.fromLTRB(
+                Adapt.px(30), 0, Adapt.px(30), Adapt.px(30)),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                _buildTitle(),
+                Expanded(
+                  child: Container(),
+                ),
+                GestureDetector(
+                  onTap: () =>
+                      dispatch(TimeLineActionCreator.onActingChanged(true)),
+                  child: Text(I18n.of(viewService.context).movies,
+                      style: TextStyle(
+                          color: state.showmovie ? Colors.black : Colors.grey)),
+                ),
+                SizedBox(
+                  width: Adapt.px(20),
+                ),
+                GestureDetector(
+                  onTap: () =>
+                      dispatch(TimeLineActionCreator.onActingChanged(false)),
+                  child: Text(I18n.of(viewService.context).tvShows,
+                      style: TextStyle(
+                          color: state.showmovie ? Colors.grey : Colors.black)),
+                )
+              ],
+            )),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+          child: _buildActingBody(),
+        ),
+      ]);
 }

@@ -238,7 +238,7 @@ Widget buildView(
             width: width,
             height: width,
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
+              borderRadius: BorderRadius.circular(Adapt.px(15)),
               color: Colors.grey[200],
             ),
           ),
@@ -323,7 +323,8 @@ Widget buildView(
             SizedBox(
               height: Adapt.px(8),
             ),
-            Text('${DateTime.parse(d.release_date ?? '1990-01-01').year}',
+            Text(
+                '${DateTime.parse(d.release_date.isEmpty ? '2020-01-01' : d.release_date).year}',
                 style: TextStyle(fontSize: Adapt.px(24))),
             SizedBox(
               height: Adapt.px(8),
@@ -478,18 +479,18 @@ Widget buildView(
         child: _bg,
       ),
       bottom: PreferredSize(
-        preferredSize: Size.fromHeight(Adapt.px(300).floorToDouble()),
+        preferredSize: Size.fromHeight(Adapt.px(300)),
         child: Stack(
           alignment: Alignment.bottomRight,
           children: <Widget>[
             Container(
                 width: Adapt.screenW(),
-                height: Adapt.px(250).floorToDouble(),
+                height: Adapt.px(250),
                 padding: EdgeInsets.fromLTRB(
                     Adapt.px(40), Adapt.px(40), Adapt.px(40), 0),
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    border: Border.all(color: Colors.transparent, width: 0.0),
+                    border: Border.all(color: Colors.white),
                     borderRadius: BorderRadius.vertical(
                         top: Radius.circular(Adapt.px(50)))),
                 child: _headerTitle),
@@ -822,14 +823,6 @@ Widget buildView(
         _buildStill(),
         _buildKeyWord(),
         _buildRecommendations(),
-        SliverToBoxAdapter(
-          child: Container(
-            decoration: BoxDecoration(
-                color: Colors.blueGrey[100],
-                borderRadius: BorderRadius.circular(Adapt.px(50))),
-            height: Adapt.px(800),
-          ),
-        ),
       ],
     ),
   );

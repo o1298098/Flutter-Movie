@@ -15,10 +15,12 @@ class ShareCard extends StatefulWidget {
   final Widget header;
   final double headerHeight;
   ShareCard(
-      {@required this.backgroundImage,
+      {Key key,
+      @required this.backgroundImage,
       @required this.qrValue,
       @required this.header,
-      this.headerHeight});
+      this.headerHeight})
+      : super(key: key);
   @override
   ShareCardState createState() => ShareCardState();
 }

@@ -14,6 +14,7 @@ import 'state.dart';
 Widget buildView(
     HeaderState state, Dispatch dispatch, ViewService viewService) {
   void _bioReadMore() async {
+    if (state.biography == null || state.biography.isEmpty) return;
     await showGeneralDialog(
         context: viewService.context,
         barrierLabel: 'bio',
@@ -40,6 +41,7 @@ Widget buildView(
                       style: TextStyle(
                           color: Color(0xFF333333),
                           fontSize: Adapt.px(30),
+                          height: 1.2,
                           fontWeight: FontWeight.w600),
                     ),
                   ),

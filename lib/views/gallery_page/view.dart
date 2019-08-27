@@ -12,7 +12,7 @@ import 'state.dart';
 
 Widget buildView(
     GalleryPageState state, Dispatch dispatch, ViewService viewService) {
-  Widget _buildImageCell(ImageData d) {
+  Widget _buildImageCell(ImageData d, int index) {
     double width = Adapt.screenW() / 2;
     return Hero(
       key: ValueKey('image${d.file_path}'),
@@ -22,6 +22,7 @@ Widget buildView(
         height: width / d.aspect_ratio,
         decoration: BoxDecoration(
             color: Colors.grey[200],
+            borderRadius: BorderRadius.circular(Adapt.px(20)),
             image: DecorationImage(
                 fit: BoxFit.cover,
                 image: CachedNetworkImageProvider(
@@ -43,7 +44,8 @@ Widget buildView(
       crossAxisSpacing: 4.0,
       mainAxisSpacing: 4.0,
       itemCount: state.images.length,
-      itemBuilder: (context, index) => _buildImageCell(state.images[index]),
+      itemBuilder: (context, index) =>
+          _buildImageCell(state.images[index], index),
       staggeredTileBuilder: (index) =>
           new StaggeredTile.count(2, index.isEven ? 4 : 3),
     ),

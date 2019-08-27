@@ -1,8 +1,10 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:flutter/material.dart';
 import 'package:movie/models/imagemodel.dart';
 
 class GalleryPageState implements Cloneable<GalleryPageState> {
   List<ImageData> images;
+  AnimationController animationController;
 
   @override
   GalleryPageState clone() {

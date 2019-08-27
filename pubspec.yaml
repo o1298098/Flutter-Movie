@@ -34,7 +34,7 @@ dependencies:
   url_launcher: ^5.0.3
   chewie: ^0.9.7
   video_player: 0.10.1+6
-  youtube_player_flutter: ^4.0.0+2
+  youtube_player_flutter: ^4.1.0
   gzx_dropdown_menu: ^1.0.2
   intl: ^0.15.8
   cached_network_image: ^1.1.1

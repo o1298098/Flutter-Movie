@@ -5,18 +5,17 @@ class BackDrop extends StatefulWidget {
   final Widget backChild;
   final Widget frontChild;
   final double height;
-  BackDrop({this.backChild, this.frontChild, this.height});
+  BackDrop(
+      {Key key,
+      @required this.backChild,
+      @required this.frontChild,
+      this.height = 0.0})
+      : super(key: key);
   @override
   BackDropState createState() => BackDropState();
 }
 
 class BackDropState extends State<BackDrop> with TickerProviderStateMixin {
-  double dropHeight;
-  double _startHeight = 0;
-  double _stratY;
-  double _positionY;
-  double _lastDeffY = 0;
-  double _top = 0;
   bool isrun;
   AnimationController _animationController;
 
@@ -28,10 +27,30 @@ class BackDropState extends State<BackDrop> with TickerProviderStateMixin {
     isrun = false;
     topTween = Tween<double>(begin: widget.height, end: 0.0);
     _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-    dropHeight = widget.height ?? 0.0;
-    _startHeight = widget.height ?? 0.0;
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300))
+          ..addListener(() {
+            setState(() {});
+          });
     super.initState();
+  }
+
+  void _drag(DragUpdateDetails d) {
+    _animationController.value -= d.primaryDelta / widget.height;
+  }
+
+  void _dragEnd(DragEndDetails d) {
+    double minFlingVelocity = (widget.height) / 4;
+    if (_animationController.isAnimating) return;
+    if (d.velocity.pixelsPerSecond.dy.abs() >= minFlingVelocity) {
+      double visualVelocity = -d.velocity.pixelsPerSecond.dy / widget.height;
+      _animationController.fling(velocity: visualVelocity);
+      return;
+    }
+    if (_animationController.value > 0.5) {
+      _animationController.fling();
+    } else {
+      _animationController.fling(velocity: -1.0);
+    }
   }
 
   @override
@@ -55,72 +74,11 @@ class BackDropState extends State<BackDrop> with TickerProviderStateMixin {
                 left: 0.0,
                 right: 0.0,
                 bottom: 0.0,
-                top: topTween
-                    .animate(CurvedAnimation(
-                        parent: _animationController, curve: Curves.ease))
-                    .value,
+                top: (1 - _animationController.value) * widget.height,
                 child: Column(children: <Widget>[
                   GestureDetector(
-                    /*onVerticalDragUpdate: (dragUpdateDetails) {
-                      if (_positionY == null) {
-                        RenderBox box = key.currentContext.findRenderObject();
-                        Offset position = box.localToGlobal(Offset.zero);
-                        _positionY = position.dy;
-                      }
-                      _lastDeffY =
-                          _stratY - dragUpdateDetails.globalPosition.dy;
-                      print(dragUpdateDetails.globalPosition);
-                      var _movie =
-                          dragUpdateDetails.globalPosition.dy - _positionY;
-                      if (_movie > 0.0 && _movie <= _startHeight) {
-                        _top = _movie;
-                      } else if (_top < 0)
-                        _top = 0.0;
-                      else if (_top > _startHeight) _top = _startHeight;
-                      setState(() {
-                        dropHeight = _top;
-                      });
-                    },
-                    onVerticalDragStart: (d) {
-                      _lastDeffY = 0;
-                      _stratY = d.globalPosition.dy;
-                    },
-                    onVerticalDragEnd: (d) async {
-                      if (_lastDeffY == 0) return;
-                      if (_lastDeffY > 0) {
-                        setState(() {
-                          _animationController.value =
-                              (_startHeight - dropHeight) / _startHeight;
-                          isrun = true;
-                        });
-
-                        await _animationController.forward().then((f) {
-                          setState(() {
-                            dropHeight = 0.0;
-                            isrun = false;
-                          });
-                        });
-                      } else if (_lastDeffY < 0) {
-                        setState(() {
-                          _animationController.value =
-                              (_startHeight - dropHeight) / _startHeight;
-                          isrun = true;
-                        });
-
-                        await _animationController.reverse().then((f) {
-                          setState(() {
-                            dropHeight = _startHeight;
-                            isrun = false;
-                          });
-                        });
-                      }
-                    },*/
-                    onTap: () {
-                      if (_animationController.value == 0.0)
-                        _animationController.forward();
-                      else
-                        _animationController.reverse();
-                    },
+                    onVerticalDragUpdate: _drag,
+                    onVerticalDragEnd: _dragEnd,
                     child: Container(
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
