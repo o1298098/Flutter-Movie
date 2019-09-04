@@ -720,7 +720,8 @@ Widget buildView(
                     _buildFrontTitel(
                         'Trending',
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () =>
+                              dispatch(HomePageActionCreator.onTrendingMore()),
                           child: Text(
                             I18n.of(viewService.context).more,
                             style: TextStyle(color: Colors.grey[600]),

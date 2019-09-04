@@ -7,6 +7,7 @@ import 'package:movie/customwidgets/searchbar_delegate.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/enums/time_window.dart';
 import 'package:movie/views/detail_page/page.dart';
+import 'package:movie/views/trending_page/page.dart';
 import 'package:movie/views/tvdetail_page/page.dart';
 import 'action.dart';
 import 'state.dart';
@@ -17,6 +18,7 @@ Effect<HomePageState> buildEffect() {
     HomePageAction.moreTapped: _moreTapped,
     HomePageAction.searchBarTapped: _onSearchBarTapped,
     HomePageAction.cellTapped: _onCellTapped,
+    HomePageAction.trendingMore: _trendingMore,
     Lifecycle.initState: _onInit,
     Lifecycle.dispose: _onDispose,
   });
@@ -79,4 +81,14 @@ Future _onCellTapped(Action action, Context<HomePageState> ctx) async {
     );
   }));
   //await Navigator.of(ctx.context).pushNamed(pagename, arguments: data);
+}
+
+Future _trendingMore(Action action, Context<HomePageState> ctx) async {
+  await Navigator.of(ctx.context)
+      .push(PageRouteBuilder(pageBuilder: (context, animation, secAnimation) {
+    return FadeTransition(
+      opacity: animation,
+      child: TrendingPage().buildPage({'data': ctx.state.trending}),
+    );
+  }));
 }

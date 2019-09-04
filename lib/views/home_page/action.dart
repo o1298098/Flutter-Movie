@@ -17,6 +17,7 @@ enum HomePageAction {
   initTrending,
   searchBarTapped,
   cellTapped,
+  trendingMore,
 }
 
 class HomePageActionCreator {
@@ -64,5 +65,9 @@ class HomePageActionCreator {
       int id, String bgpic, String title, String posterpic, MediaType type) {
     return Action(HomePageAction.cellTapped,
         payload: [id, bgpic, title, posterpic, type]);
+  }
+
+  static Action onTrendingMore() {
+    return const Action(HomePageAction.trendingMore);
   }
 }
