@@ -1,12 +1,15 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/customwidgets/custom_stfstate.dart';
 
 import 'effect.dart';
 import 'reducer.dart';
 import 'state.dart';
 import 'view.dart';
 
-class TrendingPage extends Page<TrendingPageState, Map<String, dynamic>>
-    with SingleTickerProviderMixin {
+class TrendingPage extends Page<TrendingPageState, Map<String, dynamic>> {
+  @override
+  CustomstfState<TrendingPageState> createState() =>
+      CustomstfState<TrendingPageState>();
   TrendingPage()
       : super(
           initState: initState,

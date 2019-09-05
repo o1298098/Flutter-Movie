@@ -42,6 +42,7 @@ class _PeopleConnector extends ConnOp<PeopleDetailPageState, List<ItemBean>> {
             profileName: state.profileName,
             profilePath: state.profilePath,
             character: state.character,
+            deathday: state.peopleDetailModel.deathday,
             birthday: state?.peopleDetailModel?.birthday)));
     items.add(ItemBean(
         'personalinfo',

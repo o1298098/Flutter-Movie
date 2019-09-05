@@ -106,7 +106,8 @@ class SearchResult {
 
     knownFor = jsonRes['known_for'] == null ? null : [];
 
-    for (var knownForItem in knownFor == null ? [] : jsonRes['known_for']) {
+    for (var knownForItem
+        in knownFor == null ? [] : [] /*jsonRes['known_for']*/) {
       knownFor.add(
           knownForItem == null ? null : new KnownFor.fromJson(knownForItem));
     }
@@ -126,8 +127,8 @@ class SearchResult {
 }
 
 class KnownFor {
-  int id;
-  int voteCount;
+  double id;
+  double voteCount;
   double popularity;
   double voteAverage;
   bool adult;
@@ -160,8 +161,8 @@ class KnownFor {
       this.genreIds});
 
   KnownFor.fromJson(jsonRes) {
-    id = jsonRes['id'];
-    voteCount = jsonRes['vote_count'];
+    id = double.parse(jsonRes['id']?.toString() ?? '0.0');
+    voteCount = double.parse(jsonRes['vote_count']?.toString() ?? '0.0');
     popularity = double.parse(jsonRes['popularity']?.toString() ?? '0.0');
     voteAverage = double.parse(jsonRes['vote_average']?.toString() ?? '0.0');
     adult = jsonRes['adult'];

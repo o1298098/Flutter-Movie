@@ -7,13 +7,15 @@ class HeaderState implements Cloneable<HeaderState> {
   String character;
   int peopleid;
   String birthday;
+  String deathday;
   HeaderState(
       {this.peopleid,
       this.biography,
       this.profileName,
       this.profilePath,
       this.character,
-      this.birthday});
+      this.birthday,
+      this.deathday});
 
   @override
   HeaderState clone() {

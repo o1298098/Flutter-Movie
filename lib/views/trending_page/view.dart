@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
-import 'package:movie/customwidgets/sliverappbar_delegate.dart';
 import 'package:movie/models/enums/genres.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/searchresult.dart';
@@ -103,87 +102,129 @@ Widget buildView(
 
   Widget _buildTredingCell(int index) {
     SearchResult d = state.trending.results[index];
-    return Container(
+    return GestureDetector(
       key: ValueKey('trendingCell$index'),
-      margin: EdgeInsets.only(
-          bottom: Adapt.px(50), left: Adapt.px(30), right: Adapt.px(30)),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              blurRadius: Adapt.px(15),
-              offset: Offset(Adapt.px(10), Adapt.px(15)),
-              color: Colors.grey[200])
-        ],
-        borderRadius: BorderRadius.circular(Adapt.px(30)),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            width: Adapt.px(280),
-            height: Adapt.px(280),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(Adapt.px(30)),
-              child: ParallaxImage(
-                color: Colors.grey[200],
-                //controller: state.controller,
-                extent: Adapt.px(280),
-                image: CachedNetworkImageProvider(ImageUrl.getUrl(
-                    d.posterPath ?? d.profilePath, ImageSize.w300)),
-              ),
-            ),
-          ),
-          SizedBox(
-            width: Adapt.px(50),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(
-                height: Adapt.px(20),
-              ),
-              Text(
-                '${index + 1}',
-                style: TextStyle(
-                    color: Color(0xFF505050),
-                    fontSize: Adapt.px(50),
-                    fontWeight: FontWeight.w800),
-              ),
-              SizedBox(
-                width: Adapt.screenW() - Adapt.px(480),
-                child: Text(
-                  d.title ?? d.name,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: Adapt.px(28),
-                      fontWeight: FontWeight.w700),
+      onTap: () => dispatch(TrendingPageActionCreator.cellTapped(d)),
+      child: Container(
+        margin: EdgeInsets.only(
+            bottom: Adapt.px(50), left: Adapt.px(30), right: Adapt.px(30)),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+                blurRadius: Adapt.px(15),
+                offset: Offset(Adapt.px(10), Adapt.px(15)),
+                color: Colors.grey[200])
+          ],
+          borderRadius: BorderRadius.circular(Adapt.px(30)),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: Adapt.px(280),
+              height: Adapt.px(280),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(Adapt.px(30)),
+                child: Container(
+                  color: Colors.grey[200],
+                  child: ParallaxImage(
+                    //controller: state.controller,
+                    extent: Adapt.px(280),
+                    image: CachedNetworkImageProvider(ImageUrl.getUrl(
+                        d.posterPath ?? d.profilePath, ImageSize.w300)),
+                  ),
                 ),
               ),
-              SizedBox(
-                height: Adapt.px(10),
-              ),
-              SizedBox(
-                  width: Adapt.screenW() - Adapt.px(480),
-                  child: Text(d.genreIds
-                      .take(3)
-                      .map((f) {
-                        return Genres.genres[f];
-                      })
-                      .toList()
-                      .join(' / ')))
-            ],
-          ),
-          Container(
-            height: Adapt.px(280),
-            child: IconButton(
-              padding: EdgeInsets.zero,
-              icon: Icon(Icons.favorite_border),
-              onPressed: () {},
             ),
-          )
-        ],
+            SizedBox(
+              width: Adapt.px(50),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  height: Adapt.px(20),
+                ),
+                Text(
+                  '${index + 1}',
+                  style: TextStyle(
+                      color: Color(0xFF505050),
+                      fontSize: Adapt.px(50),
+                      fontWeight: FontWeight.w800),
+                ),
+                SizedBox(
+                  width: Adapt.screenW() - Adapt.px(490),
+                  child: Text(
+                    d.title ?? d.name,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: Adapt.px(28),
+                        fontWeight: FontWeight.w700),
+                  ),
+                ),
+                SizedBox(
+                  height: Adapt.px(10),
+                ),
+                SizedBox(
+                    width: Adapt.screenW() - Adapt.px(490),
+                    child: Text(
+                      (d.genreIds ?? [])
+                          .take(3)
+                          .map((f) {
+                            return Genres.genres[f];
+                          })
+                          .toList()
+                          .join(' / '),
+                      style: TextStyle(
+                          color: Color(0xFF505050), fontSize: Adapt.px(22)),
+                    ))
+              ],
+            ),
+            Container(
+              height: Adapt.px(280),
+              child: IconButton(
+                padding: EdgeInsets.only(left: Adapt.px(20)),
+                iconSize: Adapt.px(40),
+                icon: Icon(Icons.favorite_border),
+                onPressed: () {},
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRefreshing() {
+    return SliverToBoxAdapter(
+        child: AnimatedBuilder(
+            animation: state.refreshController,
+            builder: (_, __) {
+              return Container(
+                height: Tween<double>(begin: 0.0, end: Adapt.px(5))
+                    .animate(CurvedAnimation(
+                      parent: state.refreshController,
+                      curve: Curves.ease,
+                    ))
+                    .value,
+                alignment: Alignment.center,
+                child: LinearProgressIndicator(
+                  backgroundColor: Colors.white,
+                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF505050)),
+                ),
+              );
+            }));
+  }
+
+  Widget _buildLoading() {
+    return SliverToBoxAdapter(
+      child: Container(
+        alignment: Alignment.center,
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF505050)),
+        ),
       ),
     );
   }
@@ -197,7 +238,6 @@ Widget buildView(
   }
 
   return Scaffold(
-      //backgroundColor: Colors.white,
       appBar: AppBar(
         brightness: Brightness.light,
         backgroundColor: Colors.white,
@@ -224,12 +264,14 @@ Widget buildView(
           controller: state.controller,
           slivers: <Widget>[
             _buildFilter(),
+            _buildRefreshing(),
             SliverToBoxAdapter(
               child: SizedBox(
                 height: Adapt.px(30),
               ),
             ),
-            _buildList()
+            _buildList(),
+            _buildLoading(),
           ],
         ),
       )));

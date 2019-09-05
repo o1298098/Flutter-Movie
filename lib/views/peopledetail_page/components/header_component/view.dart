@@ -146,7 +146,10 @@ Widget buildView(
 
   Widget _buildYearsOld() {
     if (state.birthday != null) {
-      int yearold = DateTime.now().year - DateTime.parse(state.birthday).year;
+      var _now = state.deathday != null
+          ? DateTime.parse(state.deathday).year
+          : DateTime.now().year;
+      int yearold = _now - DateTime.parse(state.birthday).year;
       return Text(
         '$yearold years old',
         style: TextStyle(color: Colors.grey[600], fontSize: Adapt.px(32)),

@@ -8,6 +8,7 @@ class TrendingPageState implements Cloneable<TrendingPageState> {
   SearchResultModel trending;
   ScrollController controller;
   AnimationController animationController;
+  AnimationController refreshController;
   List<SortCondition> mediaTypes;
   MediaType selectMediaType;
   bool isToday;
@@ -18,6 +19,7 @@ class TrendingPageState implements Cloneable<TrendingPageState> {
       ..trending = trending
       ..controller = controller
       ..animationController = animationController
+      ..refreshController = refreshController
       ..mediaTypes = mediaTypes
       ..selectMediaType = selectMediaType
       ..isToday = isToday;

@@ -10,7 +10,9 @@ enum TrendingPageAction {
   setMediaType,
   dateChanged,
   mediaTypeChanged,
-  updateList
+  updateList,
+  loadMore,
+  cellTapped
 }
 
 class TrendingPageActionCreator {
@@ -26,15 +28,23 @@ class TrendingPageActionCreator {
     return Action(TrendingPageAction.dateChanged, payload: b);
   }
 
-  static Action setMediaType(MediaType t) {
-    return Action(TrendingPageAction.setMediaType, payload: t);
+  static Action setMediaType(MediaType mediaType) {
+    return Action(TrendingPageAction.setMediaType, payload: mediaType);
   }
 
-  static Action mediaTypeChanged(SortCondition t) {
-    return Action(TrendingPageAction.mediaTypeChanged, payload: t);
+  static Action mediaTypeChanged(SortCondition sortCondition) {
+    return Action(TrendingPageAction.mediaTypeChanged, payload: sortCondition);
   }
 
   static Action updateList(SearchResultModel d) {
     return Action(TrendingPageAction.updateList, payload: d);
+  }
+
+  static Action loadMore(SearchResultModel d) {
+    return Action(TrendingPageAction.loadMore, payload: d);
+  }
+
+  static Action cellTapped(SearchResult d) {
+    return Action(TrendingPageAction.cellTapped, payload: d);
   }
 }
