@@ -97,8 +97,8 @@ Widget buildView(
     return id != null
         ? InkWell(
             borderRadius: BorderRadius.circular(Adapt.px(20)),
-            onTap: () =>
-                dispatch(MovieDetailPageActionCreator.onExternalTapped(url)),
+            onTap: () => dispatch(
+                MovieDetailPageActionCreator.onExternalTapped(url + id)),
             child: Container(
               width: Adapt.px(40),
               height: Adapt.px(40),

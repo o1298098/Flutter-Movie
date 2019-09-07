@@ -178,6 +178,7 @@ Widget buildView(
         switchOutCurve: Curves.easeOut,
         child: ListView(
             key: ValueKey(_model),
+            physics: BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
             children: _model.results.length > 0
                 ? _model.results.map(_buildHeaderListCell).toList()

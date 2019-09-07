@@ -199,28 +199,25 @@ Widget buildView(
 
   Widget _buildRefreshing() {
     return SliverToBoxAdapter(
-        child: AnimatedBuilder(
-            animation: state.refreshController,
-            builder: (_, __) {
-              return Container(
-                height: Tween<double>(begin: 0.0, end: Adapt.px(5))
-                    .animate(CurvedAnimation(
-                      parent: state.refreshController,
-                      curve: Curves.ease,
-                    ))
-                    .value,
-                alignment: Alignment.center,
-                child: LinearProgressIndicator(
-                  backgroundColor: Colors.white,
-                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF505050)),
-                ),
-              );
-            }));
+        child: FadeTransition(
+      opacity: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+        parent: state.refreshController,
+        curve: Curves.ease,
+      )),
+      child: SizedBox(
+        height: Adapt.px(5),
+        child: LinearProgressIndicator(
+          backgroundColor: Colors.white,
+          valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF505050)),
+        ),
+      ),
+    ));
   }
 
   Widget _buildLoading() {
     return SliverToBoxAdapter(
       child: Container(
+        padding: EdgeInsets.only(bottom: Adapt.px(30)),
         alignment: Alignment.center,
         child: CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF505050)),
@@ -261,6 +258,7 @@ Widget buildView(
         duration: Duration(milliseconds: 300),
         child: CustomScrollView(
           key: ValueKey(state.trending),
+          physics: BouncingScrollPhysics(),
           controller: state.controller,
           slivers: <Widget>[
             _buildFilter(),

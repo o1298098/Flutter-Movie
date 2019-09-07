@@ -1,5 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
@@ -10,6 +11,8 @@ import 'state.dart';
 Widget buildView(
     PeopleDetailPageState state, Dispatch dispatch, ViewService viewService) {
   var adapter = viewService.buildAdapter();
+  /*SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle.dark.copyWith(statusBarBrightness: Brightness.dark));*/
   return Scaffold(
     backgroundColor: Colors.grey[100],
     /*appBar: AppBar(

@@ -61,11 +61,11 @@ Future _showFilter(Action action, Context<TrendingPageState> ctx) async {
 
 Future _mediaTypeChanged(Action action, Context<TrendingPageState> ctx) async {
   await ctx.state.animationController.reverse();
-  if (!ctx.state.refreshController.isAnimating)
-    await ctx.state.refreshController.forward();
   final SortCondition model = action.payload;
   var _mt = ctx.state.mediaTypes;
   if (model.value != ctx.state.selectMediaType) {
+    if (!ctx.state.refreshController.isAnimating)
+      await ctx.state.refreshController.forward();
     ctx.state.selectMediaType = model.value;
     int index = _mt.indexOf(model);
     _mt.forEach((f) {
@@ -78,10 +78,10 @@ Future _mediaTypeChanged(Action action, Context<TrendingPageState> ctx) async {
 
 Future _dateChanged(Action action, Context<TrendingPageState> ctx) async {
   await ctx.state.animationController.reverse();
-  if (!ctx.state.refreshController.isAnimating)
-    await ctx.state.refreshController.forward();
   final bool _b = action.payload ?? true;
   if (_b != ctx.state.isToday) {
+    if (!ctx.state.refreshController.isAnimating)
+      await ctx.state.refreshController.forward();
     ctx.state.isToday = _b;
     _loadData(ctx);
   }
