@@ -9,12 +9,12 @@ import 'state.dart';
 Effect<AccountPageState> buildEffect() {
   return combineEffects(<Object, Effect<AccountPageState>>{
     Lifecycle.initState: _onInit,
-    Lifecycle.build:_onBuild,
-    Lifecycle.dispose:_onDispose,
+    Lifecycle.build: _onBuild,
+    Lifecycle.dispose: _onDispose,
     AccountPageAction.action: _onAction,
     AccountPageAction.login: _onLogin,
     AccountPageAction.logout: _onLogout,
-    AccountPageAction.navigatorPush:_navigatorPush,
+    AccountPageAction.navigatorPush: _navigatorPush,
   });
 }
 
@@ -35,9 +35,10 @@ Future _onInit(Action action, Context<AccountPageState> ctx) async {
   String name = prefs.getString('accountname');
   String avatar = prefs.getString('accountgravatar');
   bool islogin = prefs.getBool('islogin') ?? false;
-  int accountIdV3=prefs.getInt('accountid');
+  int accountIdV3 = prefs.getInt('accountid');
   String accountIdV4 = prefs.getString('accountIdV4');
-  ctx.dispatch(AccountPageActionCreator.onInit(name, avatar, islogin,accountIdV3,accountIdV4));
+  ctx.dispatch(AccountPageActionCreator.onInit(
+      name, avatar, islogin, accountIdV3, accountIdV4));
 }
 
 void _onBuild(Action action, Context<AccountPageState> ctx) {
@@ -51,10 +52,14 @@ void _onDispose(Action action, Context<AccountPageState> ctx) {
 Future _onLogout(Action action, Context<AccountPageState> ctx) async {
   var q = await ApiHelper.deleteSession();
   if (q) await _onInit(action, ctx);
-} 
+}
 
 Future _navigatorPush(Action action, Context<AccountPageState> ctx) async {
-  String routerName=action.payload[0];
-  Object data=action.payload[1];
-  await Navigator.of(ctx.context).pushNamed(routerName,arguments: data);
+  if (!ctx.state.islogin)
+    await _onLogin(action, ctx);
+  else {
+    String routerName = action.payload[0];
+    Object data = action.payload[1];
+    await Navigator.of(ctx.context).pushNamed(routerName, arguments: data);
+  }
 }

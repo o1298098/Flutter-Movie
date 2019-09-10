@@ -42,7 +42,8 @@ Widget buildView(
 
   Widget _buildShimmerHeader() {
     Color _baseColor = Colors.grey[200];
-    return Padding(
+    return Container(
+      height: Adapt.px(550),
       padding: EdgeInsets.all(Adapt.px(30)),
       child: Shimmer.fromColors(
         baseColor: _baseColor,
@@ -283,23 +284,25 @@ Widget buildView(
   return Scaffold(
     body: Stack(
       children: <Widget>[
-      state.selectedMedia!=null? AnimatedSwitcher(
-         duration: Duration(milliseconds: 800),
-          child: CachedNetworkImage(
-            key: ValueKey(state?.selectedMedia?.poster_path),
-            imageUrl: ImageUrl.getUrl(
-                state?.selectedMedia?.poster_path, ImageSize.w500),
-            imageBuilder: (ctx, image) => Container(
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-              fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(Colors.black, BlendMode.color),
-              image: image,
-            ))),
-            errorWidget: (ctx, str, object) => Container(),
-          ),
-        )
-        :Container(),
+        state.selectedMedia != null
+            ? AnimatedSwitcher(
+                duration: Duration(milliseconds: 800),
+                child: CachedNetworkImage(
+                  key: ValueKey(state?.selectedMedia?.poster_path),
+                  imageUrl: ImageUrl.getUrl(
+                      state?.selectedMedia?.poster_path, ImageSize.w500),
+                  imageBuilder: (ctx, image) => Container(
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                    fit: BoxFit.cover,
+                    colorFilter:
+                        ColorFilter.mode(Colors.black, BlendMode.color),
+                    image: image,
+                  ))),
+                  errorWidget: (ctx, str, object) => Container(),
+                ),
+              )
+            : Container(),
         Container(
           color: Colors.white.withAlpha(230),
           child: SafeArea(

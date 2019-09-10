@@ -332,8 +332,7 @@ class ApiHelper {
     VideoListModel model;
     String param =
         '/account/$accountid/watchlist/movies?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
-    var r =
-        await httpGet(param, cached: false, cacheDuration: Duration(days: 0));
+    var r = await httpGet(param, cacheDuration: Duration(minutes: 10));
     if (r != null) model = VideoListModel(r);
     return model;
   }
