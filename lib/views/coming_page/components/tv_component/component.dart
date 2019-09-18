@@ -9,12 +9,11 @@ import 'view.dart';
 class TVListComponent extends Component<TVListState> {
   TVListComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<TVListState>(
-                adapter:NoneConn<TVListState>()+ TVlistAdapter(),
-                slots: <String, Dependent<TVListState>>{
-                }),);
-
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<TVListState>(
+              adapter: NoneConn<TVListState>() + TVlistAdapter(),
+              slots: <String, Dependent<TVListState>>{}),
+        );
 }

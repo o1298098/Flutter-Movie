@@ -331,10 +331,14 @@ Widget buildView(
             ),
             Container(
                 width: _width,
-                child: FlutterRatingBarIndicator(
+                child: RatingBarIndicator(
                   itemPadding: EdgeInsets.only(right: Adapt.px(5)),
                   itemSize: Adapt.px(25),
-                  emptyColor: Colors.grey[300],
+                  itemBuilder: (context, _) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  unratedColor: Colors.grey[300],
                   rating: d.vote_average / 2,
                 ))
           ],
@@ -441,11 +445,15 @@ Widget buildView(
               ),
               Row(
                 children: <Widget>[
-                  FlutterRatingBarIndicator(
+                  RatingBarIndicator(
                     rating: (state.detail?.vote_average ?? 0.0) / 2,
                     itemPadding: EdgeInsets.only(right: Adapt.px(8)),
                     itemCount: 5,
-                    emptyColor: Colors.grey,
+                    itemBuilder: (context, _) => Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    unratedColor: Colors.grey,
                     itemSize: Adapt.px(25),
                   ),
                   SizedBox(

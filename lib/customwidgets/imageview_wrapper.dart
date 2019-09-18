@@ -33,8 +33,7 @@ class HeroPhotoViewWrapper extends StatelessWidget {
               backgroundDecoration: backgroundDecoration,
               minScale: minScale,
               maxScale: maxScale,
-              heroTag: url,
-              transitionOnUserGestures: true,
+              heroAttributes: PhotoViewHeroAttributes(tag: '$url'),
             ),
             Material(
               color: Colors.transparent,

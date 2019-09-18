@@ -14,7 +14,6 @@ import 'package:movie/views/main_page/page.dart';
 import 'package:movie/views/moviedetail_page/page.dart';
 import 'package:movie/views/mylists_page/page.dart';
 import 'package:movie/views/peopledetail_page/page.dart';
-import 'package:movie/views/search_page/page.dart';
 import 'package:movie/views/seasondetail_page/page.dart';
 import 'package:movie/views/seasons_page/page.dart';
 import 'package:movie/views/tvdetail_page/page.dart';
@@ -57,7 +56,6 @@ Future<Widget> createApp() async {
       'loginpage': LoginPage(),
       'moviedetailpage': MovieDetailPage(),
       'tvdetailpage': TVDetailPage(),
-      'searchpage': SearchPage(),
       'peopledetailpage': PeopleDetailPage(),
       'seasondetailpage': SeasonDetailPage(),
       'episodedetailpage': EpisodeDetailPage(),
@@ -112,14 +110,32 @@ Future<Widget> createApp() async {
       );
     },
   );
-
+  final ThemeData _lightTheme = ThemeData(
+      brightness: Brightness.light,
+      primarySwatch: Colors.blue,
+      //scaffoldBackgroundColor: Colors.white,
+      backgroundColor: Colors.white,
+      textTheme: TextTheme(title: TextStyle(color: Colors.black)),
+      tabBarTheme: TabBarTheme(
+        labelColor: Colors.black87,
+        unselectedLabelColor: Colors.grey,
+      ));
+  final ThemeData _darkTheme = ThemeData(
+      brightness: Brightness.dark,
+      primarySwatch: Colors.blue,
+      scaffoldBackgroundColor: Color(0xFF505050),
+      backgroundColor: Color(0xFF505050),
+      textTheme: TextTheme(title: TextStyle(color: Colors.black)),
+      tabBarTheme: TabBarTheme(
+        labelColor: Colors.white,
+        unselectedLabelColor: Colors.grey,
+      ));
   await _init();
   return MaterialApp(
     title: 'Movie',
     debugShowCheckedModeBanner: false,
-    theme: ThemeData(
-      primarySwatch: Colors.blue,
-    ),
+    theme: _lightTheme,
+    //darkTheme: _darkTheme,
     localizationsDelegates: [
       I18n.delegate,
       GlobalMaterialLocalizations.delegate,

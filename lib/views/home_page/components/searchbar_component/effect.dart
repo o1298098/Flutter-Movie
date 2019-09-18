@@ -2,7 +2,6 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter/widgets.dart' hide Action;
 import 'package:movie/customwidgets/searchbar_delegate.dart';
-import 'package:movie/views/search_page/page.dart';
 import 'action.dart';
 import 'state.dart';
 

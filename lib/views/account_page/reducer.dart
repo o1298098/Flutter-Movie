@@ -36,7 +36,7 @@ AccountPageState _onInit(AccountPageState state, Action action) {
 
 AccountPageState _onThemeChanged(AccountPageState state, Action action) {
   int _index = state.themeIndex + 1;
-  if (_index >= 2) _index = 0;
+  if (_index >= 3) _index = 0;
   final AccountPageState newState = state.clone();
   newState.themeIndex = _index;
   return newState;

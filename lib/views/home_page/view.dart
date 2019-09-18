@@ -264,8 +264,12 @@ Widget buildView(
                           ),
                           Container(
                             width: Adapt.px(160),
-                            child: FlutterRatingBarIndicator(
-                              emptyColor: Colors.grey[300],
+                            child: RatingBarIndicator(
+                              itemBuilder: (context, _) => Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              unratedColor: Colors.grey[300],
                               itemSize: Adapt.px(22),
                               itemPadding: EdgeInsets.only(right: Adapt.px(8)),
                               rating: d.vote_average / 2,
@@ -708,8 +712,9 @@ Widget buildView(
               ],
             ),
           ),
+          frontBackGroundColor: Theme.of(viewService.context).backgroundColor,
           frontChild: Container(
-            color: Colors.white,
+            color: Theme.of(viewService.context).backgroundColor,
             child: ListView(
               dragStartBehavior: DragStartBehavior.down,
               physics: ClampingScrollPhysics(),

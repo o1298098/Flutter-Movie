@@ -16,7 +16,6 @@ Widget buildView(
   }
 
   return Scaffold(
-    backgroundColor: Colors.white,
     body: PageView(
       physics: ClampingScrollPhysics(),
       children: state.pages.map(_buildPage).toList(),
@@ -24,7 +23,7 @@ Widget buildView(
       onPageChanged: (int i) => dispatch(MainPageActionCreator.onTabChanged(i)),
     ),
     bottomNavigationBar: BottomNavigationBar(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(viewService.context).backgroundColor,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home, size: Adapt.px(44)),
@@ -47,8 +46,9 @@ Widget buildView(
         ),
       ],
       currentIndex: state.selectedIndex,
-      selectedItemColor: Colors.black87,
-      unselectedItemColor: Colors.grey,
+      selectedItemColor: Theme.of(viewService.context).tabBarTheme.labelColor,
+      unselectedItemColor:
+          Theme.of(viewService.context).tabBarTheme.unselectedLabelColor,
       onTap: (int index) {
         pageController.jumpToPage(index);
       },

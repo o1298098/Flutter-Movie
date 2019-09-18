@@ -207,11 +207,16 @@ Widget buildView(
                     SizedBox(
                       width: Adapt.px(20),
                     ),
-                    FlutterRatingBarIndicator(
+                    RatingBarIndicator(
                       itemSize: Adapt.px(30),
                       itemPadding:
                           EdgeInsets.symmetric(horizontal: Adapt.px(4)),
-                      emptyColor: Colors.grey[400],
+                      physics: BouncingScrollPhysics(),
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      unratedColor: Colors.grey,
                       rating: (d?.vote_average ?? 0) / 2,
                     ),
                     SizedBox(

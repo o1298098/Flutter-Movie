@@ -160,7 +160,7 @@ Widget buildView(
                     _buildStyle2TapCell(
                         I18n.of(viewService.context).ratingsReviews, () {}),
                   ],
-                ))
+                )),
           ],
         )));
   }

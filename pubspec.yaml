@@ -23,33 +23,32 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  dio: ^2.1.7
-  dio_http_cache: ^0.1.2
-  fish_redux: ^0.2.5
+  dio: ^2.1.16
+  dio_http_cache: ^0.1.4
+  fish_redux: ^0.2.6
   common_utils: ^1.1.1
-  path_provider: ^1.1.0
-  shared_preferences: ^0.5.3+1
+  path_provider: ^1.3.0
+  shared_preferences: ^0.5.3+4
   palette_generator: ^0.2.0
-  shimmer: ^1.0.0
-  url_launcher: ^5.0.3
-  chewie: ^0.9.7
-  video_player: 0.10.1+6
+  shimmer: ^1.0.1
+  url_launcher: ^5.1.3
+  chewie: ^0.9.8
+  video_player: 0.10.2+1
   youtube_player_flutter: ^4.1.0
-  gzx_dropdown_menu: ^1.0.2
-  intl: ^0.15.8
+  gzx_dropdown_menu: ^1.0.3
+  intl: ^0.16.0
   cached_network_image: ^1.1.1
   parallax_image: ^0.3.1+1
   flutter_staggered_grid_view: ^0.3.0
   collection: ^1.14.11
-  photo_view: ^0.4.2
-  loader_search_bar: ^1.0.3+3
+  photo_view: ^0.5.0
   toast: ^0.1.5
-  permission_handler: ^3.2.0
-  webview_flutter: ^0.3.12
+  permission_handler: ^3.2.2
+  webview_flutter: ^0.3.14+1
   screenshot: ^0.1.1
-  share_extend: "^1.0.9"
+  share_extend: ^1.0.9
   qr_flutter: ^2.1.0+55
-  flutter_rating_bar: ^1.3.0+1
+  flutter_rating_bar: ^3.0.0
   flutter_swiper: ^1.1.6
   font_awesome_flutter: ^8.5.0
 
@@ -79,6 +78,12 @@ flutter:
   - images/instagram_circle.png
   - images/link_bold.png
   - images/tmdb_blue.png
+  - images/yoda.png
+  - images/luke_skywalker.png
+  - images/darth_vader.png
+  - images/chewbacca.png
+  - images/c3po.png
+  - images/r2d2.png
   
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -113,7 +113,7 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
     return PhotoViewGalleryPageOptions(
       imageProvider: CachedNetworkImageProvider(url),
       initialScale: PhotoViewComputedScale.contained,
-      heroTag: url + index.toString(),
+      heroAttributes: PhotoViewHeroAttributes(tag: '$url$index'),
     );
   }
 }

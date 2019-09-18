@@ -1,7 +1,7 @@
 // This is a generated file; do not edit or check into version control.
 FLUTTER_ROOT=/Users/hezhibin/flutter
-FLUTTER_APPLICATION_PATH=/Users/hezhibin/Projects/o1298098/Flutter-Movie
-FLUTTER_TARGET=/Users/hezhibin/Projects/o1298098/Flutter-Movie/lib/main.dart
+FLUTTER_APPLICATION_PATH=/Users/hezhibin/Projects/o1298098/flutter_movie
+FLUTTER_TARGET=/Users/hezhibin/Projects/o1298098/flutter_movie/lib/main.dart
 FLUTTER_BUILD_DIR=build
 SYMROOT=${SOURCE_ROOT}/../build/ios
 FLUTTER_FRAMEWORK_DIR=/Users/hezhibin/flutter/bin/cache/artifacts/engine/ios

@@ -4,11 +4,13 @@ import 'package:movie/actions/Adapt.dart';
 class BackDrop extends StatefulWidget {
   final Widget backChild;
   final Widget frontChild;
+  final Color frontBackGroundColor;
   final double height;
   BackDrop(
       {Key key,
       @required this.backChild,
       @required this.frontChild,
+      this.frontBackGroundColor,
       this.height = 0.0})
       : super(key: key);
   @override
@@ -18,13 +20,14 @@ class BackDrop extends StatefulWidget {
 class BackDropState extends State<BackDrop> with TickerProviderStateMixin {
   bool isrun;
   AnimationController _animationController;
-
+  Color _fontBackGroundColor;
   Tween<double> topTween;
   GlobalKey key;
   @override
   void initState() {
     key = GlobalKey();
     isrun = false;
+    _fontBackGroundColor = widget.frontBackGroundColor ?? Colors.white;
     topTween = Tween<double>(begin: widget.height, end: 0.0);
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300))
@@ -60,6 +63,15 @@ class BackDropState extends State<BackDrop> with TickerProviderStateMixin {
   }
 
   @override
+  void didUpdateWidget(BackDrop oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.frontBackGroundColor != oldWidget.frontBackGroundColor)
+      setState(() {
+        _fontBackGroundColor = widget.frontBackGroundColor ?? Colors.white;
+      });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
@@ -82,8 +94,9 @@ class BackDropState extends State<BackDrop> with TickerProviderStateMixin {
                     child: Container(
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(width: 0.0, color: Colors.white),
+                            color: _fontBackGroundColor,
+                            border: Border.all(
+                                width: 0.0, color: _fontBackGroundColor),
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(Adapt.px(40)),
                                 topRight: Radius.circular(Adapt.px(40)))),

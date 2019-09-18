@@ -35,10 +35,13 @@ class DialogRatingBarState extends State<DialogRatingBar> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              FlutterRatingBar(
+              RatingBar(
                 initialRating: rating / 2,
-                fillColor: Colors.amber,
-                borderColor: Colors.black.withAlpha(50),
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                glow: false,
                 allowHalfRating: true,
                 onRatingUpdate: (rated) {
                   setState(() {
