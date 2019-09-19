@@ -1,6 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
+import 'package:movie/customwidgets/customcliper_path.dart';
 
 import '../../action.dart';
 import 'action.dart';
@@ -8,6 +9,32 @@ import 'state.dart';
 
 Widget buildView(
     Theme3State state, Dispatch dispatch, ViewService viewService) {
+  Widget _buildBackGround() {
+    return ClipPath(
+        clipper: CustomCliperPath(
+            height: Adapt.px(380),
+            width: Adapt.screenW(),
+            radius: Adapt.px(2000)),
+        child: Container(
+          height: Adapt.px(380),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: <Color>[
+                  Color(0xFF6495ED),
+                  Color(0xFF6A5ACD),
+                  //Color(0xFF707070),
+                  //Color(0xFF202020),
+                ],
+                stops: <double>[
+                  0.0,
+                  1.0
+                ]),
+          ),
+        ));
+  }
+
   Widget _buildHeader() {
     return Row(
       children: <Widget>[
@@ -17,8 +44,9 @@ Widget buildView(
         Text(
           'Hi , ${state.name}',
           style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: Adapt.px(50),
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: Adapt.px(60),
           ),
         ),
         Expanded(
@@ -34,6 +62,7 @@ Widget buildView(
           },
           icon: Icon(
             state.islogin ? Icons.exit_to_app : Icons.person_outline,
+            color: Colors.white,
           ),
         ),
         SizedBox(
@@ -54,9 +83,9 @@ Widget buildView(
               borderRadius: BorderRadius.circular(Adapt.px(20)),
               boxShadow: <BoxShadow>[
                 BoxShadow(
-                    blurRadius: Adapt.px(20),
+                    blurRadius: Adapt.px(10),
                     color: Colors.grey[300],
-                    offset: Offset(Adapt.px(5), Adapt.px(10)))
+                    offset: Offset(0, Adapt.px(15)))
               ]),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -67,61 +96,71 @@ Widget buildView(
                 height: Adapt.px(100),
               ),
               SizedBox(
-                height: Adapt.px(10),
+                height: Adapt.px(20),
               ),
-              Text(
-                title,
-                style: TextStyle(
-                    fontSize: Adapt.px(35), fontWeight: FontWeight.bold),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: Adapt.px(10)),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: Adapt.px(30), fontWeight: FontWeight.w600),
+                ),
               )
             ],
           ),
         ));
   }
 
-  return Container(
-    color: Colors.white,
-    child: SafeArea(
-      child: Column(
+  Widget _buildBody() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+      child: GridView.count(
+        physics: NeverScrollableScrollPhysics(),
+        //mainAxisSpacing: Adapt.px(30),
+        crossAxisSpacing: Adapt.px(30),
+        shrinkWrap: true,
+        crossAxisCount: 2,
         children: <Widget>[
-          SizedBox(
-            height: Adapt.px(80),
-          ),
-          _buildHeader(),
-          SizedBox(
-            height: Adapt.px(80),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-            child: GridView.count(
-              physics: NeverScrollableScrollPhysics(),
-              //mainAxisSpacing: Adapt.px(30),
-              crossAxisSpacing: Adapt.px(30),
-              shrinkWrap: true,
-              crossAxisCount: 2,
-              children: <Widget>[
-                _buildGirdCell('images/yoda.png', 'Watchlist',
-                    ontap: () => dispatch(
-                        AccountPageActionCreator.navigatorPush('WatchlistPage',
-                            arguments: {'accountid': state.acountIdV3}))),
-                _buildGirdCell('images/luke_skywalker.png', 'MyLists',
-                    ontap: () => dispatch(
-                        AccountPageActionCreator.navigatorPush('MyListsPage',
-                            arguments: {'accountid': state.acountIdV4}))),
-                _buildGirdCell('images/darth_vader.png', 'Favorites',
-                    ontap: () => dispatch(
-                        AccountPageActionCreator.navigatorPush('FavoritesPage',
-                            arguments: {'accountid': state.acountIdV3}))),
-                _buildGirdCell('images/chewbacca.png', 'Recommendations'),
-                _buildGirdCell('images/c3po.png', 'MyRated'),
-                _buildGirdCell('images/r2d2.png', 'Setting',
-                    ontap: () =>
-                        dispatch(AccountPageActionCreator.themeChange())),
-              ],
-            ),
-          ),
+          _buildGirdCell('images/yoda.png', 'Watchlist',
+              ontap: () => dispatch(AccountPageActionCreator.navigatorPush(
+                  'WatchlistPage',
+                  arguments: {'accountid': state.acountIdV3}))),
+          _buildGirdCell('images/luke_skywalker.png', 'MyLists',
+              ontap: () => dispatch(AccountPageActionCreator.navigatorPush(
+                  'MyListsPage',
+                  arguments: {'accountid': state.acountIdV4}))),
+          _buildGirdCell('images/darth_vader.png', 'Favorites',
+              ontap: () => dispatch(AccountPageActionCreator.navigatorPush(
+                  'FavoritesPage',
+                  arguments: {'accountid': state.acountIdV3}))),
+          _buildGirdCell('images/chewbacca.png', 'Recommendations'),
+          _buildGirdCell('images/c3po.png', 'MyRated'),
+          _buildGirdCell('images/r2d2.png', 'Setting',
+              ontap: () => dispatch(AccountPageActionCreator.themeChange())),
         ],
       ),
-    ),
+    );
+  }
+
+  return Stack(
+    children: <Widget>[
+      _buildBackGround(),
+      Container(
+        child: SafeArea(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: Adapt.px(60),
+              ),
+              _buildHeader(),
+              SizedBox(
+                height: Adapt.px(50),
+              ),
+              _buildBody(),
+            ],
+          ),
+        ),
+      )
+    ],
   );
 }

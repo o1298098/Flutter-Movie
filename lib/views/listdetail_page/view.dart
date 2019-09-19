@@ -123,13 +123,13 @@ Widget buildView(
   }
 
   Widget _buildShimmerHeader() {
-    Color baseColor = Colors.grey;
+    Color baseColor = Color(0xFF505050);
     return Container(
       alignment: Alignment.bottomLeft,
       padding: EdgeInsets.all(Adapt.px(30)),
       child: Shimmer.fromColors(
         baseColor: baseColor,
-        highlightColor: Colors.grey[400],
+        highlightColor: Color(0xFF707070),
         child: SafeArea(
           child: Container(
             padding: EdgeInsets.only(top: Adapt.px(100)),

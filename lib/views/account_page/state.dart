@@ -34,5 +34,5 @@ AccountPageState initState(Map<String, dynamic> args) {
   return AccountPageState()
     ..name = ''
     ..islogin = false
-    ..themeIndex = 1;
+    ..themeIndex = 2;
 }
