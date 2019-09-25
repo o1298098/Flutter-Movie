@@ -10,7 +10,7 @@ import 'state.dart';
 
 Widget buildView(
     LoginPageState state, Dispatch dispatch, ViewService viewService) {
-  double headerHeight = Adapt.px(500);
+  double headerHeight = Adapt.screenH() / 3;
 
   Widget _buildSubmit() {
     var submitWidth = CurvedAnimation(
@@ -305,5 +305,3 @@ Widget buildView(
     ),
   );
 }
-
-

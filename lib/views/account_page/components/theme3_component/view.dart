@@ -142,25 +142,28 @@ Widget buildView(
     );
   }
 
-  return Stack(
-    children: <Widget>[
-      _buildBackGround(),
-      Container(
-        child: SafeArea(
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: Adapt.px(60),
-              ),
-              _buildHeader(),
-              SizedBox(
-                height: Adapt.px(50),
-              ),
-              _buildBody(),
-            ],
+  return SingleChildScrollView(
+    physics: BouncingScrollPhysics(),
+    child: Stack(
+      children: <Widget>[
+        _buildBackGround(),
+        Container(
+          child: SafeArea(
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: Adapt.px(60),
+                ),
+                _buildHeader(),
+                SizedBox(
+                  height: Adapt.px(50),
+                ),
+                _buildBody(),
+              ],
+            ),
           ),
-        ),
-      )
-    ],
+        )
+      ],
+    ),
   );
 }
