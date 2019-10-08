@@ -39,10 +39,7 @@ Widget buildView(
       return Text(
         state.department ?? '',
         softWrap: true,
-        style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w500,
-            fontSize: Adapt.px(40)),
+        style: TextStyle(fontWeight: FontWeight.w500, fontSize: Adapt.px(40)),
       );
   }
 
@@ -94,8 +91,7 @@ Widget buildView(
                 SizedBox(
                   width: _leftwidth,
                   child: Text(d.title ?? d.name,
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w600)),
+                      style: TextStyle(fontWeight: FontWeight.w600)),
                 ),
                 SizedBox(
                     width: _leftwidth,
@@ -103,7 +99,7 @@ Widget buildView(
                         d?.character?.isEmpty == true || d.character == null
                             ? '-'
                             : d.character,
-                        style: TextStyle(color: Color(0xFF505050))))
+                        style: TextStyle(color: Colors.grey[400])))
               ],
             ),
             Text(date)
@@ -117,33 +113,36 @@ Widget buildView(
   Widget _buildActingBody() {
     if (_movies == null || _tvshows == null) initList();
     var _data = state.showmovie ? _movies : _tvshows;
-    return Container(
-      padding: EdgeInsets.all(Adapt.px(30)),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(Adapt.px(30))),
-      child: ListView(
-          physics: PageScrollPhysics(),
-          shrinkWrap: true,
-          children: _data.length > 0
-              ? _data
-                  .map((f) =>
-                      _buildActingCell(f, _data.indexOf(f) == _data.length - 1))
-                  .toList()
-              : <Widget>[
-                  _buildShimmerCell(),
-                  Divider(),
-                  _buildShimmerCell(),
-                  Divider(),
-                  _buildShimmerCell(),
-                  Divider(),
-                  _buildShimmerCell(),
-                  Divider(),
-                  _buildShimmerCell(),
-                ]),
-    );
+    return Card(
+        //margin: EdgeInsets.all(Adapt.px(10)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(Adapt.px(30))),
+        child: Container(
+          padding: EdgeInsets.all(Adapt.px(30)),
+          child: ListView(
+              physics: PageScrollPhysics(),
+              shrinkWrap: true,
+              children: _data.length > 0
+                  ? _data
+                      .map((f) => _buildActingCell(
+                          f, _data.indexOf(f) == _data.length - 1))
+                      .toList()
+                  : <Widget>[
+                      _buildShimmerCell(),
+                      Divider(),
+                      _buildShimmerCell(),
+                      Divider(),
+                      _buildShimmerCell(),
+                      Divider(),
+                      _buildShimmerCell(),
+                      Divider(),
+                      _buildShimmerCell(),
+                    ]),
+        ));
   }
 
+  final _selectTextStyle = TextStyle(fontWeight: FontWeight.w500);
+  final _unSelectTextStyle = TextStyle(color: Colors.grey);
   return Column(
       key: ValueKey('timeLine'),
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,8 +161,9 @@ Widget buildView(
                   onTap: () =>
                       dispatch(TimeLineActionCreator.onActingChanged(true)),
                   child: Text(I18n.of(viewService.context).movies,
-                      style: TextStyle(
-                          color: state.showmovie ? Colors.black : Colors.grey)),
+                      style: state.showmovie
+                          ? _selectTextStyle
+                          : _unSelectTextStyle),
                 ),
                 SizedBox(
                   width: Adapt.px(20),
@@ -172,8 +172,9 @@ Widget buildView(
                   onTap: () =>
                       dispatch(TimeLineActionCreator.onActingChanged(false)),
                   child: Text(I18n.of(viewService.context).tvShows,
-                      style: TextStyle(
-                          color: state.showmovie ? Colors.grey : Colors.black)),
+                      style: state.showmovie
+                          ? _unSelectTextStyle
+                          : _selectTextStyle),
                 )
               ],
             )),

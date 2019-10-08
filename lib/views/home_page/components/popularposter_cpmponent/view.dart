@@ -79,7 +79,7 @@ Widget buildView(
                   maxLines: 2,
                   //textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.black,
+                    //color: Colors.black,
                     fontSize: Adapt.px(28),
                     fontWeight: FontWeight.bold,
                   ),

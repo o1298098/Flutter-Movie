@@ -262,63 +262,75 @@ Widget buildView(
       );
   }
 
-  return Scaffold(
-      appBar: AppBar(
+  return Builder(builder: (context) {
+    final _lightTheme = ThemeData.light().copyWith(
         backgroundColor: Colors.white,
-        title: Text(
-          'My Lists',
-          style: TextStyle(color: Colors.black),
-        ),
-        brightness: Brightness.light,
-        iconTheme: IconThemeData(color: Colors.black),
-        actions: <Widget>[
-          IconButton(
-            icon: AnimatedSwitcher(
-              child: state.isEdit
-                  ? Icon(
-                      Icons.check,
-                      key: ValueKey(state.isEdit),
-                    )
-                  : Icon(Icons.edit, key: ValueKey(state.isEdit)),
-              duration: Duration(milliseconds: 200),
+        iconTheme: IconThemeData(color: Colors.black));
+    final _darkTheme = ThemeData.dark().copyWith(
+        backgroundColor: Color(0xFF303030),
+        iconTheme: IconThemeData(color: Colors.white));
+    final MediaQueryData _mediaQuery = MediaQuery.of(context);
+    final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
+        ? _lightTheme
+        : _darkTheme;
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: _theme.backgroundColor,
+          title: Text(
+            'My Lists',
+            style: _theme.textTheme.body1,
+          ),
+          brightness: _theme.brightness,
+          iconTheme: _theme.iconTheme,
+          actions: <Widget>[
+            IconButton(
+              icon: AnimatedSwitcher(
+                child: state.isEdit
+                    ? Icon(
+                        Icons.check,
+                        key: ValueKey(state.isEdit),
+                      )
+                    : Icon(Icons.edit, key: ValueKey(state.isEdit)),
+                duration: Duration(milliseconds: 200),
+              ),
+              onPressed: () async {
+                await state.scrollController.position.animateTo(0.0,
+                    curve: Curves.ease, duration: Duration(milliseconds: 200));
+                final r = !state.isEdit;
+                if (r) {
+                  await state.animationController.forward(from: 0.0);
+                  state.cellAnimationController.repeat();
+                  dispatch(MyListsPageActionCreator.onEdit(r));
+                } else {
+                  await state.animationController.reverse(from: 1.0);
+                  state.cellAnimationController.reset();
+                  dispatch(MyListsPageActionCreator.onEdit(r));
+                }
+              },
             ),
-            onPressed: () async {
-              await state.scrollController.position.animateTo(0.0,
-                  curve: Curves.ease, duration: Duration(milliseconds: 200));
-              final r = !state.isEdit;
-              if (r) {
-                await state.animationController.forward(from: 0.0);
-                state.cellAnimationController.repeat();
-                dispatch(MyListsPageActionCreator.onEdit(r));
-              } else {
-                await state.animationController.reverse(from: 1.0);
-                state.cellAnimationController.reset();
-                dispatch(MyListsPageActionCreator.onEdit(r));
-              }
-            },
-          ),
-        ],
-      ),
-      body: CustomScrollView(
-        controller: state.scrollController,
-        slivers: <Widget>[
-          SliverToBoxAdapter(
-            child: _buildAddCell(),
-          ),
-          _buildList(),
-          SliverToBoxAdapter(
-            child: Offstage(
-              offstage: state.myList.page == state.myList.totalPages,
-              child: Container(
-                height: Adapt.px(80),
-                margin: EdgeInsets.only(top: Adapt.px(30)),
-                alignment: Alignment.topCenter,
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation(Colors.black),
+          ],
+        ),
+        body: CustomScrollView(
+          controller: state.scrollController,
+          slivers: <Widget>[
+            SliverToBoxAdapter(
+              child: _buildAddCell(),
+            ),
+            _buildList(),
+            SliverToBoxAdapter(
+              child: Offstage(
+                offstage: state.myList.page == state.myList.totalPages,
+                child: Container(
+                  height: Adapt.px(80),
+                  margin: EdgeInsets.only(top: Adapt.px(30)),
+                  alignment: Alignment.topCenter,
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation(Colors.black),
+                  ),
                 ),
               ),
-            ),
-          )
-        ],
-      ));
+            )
+          ],
+        ));
+  });
 }

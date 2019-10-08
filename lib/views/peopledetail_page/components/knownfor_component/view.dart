@@ -21,8 +21,6 @@ Widget buildView(
       width: Adapt.px(240),
       height: Adapt.px(400),
       child: Card(
-        shape:
-            RoundedRectangleBorder(side: BorderSide(color: Colors.grey[100])),
         elevation: 1.0,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,9 +130,7 @@ Widget buildView(
                 I18n.of(viewService.context).knownFor,
                 softWrap: true,
                 style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                    fontSize: Adapt.px(40)),
+                    fontWeight: FontWeight.w500, fontSize: Adapt.px(40)),
               ),
             ),
             SizedBox(

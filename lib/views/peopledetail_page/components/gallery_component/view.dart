@@ -81,9 +81,7 @@ Widget buildView(
                 Text(
                   'Photos',
                   style: TextStyle(
-                      color: Colors.black,
-                      fontSize: Adapt.px(40),
-                      fontWeight: FontWeight.w500),
+                      fontSize: Adapt.px(40), fontWeight: FontWeight.w500),
                 ),
                 Expanded(child: Container()),
                 InkWell(

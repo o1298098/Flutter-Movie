@@ -26,9 +26,7 @@ Widget buildView(
           ListTile(
             title: Text(name,
                 style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: Adapt.px(40))),
+                    fontWeight: FontWeight.bold, fontSize: Adapt.px(40))),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: ontap,
           ),

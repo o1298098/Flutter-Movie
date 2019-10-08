@@ -23,7 +23,7 @@ Widget buildView(
       padding: EdgeInsets.all(Adapt.px(8)),
       child: Text(
         Genres.genres[id],
-        style: TextStyle(color: Colors.black87, fontSize: Adapt.px(24)),
+        style: TextStyle(fontSize: Adapt.px(24)),
       ),
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
@@ -128,7 +128,6 @@ Widget buildView(
                       child: Text(
                         d?.title ?? '',
                         style: TextStyle(
-                            color: Colors.black,
                             fontSize: Adapt.px(30),
                             fontWeight: FontWeight.bold),
                       ),

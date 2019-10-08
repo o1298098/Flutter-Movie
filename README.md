@@ -3,8 +3,8 @@
 A Flutter movie app build with Fish-Redux and TMDB api.  
 ## ToDos
 - [ ] redesign UI
-- [ ] dark mode support
 - [ ] account detail
+- [x] dark mode support
 - [x] localization
 - [x] search 
 - [x] detail page 
@@ -17,6 +17,8 @@ A Flutter movie app build with Fish-Redux and TMDB api.
 >Flutter 1.7.8+hotfix.4  
 >Tools • Dart 2.4.0  
 ## Preview 
+<img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios.gif" width="150">  
+
 ### tabbedpage
 <img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios1.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios2.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios3.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios4.png" width="150">  
 ### detailpage

@@ -886,7 +886,7 @@ class ApiHelper {
     return model;
   }
 
-  static Future<String> httpGet(String param,
+  static Future<Object> httpGet(String param,
       {bool cached = true,
       cacheDuration = const Duration(days: 1),
       maxStale = const Duration(days: 30)}) async {
@@ -905,14 +905,13 @@ class ApiHelper {
           maxStale: maxStale,
         ),
       );
-      var _content = json.encode(response.data);
-      return _content;
+      return response.data;
     } on DioError catch (e) {
       return null;
     }
   }
 
-  static Future<String> httpPost(String params, dynamic formData) async {
+  static Future<Object> httpPost(String params, dynamic formData) async {
     try {
       if (_appDocPath == null) {
         await getCookieDir();
@@ -923,14 +922,13 @@ class ApiHelper {
       };
       dio.options.cookies = _cj.loadForRequest(Uri.parse(_apihost));
       var response = await dio.post(_apihost + params, data: formData);
-      var _content = json.encode(response.data);
-      return _content;
+      return response.data;
     } on DioError catch (e) {
       return null;
     }
   }
 
-  static Future<String> httpGetV4(String param) async {
+  static Future<Object> httpGetV4(String param) async {
     try {
       if (_appDocPath == null) {
         await getCookieDir();
@@ -939,14 +937,13 @@ class ApiHelper {
       dio.options.headers = {'Authorization': 'Bearer $_apikeyV4'};
       dio.options.cookies = _cj.loadForRequest(Uri.parse(_apihostV4));
       var response = await dio.get(_apihostV4 + param);
-      var _content = json.encode(response.data);
-      return _content;
+      return response.data;
     } on DioError catch (e) {
       return null;
     }
   }
 
-  static Future<String> httpPostV4(
+  static Future<Object> httpPostV4(
       String params, dynamic formData, String token) async {
     try {
       if (_appDocPath == null) {
@@ -956,33 +953,31 @@ class ApiHelper {
       dio.options.headers = {'Authorization': 'Bearer $token'};
       //dio.options.cookies = _cj.loadForRequest(Uri.parse(_apihostV4));
       var response = await dio.post(_apihostV4 + params, data: formData);
-      var _content = json.encode(response.data);
-      return _content;
+      //var _content = json.encode(response.data);
+      return response.data;
     } on DioError catch (e) {
       return null;
     }
   }
 
-  static Future<String> httpDelete(String params, dynamic formData) async {
+  static Future<Object> httpDelete(String params, dynamic formData) async {
     try {
       var dio = new Dio();
       //dio.options.cookies = _cj.loadForRequest(Uri.parse(_apihost));
       var response = await dio.delete(_apihost + params + '?api_key=' + _apikey,
           queryParameters: formData);
-      var _content = json.encode(response.data);
-      return _content;
+      return response.data;
     } on DioError catch (e) {
       return null;
     }
   }
 
-  static Future<String> httpDeleteV4(String params, dynamic formData) async {
+  static Future<Object> httpDeleteV4(String params, dynamic formData) async {
     try {
       var dio = new Dio();
       dio.options.headers = {'Authorization': 'Bearer $_apikeyV4'};
       var response = await dio.delete(_apihostV4 + params, data: formData);
-      var _content = json.encode(response.data);
-      return _content;
+      return response.data;
     } on DioError catch (e) {
       return null;
     }

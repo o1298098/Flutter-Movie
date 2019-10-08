@@ -201,9 +201,7 @@ Widget buildView(
             children: <Widget>[
               Text(state.selectMdeia.title ?? state.selectMdeia.name,
                   style: TextStyle(
-                      color: Colors.black,
-                      fontSize: Adapt.px(45),
-                      fontWeight: FontWeight.bold)),
+                      fontSize: Adapt.px(45), fontWeight: FontWeight.bold)),
               SizedBox(
                 height: Adapt.px(20),
               ),
@@ -348,14 +346,10 @@ Widget buildView(
   }
 
   Widget _buildBody() {
-    TextStyle _selectTextStyle = TextStyle(
-        color: Colors.black,
-        fontSize: Adapt.px(45),
-        fontWeight: FontWeight.bold);
-    TextStyle _unselectTextStyle = TextStyle(
-        color: Colors.black,
-        fontSize: Adapt.px(30),
-        fontWeight: FontWeight.bold);
+    TextStyle _selectTextStyle =
+        TextStyle(fontSize: Adapt.px(45), fontWeight: FontWeight.bold);
+    TextStyle _unselectTextStyle =
+        TextStyle(fontSize: Adapt.px(30), fontWeight: FontWeight.bold);
     return SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -448,7 +442,7 @@ Widget buildView(
     );
   }
 
-  return Scaffold(backgroundColor: Colors.white, body: _buildBody());
+  return Scaffold(body: _buildBody());
 }
 
 class _SwiperView extends StatefulWidget {

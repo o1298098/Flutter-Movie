@@ -110,32 +110,14 @@ Future<Widget> createApp() async {
       );
     },
   );
-  final ThemeData _lightTheme = ThemeData(
-      brightness: Brightness.light,
-      primarySwatch: Colors.blue,
-      //scaffoldBackgroundColor: Colors.white,
-      backgroundColor: Colors.white,
-      textTheme: TextTheme(title: TextStyle(color: Colors.black)),
-      tabBarTheme: TabBarTheme(
-        labelColor: Colors.black87,
-        unselectedLabelColor: Colors.grey,
-      ));
-  final ThemeData _darkTheme = ThemeData(
-      brightness: Brightness.dark,
-      primarySwatch: Colors.blue,
-      scaffoldBackgroundColor: Color(0xFF505050),
-      backgroundColor: Color(0xFF505050),
-      textTheme: TextTheme(title: TextStyle(color: Colors.black)),
-      tabBarTheme: TabBarTheme(
-        labelColor: Colors.white,
-        unselectedLabelColor: Colors.grey,
-      ));
+  final ThemeData _lightTheme = ThemeData.light();
+  final ThemeData _darkTheme = ThemeData.dark();
   await _init();
   return MaterialApp(
     title: 'Movie',
     debugShowCheckedModeBanner: false,
     theme: _lightTheme,
-    //darkTheme: _darkTheme,
+    darkTheme: _darkTheme,
     localizationsDelegates: [
       I18n.delegate,
       GlobalMaterialLocalizations.delegate,

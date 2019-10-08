@@ -47,7 +47,6 @@ Widget buildView(
                         TextSpan(
                             text: d?.name ?? '-',
                             style: TextStyle(
-                                color: Colors.black,
                                 fontSize: Adapt.px(30),
                                 fontWeight: FontWeight.bold)),
                         TextSpan(

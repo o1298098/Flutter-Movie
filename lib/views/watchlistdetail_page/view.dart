@@ -29,13 +29,13 @@ Widget buildView(WatchlistDetailPageState state, Dispatch dispatch,
                 Text(
                   value,
                   style: TextStyle(
-                      color: Color(0xFF333333),
+                      //color: Color(0xFF333333),
                       fontSize: Adapt.px(45),
                       fontWeight: FontWeight.bold),
                 ),
                 Text(
                   title,
-                  style: TextStyle(color: Colors.grey[700]),
+                  //style: TextStyle(color: Colors.grey[700]),
                 )
               ],
             )));
@@ -78,7 +78,7 @@ Widget buildView(WatchlistDetailPageState state, Dispatch dispatch,
                           maxLines: 1,
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: Color(0xFF333333),
+                              // color: Color(0xFF333333),
                               fontSize: Adapt.px(45),
                               fontWeight: FontWeight.bold),
                         ),

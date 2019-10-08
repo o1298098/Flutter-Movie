@@ -71,10 +71,8 @@ Widget buildView(
           color: Colors.transparent,
           child: Text(
             state.profileName ?? '',
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: Adapt.px(50),
-                fontWeight: FontWeight.w700),
+            style:
+                TextStyle(fontSize: Adapt.px(50), fontWeight: FontWeight.w700),
           ),
         ),
       );
@@ -211,9 +209,7 @@ Widget buildView(
                     I18n.of(viewService.context).biography,
                     softWrap: true,
                     style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: Adapt.px(40)),
+                        fontWeight: FontWeight.w500, fontSize: Adapt.px(40)),
                   ),
                   Expanded(
                     child: SizedBox(),

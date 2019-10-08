@@ -16,11 +16,10 @@ Widget buildView(
       selected: d.isSelected,
       selectedColor: Colors.transparent,
       backgroundColor: Colors.transparent,
-      labelStyle: TextStyle(color:  d.isSelected ? Colors.black : Colors.grey ),
+      labelStyle: TextStyle(color: d.isSelected ? Colors.black : Colors.grey),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Adapt.px(10)),
-        side: BorderSide(color: d.isSelected ? Colors.black : Colors.grey )
-      ),
+          borderRadius: BorderRadius.circular(Adapt.px(10)),
+          side: BorderSide(color: d.isSelected ? Colors.black : Colors.grey)),
       onSelected: (s) {
         d.isSelected = s;
         //Navigator.pop(viewService.context);
@@ -33,7 +32,7 @@ Widget buildView(
   return Container(
     key: GlobalKey(),
     padding: EdgeInsets.fromLTRB(Adapt.px(30), Adapt.px(30), Adapt.px(30), 0),
-    color: Colors.white,
+    //color: Colors.white,
     child: SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,9 +47,10 @@ Widget buildView(
             child: TextField(
                 keyboardAppearance: Brightness.light,
                 cursorColor: Colors.grey,
-                onSubmitted: (v){
+                onSubmitted: (v) {
                   dispatch(FilterActionCreator.onKeyWordsChanged(v));
-                  viewService.broadcast(DiscoverPageActionCreator.onRefreshData());
+                  viewService
+                      .broadcast(DiscoverPageActionCreator.onRefreshData());
                 },
                 decoration: new InputDecoration(
                     hintText: "KeyWords",
@@ -96,7 +96,8 @@ Widget buildView(
                 onTap: () {
                   //Navigator.pop(viewService.context);
                   dispatch(FilterActionCreator.onSortChanged(true));
-                  viewService.broadcast(DiscoverPageActionCreator.onRefreshData());
+                  viewService
+                      .broadcast(DiscoverPageActionCreator.onRefreshData());
                 },
               ),
               SizedBox(
@@ -116,9 +117,10 @@ Widget buildView(
                           color: state.isMovie ? Colors.grey : Colors.black)),
                 ),
                 onTap: () {
-                 // Navigator.pop(viewService.context);
+                  // Navigator.pop(viewService.context);
                   dispatch(FilterActionCreator.onSortChanged(false));
-                  viewService.broadcast(DiscoverPageActionCreator.onRefreshData());
+                  viewService
+                      .broadcast(DiscoverPageActionCreator.onRefreshData());
                 },
               ),
             ],

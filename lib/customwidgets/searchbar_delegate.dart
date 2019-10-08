@@ -121,7 +121,6 @@ class SearchBarDelegate extends SearchDelegate<SearchResult> {
                           Text(
                             'History',
                             style: TextStyle(
-                                color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: Adapt.px(35)),
                           ),
@@ -158,9 +157,9 @@ class SearchBarDelegate extends SearchDelegate<SearchResult> {
                                     Icons.history,
                                     color: Colors.grey[500],
                                   ),
-                                  backgroundColor: Colors.grey[200],
+                                  // backgroundColor: Colors.grey[200],
                                   label: Text(s),
-                                  labelStyle: TextStyle(color: Colors.black87),
+                                  //labelStyle: TextStyle(color: Colors.black87),
                                   onPressed: () {
                                     query = s;
                                     showResults(context);
@@ -218,8 +217,9 @@ class SearchBarDelegate extends SearchDelegate<SearchResult> {
   ThemeData appBarTheme(BuildContext context) {
     assert(context != null);
     final ThemeData theme = Theme.of(context);
+
     assert(theme != null);
-    return theme.copyWith(
+    final _lightTheme = theme.copyWith(
       inputDecorationTheme:
           InputDecorationTheme(hintStyle: TextStyle(color: Colors.grey)),
       primaryColor: Colors.white,
@@ -227,6 +227,20 @@ class SearchBarDelegate extends SearchDelegate<SearchResult> {
       primaryColorBrightness: Brightness.light,
       primaryTextTheme: theme.textTheme,
     );
+    final _darkTheme = theme.copyWith(
+      inputDecorationTheme:
+          InputDecorationTheme(hintStyle: TextStyle(color: Colors.grey)),
+      primaryColor: Color(0xFF303030),
+      primaryIconTheme: theme.primaryIconTheme.copyWith(color: Colors.grey),
+      primaryColorBrightness: Brightness.dark,
+      primaryTextTheme: theme.textTheme,
+    );
+    final MediaQueryData _mediaQuery = MediaQuery.of(context);
+    final ThemeData _newtheme =
+        _mediaQuery.platformBrightness == Brightness.light
+            ? _lightTheme
+            : _darkTheme;
+    return _newtheme;
   }
 }
 
@@ -319,7 +333,6 @@ Widget _buildResultCell(SearchResult s, BuildContext ctx) {
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                         style: TextStyle(
-                            color: Colors.black,
                             fontWeight: FontWeight.bold,
                             fontSize: Adapt.px(30)),
                       ),

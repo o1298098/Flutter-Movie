@@ -11,18 +11,8 @@ import 'state.dart';
 Widget buildView(
     PeopleDetailPageState state, Dispatch dispatch, ViewService viewService) {
   var adapter = viewService.buildAdapter();
-  /*SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle.dark.copyWith(statusBarBrightness: Brightness.dark));*/
   return Scaffold(
-    backgroundColor: Colors.grey[100],
-    /*appBar: AppBar(
-      elevation: 0.0,
-      brightness: Brightness.light,
-      backgroundColor: Colors.white,
-      iconTheme: IconThemeData(color: Colors.black),
-      centerTitle: false,
-      title: Text('Profile',style: TextStyle(color:Colors.black),),
-    ),*/
+    //backgroundColor: Colors.grey[100],
     body: Stack(
       alignment: Alignment.topRight,
       children: <Widget>[
