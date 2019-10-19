@@ -55,14 +55,12 @@ class ApiHelper {
 
   static Future createGuestSession() async {
     String param = '/authentication/guest_session/new?api_key=$_apikey';
-    var r = await httpGet(param, cached: false);
+    dynamic r = await httpGet(param, cached: false);
     if (r != null) {
-      var jsonobject = json.decode(r);
-      if (jsonobject['success']) {
-        session = jsonobject['guest_session_id'];
-        _sessionExpiresTime = DateTime.parse(jsonobject['expires_at']
-            .toString()
-            .replaceFirst(new RegExp(' UTC'), ''));
+      if (r['success']) {
+        session = r['guest_session_id'];
+        _sessionExpiresTime = DateTime.parse(
+            r['expires_at'].toString().replaceFirst(new RegExp(' UTC'), ''));
         var date = DateTime.utc(
             _sessionExpiresTime.year,
             _sessionExpiresTime.month,

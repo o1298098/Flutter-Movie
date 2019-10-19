@@ -16,6 +16,7 @@ import 'package:movie/views/mylists_page/page.dart';
 import 'package:movie/views/peopledetail_page/page.dart';
 import 'package:movie/views/seasondetail_page/page.dart';
 import 'package:movie/views/seasons_page/page.dart';
+import 'package:movie/views/test_page/page.dart';
 import 'package:movie/views/tvdetail_page/page.dart';
 import 'package:movie/views/watchlist_page/page.dart';
 import 'package:movie/views/watchlistdetail_page/page.dart';
@@ -67,7 +68,8 @@ Future<Widget> createApp() async {
       'WatchlistPage': WatchlistPage(),
       'WatchlistDetailPage': WatchlistDetailPage(),
       'detailpage': detail.MovieDetailPage(),
-      'GalleryPage': GalleryPage()
+      'GalleryPage': GalleryPage(),
+      'testPage': TestPage(),
     },
     visitor: (String path, Page<Object, dynamic> page) {
       if (page.isTypeof<GlobalBaseState>()) {

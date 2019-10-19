@@ -62,5 +62,16 @@
 		<string>share to other</string>
 		<key>io.flutter.embedded_views_preview</key>
 		<true/>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>com.googleusercontent.apps.472468283055-0htd1htomrnke0v3l6p9iq125o4afump</string>
+				</array>
+			</dict>
+		</array>
 	</dict>
 </plist>

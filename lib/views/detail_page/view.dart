@@ -36,10 +36,16 @@ Widget buildView(
   }
 
   return Builder(builder: (context) {
-    final _lightTheme = ThemeData.light()
-        .copyWith(backgroundColor: Colors.white, cardColor: Colors.white);
+    final _lightTheme = ThemeData.light().copyWith(
+        backgroundColor: Colors.white,
+        cardColor: Colors.white,
+        primaryColorLight: Colors.grey[100],
+        primaryColorDark: Colors.grey[200]);
     final _darkTheme = ThemeData.dark().copyWith(
-        backgroundColor: Color(0xFF303030), cardColor: Color(0xFF505050));
+        backgroundColor: Color(0xFF303030),
+        cardColor: Color(0xFF505050),
+        primaryColorLight: Color(0xFF505050),
+        primaryColorDark: Color(0xFF404040));
     final MediaQueryData _mediaQuery = MediaQuery.of(context);
     final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
         ? _lightTheme
@@ -49,8 +55,8 @@ Widget buildView(
       return SizedBox(
         width: _width,
         child: Shimmer.fromColors(
-          baseColor: Colors.grey[200],
-          highlightColor: Colors.grey[100],
+          baseColor: _theme.primaryColorDark,
+          highlightColor: _theme.primaryColorLight,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -94,7 +100,7 @@ Widget buildView(
         height: height,
         margin: margin,
         decoration: BoxDecoration(
-            color: Colors.grey[200],
+            color: _theme.primaryColorDark,
             borderRadius: BorderRadius.circular(radius),
             image: DecorationImage(
                 fit: BoxFit.cover, image: CachedNetworkImageProvider(url))),
@@ -172,15 +178,21 @@ Widget buildView(
       else
         return Row(
           children: <Widget>[
-            ShimmerCell(Adapt.px(60), Adapt.px(60), Adapt.px(30)),
+            ShimmerCell(Adapt.px(60), Adapt.px(60), Adapt.px(30),
+                baseColor: _theme.primaryColorDark,
+                highlightColor: _theme.primaryColorLight),
             SizedBox(
               width: Adapt.px(20),
             ),
-            ShimmerCell(Adapt.px(60), Adapt.px(60), Adapt.px(30)),
+            ShimmerCell(Adapt.px(60), Adapt.px(60), Adapt.px(30),
+                baseColor: _theme.primaryColorDark,
+                highlightColor: _theme.primaryColorLight),
             SizedBox(
               width: Adapt.px(20),
             ),
-            ShimmerCell(Adapt.px(60), Adapt.px(60), Adapt.px(30))
+            ShimmerCell(Adapt.px(60), Adapt.px(60), Adapt.px(30),
+                baseColor: _theme.primaryColorDark,
+                highlightColor: _theme.primaryColorLight)
           ],
         );
     }
@@ -203,7 +215,7 @@ Widget buildView(
                     height: width,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(Adapt.px(15)),
-                        color: Colors.grey[200],
+                        color: _theme.primaryColorDark,
                         image: DecorationImage(
                             fit: BoxFit.cover,
                             image: CachedNetworkImageProvider(ImageUrl.getUrl(
@@ -235,8 +247,8 @@ Widget buildView(
     Widget _buildCastShimmerCell() {
       double width = Adapt.px(150);
       return Shimmer.fromColors(
-        baseColor: Colors.grey[200],
-        highlightColor: Colors.grey[100],
+        baseColor: _theme.primaryColorDark,
+        highlightColor: _theme.primaryColorLight,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -353,7 +365,6 @@ Widget buildView(
     }
 
     Widget _buildHeader() {
-      Color _baseColor = Colors.grey[200];
       Widget _bg = state.bgPic == null
           ? Container(
               key: ValueKey('bgEmpty'),
@@ -374,8 +385,8 @@ Widget buildView(
               ));
       Widget _headerTitle = state.detail?.title == null
           ? Shimmer.fromColors(
-              baseColor: _baseColor,
-              highlightColor: Colors.grey[100],
+              baseColor: _theme.primaryColorDark,
+              highlightColor: _theme.primaryColorLight,
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -383,7 +394,7 @@ Widget buildView(
                   Container(
                     width: Adapt.px(400),
                     height: Adapt.px(40),
-                    color: _baseColor,
+                    color: _theme.primaryColorDark,
                   ),
                   SizedBox(
                     height: Adapt.px(10),
@@ -391,7 +402,7 @@ Widget buildView(
                   Container(
                     width: Adapt.px(120),
                     height: Adapt.px(24),
-                    color: _baseColor,
+                    color: _theme.primaryColorDark,
                   ),
                   SizedBox(
                     height: Adapt.px(10),
@@ -399,7 +410,7 @@ Widget buildView(
                   Container(
                     width: Adapt.px(200),
                     height: Adapt.px(24),
-                    color: _baseColor,
+                    color: _theme.primaryColorDark,
                   ),
                 ],
               ),
@@ -540,8 +551,8 @@ Widget buildView(
     Widget _buildOverWatch() {
       Widget _overWatch = state.detail?.overview == null
           ? Shimmer.fromColors(
-              baseColor: Colors.grey[200],
-              highlightColor: Colors.grey[100],
+              baseColor: _theme.primaryColorDark,
+              highlightColor: _theme.primaryColorLight,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -688,17 +699,23 @@ Widget buildView(
                               width: Adapt.px(40),
                             ),
                             ShimmerCell(
-                                Adapt.px(320), Adapt.px(180), Adapt.px(20)),
+                                Adapt.px(320), Adapt.px(180), Adapt.px(20),
+                                baseColor: _theme.primaryColorDark,
+                                highlightColor: _theme.primaryColorLight),
                             SizedBox(
                               width: Adapt.px(30),
                             ),
                             ShimmerCell(
-                                Adapt.px(320), Adapt.px(180), Adapt.px(20)),
+                                Adapt.px(320), Adapt.px(180), Adapt.px(20),
+                                baseColor: _theme.primaryColorDark,
+                                highlightColor: _theme.primaryColorLight),
                             SizedBox(
                               width: Adapt.px(30),
                             ),
                             ShimmerCell(
-                                Adapt.px(320), Adapt.px(180), Adapt.px(20))
+                                Adapt.px(320), Adapt.px(180), Adapt.px(20),
+                                baseColor: _theme.primaryColorDark,
+                                highlightColor: _theme.primaryColorLight)
                           ]
                         : (state.imagesmodel.backdrops
                             .map(_buildImageCell)
@@ -745,10 +762,16 @@ Widget buildView(
                   children: _model.length == 0
                       ? <Widget>[
                           ShimmerCell(Adapt.px(120), Adapt.px(60), Adapt.px(30),
+                              baseColor: _theme.primaryColorDark,
+                              highlightColor: _theme.primaryColorLight,
                               margin: EdgeInsets.only(top: Adapt.px(20))),
                           ShimmerCell(Adapt.px(180), Adapt.px(60), Adapt.px(30),
+                              baseColor: _theme.primaryColorDark,
+                              highlightColor: _theme.primaryColorLight,
                               margin: EdgeInsets.only(top: Adapt.px(20))),
                           ShimmerCell(Adapt.px(200), Adapt.px(60), Adapt.px(30),
+                              baseColor: _theme.primaryColorDark,
+                              highlightColor: _theme.primaryColorLight,
                               margin: EdgeInsets.only(top: Adapt.px(20))),
                         ]
                       : state.detail.keywords.keywords
