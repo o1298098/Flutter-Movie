@@ -7,6 +7,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/views/episodedetail_page/page.dart';
 import 'package:movie/views/favorites_page/page.dart';
+import 'package:movie/views/firebaselogin_page/page.dart';
 import 'package:movie/views/gallery_page/page.dart';
 import 'package:movie/views/listdetail_page/page.dart';
 import 'package:movie/views/login_page/page.dart';
@@ -69,6 +70,7 @@ Future<Widget> createApp() async {
       'WatchlistDetailPage': WatchlistDetailPage(),
       'detailpage': detail.MovieDetailPage(),
       'GalleryPage': GalleryPage(),
+      'firebaseLoginPage': FirebaseLoginPage(),
       'testPage': TestPage(),
     },
     visitor: (String path, Page<Object, dynamic> page) {

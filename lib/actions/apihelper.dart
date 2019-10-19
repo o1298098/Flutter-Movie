@@ -78,14 +78,12 @@ class ApiHelper {
 
   static Future createRequestToken() async {
     String param = '/authentication/token/new?api_key=$_apikey';
-    var r = await httpGet(param, cached: false);
+    dynamic r = await httpGet(param, cached: false);
     if (r != null) {
-      var jsonobject = json.decode(r);
-      if (jsonobject['success']) {
-        _requestToken = jsonobject['request_token'];
-        _requestTokenExpiresTime = DateTime.parse(jsonobject['expires_at']
-            .toString()
-            .replaceFirst(new RegExp(' UTC'), ''));
+      if (r['success']) {
+        _requestToken = r['request_token'];
+        _requestTokenExpiresTime = DateTime.parse(
+            r['expires_at'].toString().replaceFirst(new RegExp(' UTC'), ''));
       }
     }
   }
@@ -96,10 +94,9 @@ class ApiHelper {
     String param = '/authentication/token/validate_with_login?api_key=$_apikey';
     FormData formData = new FormData.from(
         {"username": account, "password": pwd, "request_token": _requestToken});
-    var r = await httpPost(param, formData);
+    dynamic r = await httpPost(param, formData);
     if (r != null) {
-      var jsonobject = json.decode(r);
-      if (jsonobject['success']) {
+      if (r['success']) {
         result = await createNewSession(_requestToken);
       }
     }
@@ -111,11 +108,10 @@ class ApiHelper {
     if (session != null) {
       String param = '/authentication/session/new?api_key=$_apikey';
       FormData formData = new FormData.from({"request_token": sessionToken});
-      var r = await httpPost(param, formData);
+      dynamic r = await httpPost(param, formData);
       if (r != null) {
-        var jsonobject = json.decode(r);
-        if (jsonobject['success']) {
-          session = jsonobject['session_id'];
+        if (r['success']) {
+          session = r['session_id'];
           prefs.setString('loginsession', session);
           var detail = await getAccountDetail();
           if (detail != null) result = true;
@@ -128,14 +124,12 @@ class ApiHelper {
   static Future createSessionWithV4(String sessionToken) async {
     String param = '/authentication/session/convert/4?api_key=$_apikey';
     FormData formData = new FormData.from({"access_token": _apikeyV4});
-    var r = await httpPost(param, formData);
+    dynamic r = await httpPost(param, formData);
     if (r != null) {
-      var jsonobject = json.decode(r);
-      if (jsonobject['success']) {
-        session = jsonobject['session_id'];
-        _sessionExpiresTime = DateTime.parse(jsonobject['expires_at']
-            .toString()
-            .replaceFirst(new RegExp(' UTC'), ''));
+      if (r['success']) {
+        session = r['session_id'];
+        _sessionExpiresTime = DateTime.parse(
+            r['expires_at'].toString().replaceFirst(new RegExp(' UTC'), ''));
         prefs.setString('loginsession', session);
         prefs.setString(
             'loginsessionexpires', _sessionExpiresTime.toIso8601String());
@@ -162,10 +156,9 @@ class ApiHelper {
     String param = '/authentication/session';
     if (session != null) {
       FormData formData = new FormData.from({"session_id": session});
-      var r = await httpDelete(param, formData);
+      dynamic r = await httpDelete(param, formData);
       if (r != null) {
-        var jsonobject = json.decode(r);
-        if (jsonobject['success']) {
+        if (r['status_code'] == 6) {
           prefs.remove('loginsession');
           prefs.remove('accountid');
           prefs.remove('accountname');

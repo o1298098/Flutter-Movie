@@ -48,6 +48,7 @@ Widget buildView(
         children: <Widget>[
           _buildBody(viewService.context),
           InkWell(
+            onTap: () => dispatch(TestPageActionCreator.googleSignIn()),
             child: Container(
               padding: EdgeInsets.all(Adapt.px(30)),
               color: Colors.amber,

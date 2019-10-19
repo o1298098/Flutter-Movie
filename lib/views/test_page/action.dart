@@ -14,6 +14,6 @@ class TestPageActionCreator {
   }
 
   static Action googleSignIn() {
-    return const Action(TestPageAction.action);
+    return const Action(TestPageAction.googleSignIn);
   }
 }

@@ -142,7 +142,9 @@ Widget buildView(
                 ontap: () => dispatch(AccountPageActionCreator.navigatorPush(
                     'FavoritesPage',
                     arguments: {'accountid': state.acountIdV3}))),
-            _buildGirdCell('images/chewbacca.png', 'Recommendations'),
+            _buildGirdCell('images/chewbacca.png', 'Recommendations',
+                ontap: () => dispatch(AccountPageActionCreator.navigatorPush(
+                    'firebaseLoginPage'))),
             _buildGirdCell('images/c3po.png', 'MyRated',
                 ontap: () => dispatch(Theme3ActionCreator.onTestTapped())),
             _buildGirdCell('images/r2d2.png', 'Setting',
