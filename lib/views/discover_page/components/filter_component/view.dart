@@ -34,8 +34,8 @@ Widget buildView(
     padding: EdgeInsets.fromLTRB(Adapt.px(30), Adapt.px(30), Adapt.px(30), 0),
     //color: Colors.white,
     child: SafeArea(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
+        physics: BouncingScrollPhysics(),
         children: <Widget>[
           Container(
             padding: EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(30)),

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/apihelper.dart';
@@ -31,11 +32,16 @@ Future _onInit(Action action, Context<AccountPageState> ctx) async {
     ctx.state.animationController = AnimationController(
         vsync: ticker, duration: Duration(milliseconds: 1000));
   }
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseUser currentUser = await _auth.currentUser();
   var prefs = await SharedPreferences.getInstance();
   String name = prefs.getString('accountname');
   String avatar = prefs.getString('accountgravatar');
   bool islogin = prefs.getBool('islogin') ?? false;
   int accountIdV3 = prefs.getInt('accountid');
+  //String name = currentUser.displayName;
+  //String avatar = currentUser.photoUrl;
+  //bool islogin = false;
   String accountIdV4 = prefs.getString('accountIdV4');
   ctx.dispatch(AccountPageActionCreator.onInit(
       name, avatar, islogin, accountIdV3, accountIdV4));

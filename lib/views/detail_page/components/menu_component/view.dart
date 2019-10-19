@@ -128,10 +128,12 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
 
   return Container(
     decoration: BoxDecoration(
-        color: Colors.white, borderRadius: BorderRadius.circular(Adapt.px(50))),
+        color: Colors.white,
+        borderRadius:
+            BorderRadius.vertical(top: Radius.circular(Adapt.px(50)))),
     //padding: EdgeInsets.only(top:Adapt.px(30)),
     child: ListView(
-      physics: ClampingScrollPhysics(),
+      physics: BouncingScrollPhysics(),
       children: <Widget>[
         Container(
           margin: EdgeInsets.all(Adapt.px(20)),

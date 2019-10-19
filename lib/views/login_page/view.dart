@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/customwidgets/customcliper_path.dart';
 
@@ -220,6 +221,40 @@ Widget buildView(
                           ),
                         ),
                       )),
+                  Container(
+                      alignment: Alignment.bottomRight,
+                      height: Adapt.px(120),
+                      child: FadeTransition(
+                        opacity:
+                            Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+                          parent: state.animationController,
+                          curve: Interval(
+                            0.7,
+                            1.0,
+                            curve: Curves.ease,
+                          ),
+                        )),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            InkWell(
+                              onTap: () => dispatch(
+                                  LoginPageActionCreator.onGoogleSignIn()),
+                              child: Image.asset(
+                                'images/google.png',
+                                width: Adapt.px(50),
+                              ),
+                            ),
+                            SizedBox(width: Adapt.px(20)),
+                            Icon(
+                              FontAwesomeIcons.facebook,
+                              color: Colors.blue[700],
+                              size: Adapt.px(45),
+                            ),
+                            SizedBox(width: Adapt.px(50)),
+                          ],
+                        ),
+                      ))
                 ],
               ),
             ),

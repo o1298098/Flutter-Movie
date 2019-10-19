@@ -228,10 +228,9 @@ class ApiHelper {
     String param = '/auth/access_token';
     if (session != null) {
       var formData = {"access_token": accessTokenV4};
-      var r = await httpDeleteV4(param, formData);
+      dynamic r = await httpDeleteV4(param, formData);
       if (r != null) {
-        var jsonobject = json.decode(r);
-        if (jsonobject['success']) {
+        if (r['success']) {
           prefs.remove('accountIdV4');
           prefs.remove('accessTokenV4');
         } else
@@ -253,12 +252,11 @@ class ApiHelper {
       "media_id": id,
       "favorite": isFavorite
     };
-    var r = await httpPost(param, formData);
+    dynamic r = await httpPost(param, formData);
     if (r != null) {
-      var jsonobject = json.decode(r);
-      if (jsonobject['status_code'] == 1 ||
-          jsonobject['status_code'] == 12 ||
-          jsonobject['status_code'] == 13) result = true;
+      if (r['status_code'] == 1 ||
+          r['status_code'] == 12 ||
+          r['status_code'] == 13) result = true;
     }
     return result;
   }
@@ -274,12 +272,11 @@ class ApiHelper {
       "media_id": id,
       "watchlist": isAdd
     };
-    var r = await httpPost(param, formData);
+    dynamic r = await httpPost(param, formData);
     if (r != null) {
-      var jsonobject = json.decode(r);
-      if (jsonobject['status_code'] == 1 ||
-          jsonobject['status_code'] == 12 ||
-          jsonobject['status_code'] == 13) result = true;
+      if (r['status_code'] == 1 ||
+          r['status_code'] == 12 ||
+          r['status_code'] == 13) result = true;
     }
     return result;
   }
@@ -288,10 +285,9 @@ class ApiHelper {
     bool result = false;
     String param = '/list/$listid/items';
     var data = {"items": items};
-    var r = await httpPostV4(param, data, accessTokenV4);
+    dynamic r = await httpPostV4(param, data, accessTokenV4);
     if (r != null) {
-      var jsonobject = json.decode(r);
-      if (jsonobject['status_code'] == 1) result = true;
+      if (r['status_code'] == 1) result = true;
     }
     return result;
   }

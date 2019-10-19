@@ -15,6 +15,7 @@ import 'package:movie/views/main_page/page.dart';
 import 'package:movie/views/moviedetail_page/page.dart';
 import 'package:movie/views/mylists_page/page.dart';
 import 'package:movie/views/peopledetail_page/page.dart';
+import 'package:movie/views/register_page/page.dart';
 import 'package:movie/views/seasondetail_page/page.dart';
 import 'package:movie/views/seasons_page/page.dart';
 import 'package:movie/views/test_page/page.dart';
@@ -71,6 +72,7 @@ Future<Widget> createApp() async {
       'detailpage': detail.MovieDetailPage(),
       'GalleryPage': GalleryPage(),
       'firebaseLoginPage': FirebaseLoginPage(),
+      'registerPage': RegisterPage(),
       'testPage': TestPage(),
     },
     visitor: (String path, Page<Object, dynamic> page) {
