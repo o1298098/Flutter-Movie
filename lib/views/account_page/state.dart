@@ -1,11 +1,12 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/videolist.dart';
 
-class AccountPageState implements GlobalBaseState<AccountPageState> {
+class AccountPageState implements GlobalBaseState, Cloneable<AccountPageState> {
   String name;
   String avatar;
   bool islogin;
@@ -13,7 +14,6 @@ class AccountPageState implements GlobalBaseState<AccountPageState> {
   String acountIdV4;
   AnimationController animationController;
   int themeIndex;
-
   @override
   AccountPageState clone() {
     return AccountPageState()
@@ -23,11 +23,20 @@ class AccountPageState implements GlobalBaseState<AccountPageState> {
       ..animationController = animationController
       ..acountIdV3 = acountIdV3
       ..acountIdV4 = acountIdV4
-      ..themeIndex = themeIndex;
+      ..themeIndex = themeIndex
+      ..locale = locale
+      ..themeColor = themeColor
+      ..user = user;
   }
 
   @override
+  Locale locale;
+
+  @override
   Color themeColor;
+
+  @override
+  FirebaseUser user;
 }
 
 AccountPageState initState(Map<String, dynamic> args) {

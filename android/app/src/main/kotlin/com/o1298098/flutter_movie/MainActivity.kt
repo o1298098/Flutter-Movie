@@ -1,4 +1,4 @@
-package com.example.flutter_movie
+package com.o1298098.flutter_movie
 
 import android.os.Bundle
 

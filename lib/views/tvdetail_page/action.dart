@@ -1,8 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/creditsmodel.dart';
+import 'package:movie/models/firebase/firebase_accountstate.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/keyword.dart';
-import 'package:movie/models/media_accountstatemodel.dart';
 import 'package:movie/models/review.dart';
 import 'package:movie/models/tvdetail.dart';
 import 'package:movie/models/videolist.dart';
@@ -76,7 +76,7 @@ class TVDetailPageActionCreator {
         payload: [peopleid, profilePath, profileName]);
   }
 
-  static Action onSetAccountState(MediaAccountStateModel model) {
+  static Action onSetAccountState(AccountStateModel model) {
     return Action(TVDetailPageAction.setAccountState, payload: model);
   }
 

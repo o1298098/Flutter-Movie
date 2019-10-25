@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
@@ -29,15 +30,15 @@ Widget buildView(
     TweenSequenceItem(tween: Tween<double>(begin: -0.003, end: 0.0), weight: 1),
   ]);
 
-  Widget _buildListCell(MyListResult d) {
-    var date = DateTime.parse(d.updatedAt);
+  Widget _buildListCell(DocumentSnapshot d) {
+    Timestamp timestamp = d['updateDateTime'];
+    var date = DateTime.fromMillisecondsSinceEpoch(timestamp.seconds * 1000);
     return RotationTransition(
       turns: animate.animate(CurvedAnimation(
           parent: state.cellAnimationController, curve: Curves.ease)),
       child: GestureDetector(
         onTap: () {
-          if (!state.isEdit)
-            dispatch(MyListsPageActionCreator.cellTapped(d.id));
+          if (!state.isEdit) dispatch(MyListsPageActionCreator.cellTapped(d));
         },
         child: Padding(
           padding: EdgeInsets.only(
@@ -49,8 +50,7 @@ Widget buildView(
                 color: Colors.grey[200],
                 image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: CachedNetworkImageProvider(
-                        ImageUrl.getUrl(d.backdropPath, ImageSize.w300)))),
+                    image: CachedNetworkImageProvider(d['backGroundUrl']))),
             child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Adapt.px(30)),
@@ -64,7 +64,7 @@ Widget buildView(
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
                         Text(
-                          d.name ?? '',
+                          d.documentID,
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: Adapt.px(45),
@@ -77,7 +77,7 @@ Widget buildView(
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text('${d.numberOfItems} Items',
+                            Text('${d['itemCount']} Items',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: Adapt.px(30),
@@ -93,7 +93,7 @@ Widget buildView(
                                   borderRadius:
                                       BorderRadius.circular(Adapt.px(10))),
                               child: Text(
-                                d.public == 1 ? 'PUBLIC' : 'PRIVATE',
+                                'PUBLIC',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -108,16 +108,7 @@ Widget buildView(
                         Text(
                           'Updated ' +
                               TimelineUtil.format(
-                                DateTime.utc(
-                                        date.year,
-                                        date.month,
-                                        date.day,
-                                        date.hour,
-                                        date.minute,
-                                        date.second,
-                                        date.millisecond,
-                                        date.microsecond)
-                                    .millisecondsSinceEpoch,
+                                date.millisecondsSinceEpoch,
                                 locTimeMillis:
                                     DateTime.now().millisecondsSinceEpoch,
                                 locale: ui.window.locale.languageCode,
@@ -136,11 +127,14 @@ Widget buildView(
                               IconButton(
                                 icon: Icon(Icons.delete_outline,
                                     color: Colors.red),
-                                onPressed: () {},
+                                onPressed: () => dispatch(
+                                    MyListsPageActionCreator.deleteList(d)),
                               ),
                               IconButton(
                                 icon: Icon(Icons.edit, color: Colors.white),
-                                onPressed: () {},
+                                onPressed: () => dispatch(
+                                    MyListsPageActionCreator.createList(
+                                        d: {'list': d})),
                               ),
                             ],
                           )
@@ -166,7 +160,7 @@ Widget buildView(
       sizeFactor: Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
           curve: Curves.ease, parent: state.animationController)),
       child: InkWell(
-        onTap: () {},
+        onTap: () => dispatch(MyListsPageActionCreator.createList()),
         child: Container(
           margin: EdgeInsets.only(
               top: Adapt.px(20), left: Adapt.px(20), right: Adapt.px(20)),
@@ -199,67 +193,19 @@ Widget buildView(
     );
   }
 
-  Widget _buildBody() {
-    if (state.myList.results.length > 0)
-      return Container(
-        //padding: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
-        child: ListView(
-          controller: state.scrollController,
-          children: state.myList.results.map(_buildListCell).toList()
-            ..add(Offstage(
-              offstage: state.myList.page == state.myList.totalPages,
-              child: Container(
-                height: Adapt.px(80),
-                margin: EdgeInsets.only(top: Adapt.px(30)),
-                alignment: Alignment.topCenter,
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation(Colors.black),
-                ),
-              ),
-            ))
-            ..insert(0, _buildAddCell()),
-        ),
-      );
-    else
-      return Container(
-        margin: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
-        alignment: Alignment.topCenter,
-        child: ListView(
-          children: <Widget>[
-            SizedBox(
-              height: Adapt.px(20),
-            ),
-            ShimmerCell(Adapt.screenW(), Adapt.px(400), Adapt.px(30)),
-            SizedBox(
-              height: Adapt.px(20),
-            ),
-            ShimmerCell(Adapt.screenW(), Adapt.px(400), Adapt.px(30)),
-            SizedBox(
-              height: Adapt.px(20),
-            ),
-            ShimmerCell(Adapt.screenW(), Adapt.px(400), Adapt.px(30)),
-            SizedBox(
-              height: Adapt.px(20),
-            ),
-            ShimmerCell(Adapt.screenW(), Adapt.px(400), Adapt.px(30)),
-          ],
-        ),
-      );
-  }
-
   Widget _buildList() {
-    if (state.myList.results.length > 0)
-      return SliverList(
-        delegate: SliverChildBuilderDelegate((ctx, index) {
-          return _buildListCell(state.myList.results[index]);
-        }, childCount: state.myList.results.length),
-      );
-    else
-      return SliverList(
-        delegate: SliverChildBuilderDelegate((ctx, index) {
-          return _buildListShimmerCell();
-        }, childCount: 4),
-      );
+    return SliverToBoxAdapter(
+      child: StreamBuilder<QuerySnapshot>(
+        stream: state.listData,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) return _buildListShimmerCell();
+          return ListView(
+            shrinkWrap: true,
+            children: snapshot.data.documents.map(_buildListCell).toList(),
+          );
+        },
+      ),
+    );
   }
 
   return Builder(builder: (context) {
@@ -317,19 +263,6 @@ Widget buildView(
               child: _buildAddCell(),
             ),
             _buildList(),
-            SliverToBoxAdapter(
-              child: Offstage(
-                offstage: state.myList.page == state.myList.totalPages,
-                child: Container(
-                  height: Adapt.px(80),
-                  margin: EdgeInsets.only(top: Adapt.px(30)),
-                  alignment: Alignment.topCenter,
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation(Colors.black),
-                  ),
-                ),
-              ),
-            )
           ],
         ));
   });

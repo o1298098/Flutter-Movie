@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 
 //TODO replace with your own action
-enum TestPageAction { action, setData, googleSignIn }
+enum TestPageAction { action, setData, googleSignIn, inputTapped }
 
 class TestPageActionCreator {
   static Action onAction() {
@@ -15,5 +15,9 @@ class TestPageActionCreator {
 
   static Action googleSignIn() {
     return const Action(TestPageAction.googleSignIn);
+  }
+
+  static Action inputTapped() {
+    return const Action(TestPageAction.inputTapped);
   }
 }

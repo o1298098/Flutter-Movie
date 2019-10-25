@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/Adapt.dart';
@@ -28,19 +29,24 @@ Future _onInit(Action action, Context<FavoritesPageState> ctx) async {
   final ticker = ctx.stfState as CustomstfState;
   ctx.state.animationController =
       AnimationController(vsync: ticker, duration: Duration(milliseconds: 600));
-  int accountid = ctx.state.accountId;
-  if (accountid != null) {
-    var movie = await ApiHelper.getFavoriteMovies(accountid);
-    if (movie != null) {
-      ctx.dispatch(FavoritesPageActionCreator.setFavoriteMovies(movie));
-      if (movie.results.length > 0)
-        ctx.dispatch(FavoritesPageActionCreator.setBackground(
-            movie.results[0], Colors.black));
+
+  if (ctx.state.user != null) {
+    var movieSnapshots = await Firestore.instance
+        .collection("Favorites")
+        .document(ctx.state.user.uid)
+        .collection("FavoriteMovie")
+        .getDocuments();
+    if (movieSnapshots.documents.length > 0)
       ctx.state.animationController.forward(from: 0.0);
-      //ctx.dispatch(FavoritesPageActionCreator.setColor(r.results[0].poster_path));
-    }
-    var tv = await ApiHelper.getFavoriteTVShows(accountid);
-    if (tv != null) ctx.dispatch(FavoritesPageActionCreator.setFavoriteTV(tv));
+    ctx.dispatch(FavoritesPageActionCreator.setBackground(
+        movieSnapshots.documents[0], Colors.black));
+    ctx.dispatch(FavoritesPageActionCreator.setMovieSnapshot(movieSnapshots));
+    var tvSnapshots = await Firestore.instance
+        .collection("Favorites")
+        .document(ctx.state.user.uid)
+        .collection("FavoriteTVShow")
+        .getDocuments();
+    ctx.dispatch(FavoritesPageActionCreator.setTVShowSnapshot(tvSnapshots));
   }
 }
 

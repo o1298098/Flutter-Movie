@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/state.dart';
@@ -14,7 +15,8 @@ import 'package:movie/models/videolist.dart';
 import 'package:movie/models/videomodel.dart';
 import 'package:palette_generator/palette_generator.dart';
 
-class MovieDetailPageState implements GlobalBaseState<MovieDetailPageState> {
+class MovieDetailPageState
+    implements GlobalBaseState, Cloneable<MovieDetailPageState> {
   GlobalKey<ScaffoldState> scaffoldkey;
   MovieDetailModel movieDetailModel;
   String backdropPic;
@@ -37,7 +39,7 @@ class MovieDetailPageState implements GlobalBaseState<MovieDetailPageState> {
       ..scaffoldkey = scaffoldkey
       ..movieDetailModel = movieDetailModel
       ..mainColor = mainColor
-      ..tabTintColor=tabTintColor
+      ..tabTintColor = tabTintColor
       ..palette = palette
       ..movieid = movieid
       ..reviewModel = reviewModel
@@ -48,11 +50,17 @@ class MovieDetailPageState implements GlobalBaseState<MovieDetailPageState> {
       ..title = title
       ..scrollController = scrollController
       ..accountState = accountState
-      ..animationController=animationController;
+      ..animationController = animationController;
   }
 
   @override
   Color themeColor = Colors.black;
+
+  @override
+  Locale locale;
+
+  @override
+  FirebaseUser user;
 }
 
 MovieDetailPageState initState(Map<String, dynamic> args) {
@@ -66,7 +74,7 @@ MovieDetailPageState initState(Map<String, dynamic> args) {
   state.movieDetailModel = new MovieDetailModel.fromParams();
   state.mainColor = Color.fromRGBO(
       random.nextInt(200), random.nextInt(100), random.nextInt(255), 1);
-  state.tabTintColor=Color.fromRGBO(
+  state.tabTintColor = Color.fromRGBO(
       random.nextInt(200), random.nextInt(100), random.nextInt(255), 1);
   state.palette = new PaletteGenerator.fromColors(
       List<PaletteColor>()..add(new PaletteColor(Colors.black87, 0)));

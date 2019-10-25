@@ -73,13 +73,14 @@ Future _onCellTapped(Action action, Context<HomePageState> ctx) async {
     'posterpic': posterpic
   };
   Page page = type == MediaType.movie ? MovieDetailPage() : TVDetailPage();
-  await Navigator.of(ctx.context)
-      .push(PageRouteBuilder(pageBuilder: (context, animation, secAnimation) {
-    return FadeTransition(
-      opacity: animation,
-      child: page.buildPage(data),
-    );
-  }));
+  await Navigator.of(ctx.context).push(PageRouteBuilder(
+      settings: RouteSettings(name: pagename),
+      pageBuilder: (context, animation, secAnimation) {
+        return FadeTransition(
+          opacity: animation,
+          child: page.buildPage(data),
+        );
+      }));
   //await Navigator.of(ctx.context).pushNamed(pagename, arguments: data);
 }
 

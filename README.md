@@ -4,18 +4,19 @@ A Flutter movie app build with Fish-Redux and TMDB api.
 ## ToDos
 - [ ] redesign UI
 - [ ] account detail
+- [ ] customize stream support 
 - [x] dark mode support
 - [x] localization
 - [x] search 
 - [x] detail page 
 - [x] share movie or tv show
 - [x] rate movie or tv show
-- [x] login with TMDB account
+
 ## Demo
 <a href='https://github.com/o1298098/Flutter-Movie/releases/download/demo/demo.apk'>Download</a>
 ## Flutter version
->Flutter 1.7.8+hotfix.4  
->Tools • Dart 2.4.0  
+>Flutter 1.10.14  
+>Tools • Dart 2.5.0  
 ## Preview 
 <img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios.gif" width="150">  
 

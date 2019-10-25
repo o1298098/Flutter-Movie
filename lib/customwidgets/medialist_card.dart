@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/apihelper.dart';
+import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/listmediaitem.dart';
 import 'package:movie/models/mylistmodel.dart';
@@ -11,7 +14,21 @@ import 'package:webview_flutter/webview_flutter.dart';
 class MediaListCardDialog extends StatefulWidget {
   final MediaType type;
   final int mediaId;
-  MediaListCardDialog({@required this.type, @required this.mediaId});
+  final String name;
+  final double rated;
+  final String photourl;
+  final int runtime;
+  final int revenue;
+  final String releaseDate;
+  MediaListCardDialog(
+      {@required this.type,
+      @required this.mediaId,
+      this.name,
+      this.rated,
+      this.photourl,
+      this.runtime = 0,
+      this.revenue = 0,
+      this.releaseDate});
   @override
   MediaListCardDialogState createState() => MediaListCardDialogState();
 }
@@ -20,94 +37,147 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
   Future<MyListModel> lists;
   ScrollController scrollController;
   String _accountid;
+  List<DocumentSnapshot> _documents;
   int _page;
 
-  Future _loadMore() async {
-    MyListModel model = await lists;
-    if (model != null || _accountid == null) {
-      int page = model.page + 1;
-      if (page <= model.totalPages) {
-        var r = await ApiHelper.getAccountListsV4(_accountid, page: page);
-        if (r != null)
-          setState(() {
-            model.page = r.page;
-            model.results.addAll(r.results);
-          });
-      }
-    }
-  }
+  final _user = GlobalStore.store.getState().user;
 
-  Future<MyListModel> _loadData() async {
-    MyListModel list;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _accountid = prefs.getString('accountIdV4');
-    if (_accountid == null) {
-      var token = await ApiHelper.createRequestTokenV4();
-      if (token != null) {
-        var url = 'https://www.themoviedb.org/auth/access?request_token=$token';
-        await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.white,
-              title: Text(
-                'User Permission',
-                style: TextStyle(color: Colors.black),
-              ),
-              brightness: Brightness.light,
-              iconTheme: IconThemeData(color: Colors.black),
-            ),
-            body: WebView(
-              initialUrl: url,
-            ),
-          );
-        }));
-        var result = await ApiHelper.createAccessTokenV4(token);
-        if (result)
-          _accountid = prefs.getString('accountIdV4');
-        else
-          return null;
-      }
+  void _createList(String name, String description) {
+    if (_user != null) {
+      Firestore.instance
+          .collection("MyList")
+          .document(_user.uid)
+          .collection('List')
+          .document(name)
+          .setData({
+        'description': description,
+        'backGroundUrl': '',
+        'selected': false,
+        'createDateTime': DateTime.now(),
+        'updateDateTime': DateTime.now(),
+        'itemCount': 0,
+        'totalRated': 0.0,
+        'runTime': 0,
+        'revenue': 0
+      });
+      Navigator.pop(context);
     }
-    var r = await ApiHelper.getAccountListsV4(_accountid);
-    if (r != null) list = r;
-    return list;
   }
 
   Future _submit() async {
     Navigator.of(context).pop();
-    MyListModel model = await lists;
-    if (model != null) {
-      MyListResult selected = model.results?.singleWhere((f) => f.selected);
-      if (selected != null) {
-        List<ListMediaItem> items = List<ListMediaItem>()
-          ..add(ListMediaItem(
-              widget.type == MediaType.movie ? 'movie' : 'tv', widget.mediaId));
-        var r = await ApiHelper.addToList(selected.id, items);
+    String _mediaType = widget.type == MediaType.movie ? 'movie' : 'tv';
+    if (_user != null && _documents != null) {
+      var d = _documents.singleWhere((f) => f['selected']);
+
+      if (d.data != null) {
+        var item = await d.reference
+            .collection('Media')
+            .document('$_mediaType${widget.mediaId}')
+            .get();
+        if (item?.data == null) {
+          d.reference.updateData({
+            'totalRated': d['totalRated'] + widget.rated,
+            'runTime': d['runTime'] + widget.runtime,
+            'itemCount': d['itemCount'] + 1,
+            'revenue': d['revenue'] + widget.revenue,
+            'updateDateTime': DateTime.now(),
+          });
+          d.reference
+              .collection('Media')
+              .document('$_mediaType${widget.mediaId}')
+              .setData({
+            'id': widget.mediaId,
+            'name': widget.name,
+            'mediaType': _mediaType,
+            'rated': widget.rated,
+            'photourl': widget.photourl,
+            'releaseDate': widget.releaseDate
+          });
+        }
       }
     }
   }
 
-  Widget _buildListCell(MyListResult d) {
+  void _buildCreateListDialog() {
+    String _name = '';
+    String _description = '';
+    showDialog(
+        context: context,
+        builder: (ctx) {
+          return SimpleDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(Adapt.px(30))),
+            contentPadding: EdgeInsets.zero,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(Adapt.px(30)),
+                width: Adapt.px(600),
+                height: Adapt.screenH() / 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    TextField(
+                      cursorColor: Colors.grey,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'ListName',
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey)),
+                      ),
+                      onChanged: (s) => _name = s,
+                    ),
+                    SizedBox(
+                      height: Adapt.px(30),
+                    ),
+                    TextField(
+                      maxLines: 12,
+                      cursorColor: Colors.grey,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'description',
+                          labelStyle: TextStyle(fontSize: Adapt.px(24)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey))),
+                      onChanged: (s) => _description = s,
+                    ),
+                    SizedBox(
+                      height: Adapt.px(30),
+                    ),
+                    FlatButton(
+                      color: Color(0xFF505050),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(Adapt.px(20))),
+                      onPressed: () => _createList(_name, _description),
+                      child: Text(
+                        'Submit',
+                        style: TextStyle(
+                            color: Colors.white, fontSize: Adapt.px(28)),
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          );
+        });
+  }
+
+  Widget _buildListCell(DocumentSnapshot d) {
+    bool _selected = d['selected'] ?? false;
     return Column(
       children: <Widget>[
         ListTile(
-          selected: d.selected,
+          selected: _selected,
           title: Text(
-            d.name,
-            style: TextStyle(
-                color: d.selected ? Colors.black : Colors.grey,
-                fontSize: Adapt.px(30)),
+            d.documentID,
+            style: TextStyle(fontSize: Adapt.px(30)),
           ),
-          trailing: d.selected ? Icon(Icons.check) : null,
+          trailing: _selected ? Icon(Icons.check) : SizedBox(),
           onTap: () async {
-            MyListModel all = await lists;
-            setState(() {
-              all.results.forEach((f) {
-                if (f == d)
-                  f.selected = !f.selected;
-                else
-                  f.selected = false;
-              });
+            _documents.forEach((f) {
+              if (f['selected']) f.reference.updateData({'selected': false});
+              d.reference.updateData({'selected': !_selected});
             });
           },
         ),
@@ -120,12 +190,10 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
 
   @override
   void initState() {
-    lists = _loadData();
     scrollController = ScrollController()
       ..addListener(() async {
         bool isBottom = scrollController.position.pixels ==
             scrollController.position.maxScrollExtent;
-        if (isBottom) await _loadMore();
       });
     super.initState();
   }
@@ -151,9 +219,13 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
                   Text(
                     'Add to my list',
                     style: TextStyle(
-                        fontSize: Adapt.px(35), fontWeight: FontWeight.bold),
+                        fontSize: Adapt.px(40), fontWeight: FontWeight.bold),
                   ),
-                  Icon(Icons.add_circle_outline)
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    icon: Icon(Icons.add_circle_outline),
+                    onPressed: _buildCreateListDialog,
+                  )
                 ],
               )),
           Divider(
@@ -162,35 +234,27 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
           Container(
             width: Adapt.screenW() - Adapt.px(60),
             height: Adapt.px(600),
-            child: FutureBuilder<MyListModel>(
-              future: lists,
-              builder:
-                  (BuildContext context, AsyncSnapshot<MyListModel> snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                    return Container(
-                      child: Center(
-                        child: Text('No Result'),
-                      ),
-                    );
-                  case ConnectionState.active:
-                  case ConnectionState.waiting:
-                    return Container(
-                      margin: EdgeInsets.only(top: Adapt.px(30)),
-                      alignment: Alignment.center,
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation(Colors.black),
-                      ),
-                    );
-                  case ConnectionState.done:
-                    if (snapshot.hasError)
-                      return Text('Error: ${snapshot.error}');
-                    return ListView(
-                      children:
-                          snapshot.data.results.map(_buildListCell).toList(),
-                    );
-                }
-                return null;
+            child: StreamBuilder<QuerySnapshot>(
+              stream: Firestore.instance
+                  .collection('MyList')
+                  .document(_user.uid)
+                  .collection('List')
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (!snapshot.hasData)
+                  return Container(
+                    margin: EdgeInsets.only(top: Adapt.px(30)),
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation(Colors.black),
+                    ),
+                  );
+                _documents = snapshot.data.documents;
+                return ListView(
+                  children:
+                      snapshot.data.documents.map(_buildListCell).toList(),
+                );
               },
             ),
           ),

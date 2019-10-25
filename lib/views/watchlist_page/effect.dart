@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart' hide Action;
@@ -24,13 +25,19 @@ Future _onInit(Action action, Context<WatchlistPageState> ctx) async {
   ctx.state.animationController =
       AnimationController(vsync: ticker, duration: Duration(milliseconds: 300));
   ctx.state.swiperController = SwiperController();
-  int accountid = ctx.state.accountId;
-  if (accountid != null) {
-    var movie = await ApiHelper.getMoviesWatchlist(accountid);
-    if (movie != null)
-      ctx.dispatch(WatchlistPageActionCreator.setMovieList(movie));
-    var tv = await ApiHelper.getTVShowsWacthlist(accountid);
-    if (tv != null) ctx.dispatch(WatchlistPageActionCreator.setTVShowList(tv));
+  if (ctx.state.user != null) {
+    var movieSnapshots = await Firestore.instance
+        .collection("Watchlist")
+        .document(ctx.state.user.uid)
+        .collection("WatchlistMoive")
+        .getDocuments();
+    ctx.dispatch(WatchlistPageActionCreator.setMovieSnapshot(movieSnapshots));
+    var tvSnapshots = await Firestore.instance
+        .collection("Watchlist")
+        .document(ctx.state.user.uid)
+        .collection("WatchlistTVShow")
+        .getDocuments();
+    ctx.dispatch(WatchlistPageActionCreator.setTVShowSnapshot(tvSnapshots));
   }
 }
 

@@ -201,7 +201,7 @@ class SearchBarDelegate extends SearchDelegate<SearchResult> {
             if (snapshot.hasError) return Text('Error: ${snapshot.error}');
             return _SuggestionList(
               query: query,
-              suggestions: snapshot.data.results,
+              suggestions: snapshot.data?.results ?? [],
               onSelected: (String suggestion) {
                 query = suggestion;
                 showResults(context);
@@ -376,10 +376,9 @@ Widget _buildResultCell(SearchResult s, BuildContext ctx) {
     onTap: () async {
       switch (s.mediaType) {
         case 'movie':
-          return await Navigator.of(ctx)
-              .pushNamed('moviedetailpage', arguments: {
-            'movieid': s.id,
-            'bgpic': s.backdropPath,
+          return await Navigator.of(ctx).pushNamed('detailpage', arguments: {
+            'id': s.id,
+            'bgpic': s.posterPath,
             'title': s.title,
             'posterpic': s.posterPath
           });

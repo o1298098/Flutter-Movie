@@ -5,7 +5,8 @@ import 'reducer.dart';
 import 'state.dart';
 import 'view.dart';
 
-class RegisterPage extends Page<RegisterPageState, Map<String, dynamic>> {
+class RegisterPage extends Page<RegisterPageState, Map<String, dynamic>>
+    with TickerProviderMixin {
   RegisterPage()
       : super(
           initState: initState,

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie/actions/Adapt.dart';
@@ -7,7 +8,8 @@ import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/combinedcredits.dart';
 import 'package:movie/models/peopledetail.dart';
 
-class PeopleDetailPageState implements GlobalBaseState<PeopleDetailPageState> {
+class PeopleDetailPageState
+    implements GlobalBaseState, Cloneable<PeopleDetailPageState> {
   PeopleDetailModel peopleDetailModel;
   CombinedCreditsModel creditsModel;
   List<CastData> knowForCast;
@@ -36,6 +38,12 @@ class PeopleDetailPageState implements GlobalBaseState<PeopleDetailPageState> {
 
   @override
   Color themeColor;
+
+  @override
+  Locale locale;
+
+  @override
+  FirebaseUser user;
 }
 
 PeopleDetailPageState initState(Map<String, dynamic> args) {

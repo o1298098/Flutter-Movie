@@ -8,6 +8,7 @@ class RegisterPageState implements Cloneable<RegisterPageState> {
   FocusNode nameFocusNode;
   FocusNode emailFocusNode;
   FocusNode pwdFocusNode;
+  AnimationController submitAnimationController;
 
   @override
   RegisterPageState clone() {
@@ -17,7 +18,8 @@ class RegisterPageState implements Cloneable<RegisterPageState> {
       ..name = name
       ..nameFocusNode = nameFocusNode
       ..emailFocusNode = emailFocusNode
-      ..pwdFocusNode = pwdFocusNode;
+      ..pwdFocusNode = pwdFocusNode
+      ..submitAnimationController = submitAnimationController;
   }
 }
 

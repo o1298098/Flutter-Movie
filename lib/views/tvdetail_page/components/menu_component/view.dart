@@ -38,6 +38,11 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
           return MediaListCardDialog(
             type: MediaType.tv,
             mediaId: state.id,
+            name: state.detail.name,
+            photourl: state.detail.poster_path,
+            rated: state.detail.vote_average,
+            runtime: state.detail.episode_run_time.fold(0, (p, c) => p + c),
+            releaseDate: state.detail.first_air_date,
           );
         });
   }
@@ -47,7 +52,7 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
     showDialog(
         context: viewService.context,
         builder: (ctx) {
-          double rate = state.accountState.rated?.value ?? 0;
+          double rate = state.accountState.rated ?? 0;
           return DialogRatingBar(
             rating: rate,
             submit: (d) => dispatch(MenuActionCreator.setRating(d)),

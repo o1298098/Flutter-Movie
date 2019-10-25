@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/mylistmodel.dart';
 
@@ -8,10 +9,9 @@ Reducer<MyListsPageState> buildReducer() {
   return asReducer(
     <Object, Reducer<MyListsPageState>>{
       MyListsPageAction.action: _onAction,
-      MyListsPageAction.setAccount:_setAccount,
-      MyListsPageAction.setList:_setList,
-      MyListsPageAction.loadMore:_loadMore,
-      MyListsPageAction.onEdit:_onEdit,
+      MyListsPageAction.setAccount: _setAccount,
+      MyListsPageAction.setList: _setList,
+      MyListsPageAction.onEdit: _onEdit,
     },
   );
 }
@@ -22,29 +22,22 @@ MyListsPageState _onAction(MyListsPageState state, Action action) {
 }
 
 MyListsPageState _setAccount(MyListsPageState state, Action action) {
-  String accountid=action.payload[0];
+  String accountid = action.payload[0];
   final MyListsPageState newState = state.clone();
-  newState.accountId=accountid;
+  newState.accountId = accountid;
   return newState;
 }
 
 MyListsPageState _setList(MyListsPageState state, Action action) {
-  MyListModel model=action.payload;
+  final Stream<QuerySnapshot> model = action.payload;
   final MyListsPageState newState = state.clone();
-  newState.myList=model;
-  return newState;
-}
-MyListsPageState _loadMore(MyListsPageState state, Action action) {
-  MyListModel model=action.payload;
-  final MyListsPageState newState = state.clone();
-  newState.myList.page=model.page;
-  newState.myList.results.addAll(model.results);
+  newState.listData = model;
   return newState;
 }
 
 MyListsPageState _onEdit(MyListsPageState state, Action action) {
-  final bool isEdit=action.payload;
+  final bool isEdit = action.payload;
   final MyListsPageState newState = state.clone();
-  newState.isEdit=isEdit;
+  newState.isEdit = isEdit;
   return newState;
 }

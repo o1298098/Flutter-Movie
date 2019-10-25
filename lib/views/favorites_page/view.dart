@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +10,9 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
-import 'package:movie/customwidgets/customcliper_path.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
-import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:shimmer/shimmer.dart';
@@ -25,7 +24,7 @@ Widget buildView(
     FavoritesPageState state, Dispatch dispatch, ViewService viewService) {
   Random random = Random(DateTime.now().millisecondsSinceEpoch);
 
-  Widget _buildListCell(VideoListResult d) {
+  Widget _buildListCell(DocumentSnapshot d) {
     return Container(
       key: ValueKey(d),
       //margin: EdgeInsets.all(Adapt.px(20)),
@@ -36,7 +35,7 @@ Widget buildView(
           image: DecorationImage(
               fit: BoxFit.cover,
               image: CachedNetworkImageProvider(
-                  ImageUrl.getUrl(d.poster_path, ImageSize.w500)))),
+                  ImageUrl.getUrl(d['photourl'], ImageSize.w500)))),
     );
   }
 
@@ -128,9 +127,8 @@ Widget buildView(
 
   Widget _buildSwiper() {
     var height = (Adapt.screenW() * 0.55 - Adapt.px(40)) * 1.7;
-    VideoListModel d =
-        state.isMovie ? state.favoriteMovies : state.favoriteTVShows;
-    Widget bodychild = d.results.length > 0
+    QuerySnapshot d = state.isMovie ? state.movieSnapshot : state.tvSnapshot;
+    Widget bodychild = d?.documents != null
         ? Container(
             key: ValueKey(d),
             height: height,
@@ -140,11 +138,12 @@ Widget buildView(
               fade: 0.1,
               viewportFraction: 0.55,
               itemBuilder: (BuildContext context, int index) {
-                return _buildListCell(d.results[index]);
+                return _buildListCell(d.documents[index]);
               },
-              itemCount: d.results.length,
+              itemCount: d?.documents?.length ?? 0,
               onIndexChanged: (index) {
-                var r = d.results[index];
+                var r = d.documents[index];
+
                 dispatch(FavoritesPageActionCreator.setBackground(
                     r,
                     Color.fromRGBO(random.nextInt(200), random.nextInt(150),
@@ -174,8 +173,8 @@ Widget buildView(
   Widget _buildHeader() {
     final d = state.selectedMedia;
     if (d != null) {
-      String name = d?.title ?? d?.name;
-      String datetime = d?.release_date ?? d?.first_air_date;
+      String name = d['name'];
+      String datetime = d['releaseDate'];
       return FadeTransition(
           opacity:
               Tween(begin: 0.0, end: 1.0).animate(state.animationController),
@@ -217,12 +216,12 @@ Widget buildView(
                         color: Colors.amber,
                       ),
                       unratedColor: Colors.grey,
-                      rating: (d?.vote_average ?? 0) / 2,
+                      rating: (d['rate'] ?? 0) / 2,
                     ),
                     SizedBox(
                       width: Adapt.px(10),
                     ),
-                    Text(d?.vote_average?.toStringAsFixed(1) ?? '0.0',
+                    Text(d['rate']?.toStringAsFixed(1) ?? '0.0',
                         style: TextStyle(fontSize: Adapt.px(26)))
                   ],
                 ),
@@ -230,7 +229,7 @@ Widget buildView(
                   height: Adapt.px(10),
                 ),
                 Text(
-                  d?.overview ?? '',
+                  d['overwatch'] ?? '',
                   maxLines: 9,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -286,6 +285,8 @@ Widget buildView(
     );
   }
 
+  Widget _buildBody() {}
+
   return Scaffold(
     body: Stack(
       children: <Widget>[
@@ -293,9 +294,9 @@ Widget buildView(
             ? AnimatedSwitcher(
                 duration: Duration(milliseconds: 800),
                 child: CachedNetworkImage(
-                  key: ValueKey(state?.selectedMedia?.poster_path),
+                  key: ValueKey(state.selectedMedia['photourl']),
                   imageUrl: ImageUrl.getUrl(
-                      state?.selectedMedia?.poster_path, ImageSize.w500),
+                      state?.selectedMedia['photourl'], ImageSize.w500),
                   imageBuilder: (ctx, image) => Container(
                       decoration: BoxDecoration(
                           image: DecorationImage(

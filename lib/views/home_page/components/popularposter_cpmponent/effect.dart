@@ -14,9 +14,9 @@ void _onAction(Action action, Context<PopularPosterState> ctx) {}
 
 Future _onCellTapped(Action action, Context<PopularPosterState> ctx) async {
   if (ctx.state.showmovie)
-    await Navigator.of(ctx.context).pushNamed('moviedetailpage', arguments: {
-      'movieid': action.payload[0],
-      'bgpic': action.payload[1],
+    await Navigator.of(ctx.context).pushNamed('detailpage', arguments: {
+      'id': action.payload[0],
+      'bgpic': action.payload[3],
       'title': action.payload[2],
       'posterpic': action.payload[3]
     });

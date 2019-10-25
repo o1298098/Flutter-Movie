@@ -37,6 +37,12 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
           return MediaListCardDialog(
             type: MediaType.movie,
             mediaId: state.id,
+            name: state.detail.title,
+            photourl: state.detail.poster_path,
+            rated: state.detail.vote_average,
+            revenue: state.detail.revenue,
+            runtime: state.detail.runtime,
+            releaseDate: state.detail.release_date,
           );
         });
   }
@@ -46,7 +52,7 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
     showDialog(
         context: viewService.context,
         builder: (ctx) {
-          double rate = state.accountState.rated?.value ?? 0;
+          double rate = state.accountState.rated ?? 0;
           return DialogRatingBar(
             rating: rate,
             submit: (d) => dispatch(MenuActionCreator.setRating(d)),
@@ -179,7 +185,8 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
                 : Icons.favorite_border,
             'Mark as Favorite', () {
           Navigator.of(viewService.context).pop();
-          dispatch(MenuActionCreator.setFavorite(!state.accountState.favorite));
+          dispatch(MenuActionCreator.setFirebaseFavorite());
+          //dispatch(MenuActionCreator.setFavorite(!state.accountState.favorite));
         },
             iconColor: state.accountState.favorite
                 ? Colors.pink[400]

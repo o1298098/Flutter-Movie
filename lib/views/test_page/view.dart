@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
+import 'package:movie/generated/i18n.dart';
+import 'package:movie/globalbasestate/action.dart';
+import 'package:movie/globalbasestate/store.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -25,9 +28,12 @@ Widget buildView(
   }
 
   Widget _buildList(List<DocumentSnapshot> documents) {
-    return ListView(
-      shrinkWrap: true,
-      children: documents.map(_buildListItem).toList(),
+    return SizedBox(
+      height: Adapt.px(900),
+      child: ListView(
+        shrinkWrap: true,
+        children: documents.map(_buildListItem).toList(),
+      ),
     );
   }
 
@@ -43,16 +49,35 @@ Widget buildView(
   }
 
   return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: state.themeColor,
+        title: Text('${state?.locale?.languageCode}'),
+      ),
       body: Column(
         children: <Widget>[
           _buildBody(viewService.context),
           InkWell(
-            onTap: () => dispatch(TestPageActionCreator.googleSignIn()),
+            onTap: () {
+              GlobalStore.store
+                  .dispatch(GlobalActionCreator.onchangeThemeColor());
+              GlobalStore.store
+                  .dispatch(GlobalActionCreator.changeLocale(Locale('zh')));
+            },
+            //dispatch(TestPageActionCreator.googleSignIn()),
             child: Container(
               padding: EdgeInsets.all(Adapt.px(30)),
               color: Colors.amber,
-              child: Text('google sign in'),
+              child: Text(I18n.of(viewService.context).account),
+            ),
+          ),
+          SizedBox(height: Adapt.px(30)),
+          InkWell(
+            onTap: () => dispatch(TestPageActionCreator.inputTapped()),
+            //dispatch(TestPageActionCreator.googleSignIn()),
+            child: Container(
+              padding: EdgeInsets.all(Adapt.px(30)),
+              color: Colors.amber,
+              child: Text('input'),
             ),
           )
         ],

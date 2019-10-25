@@ -1,5 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/media_accountstatemodel.dart';
+import 'package:movie/models/firebase/firebase_accountstate.dart';
+import 'package:movie/models/moviedetail.dart';
 
 import '../../state.dart';
 
@@ -9,7 +10,8 @@ class MenuState implements Cloneable<MenuState> {
   String posterPic;
   String name;
   String overWatch;
-  MediaAccountStateModel accountState;
+  MovieDetailModel detail;
+  AccountStateModel accountState;
 
   @override
   MenuState clone() {
@@ -33,6 +35,7 @@ class MenuConnector extends ConnOp<MovieDetailPageState, MenuState> {
     substate.id = state.mediaId;
     substate.backdropPic = state.detail.backdrop_path;
     substate.overWatch = state.detail.overview;
+    substate.detail = state.detail;
     return substate;
   }
 

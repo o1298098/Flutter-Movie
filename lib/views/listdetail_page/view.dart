@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
@@ -8,13 +9,9 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/share_card.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/models/enums/imagesize.dart';
-import 'package:movie/models/enums/screenshot_type.dart';
 import 'package:movie/models/sortcondition.dart';
 import 'package:movie/models/videolist.dart';
-import 'package:screenshot/screenshot.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import 'package:palette_generator/palette_generator.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -71,14 +68,19 @@ Widget buildView(
 
   Widget _buildInfoGroup() {
     var d = state.listDetailModel;
+    int _itemcout = d['itemCount'];
+    double _totalRated = d['totalRated'];
     return Container(
       padding: EdgeInsets.symmetric(vertical: Adapt.px(20)),
-      color: Colors.white,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(Adapt.px(40))),
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          _buildInfoCell(d?.totalResults?.toString() ?? '0', 'ITEMS'),
+          _buildInfoCell(_itemcout.toString() ?? '0', 'ITEMS'),
           Container(
             color: Colors.grey[300],
             width: Adapt.px(1),
@@ -90,7 +92,7 @@ Widget buildView(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    d?.averageRating?.toStringAsFixed(1) ?? '0.0',
+                    (_totalRated / _itemcout).toStringAsFixed(1) ?? '0.0',
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -108,14 +110,14 @@ Widget buildView(
             width: Adapt.px(1),
             height: Adapt.px(60),
           ),
-          _buildInfoCell(_covertDuration(d?.runtime ?? 0), 'RUNTIME'),
+          _buildInfoCell(_covertDuration(d['runTime'] ?? 0), 'RUNTIME'),
           Container(
             color: Colors.grey[300],
             width: Adapt.px(1),
             height: Adapt.px(60),
           ),
           _buildInfoCell(
-              '\$${((d?.revenue ?? 0) / 1000000000).toStringAsFixed(1)} B',
+              '\$${((d['revenue'] ?? 0) / 1000000000).toStringAsFixed(1)} B',
               'REVENUE'),
         ],
       ),
@@ -221,13 +223,15 @@ Widget buildView(
 
   Widget _buildShareCardHeader() {
     var d = state.listDetailModel;
+    int _itemCount = d['itemCount'];
     double cellwidth = Adapt.px(145);
+    double _totalRated = d['totalRated'];
     return Column(
       children: <Widget>[
         SizedBox(
           height: Adapt.px(20),
         ),
-        Text(d.name,
+        Text(d.documentID,
             style: TextStyle(
                 color: Colors.white,
                 fontSize: Adapt.px(45),
@@ -251,8 +255,7 @@ Widget buildView(
                           borderRadius: BorderRadius.circular(Adapt.px(40)),
                           image: DecorationImage(
                               image: CachedNetworkImageProvider(
-                                  ImageUrl.getGravatarUrl(
-                                      d?.createdBy?.gravatarHash, 200)))),
+                                  state.user.photoUrl))),
                     ),
                     SizedBox(
                       height: Adapt.px(10),
@@ -270,7 +273,7 @@ Widget buildView(
                     SizedBox(
                       width: Adapt.px(130),
                       child: Text(
-                        d?.createdBy?.username ?? '',
+                        state.user.displayName ?? '',
                         style: TextStyle(color: Colors.white),
                       ),
                     )
@@ -285,7 +288,7 @@ Widget buildView(
                   Row(
                     children: <Widget>[
                       _buildInfoCell(
-                        d?.totalResults?.toString() ?? '0',
+                        _itemCount?.toString() ?? '0',
                         'ITEMS',
                         labelColor: Colors.white,
                         titleColor: Colors.white,
@@ -294,7 +297,7 @@ Widget buildView(
                         width: Adapt.px(20),
                       ),
                       _buildInfoCell(
-                        d?.averageRating?.toStringAsFixed(1) ?? '0.0',
+                        (_totalRated / _itemCount).toStringAsFixed(1) ?? '0.0',
                         'RATING',
                         labelColor: Colors.white,
                         titleColor: Colors.white,
@@ -307,7 +310,7 @@ Widget buildView(
                   Row(
                     children: <Widget>[
                       _buildInfoCell(
-                        _covertDuration(d?.runtime ?? 0),
+                        _covertDuration(d['runTime'] ?? 0),
                         'RUNTIME',
                         labelColor: Colors.white,
                         titleColor: Colors.white,
@@ -316,7 +319,7 @@ Widget buildView(
                         width: Adapt.px(20),
                       ),
                       _buildInfoCell(
-                        '\$${((d?.revenue ?? 0) / 1000000000).toStringAsFixed(1)} B',
+                        '\$${((d['revenue'] ?? 0) / 1000000000).toStringAsFixed(1)} B',
                         'REVENUE',
                         labelColor: Colors.white,
                         titleColor: Colors.white,
@@ -332,14 +335,14 @@ Widget buildView(
 
   Widget _buildHeader() {
     var d = state.listDetailModel;
-    if (d.id != null)
+    if (d != null)
       return Container(
         decoration: BoxDecoration(
             image: DecorationImage(
           fit: BoxFit.cover,
           //colorFilter: ColorFilter.mode(Colors.black87, BlendMode.color),
-          image: CachedNetworkImageProvider(ImageUrl.getUrl(
-              state?.listDetailModel?.backdropPath, ImageSize.w500)),
+          image: CachedNetworkImageProvider(
+              state?.listDetailModel['backGroundUrl']),
         )),
         child: Container(
           alignment: Alignment.bottomLeft,
@@ -359,8 +362,7 @@ Widget buildView(
                           borderRadius: BorderRadius.circular(Adapt.px(50)),
                           image: DecorationImage(
                               image: CachedNetworkImageProvider(
-                                  ImageUrl.getGravatarUrl(
-                                      d?.createdBy?.gravatarHash, 200)))),
+                                  state.user.photoUrl))),
                     ),
                     SizedBox(
                       width: Adapt.px(20),
@@ -381,7 +383,7 @@ Widget buildView(
                         SizedBox(
                           width: Adapt.px(200),
                           child: Text(
-                            d?.createdBy?.username ?? '',
+                            state.user.displayName ?? '',
                             style: TextStyle(color: Colors.white),
                           ),
                         )
@@ -396,11 +398,10 @@ Widget buildView(
                           context: viewService.context,
                           builder: (ctx) {
                             return ShareCard(
-                              backgroundImage: ImageUrl.getUrl(
-                                  state.listDetailModel.backdropPath,
-                                  ImageSize.w500),
+                              backgroundImage:
+                                  state.listDetailModel['backGroundUrl'],
                               qrValue:
-                                  "https://www.themoviedb.org/list/${state.listDetailModel.id}",
+                                  "https://www.themoviedb.org/list/${state.listDetailModel.documentID}",
                               header: _buildShareCardHeader(),
                             );
                           });
@@ -448,7 +449,7 @@ Widget buildView(
                     width: Adapt.screenW() - Adapt.px(60),
                     height: Adapt.px(120),
                     child: Text(
-                      d.description ?? '',
+                      d['description'] ?? '',
                       overflow: TextOverflow.ellipsis,
                       maxLines: 4,
                       style: TextStyle(
@@ -468,16 +469,16 @@ Widget buildView(
       return _buildShimmerHeader();
   }
 
-  Widget _buildListCell(VideoListResult d) {
+  Widget _buildListCell(DocumentSnapshot d) {
     return GestureDetector(
-      onTap: () => dispatch(ListDetailPageActionCreator.cellTapped(d)),
+      //onTap: () => dispatch(ListDetailPageActionCreator.cellTapped(d)),
       child: Container(
         decoration: BoxDecoration(
             color: Colors.grey[200],
             image: DecorationImage(
                 fit: BoxFit.cover,
                 image: CachedNetworkImageProvider(
-                    ImageUrl.getUrl(d.poster_path, ImageSize.w300)))),
+                    ImageUrl.getUrl(d['photourl'], ImageSize.w300)))),
         child: Column(
           children: <Widget>[
             Container(
@@ -491,7 +492,7 @@ Widget buildView(
                       size: Adapt.px(30),
                     ),
                     Text(
-                      d.vote_average.toStringAsFixed(1),
+                      d['rated'].toStringAsFixed(1),
                       style: TextStyle(color: Colors.white),
                     )
                   ],
@@ -506,32 +507,36 @@ Widget buildView(
     var d = state.listDetailModel;
     var width = Adapt.screenW() / 3;
     var height = Adapt.px(300);
-    if (d.results.length > 0)
-      return SliverGrid.extent(
-        childAspectRatio: 2 / 3,
-        maxCrossAxisExtent: width,
-        crossAxisSpacing: Adapt.px(10),
-        mainAxisSpacing: Adapt.px(10),
-        children: state.listDetailModel.results.map(_buildListCell).toList(),
-      );
-    else
-      return SliverGrid.extent(
-        childAspectRatio: 2 / 3,
-        maxCrossAxisExtent: width,
-        crossAxisSpacing: Adapt.px(10),
-        mainAxisSpacing: Adapt.px(10),
-        children: <Widget>[
-          ShimmerCell(width, height, 0),
-          ShimmerCell(width, height, 0),
-          ShimmerCell(width, height, 0),
-          ShimmerCell(width, height, 0),
-          ShimmerCell(width, height, 0),
-          ShimmerCell(width, height, 0),
-          ShimmerCell(width, height, 0),
-          ShimmerCell(width, height, 0),
-          ShimmerCell(width, height, 0),
-        ],
-      );
+    return StreamBuilder<QuerySnapshot>(
+      stream: state.listDetailModel.reference.collection('Media').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData)
+          return SliverGrid.extent(
+            childAspectRatio: 2 / 3,
+            maxCrossAxisExtent: width,
+            crossAxisSpacing: Adapt.px(10),
+            mainAxisSpacing: Adapt.px(10),
+            children: <Widget>[
+              ShimmerCell(width, height, 0),
+              ShimmerCell(width, height, 0),
+              ShimmerCell(width, height, 0),
+              ShimmerCell(width, height, 0),
+              ShimmerCell(width, height, 0),
+              ShimmerCell(width, height, 0),
+              ShimmerCell(width, height, 0),
+              ShimmerCell(width, height, 0),
+              ShimmerCell(width, height, 0),
+            ],
+          );
+        return SliverGrid.extent(
+          childAspectRatio: 2 / 3,
+          maxCrossAxisExtent: width,
+          crossAxisSpacing: Adapt.px(10),
+          mainAxisSpacing: Adapt.px(10),
+          children: snapshot.data.documents.map(_buildListCell).toList(),
+        );
+      },
+    );
   }
 
   return Scaffold(
@@ -542,7 +547,7 @@ Widget buildView(
           backgroundColor: Color.fromRGBO(50, 50, 50, 1),
           pinned: true,
           title: Text(
-            state?.listDetailModel?.name ?? '',
+            state?.listDetailModel?.documentID ?? '',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           expandedHeight: Adapt.px(550),
@@ -555,20 +560,6 @@ Widget buildView(
           ),
         ),
         _buildBody(),
-        SliverToBoxAdapter(
-          child: Offstage(
-            offstage:
-                state.listDetailModel.totalPages == state.listDetailModel.page,
-            child: Container(
-              height: Adapt.px(80),
-              margin: EdgeInsets.only(top: Adapt.px(30)),
-              alignment: Alignment.topCenter,
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(Colors.black),
-              ),
-            ),
-          ),
-        ),
         SliverToBoxAdapter(
           child: SizedBox(
             height: Adapt.px(30),

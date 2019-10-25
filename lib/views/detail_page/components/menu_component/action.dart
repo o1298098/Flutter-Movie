@@ -8,7 +8,8 @@ enum MenuAction {
   setFavorite,
   updateFavorite,
   setWatchlist,
-  updateWatchlist
+  updateWatchlist,
+  setFirebaseFavorite,
 }
 
 class MenuActionCreator {
@@ -31,11 +32,16 @@ class MenuActionCreator {
   static Action updateFavorite(bool isFavorite) {
     return Action(MenuAction.updateFavorite, payload: isFavorite);
   }
+
   static Action setWatchlist(bool isAdd) {
     return Action(MenuAction.setWatchlist, payload: isAdd);
   }
 
   static Action updateWatctlist(bool isAdd) {
     return Action(MenuAction.updateWatchlist, payload: isAdd);
+  }
+
+  static Action setFirebaseFavorite() {
+    return Action(MenuAction.setFirebaseFavorite);
   }
 }

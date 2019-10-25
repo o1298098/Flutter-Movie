@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart' hide Action;
@@ -5,7 +6,9 @@ import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/customwidgets/gallery_photoview_wrapper.dart';
+import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/enums/imagesize.dart';
+import 'package:movie/models/firebase/firebase_accountstate.dart';
 import 'package:movie/views/peopledetail_page/page.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -41,12 +44,22 @@ Future _onInit(Action action, Context<MovieDetailPageState> ctx) async {
       appendtoresponse:
           'keywords,recommendations,credits,external_ids,release_dates,images,videos');
   if (r != null) ctx.dispatch(MovieDetailPageActionCreator.updateDetail(r));
-  var accountstate = await ApiHelper.getMovieAccountState(ctx.state.mediaId);
-  if (accountstate != null)
-    ctx.dispatch(MovieDetailPageActionCreator.onSetAccountState(accountstate));
   var images = await ApiHelper.getMovieImages(_id);
   if (images != null)
     ctx.dispatch(MovieDetailPageActionCreator.onSetImages(images));
+  final _user = GlobalStore.store.getState().user;
+  if (_user != null) {
+    var accountstate = await Firestore.instance
+        .collection('AccountState')
+        .document(_user.uid)
+        .collection('Moives')
+        .document(ctx.state.mediaId.toString())
+        .get();
+    if (accountstate != null) {
+      var _statemodel = AccountStateModel(accountstate?.data);
+      ctx.dispatch(MovieDetailPageActionCreator.onSetAccountState(_statemodel));
+    }
+  }
 }
 
 void _onDispose(Action action, Context<MovieDetailPageState> ctx) {

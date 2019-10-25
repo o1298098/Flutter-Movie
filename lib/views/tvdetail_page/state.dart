@@ -1,9 +1,11 @@
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/creditsmodel.dart';
+import 'package:movie/models/firebase/firebase_accountstate.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/keyword.dart';
 import 'package:movie/models/media_accountstatemodel.dart';
@@ -13,7 +15,8 @@ import 'package:movie/models/videolist.dart';
 import 'package:movie/models/videomodel.dart';
 import 'package:palette_generator/palette_generator.dart';
 
-class TVDetailPageState implements GlobalBaseState<TVDetailPageState> {
+class TVDetailPageState
+    implements GlobalBaseState, Cloneable<TVDetailPageState> {
   GlobalKey<ScaffoldState> scaffoldkey;
   TVDetailModel tvDetailModel;
   int tvid;
@@ -29,7 +32,7 @@ class TVDetailPageState implements GlobalBaseState<TVDetailPageState> {
   String backdropPic;
   Color mainColor;
   Color tabTintColor;
-  MediaAccountStateModel accountState;
+  AccountStateModel accountState;
   AnimationController animationController;
 
   @override
@@ -51,11 +54,17 @@ class TVDetailPageState implements GlobalBaseState<TVDetailPageState> {
       ..posterPic = posterPic
       ..name = name
       ..accountState = accountState
-      ..animationController=animationController;
+      ..animationController = animationController;
   }
 
   @override
   Color themeColor;
+
+  @override
+  Locale locale;
+
+  @override
+  FirebaseUser user;
 }
 
 TVDetailPageState initState(Map<String, dynamic> args) {
@@ -84,6 +93,6 @@ TVDetailPageState initState(Map<String, dynamic> args) {
       keywords: List<KeyWordData>(), results: List<KeyWordData>());
   state.videomodel = new VideoModel.fromParams(results: List<VideoResult>());
   state.accountState =
-      new MediaAccountStateModel.fromParams(favorite: false, watchlist: false);
+      AccountStateModel.fromParams(favorite: false, watchlist: false, rated: 0);
   return state;
 }

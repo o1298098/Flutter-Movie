@@ -255,7 +255,7 @@ Widget buildView(
           ),
         ),
         onTap: () => dispatch(
-            DiscoverPageActionCreator.onVideoCellTapped(d.id, d.backdrop_path)),
+            DiscoverPageActionCreator.onVideoCellTapped(d.id, d.poster_path)),
       );
     }
 

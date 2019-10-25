@@ -10,6 +10,7 @@ class Theme3State implements Cloneable<Theme3State> {
   int acountIdV3;
   String acountIdV4;
   AnimationController animationController;
+  Locale local;
   @override
   Theme3State clone() {
     return Theme3State();
@@ -26,6 +27,7 @@ class Theme3Connector extends ConnOp<AccountPageState, Theme3State> {
     mstate.islogin = state.islogin;
     mstate.acountIdV3 = state.acountIdV3;
     mstate.acountIdV4 = state.acountIdV4;
+    mstate.local = state.locale;
     return mstate;
   }
 }

@@ -5,10 +5,15 @@ import 'package:flutter/material.dart' hide Action;
 
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/actions/apihelper.dart';
+import 'package:movie/views/account_page/page.dart';
+import 'package:movie/views/coming_page/page.dart';
+import 'package:movie/views/createlist_page/page.dart';
+import 'package:movie/views/discover_page/page.dart';
 import 'package:movie/views/episodedetail_page/page.dart';
 import 'package:movie/views/favorites_page/page.dart';
 import 'package:movie/views/firebaselogin_page/page.dart';
 import 'package:movie/views/gallery_page/page.dart';
+import 'package:movie/views/home_page/page.dart';
 import 'package:movie/views/listdetail_page/page.dart';
 import 'package:movie/views/login_page/page.dart';
 import 'package:movie/views/main_page/page.dart';
@@ -56,6 +61,10 @@ Future<Widget> createApp() async {
   final AbstractRoutes routes = PageRoutes(
     pages: <String, Page<Object, dynamic>>{
       'mainpage': MainPage(),
+      'homePage': HomePage(),
+      'discoverPage': DiscoverPage(),
+      'comingPage': ComingPage(),
+      'accountPage': AccountPage(),
       'loginpage': LoginPage(),
       'moviedetailpage': MovieDetailPage(),
       'tvdetailpage': TVDetailPage(),
@@ -73,25 +82,29 @@ Future<Widget> createApp() async {
       'GalleryPage': GalleryPage(),
       'firebaseLoginPage': FirebaseLoginPage(),
       'registerPage': RegisterPage(),
+      'createListPage': CreateListPage(),
       'testPage': TestPage(),
     },
     visitor: (String path, Page<Object, dynamic> page) {
       if (page.isTypeof<GlobalBaseState>()) {
-        page.connectExtraStore<GlobalState>(
-          GlobalStore.store,
-          (Object pagestate, GlobalState appState) {
-            final GlobalBaseState p = pagestate;
-            if (p.themeColor != appState.themeColor) {
-              if (pagestate is Cloneable) {
-                final Object copy = pagestate.clone();
-                final GlobalBaseState newState = copy;
-                newState.themeColor = appState.themeColor;
-                return newState;
-              }
+        page.connectExtraStore<GlobalState>(GlobalStore.store,
+            (Object pagestate, GlobalState appState) {
+          final GlobalBaseState p = pagestate;
+          if (p.themeColor != appState.themeColor ||
+              p.locale != appState.locale ||
+              p.user != appState.user) {
+            if (pagestate is Cloneable) {
+              final Object copy = pagestate.clone();
+              final GlobalBaseState newState = copy;
+              newState.themeColor = appState.themeColor;
+              newState.locale = appState.locale;
+              newState.user = appState.user;
+              //I18n.onLocaleChanged(appState.locale);
+              return newState;
             }
-            return pagestate;
-          },
-        );
+          }
+          return pagestate;
+        });
       }
       page.enhancer.append(
         /// View AOP
@@ -119,6 +132,12 @@ Future<Widget> createApp() async {
   final ThemeData _lightTheme = ThemeData.light();
   final ThemeData _darkTheme = ThemeData.dark();
   await _init();
+
+  void onLocaleChanged(Locale l) {
+    I18n.locale = l;
+  }
+
+  I18n.onLocaleChanged = onLocaleChanged;
   return MaterialApp(
     title: 'Movie',
     debugShowCheckedModeBanner: false,
@@ -128,11 +147,19 @@ Future<Widget> createApp() async {
       I18n.delegate,
       GlobalMaterialLocalizations.delegate,
       GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
     ],
     supportedLocales: I18n.delegate.supportedLocales,
     localeResolutionCallback:
         I18n.delegate.resolution(fallback: new Locale("en", "US")),
-    home: routes.buildPage('mainpage', null),
+    home: routes.buildPage('mainpage', {
+      'pages': [
+        routes.buildPage('homePage', null),
+        routes.buildPage('discoverPage', null),
+        routes.buildPage('comingPage', null),
+        routes.buildPage('accountPage', null)
+      ]
+    }),
     onGenerateRoute: (RouteSettings settings) {
       return MaterialPageRoute<Object>(builder: (BuildContext context) {
         return routes.buildPage(settings.name, settings.arguments);

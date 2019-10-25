@@ -1,6 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:movie/models/firebase/firebase_accountstate.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/media_accountstatemodel.dart';
 import 'package:movie/models/moviedetail.dart';
@@ -11,7 +12,7 @@ class MovieDetailPageState implements Cloneable<MovieDetailPageState> {
   String bgPic;
   MovieDetailModel detail;
   ImageModel imagesmodel;
-  MediaAccountStateModel accountState;
+  AccountStateModel accountState;
   AnimationController animationController;
   ScrollController scrollController;
 
@@ -37,6 +38,6 @@ MovieDetailPageState initState(Map<String, dynamic> args) {
   state.detail = MovieDetailModel.fromParams();
   state.imagesmodel = ImageModel.fromParams(backdrops: [], posters: []);
   state.accountState =
-      new MediaAccountStateModel.fromParams(favorite: false, watchlist: false);
+      AccountStateModel.fromParams(favorite: false, watchlist: false);
   return state;
 }

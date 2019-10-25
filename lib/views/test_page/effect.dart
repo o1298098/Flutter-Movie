@@ -9,14 +9,22 @@ Effect<TestPageState> buildEffect() {
   return combineEffects(<Object, Effect<TestPageState>>{
     TestPageAction.action: _onAction,
     TestPageAction.googleSignIn: _onGoogleSingeIn,
+    TestPageAction.inputTapped: _inputTapped,
     Lifecycle.initState: _onInit,
   });
 }
 
 void _onAction(Action action, Context<TestPageState> ctx) {}
 void _onInit(Action action, Context<TestPageState> ctx) {
-  final s = Firestore.instance.collection("SteamLinks").snapshots();
+  final s = Firestore.instance
+      .collection("SteamLinks")
+      //.where('name', isEqualTo: 'kk')
+      .snapshots();
   ctx.dispatch(TestPageActionCreator.setData(s));
+}
+
+void _inputTapped(Action action, Context<TestPageState> ctx) {
+  Firestore.instance.collection("SteamLinks").add({'name': 'li', 'value': 12});
 }
 
 void _onGoogleSingeIn(Action action, Context<TestPageState> ctx) async {

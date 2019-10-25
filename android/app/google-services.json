@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:472468283055:android:95e9670c2f3d5bb301fe5a",
+        "mobilesdk_app_id": "1:472468283055:android:eb726e8040fcea6f01fe5a",
         "android_client_info": {
-          "package_name": "com.example.movie"
+          "package_name": "com.o1298098.movie"
         }
       },
       "oauth_client": [
@@ -32,10 +32,10 @@
               "client_type": 3
             },
             {
-              "client_id": "472468283055-0htd1htomrnke0v3l6p9iq125o4afump.apps.googleusercontent.com",
+              "client_id": "472468283055-4qjn08fpkfnqbhkji92u1059j51tgsqd.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.movie"
+                "bundle_id": "com.o1298098.movie"
               }
             }
           ]

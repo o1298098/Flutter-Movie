@@ -3,6 +3,8 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
+import 'package:movie/globalbasestate/action.dart';
+import 'package:movie/globalbasestate/store.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'action.dart';
 import 'state.dart';
@@ -19,6 +21,7 @@ Effect<AccountPageState> buildEffect() {
   });
 }
 
+final FirebaseAuth _auth = FirebaseAuth.instance;
 void _onAction(Action action, Context<AccountPageState> ctx) {}
 
 Future _onLogin(Action action, Context<AccountPageState> ctx) async {
@@ -32,16 +35,16 @@ Future _onInit(Action action, Context<AccountPageState> ctx) async {
     ctx.state.animationController = AnimationController(
         vsync: ticker, duration: Duration(milliseconds: 1000));
   }
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseUser currentUser = await _auth.currentUser();
   var prefs = await SharedPreferences.getInstance();
-  String name = prefs.getString('accountname');
-  String avatar = prefs.getString('accountgravatar');
-  bool islogin = prefs.getBool('islogin') ?? false;
+
+  //final FirebaseUser currentUser = await _auth.currentUser();
+  //String name = prefs.getString('accountname');
+  //String avatar = prefs.getString('accountgravatar');
+  //bool islogin = prefs.getBool('islogin') ?? false;
   int accountIdV3 = prefs.getInt('accountid');
-  //String name = currentUser.displayName;
-  //String avatar = currentUser.photoUrl;
-  //bool islogin = false;
+  String name = ctx.state.user?.displayName;
+  String avatar = ctx.state.user?.photoUrl;
+  bool islogin = ctx.state.user != null;
   String accountIdV4 = prefs.getString('accountIdV4');
   ctx.dispatch(AccountPageActionCreator.onInit(
       name, avatar, islogin, accountIdV3, accountIdV4));
@@ -56,8 +59,17 @@ void _onDispose(Action action, Context<AccountPageState> ctx) {
 }
 
 Future _onLogout(Action action, Context<AccountPageState> ctx) async {
-  var q = await ApiHelper.deleteSession();
-  if (q) await _onInit(action, ctx);
+  //var q = await ApiHelper.deleteSession();
+  //if (q) await _onInit(action, ctx);
+
+  final FirebaseUser currentUser = await _auth.currentUser();
+  if (currentUser != null) {
+    try {
+      _auth.signOut();
+      GlobalStore.store.dispatch(GlobalActionCreator.setUser(null));
+    } on Exception catch (e) {}
+    await _onInit(action, ctx);
+  }
 }
 
 Future _navigatorPush(Action action, Context<AccountPageState> ctx) async {

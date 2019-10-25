@@ -1,4 +1,4 @@
-package com.example.movie;
+package com.o1298098.movie;
 
 import io.flutter.app.FlutterApplication;
 import android.content.Context;

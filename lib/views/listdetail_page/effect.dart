@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart' hide Action;
 import 'package:movie/actions/apihelper.dart';
@@ -22,25 +23,7 @@ Effect<ListDetailPageState> buildEffect() {
 
 void _onAction(Action action, Context<ListDetailPageState> ctx) {}
 
-Future _onInit(Action action, Context<ListDetailPageState> ctx) async {
-  ctx.state.scrollController = ScrollController()
-    ..addListener(() async {
-      bool isBottom = ctx.state.scrollController.position.pixels ==
-          ctx.state.scrollController.position.maxScrollExtent;
-      if (isBottom) {
-        if (ctx.state.listDetailModel.id != null) {
-          int page = ctx.state.listDetailModel.page + 1;
-          if (page <= ctx.state.listDetailModel.totalPages) {
-            var r = await ApiHelper.getListDetailV4(ctx.state.listId,
-                page: page, sortBy: ctx.state.sortType);
-            if (r != null)
-              ctx.dispatch(ListDetailPageActionCreator.loadMore(r));
-          }
-        }
-      }
-    });
-  _loadData(action, ctx);
-}
+Future _onInit(Action action, Context<ListDetailPageState> ctx) async {}
 
 Future _cellTapped(Action action, Context<ListDetailPageState> ctx) async {
   VideoListResult d = action.payload;
@@ -70,10 +53,4 @@ Future _sortChanged(Action action, Context<ListDetailPageState> ctx) async {
   }
 }
 
-Future _loadData(Action action, Context<ListDetailPageState> ctx) async {
-  if (ctx.state.listId != null) {
-    var r = await ApiHelper.getListDetailV4(ctx.state.listId,
-        sortBy: ctx.state.sortType);
-    if (r != null) ctx.dispatch(ListDetailPageActionCreator.setListDetail(r));
-  }
-}
+Future _loadData(Action action, Context<ListDetailPageState> ctx) async {}

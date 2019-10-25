@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -18,7 +19,7 @@ import 'state.dart';
 
 Widget buildView(
     WatchlistPageState state, Dispatch dispatch, ViewService viewService) {
-  void _cellTapped(VideoListResult d) async {
+  /*void _cellTapped(VideoListResult d) async {
     int index = state.tvshowList.results.indexOf(d);
     await Navigator.of(viewService.context, rootNavigator: true).push(
         PageRouteBuilder(
@@ -38,117 +39,11 @@ Widget buildView(
                 ),
               );
             }));
-  }
-
-  Widget _buildSwiper() {
-    var _list = state.isMovie ? state.movieList : state.tvshowList;
-    var _result = _list?.results ?? [];
-    Widget _child = _result.length == 0
-        ? Shimmer.fromColors(
-            baseColor: Colors.grey[200],
-            highlightColor: Colors.grey[100],
-            child: Center(
-              child: Container(
-                width: Adapt.screenW() * .85,
-                height: Adapt.screenH() / 2 + Adapt.px(80),
-                margin:
-                    EdgeInsets.only(right: Adapt.px(20), bottom: Adapt.px(70)),
-                decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(Adapt.px(50))),
-              ),
-            ),
-          )
-        : Swiper(
-            key: ValueKey(_list),
-            loop: false,
-            physics: BouncingScrollPhysics(),
-            controller: state.swiperController,
-            itemCount: _result.length,
-            viewportFraction: 0.85,
-            scale: 0.85,
-            onTap: (index) =>
-                dispatch(WatchlistPageActionCreator.swiperCellTapped()),
-            onIndexChanged: (index) => dispatch(
-                WatchlistPageActionCreator.swiperChanged(_result[index])),
-            itemBuilder: (ctx, index) {
-              var _d = _result[index];
-              return Container(
-                  margin: EdgeInsets.only(right: Adapt.px(10)),
-                  child: Hero(
-                      tag: 'Background${_d.id}',
-                      child: Stack(
-                        alignment: Alignment.bottomRight,
-                        children: <Widget>[
-                          Container(
-                            height: Adapt.screenH() / 2 + Adapt.px(80),
-                            alignment: Alignment.bottomRight,
-                            margin: EdgeInsets.only(
-                                right: Adapt.px(20), bottom: Adapt.px(70)),
-                            decoration: BoxDecoration(
-                                color: index.isEven
-                                    ? Colors.amber
-                                    : Colors.blueAccent,
-                                image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    alignment: Alignment.bottomCenter,
-                                    image: CachedNetworkImageProvider(
-                                        ImageUrl.getUrl(
-                                            _d.poster_path, ImageSize.w500))),
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                      blurRadius: 20,
-                                      offset: Offset(-5, 12),
-                                      color: Colors.black26)
-                                ],
-                                borderRadius:
-                                    BorderRadius.circular(Adapt.px(50))),
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.only(
-                                right: Adapt.px(10), bottom: Adapt.px(60)),
-                            width: Adapt.px(120),
-                            height: Adapt.px(120),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.circular(Adapt.px(30))),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: Text(
-                                _d.vote_average.toString(),
-                                style: TextStyle(
-                                    color:
-                                        Colors.tealAccent[700].withAlpha(200),
-                                    fontSize: Adapt.px(50),
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: Adapt.px(60),
-                            height: Adapt.px(60),
-                            margin: EdgeInsets.only(bottom: Adapt.px(140)),
-                            decoration: BoxDecoration(
-                                color: Colors.white, shape: BoxShape.circle),
-                            child: Icon(Icons.star, color: Colors.yellow),
-                          )
-                        ],
-                      )));
-            },
-          );
-    return Container(
-      height: Adapt.screenH() / 2 + Adapt.px(150),
-      child: AnimatedSwitcher(
-        duration: Duration(milliseconds: 600),
-        child: _child,
-      ),
-    );
-  }
+  }*/
 
   Widget _buildInfo() {
-    Widget _child = state.selectMdeia == null
+    var _d = state.selectMdeia?.data;
+    Widget _child = _d == null
         ? Shimmer.fromColors(
             baseColor: Colors.grey[200],
             highlightColor: Colors.grey[100],
@@ -196,26 +91,27 @@ Widget buildView(
             ),
           )
         : Column(
-            key: ValueKey(state.selectMdeia),
+            key: ValueKey(_d),
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(state.selectMdeia.title ?? state.selectMdeia.name,
+              Text(_d['name'],
                   style: TextStyle(
                       fontSize: Adapt.px(45), fontWeight: FontWeight.bold)),
               SizedBox(
                 height: Adapt.px(20),
               ),
-              Text(state.selectMdeia.genre_ids
-                  .map((f) {
-                    return Genres.genres[f];
-                  })
-                  .toList()
-                  .join(' / ')),
+              Text(_d['genre']
+                      ?.map((f) {
+                        return Genres.genres[f];
+                      })
+                      ?.toList()
+                      ?.join(' / ') ??
+                  ''),
               SizedBox(
                 height: Adapt.px(20),
               ),
               Text(
-                state.selectMdeia.overview,
+                _d['overwatch'] ?? '',
                 maxLines: 5,
               )
             ],
@@ -242,9 +138,10 @@ Widget buildView(
   }
 
   Widget _buildmySeiper() {
-    var _list = state.isMovie ? state.movieList : state.tvshowList;
-    var _result = _list?.results ?? [];
-    Widget _child = _result.length == 0
+    List<DocumentSnapshot> _list = state.isMovie
+        ? (state?.movieSnapshot?.documents ?? [])
+        : (state?.tvSnapshot?.documents ?? []);
+    Widget _child = _list.length == 0
         ? Shimmer.fromColors(
             baseColor: Colors.grey[200],
             highlightColor: Colors.grey[100],
@@ -262,20 +159,20 @@ Widget buildView(
           )
         : _SwiperView(
             key: ValueKey(_list),
-            itemCount: _result.length,
+            itemCount: _list.length,
             viewportFraction: 0.85,
             scale: 0.9,
             itemTapped: (index) =>
                 dispatch(WatchlistPageActionCreator.swiperCellTapped()),
             onPageChanged: (index) => dispatch(
-                WatchlistPageActionCreator.swiperChanged(_result[index])),
+                WatchlistPageActionCreator.swiperChanged(_list[index])),
             itemBuilder: (ctx, index) {
-              var _d = _result[index];
+              var _d = _list[index];
               return Container(
                   key: ValueKey(_d),
                   margin: EdgeInsets.only(right: Adapt.px(20)),
                   child: Hero(
-                      tag: 'Background${_d.id}',
+                      tag: 'Background${_d.documentID}',
                       child: Stack(
                         alignment: Alignment.bottomRight,
                         children: <Widget>[
@@ -293,7 +190,7 @@ Widget buildView(
                                     alignment: Alignment.bottomCenter,
                                     image: CachedNetworkImageProvider(
                                         ImageUrl.getUrl(
-                                            _d.poster_path, ImageSize.w500))),
+                                            _d['photourl'], ImageSize.w500))),
                                 boxShadow: <BoxShadow>[
                                   BoxShadow(
                                       blurRadius: 20,
@@ -316,7 +213,7 @@ Widget buildView(
                             child: Material(
                               color: Colors.transparent,
                               child: Text(
-                                _d.vote_average.toString(),
+                                _d['rate'].toString(),
                                 style: TextStyle(
                                     color:
                                         Colors.tealAccent[700].withAlpha(200),
@@ -435,7 +332,6 @@ Widget buildView(
             height: Adapt.px(80),
           ),
           _buildmySeiper(),
-          //_buildSwiper(),
           _buildInfo(),
         ],
       ),
