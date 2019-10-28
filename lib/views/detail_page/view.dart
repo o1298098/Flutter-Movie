@@ -523,7 +523,7 @@ Widget buildView(
                 height: Adapt.px(100),
                 child: FlatButton(
                   padding: EdgeInsets.zero,
-                  color: Colors.red,
+                  color: state.hasStreamLink ? Colors.orange[600] : Colors.red,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(Adapt.px(50))),
                   highlightColor: Colors.red,

@@ -5,17 +5,16 @@ import 'reducer.dart';
 import 'state.dart';
 import 'view.dart';
 
-class FirebaseLoginPage
-    extends Page<FirebaseLoginPageState, Map<String, dynamic>> {
-  FirebaseLoginPage()
+class StreamLinksPage extends Page<StreamLinksPageState, Map<String, dynamic>> {
+  StreamLinksPage()
       : super(
           initState: initState,
           effect: buildEffect(),
           reducer: buildReducer(),
           view: buildView,
-          dependencies: Dependencies<FirebaseLoginPageState>(
+          dependencies: Dependencies<StreamLinksPageState>(
               adapter: null,
-              slots: <String, Dependent<FirebaseLoginPageState>>{}),
-          middleware: <Middleware<FirebaseLoginPageState>>[],
+              slots: <String, Dependent<StreamLinksPageState>>{}),
+          middleware: <Middleware<StreamLinksPageState>>[],
         );
 }

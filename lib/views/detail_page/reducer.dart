@@ -12,13 +12,22 @@ Reducer<MovieDetailPageState> buildReducer() {
       MovieDetailPageAction.action: _onAction,
       MovieDetailPageAction.updateDetail: _updateDetail,
       MovieDetailPageAction.setImages: _onSetImages,
-      MovieDetailPageAction.setAccountState: _onSetAccountState
+      MovieDetailPageAction.setAccountState: _onSetAccountState,
+      MovieDetailPageAction.setHasStreamLink: _setHasStreamLink,
     },
   );
 }
 
 MovieDetailPageState _onAction(MovieDetailPageState state, Action action) {
   final MovieDetailPageState newState = state.clone();
+  return newState;
+}
+
+MovieDetailPageState _setHasStreamLink(
+    MovieDetailPageState state, Action action) {
+  final bool b = action.payload ?? false;
+  final MovieDetailPageState newState = state.clone();
+  newState.hasStreamLink = b;
   return newState;
 }
 

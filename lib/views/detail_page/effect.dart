@@ -39,6 +39,14 @@ Future _onInit(Action action, Context<MovieDetailPageState> ctx) async {
   ctx.state.animationController = AnimationController(
       vsync: ticker, duration: Duration(milliseconds: 2000));
   ctx.state.scrollController = ScrollController();
+  Firestore.instance
+      .collection('StreamLinks')
+      .document('Movie${ctx.state.mediaId}')
+      .get()
+      .then((d) {
+    if (d.exists)
+      ctx.dispatch(MovieDetailPageActionCreator.setHasStreamLink(true));
+  });
   if (_id == null) return;
   var r = await ApiHelper.getMovieDetail(_id,
       appendtoresponse:
@@ -68,41 +76,51 @@ void _onDispose(Action action, Context<MovieDetailPageState> ctx) {
 }
 
 Future _playTrailer(Action action, Context<MovieDetailPageState> ctx) async {
-  var _model = ctx.state?.detail?.videos?.results ?? [];
-  if (_model.length > 0)
-    await showGeneralDialog(
-        barrierLabel: 'Trailer',
-        barrierDismissible: true,
-        barrierColor: Colors.black87,
-        transitionDuration: Duration(milliseconds: 300),
-        context: ctx.context,
-        pageBuilder: (_, __, ___) {
-          return Center(
-            child: Material(
-              child: Container(
-                width: Adapt.screenW(),
-                height: Adapt.screenW() * 9 / 16,
-                child: YoutubePlayer(
-                  context: ctx.context,
-                  videoId: _model[0].key,
-                  flags: YoutubePlayerFlags(
-                    mute: false,
-                    autoPlay: true,
-                    forceHideAnnotation: true,
-                    showVideoProgressIndicator: true,
-                  ),
-                  videoProgressIndicatorColor: Colors.red,
-                  progressColors: ProgressColors(
-                    playedColor: Colors.red,
-                    handleColor: Colors.redAccent,
+  if (ctx.state.hasStreamLink)
+    await Navigator.of(ctx.context).pushNamed('liveStreamPage', arguments: {
+      'id': 'Movie${ctx.state.mediaId}',
+      'name': ctx.state.detail.title,
+      'rated': ctx.state.detail.vote_average,
+      'rateCount': ctx.state.detail.vote_count,
+      'releaseDate': ctx.state.detail.release_date
+    });
+  else {
+    var _model = ctx.state?.detail?.videos?.results ?? [];
+    if (_model.length > 0)
+      await showGeneralDialog(
+          barrierLabel: 'Trailer',
+          barrierDismissible: true,
+          barrierColor: Colors.black87,
+          transitionDuration: Duration(milliseconds: 300),
+          context: ctx.context,
+          pageBuilder: (_, __, ___) {
+            return Center(
+              child: Material(
+                child: Container(
+                  width: Adapt.screenW(),
+                  height: Adapt.screenW() * 9 / 16,
+                  child: YoutubePlayer(
+                    context: ctx.context,
+                    initialVideoId: _model[0].key,
+                    flags: YoutubePlayerFlags(
+                      mute: false,
+                      autoPlay: true,
+                      forceHideAnnotation: true,
+                      showVideoProgressIndicator: true,
+                    ),
+                    progressIndicatorColor: Colors.red,
+                    progressColors: ProgressBarColors(
+                      playedColor: Colors.red,
+                      handleColor: Colors.redAccent,
+                    ),
                   ),
                 ),
               ),
-            ),
-          );
-        });
-  else
-    Toast.show('no video', ctx.context);
+            );
+          });
+    else
+      Toast.show('no video', ctx.context);
+  }
 }
 
 Future _onExternalTapped(

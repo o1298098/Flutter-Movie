@@ -42,18 +42,17 @@ Widget buildView(
                 children: <Widget>[
                   Container(
                     width: Adapt.screenW() - Adapt.px(180),
-                    child: RichText(
-                      text: TextSpan(children: <TextSpan>[
-                        TextSpan(
-                            text: d?.name ?? '-',
+                    child: Row(
+                      children: <Widget>[
+                        Text(d?.name ?? '-',
                             style: TextStyle(
+                                color: Colors.black,
                                 fontSize: Adapt.px(30),
                                 fontWeight: FontWeight.bold)),
-                        TextSpan(
-                            text: ' (${d.nextEpisodeNumber ?? '-'})',
+                        Text(' (${d.nextEpisodeNumber ?? '-'})',
                             style: TextStyle(
                                 color: Colors.grey, fontSize: Adapt.px(30)))
-                      ]),
+                      ],
                     ),
                   ),
                   Text('Season:' + (d.season ?? '-')),

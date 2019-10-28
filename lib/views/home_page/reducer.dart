@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/moviedetail.dart';
 import 'package:movie/models/searchresult.dart';
@@ -17,12 +18,20 @@ Reducer<HomePageState> buildReducer() {
       HomePageAction.popularFilterChanged: _onPopularFilterChanged,
       HomePageAction.headerFilterChanged: _onHeaderFilterChanged,
       HomePageAction.initTrending: _onInitTrending,
+      HomePageAction.initShareVideo: _onInitShareVideo,
     },
   );
 }
 
 HomePageState _onAction(HomePageState state, Action action) {
   final HomePageState newState = state.clone();
+  return newState;
+}
+
+HomePageState _onInitShareVideo(HomePageState state, Action action) {
+  final QuerySnapshot d = action.payload;
+  final HomePageState newState = state.clone();
+  newState.shareVideo = d;
   return newState;
 }
 

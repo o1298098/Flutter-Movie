@@ -219,6 +219,14 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
         Divider(
           height: Adapt.px(10),
         ),
+        _buildListTitel(
+            Icons.edit,
+            'Add Stream Link',
+            () => dispatch(MenuActionCreator.addStreamLink(
+                state.id, state.name, state.posterPic, MediaType.movie))),
+        Divider(
+          height: Adapt.px(10),
+        ),
         _buildListTitel(Icons.share, 'Share', _share),
         Divider(
           height: Adapt.px(10),

@@ -290,8 +290,8 @@ SPEC CHECKSUMS:
   shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
   sqflite: ff1d9da63c06588cc8d1faf7256d741f16989d5a
   url_launcher: 0067ddb8f10d36786672aa0722a21717dba3a298
-  video_player: 3964090a33353060ed7f58aa6427c7b4b208ec21
-  webview_flutter: 1aa7604e6cdb451a9b7ed2c37d5454c0b440246b
+  video_player: 69c5f029fac4ffe4fc8a85ea7f7b793709661549
+  webview_flutter: db3aba222b23e4dc432e0c5882834123dc50ff9f
 
 PODFILE CHECKSUM: aff02bfeed411c636180d6812254b2daeea14d09
 

@@ -168,6 +168,7 @@ Widget buildView(
                 Padding(
                     padding: EdgeInsets.all(Adapt.px(40)),
                     child: TextFormField(
+                      obscureText: true,
                       focusNode: state.pwdFocusNode,
                       style: TextStyle(fontSize: Adapt.px(35)),
                       decoration: InputDecoration(

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/moviechange.dart';
@@ -18,6 +19,8 @@ enum HomePageAction {
   searchBarTapped,
   cellTapped,
   trendingMore,
+  shareMore,
+  initShareVideo,
 }
 
 class HomePageActionCreator {
@@ -69,5 +72,13 @@ class HomePageActionCreator {
 
   static Action onTrendingMore() {
     return const Action(HomePageAction.trendingMore);
+  }
+
+  static Action onShareMore() {
+    return const Action(HomePageAction.shareMore);
+  }
+
+  static Action initShareVideo(QuerySnapshot d) {
+    return Action(HomePageAction.initShareVideo, payload: d);
   }
 }

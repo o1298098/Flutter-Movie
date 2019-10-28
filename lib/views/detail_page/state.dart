@@ -15,6 +15,7 @@ class MovieDetailPageState implements Cloneable<MovieDetailPageState> {
   AccountStateModel accountState;
   AnimationController animationController;
   ScrollController scrollController;
+  bool hasStreamLink;
 
   @override
   MovieDetailPageState clone() {
@@ -26,7 +27,8 @@ class MovieDetailPageState implements Cloneable<MovieDetailPageState> {
       ..imagesmodel = imagesmodel
       ..accountState = accountState
       ..animationController = animationController
-      ..scrollController = scrollController;
+      ..scrollController = scrollController
+      ..hasStreamLink = hasStreamLink;
   }
 }
 
@@ -39,5 +41,6 @@ MovieDetailPageState initState(Map<String, dynamic> args) {
   state.imagesmodel = ImageModel.fromParams(backdrops: [], posters: []);
   state.accountState =
       AccountStateModel.fromParams(favorite: false, watchlist: false);
+  state.hasStreamLink = false;
   return state;
 }

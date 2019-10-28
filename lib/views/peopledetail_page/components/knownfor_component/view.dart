@@ -42,7 +42,7 @@ Widget buildView(
                 d.title ?? d.name,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: Colors.black, fontSize: Adapt.px(26)),
+                style: TextStyle(fontSize: Adapt.px(26)),
               ),
             )
           ],

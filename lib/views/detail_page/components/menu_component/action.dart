@@ -1,4 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/enums/media_type.dart';
 
 //TODO replace with your own action
 enum MenuAction {
@@ -10,6 +11,7 @@ enum MenuAction {
   setWatchlist,
   updateWatchlist,
   setFirebaseFavorite,
+  addStreamLink,
 }
 
 class MenuActionCreator {
@@ -43,5 +45,10 @@ class MenuActionCreator {
 
   static Action setFirebaseFavorite() {
     return Action(MenuAction.setFirebaseFavorite);
+  }
+
+  static Action addStreamLink(
+      int id, String name, String poster, MediaType type) {
+    return Action(MenuAction.addStreamLink, payload: [id, name, poster, type]);
   }
 }

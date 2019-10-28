@@ -16,7 +16,8 @@ enum MovieDetailPageAction {
   castCellTapped,
   setAccountState,
   openMenu,
-  showSnackBar
+  showSnackBar,
+  setHasStreamLink,
 }
 
 class MovieDetailPageActionCreator {
@@ -64,5 +65,9 @@ class MovieDetailPageActionCreator {
 
   static Action showSnackBar(String message) {
     return Action(MovieDetailPageAction.showSnackBar, payload: message);
+  }
+
+  static Action setHasStreamLink(bool b) {
+    return Action(MovieDetailPageAction.setHasStreamLink, payload: b);
   }
 }

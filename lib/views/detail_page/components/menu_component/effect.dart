@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
+import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/enums/media_type.dart';
@@ -14,11 +14,20 @@ Effect<MenuState> buildEffect() {
     MenuAction.setRating: _setRating,
     MenuAction.setFavorite: _setFavorite,
     MenuAction.setWatchlist: _setWatchlist,
-    MenuAction.setFirebaseFavorite: _setFirebaseFavorite
+    MenuAction.setFirebaseFavorite: _setFirebaseFavorite,
+    MenuAction.addStreamLink: _addStreamLink,
   });
 }
 
 void _onAction(Action action, Context<MenuState> ctx) {}
+void _addStreamLink(Action action, Context<MenuState> ctx) async {
+  await Navigator.of(ctx.context).pushNamed('addLinkPage', arguments: {
+    'id': action.payload[0],
+    'name': action.payload[1],
+    'photourl': action.payload[2],
+    'type': action.payload[3]
+  });
+}
 
 void _setFirebaseFavorite(Action action, Context<MenuState> ctx) async {
   final bool _isFavorite = ctx.state.accountState.favorite;

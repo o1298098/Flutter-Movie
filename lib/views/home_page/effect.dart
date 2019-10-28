@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter/services.dart';
@@ -7,6 +8,7 @@ import 'package:movie/customwidgets/searchbar_delegate.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/enums/time_window.dart';
 import 'package:movie/views/detail_page/page.dart';
+import 'package:movie/views/steam_link_page/allstreamlink_page/page.dart';
 import 'package:movie/views/trending_page/page.dart';
 import 'package:movie/views/tvdetail_page/page.dart';
 import 'action.dart';
@@ -19,6 +21,7 @@ Effect<HomePageState> buildEffect() {
     HomePageAction.searchBarTapped: _onSearchBarTapped,
     HomePageAction.cellTapped: _onCellTapped,
     HomePageAction.trendingMore: _trendingMore,
+    HomePageAction.shareMore: _shareMore,
     Lifecycle.initState: _onInit,
     Lifecycle.dispose: _onDispose,
   });
@@ -38,6 +41,15 @@ Future _onInit(Action action, Context<HomePageState> ctx) async {
   var trending = await ApiHelper.getTrending(MediaType.all, TimeWindow.day);
   if (trending != null)
     ctx.dispatch(HomePageActionCreator.initTrending(trending));
+  Firestore.instance
+      .collection('StreamLinks')
+      .limit(10)
+      .orderBy('updateTime', descending: true)
+      .getDocuments()
+      .then((d) {
+    if (d.documents.length > 0)
+      ctx.dispatch(HomePageActionCreator.initShareVideo(d));
+  });
   var p = await ApiHelper.getPopularMovies();
   if (p != null) ctx.dispatch(HomePageActionCreator.onInitPopularMovie(p));
   var t = await ApiHelper.getPopularTVShows();
@@ -90,6 +102,16 @@ Future _trendingMore(Action action, Context<HomePageState> ctx) async {
     return FadeTransition(
       opacity: animation,
       child: TrendingPage().buildPage({'data': ctx.state.trending}),
+    );
+  }));
+}
+
+Future _shareMore(Action action, Context<HomePageState> ctx) async {
+  await Navigator.of(ctx.context)
+      .push(PageRouteBuilder(pageBuilder: (context, animation, secAnimation) {
+    return FadeTransition(
+      opacity: animation,
+      child: AllStreamLinkPage().buildPage(null),
     );
   }));
 }

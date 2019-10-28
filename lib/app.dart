@@ -11,7 +11,6 @@ import 'package:movie/views/createlist_page/page.dart';
 import 'package:movie/views/discover_page/page.dart';
 import 'package:movie/views/episodedetail_page/page.dart';
 import 'package:movie/views/favorites_page/page.dart';
-import 'package:movie/views/firebaselogin_page/page.dart';
 import 'package:movie/views/gallery_page/page.dart';
 import 'package:movie/views/home_page/page.dart';
 import 'package:movie/views/listdetail_page/page.dart';
@@ -23,6 +22,10 @@ import 'package:movie/views/peopledetail_page/page.dart';
 import 'package:movie/views/register_page/page.dart';
 import 'package:movie/views/seasondetail_page/page.dart';
 import 'package:movie/views/seasons_page/page.dart';
+import 'package:movie/views/steam_link_page/addlink_page/page.dart';
+import 'package:movie/views/steam_link_page/allstreamlink_page/page.dart';
+import 'package:movie/views/steam_link_page/livestream_page/page.dart';
+import 'package:movie/views/steam_link_page/steamlinks_page/page.dart';
 import 'package:movie/views/test_page/page.dart';
 import 'package:movie/views/tvdetail_page/page.dart';
 import 'package:movie/views/watchlist_page/page.dart';
@@ -43,7 +46,7 @@ Future _init() async {
     Map<PermissionGroup, PermissionStatus> permissions =
         await PermissionHandler()
             .requestPermissions([PermissionGroup.contacts]);
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+  /*SharedPreferences prefs = await SharedPreferences.getInstance();
   var session = prefs.getString('loginsession');
   String accessToken = prefs.getString('accessTokenV4');
   if (session == null) {
@@ -51,7 +54,7 @@ Future _init() async {
   } else {
     ApiHelper.session = session;
   }
-  if (accessToken != null) ApiHelper.accessTokenV4 = accessToken;
+  if (accessToken != null) ApiHelper.accessTokenV4 = accessToken;*/
   setLocaleInfo('zh', TimelineInfoCN());
   setLocaleInfo('en', TimelineInfoEN());
   setLocaleInfo('Ja', TimelineInfoJA());
@@ -80,9 +83,12 @@ Future<Widget> createApp() async {
       'WatchlistDetailPage': WatchlistDetailPage(),
       'detailpage': detail.MovieDetailPage(),
       'GalleryPage': GalleryPage(),
-      'firebaseLoginPage': FirebaseLoginPage(),
+      'streamLinksPage': StreamLinksPage(),
+      'addLinkPage': AddLinkPage(),
       'registerPage': RegisterPage(),
       'createListPage': CreateListPage(),
+      'allStreamLinkPage': AllStreamLinkPage(),
+      'liveStreamPage': LiveStreamPage(),
       'testPage': TestPage(),
     },
     visitor: (String path, Page<Object, dynamic> page) {

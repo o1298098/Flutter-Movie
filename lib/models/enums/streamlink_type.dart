@@ -1,0 +1,4 @@
+enum StreamLinkType {
+  youtube,
+  other,
+}

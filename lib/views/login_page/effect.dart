@@ -120,7 +120,6 @@ void _onGoogleSignIn(Action action, Context<LoginPageState> ctx) async {
       Navigator.of(ctx.context).pop(true);
     } else {
       ctx.state.submitAnimationController.reverse();
-
       Toast.show("Google signIn fail", ctx.context,
           duration: 3, gravity: Toast.BOTTOM);
     }

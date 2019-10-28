@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -492,224 +493,115 @@ Widget buildView(
             ));
       }
 
-      Widget _getStyle1() {
-        return Scaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            brightness: Brightness.light,
-            elevation: 0.0,
-            backgroundColor: Colors.white,
-            automaticallyImplyLeading: false,
-            title: viewService.buildComponent('searchbar'),
-          ),
-          body: CustomScrollView(
-            controller: state.scrollController,
-            slivers: <Widget>[
-              SliverToBoxAdapter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    _buildTitle(
-                        I18n.of(viewService.context).inTheaters,
-                        () => dispatch(HomePageActionCreator.onMoreTapped(
-                            state.movie, MediaType.movie))),
-                    viewService.buildComponent('moviecells'),
-                    _buildTitle(
-                        I18n.of(viewService.context).onTV,
-                        () => dispatch(HomePageActionCreator.onMoreTapped(
-                            state.tv, MediaType.tv))),
-                    viewService.buildComponent('tvcells'),
-                    Padding(
-                      padding: EdgeInsets.all(Adapt.px(20)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            I18n.of(viewService.context).popular,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: Adapt.px(45),
-                                fontWeight: FontWeight.w700),
-                          ),
-                          Expanded(
-                            child: Container(),
-                          ),
-                          GestureDetector(
-                            onTap: () => dispatch(
-                                HomePageActionCreator.onPopularFilterChanged(
-                                    true)),
-                            child: Text(I18n.of(viewService.context).movies,
-                                style: state.showPopMovie
-                                    ? _selectPopStyle
-                                    : _unselectPopStyle),
-                          ),
-                          SizedBox(
-                            width: Adapt.px(20),
-                          ),
-                          GestureDetector(
-                            onTap: () => dispatch(
-                                HomePageActionCreator.onPopularFilterChanged(
-                                    false)),
-                            child: Text(I18n.of(viewService.context).tvShows,
-                                style: state.showPopMovie
-                                    ? _unselectPopStyle
-                                    : _selectPopStyle),
-                          )
-                        ],
-                      ),
-                    ),
-                    viewService.buildComponent('popular'),
-                    Container(
-                      height: Adapt.px(80),
-                    )
-                  ],
+      Widget _buildShareCell(DocumentSnapshot d) {
+        return Padding(
+          key: ValueKey(d['id']),
+          padding: EdgeInsets.only(left: Adapt.px(30)),
+          child: GestureDetector(
+            onTap: () => dispatch(HomePageActionCreator.onCellTapped(
+                d['id'],
+                d['photourl'],
+                d['name'],
+                d['photourl'],
+                d['type'] == 'Movie' ? MediaType.movie : MediaType.tv)),
+            child: Column(
+              children: <Widget>[
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(Adapt.px(15)),
+                  child: CachedNetworkImage(
+                    fadeOutDuration: Duration(milliseconds: 200),
+                    fadeInDuration: Duration(milliseconds: 200),
+                    width: Adapt.px(250),
+                    height: Adapt.px(350),
+                    fit: BoxFit.cover,
+                    imageUrl: ImageUrl.getUrl(d['photourl'], ImageSize.w400),
+                    placeholder: (ctx, s) {
+                      return Image.asset(
+                        'images/CacheBG.jpg',
+                        fit: BoxFit.cover,
+                        width: Adapt.px(250),
+                        height: Adapt.px(350),
+                      );
+                    },
+                  ),
                 ),
-              )
-            ],
+                Container(
+                    //alignment: Alignment.bottomCenter,
+                    width: Adapt.px(250),
+                    padding: EdgeInsets.all(Adapt.px(10)),
+                    child: Text(
+                      d['name'] ?? '',
+                      maxLines: 2,
+                      //textAlign: TextAlign.center,
+                      style: TextStyle(
+                        //color: Colors.black,
+                        fontSize: Adapt.px(28),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ))
+              ],
+            ),
           ),
         );
       }
 
-      Widget _getStyle2() {
-        return Scaffold(
-          body: CustomScrollView(
-            slivers: <Widget>[
-              SliverToBoxAdapter(
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                        height: Adapt.px(600),
-                        child: Swiper(
-                          pagination: new SwiperPagination(
-                            alignment: Alignment.bottomLeft,
-                            builder: new DotSwiperPaginationBuilder(
-                                activeColor: Colors.grey),
-                          ),
-                          autoplay: true,
-                          itemCount: 6,
-                          autoplayDelay: 10000,
-                          duration: 1000,
-                          itemBuilder: (ctx, index) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: CachedNetworkImageProvider(
-                                          ImageUrl.getUrl(
-                                              state.movie.results[index]
-                                                  .backdrop_path,
-                                              ImageSize.w500)))),
-                              child: Container(
-                                color: Colors.black26,
-                                padding: EdgeInsets.fromLTRB(
-                                    Adapt.px(30),
-                                    Adapt.px(100) + Adapt.padTopH(),
-                                    Adapt.px(30),
-                                    0),
-                                child: Text(
-                                  state.movie.results[index].title,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: Adapt.px(60),
-                                      shadows: <Shadow>[
-                                        Shadow(offset: Offset(1, 1))
-                                      ]),
-                                ),
-                              ),
-                            );
-                          },
-                        )),
-                    SafeArea(
-                      minimum: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-                      child: viewService.buildComponent('searchbar'),
-                    )
-                  ],
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Container(
-                  margin: EdgeInsets.only(top: Adapt.px(30)),
-                  height: Adapt.px(150),
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [1, 2, 3, 4, 4, 4, 4, 4].map((f) {
-                      return Padding(
-                          padding: EdgeInsets.only(left: Adapt.px(30)),
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                width: Adapt.px(100),
-                                height: Adapt.px(100),
-                                decoration: BoxDecoration(
-                                    color: Colors.grey[300],
-                                    borderRadius:
-                                        BorderRadius.circular(Adapt.px(20))),
-                                child: Icon(Icons.directions_run),
-                              ),
-                              Container(
-                                  alignment: Alignment.center,
-                                  width: Adapt.px(100),
-                                  child: Text('data'))
-                            ],
-                          ));
-                    }).toList(),
+      Widget _buildShimmerCell() {
+        return SizedBox(
+          width: Adapt.px(250),
+          height: Adapt.px(350),
+          child: Shimmer.fromColors(
+            baseColor: Colors.grey[200],
+            highlightColor: Colors.grey[100],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  width: Adapt.px(250),
+                  height: Adapt.px(350),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(Adapt.px(15)),
                   ),
                 ),
-              ),
-              SliverToBoxAdapter(
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(Adapt.px(30)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            I18n.of(viewService.context).popular,
-                            style: state.showPopMovie
-                                ? _selectPopStyle
-                                : _unselectPopStyle,
-                          ),
-                          Expanded(
-                            child: Container(),
-                          ),
-                          GestureDetector(
-                            onTap: () => dispatch(
-                                HomePageActionCreator.onPopularFilterChanged(
-                                    true)),
-                            child: Text(I18n.of(viewService.context).movies,
-                                style: state.showPopMovie
-                                    ? _unselectPopStyle
-                                    : _selectPopStyle),
-                          ),
-                          SizedBox(
-                            width: Adapt.px(20),
-                          ),
-                          GestureDetector(
-                            onTap: () => dispatch(
-                                HomePageActionCreator.onPopularFilterChanged(
-                                    false)),
-                            child: Text(I18n.of(viewService.context).tvShows,
-                                style: TextStyle(
-                                    fontSize: Adapt.px(24),
-                                    fontWeight: state.showPopMovie
-                                        ? FontWeight.normal
-                                        : FontWeight.bold,
-                                    color: state.showPopMovie
-                                        ? Colors.grey
-                                        : Colors.black)),
-                          )
-                        ],
-                      ),
-                    ),
-                    viewService.buildComponent('popularposter'),
-                  ],
+                SizedBox(
+                  height: Adapt.px(20),
                 ),
-              )
-            ],
+                Container(
+                  width: Adapt.px(200),
+                  height: Adapt.px(30),
+                  color: Colors.grey[200],
+                )
+              ],
+            ),
           ),
         );
+      }
+
+      Widget _buildShareBody() {
+        var model = state.shareVideo?.documents ?? [];
+        return AnimatedSwitcher(
+            duration: Duration(milliseconds: 600),
+            child: Container(
+              key: ValueKey(model),
+              height: Adapt.px(450),
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                physics: PageScrollPhysics(),
+                shrinkWrap: true,
+                children: model.length > 0
+                    ? (model.map(_buildShareCell).toList())
+                    : <Widget>[
+                        SizedBox(width: Adapt.px(20)),
+                        _buildShimmerCell(),
+                        SizedBox(width: Adapt.px(20)),
+                        _buildShimmerCell(),
+                        SizedBox(width: Adapt.px(20)),
+                        _buildShimmerCell(),
+                        SizedBox(width: Adapt.px(20)),
+                        _buildShimmerCell()
+                      ],
+              ),
+            ));
       }
 
       Widget _getStyle3() {
@@ -762,13 +654,23 @@ Widget buildView(
                             ),
                             padding:
                                 EdgeInsets.symmetric(horizontal: Adapt.px(30))),
-                        SizedBox(
-                          height: Adapt.px(30),
-                        ),
+                        SizedBox(height: Adapt.px(30)),
                         _buildTrending(),
-                        SizedBox(
-                          height: Adapt.px(50),
-                        ),
+                        SizedBox(height: Adapt.px(50)),
+                        _buildFrontTitel(
+                            'Share',
+                            GestureDetector(
+                              onTap: () =>
+                                  dispatch(HomePageActionCreator.onShareMore()),
+                              child: Text(
+                                I18n.of(viewService.context).more,
+                                style: TextStyle(color: Colors.grey[600]),
+                              ),
+                            ),
+                            padding:
+                                EdgeInsets.symmetric(horizontal: Adapt.px(30))),
+                        SizedBox(height: Adapt.px(30)),
+                        _buildShareBody(),
                         _buildFrontTitel(
                             I18n.of(viewService.context).popular,
                             Row(

@@ -79,6 +79,7 @@ Widget buildView(
 
   return Scaffold(
     backgroundColor: Colors.white,
+    resizeToAvoidBottomPadding: false,
     appBar: AppBar(
       iconTheme: IconThemeData(color: Colors.black),
       elevation: 0.0,
