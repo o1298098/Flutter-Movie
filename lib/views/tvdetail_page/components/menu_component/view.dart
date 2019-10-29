@@ -17,7 +17,7 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
   Widget _buildListTitel(IconData icon, String title, void onTap(),
       {Color iconColor = const Color.fromRGBO(50, 50, 50, 1)}) {
     TextStyle titleStyle =
-        TextStyle(color: Color.fromRGBO(50, 50, 50, 1), fontSize: Adapt.px(40));
+        TextStyle(color: Color.fromRGBO(50, 50, 50, 1), fontSize: Adapt.px(35));
     return ListTile(
       leading: Icon(
         icon,
@@ -179,7 +179,7 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
         ),
         _buildListTitel(Icons.format_list_bulleted, 'Add to List', _addToList),
         Divider(
-          height: Adapt.px(10),
+          height: Adapt.px(1),
         ),
         _buildListTitel(
             state.accountState.favorite
@@ -193,7 +193,7 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
                 ? Colors.pink[400]
                 : Color.fromRGBO(50, 50, 50, 1)),
         Divider(
-          height: Adapt.px(10),
+          height: Adapt.px(1),
         ),
         _buildListTitel(
           Icons.flag,
@@ -208,7 +208,7 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
               : Color.fromRGBO(50, 50, 50, 1),
         ),
         Divider(
-          height: Adapt.px(10),
+          height: Adapt.px(1),
         ),
         _buildListTitel(
             state.accountState.isRated == true ? Icons.star : Icons.star_border,
@@ -218,11 +218,11 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
                 ? Colors.amber
                 : Color.fromRGBO(50, 50, 50, 1)),
         Divider(
-          height: Adapt.px(10),
+          height: Adapt.px(1),
         ),
         _buildListTitel(Icons.share, 'Share', _share),
         Divider(
-          height: Adapt.px(10),
+          height: Adapt.px(1),
         ),
       ],
     ),

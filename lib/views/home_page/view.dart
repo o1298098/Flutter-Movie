@@ -671,6 +671,7 @@ Widget buildView(
                                 EdgeInsets.symmetric(horizontal: Adapt.px(30))),
                         SizedBox(height: Adapt.px(30)),
                         _buildShareBody(),
+                        SizedBox(height: Adapt.px(30)),
                         _buildFrontTitel(
                             I18n.of(viewService.context).popular,
                             Row(

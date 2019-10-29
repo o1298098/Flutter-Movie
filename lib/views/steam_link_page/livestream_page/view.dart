@@ -263,7 +263,8 @@ Widget buildView(
                 shape: BoxShape.circle,
                 color: Colors.grey,
                 image: DecorationImage(
-                    image: CachedNetworkImageProvider(d['userPhotoUrl']))),
+                    image:
+                        CachedNetworkImageProvider(d['userPhotoUrl'] ?? ''))),
           ),
           title: Text(d['userName']),
           subtitle: Text(timeline),
