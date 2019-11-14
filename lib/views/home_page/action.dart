@@ -1,7 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/enums/media_type.dart';
-import 'package:movie/models/moviechange.dart';
 import 'package:movie/models/searchresult.dart';
 import 'package:movie/models/videolist.dart';
 
@@ -78,7 +77,7 @@ class HomePageActionCreator {
     return const Action(HomePageAction.shareMore);
   }
 
-  static Action initShareVideo(QuerySnapshot d) {
+  static Action initShareVideo(BaseMovieModel d) {
     return Action(HomePageAction.initShareVideo, payload: d);
   }
 }

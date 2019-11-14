@@ -4,11 +4,13 @@ import 'package:flutter/material.dart' hide Action;
 import 'package:flutter/widgets.dart' hide Action;
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/apihelper.dart';
+import 'package:movie/actions/base_api.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/customwidgets/gallery_photoview_wrapper.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/enums/imagesize.dart';
+import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/firebase/firebase_accountstate.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:palette_generator/palette_generator.dart';
@@ -54,16 +56,10 @@ Future _onInit(Action action, Context<TVDetailPageState> ctx) async {
 
     final _user = GlobalStore.store.getState().user;
     if (_user != null) {
-      var accountstate = await Firestore.instance
-          .collection('AccountState')
-          .document(_user.uid)
-          .collection('TVShows')
-          .document(ctx.state.tvid.toString())
-          .get();
-      if (accountstate != null) {
-        var _statemodel = AccountStateModel(accountstate?.data);
-        ctx.dispatch(TVDetailPageActionCreator.onSetAccountState(_statemodel));
-      }
+      var accountstate = await BaseApi.getAccountState(
+          _user.uid, ctx.state.tvid, MediaType.tv);
+      if (accountstate != null)
+        ctx.dispatch(TVDetailPageActionCreator.onSetAccountState(accountstate));
     }
   } on Exception catch (e) {}
 }

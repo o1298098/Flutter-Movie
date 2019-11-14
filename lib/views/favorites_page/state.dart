@@ -4,19 +4,20 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/state.dart';
+import 'package:movie/models/base_api_model/user_media.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class FavoritesPageState
     implements GlobalBaseState, Cloneable<FavoritesPageState> {
-  DocumentSnapshot selectedMedia;
+  UserMedia selectedMedia;
   Color backgroundColor;
   String backgroundUrl;
   String secbackgroundUrl;
   AnimationController animationController;
   PaletteGenerator paletteGenerator;
-  QuerySnapshot movieSnapshot;
-  QuerySnapshot tvSnapshot;
+  UserMediaModel movies;
+  UserMediaModel tvshows;
   bool isMovie;
 
   @override
@@ -29,8 +30,8 @@ class FavoritesPageState
       ..animationController = animationController
       ..paletteGenerator = paletteGenerator
       ..isMovie = isMovie
-      ..movieSnapshot = movieSnapshot
-      ..tvSnapshot = tvSnapshot
+      ..movies = movies
+      ..tvshows = tvshows
       ..user = user;
   }
 

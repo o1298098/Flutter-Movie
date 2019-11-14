@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/painting.dart';
+import 'package:movie/models/base_api_model/user_media.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:palette_generator/palette_generator.dart';
 
@@ -13,8 +14,8 @@ enum FavoritesPageAction {
   setBackground,
   setColor,
   updateColor,
-  setMovieSnapshot,
-  setTVShowSnapshot,
+  setMovie,
+  setTVShow,
 }
 
 class FavoritesPageActionCreator {
@@ -34,7 +35,7 @@ class FavoritesPageActionCreator {
     return Action(FavoritesPageAction.setFavoriteTV, payload: d);
   }
 
-  static Action setBackground(DocumentSnapshot result, Color color) {
+  static Action setBackground(UserMedia result, Color color) {
     return Action(FavoritesPageAction.setBackground, payload: [result, color]);
   }
 
@@ -46,11 +47,11 @@ class FavoritesPageActionCreator {
     return Action(FavoritesPageAction.updateColor, payload: palette);
   }
 
-  static Action setMovieSnapshot(QuerySnapshot d) {
-    return Action(FavoritesPageAction.setMovieSnapshot, payload: d);
+  static Action setMovie(UserMediaModel d) {
+    return Action(FavoritesPageAction.setMovie, payload: d);
   }
 
-  static Action setTVShowSnapshot(QuerySnapshot d) {
-    return Action(FavoritesPageAction.setTVShowSnapshot, payload: d);
+  static Action setTVShow(UserMediaModel d) {
+    return Action(FavoritesPageAction.setTVShow, payload: d);
   }
 }

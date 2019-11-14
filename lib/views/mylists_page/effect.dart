@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/apihelper.dart';
+import 'package:movie/actions/base_api.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
+import 'package:movie/models/base_api_model/user_list.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -11,7 +13,6 @@ Effect<MyListsPageState> buildEffect() {
     Lifecycle.initState: _onInit,
     Lifecycle.deactivate: _onDeactivate,
     Lifecycle.dispose: _onDispose,
-    MyListsPageAction.action: _onAction,
     MyListsPageAction.createList: _createList,
     MyListsPageAction.cellTapped: _cellTapped,
     MyListsPageAction.deleteList: _deleteList,
@@ -28,12 +29,7 @@ Future _onInit(Action action, Context<MyListsPageState> ctx) async {
       vsync: ticker, duration: Duration(milliseconds: 1000));
   ctx.state.scrollController = ScrollController(keepScrollOffset: false);
   if (ctx.state.user != null) {
-    final data = Firestore.instance
-        .collection('MyList')
-        .document(ctx.state.user.uid)
-        .collection('List')
-        .orderBy('updateDateTime', descending: true)
-        .snapshots();
+    final data = BaseApi.getUserList(ctx.state.user.uid);
     ctx.dispatch(MyListsPageActionCreator.setList(data));
   }
 }
@@ -63,7 +59,7 @@ void _createList(Action action, Context<MyListsPageState> ctx) async {
 }
 
 void _deleteList(Action action, Context<MyListsPageState> ctx) {
-  DocumentSnapshot d = action.payload;
+  final UserList d = action.payload;
   if (d != null) {
     showDialog<void>(
       context: ctx.context,
@@ -87,9 +83,11 @@ void _deleteList(Action action, Context<MyListsPageState> ctx) {
             ),
             FlatButton(
               child: Text('Submit'),
-              onPressed: () {
-                d.reference.delete();
-
+              onPressed: () async {
+                BaseApi.deleteUserList(d.id).then((d) {});
+                (await ctx.state.listData).data.remove(d);
+                ctx.dispatch(
+                    MyListsPageActionCreator.setList(ctx.state.listData));
                 Navigator.of(context).pop();
               },
             ),

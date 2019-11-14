@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
+import 'package:movie/models/base_api_model/user_media.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:palette_generator/palette_generator.dart';
 
@@ -14,8 +15,8 @@ Reducer<FavoritesPageState> buildReducer() {
       FavoritesPageAction.setBackground: _setBackground,
       FavoritesPageAction.updateColor: _updateColor,
       FavoritesPageAction.mediaTpyeChanged: _mediaTpyeChanged,
-      FavoritesPageAction.setMovieSnapshot: _setMovieSnapshot,
-      FavoritesPageAction.setTVShowSnapshot: _setTVShowSnapshot
+      FavoritesPageAction.setMovie: _setMovie,
+      FavoritesPageAction.setTVShow: _setTVShow
     },
   );
 }
@@ -29,17 +30,16 @@ FavoritesPageState _mediaTpyeChanged(FavoritesPageState state, Action action) {
   final bool r = action.payload;
   final FavoritesPageState newState = state.clone();
   newState.isMovie = r;
-  newState.selectedMedia =
-      r ? state.movieSnapshot?.documents[0] : state.tvSnapshot?.documents[0];
+  newState.selectedMedia = r ? state.movies?.data[0] : state.tvshows?.data[0];
   return newState;
 }
 
 FavoritesPageState _setBackground(FavoritesPageState state, Action action) {
-  final DocumentSnapshot result = action.payload[0];
+  final UserMedia result = action.payload[0];
   final Color color = action.payload[01];
   final FavoritesPageState newState = state.clone();
   if (state.selectedMedia != null)
-    newState.secbackgroundUrl = state.selectedMedia['photourl'];
+    newState.secbackgroundUrl = state.selectedMedia.photoUrl;
   newState.selectedMedia = result;
   newState.backgroundColor = color;
   return newState;
@@ -52,21 +52,21 @@ FavoritesPageState _updateColor(FavoritesPageState state, Action action) {
   return newState;
 }
 
-FavoritesPageState _setMovieSnapshot(FavoritesPageState state, Action action) {
-  final QuerySnapshot movieSnapshot = action.payload;
+FavoritesPageState _setMovie(FavoritesPageState state, Action action) {
+  final UserMediaModel movie = action.payload;
   final FavoritesPageState newState = state.clone();
   newState.backgroundColor = Colors.cyan.withAlpha(80);
-  newState.movieSnapshot = movieSnapshot;
-  if (movieSnapshot.documents.length > 0) {
-    newState.selectedMedia = movieSnapshot.documents[0];
-    newState.secbackgroundUrl = newState.selectedMedia['photourl'];
+  newState.movies = movie;
+  if (movie.data.length > 0) {
+    newState.selectedMedia = movie.data[0];
+    newState.secbackgroundUrl = newState.selectedMedia.photoUrl;
   }
   return newState;
 }
 
-FavoritesPageState _setTVShowSnapshot(FavoritesPageState state, Action action) {
-  final QuerySnapshot tvSnapshot = action.payload;
+FavoritesPageState _setTVShow(FavoritesPageState state, Action action) {
+  final UserMediaModel tv = action.payload;
   final FavoritesPageState newState = state.clone();
-  newState.tvSnapshot = tvSnapshot;
+  newState.tvshows = tv;
   return newState;
 }

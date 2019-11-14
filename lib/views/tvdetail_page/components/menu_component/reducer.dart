@@ -23,7 +23,6 @@ MenuState _onAction(MenuState state, Action action) {
 MenuState _updateRating(MenuState state, Action action) {
   final MenuState newState = state.clone();
   newState.accountState.rated = action.payload;
-  newState.accountState.isRated = true;
   return newState;
 }
 

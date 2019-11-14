@@ -12,6 +12,7 @@ import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/generated/i18n.dart';
+import 'package:movie/models/base_api_model/user_media.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -24,7 +25,7 @@ Widget buildView(
     FavoritesPageState state, Dispatch dispatch, ViewService viewService) {
   Random random = Random(DateTime.now().millisecondsSinceEpoch);
 
-  Widget _buildListCell(DocumentSnapshot d) {
+  Widget _buildListCell(UserMedia d) {
     return Container(
       key: ValueKey(d),
       //margin: EdgeInsets.all(Adapt.px(20)),
@@ -35,7 +36,7 @@ Widget buildView(
           image: DecorationImage(
               fit: BoxFit.cover,
               image: CachedNetworkImageProvider(
-                  ImageUrl.getUrl(d['photourl'], ImageSize.w500)))),
+                  ImageUrl.getUrl(d.photoUrl, ImageSize.w500)))),
     );
   }
 
@@ -127,8 +128,8 @@ Widget buildView(
 
   Widget _buildSwiper() {
     var height = (Adapt.screenW() * 0.55 - Adapt.px(40)) * 1.7;
-    QuerySnapshot d = state.isMovie ? state.movieSnapshot : state.tvSnapshot;
-    Widget bodychild = d?.documents != null
+    UserMediaModel d = state.isMovie ? state.movies : state.tvshows;
+    Widget bodychild = d?.data != null
         ? Container(
             key: ValueKey(d),
             height: height,
@@ -138,12 +139,11 @@ Widget buildView(
               fade: 0.1,
               viewportFraction: 0.55,
               itemBuilder: (BuildContext context, int index) {
-                return _buildListCell(d.documents[index]);
+                return _buildListCell(d.data[index]);
               },
-              itemCount: d?.documents?.length ?? 0,
+              itemCount: d?.data?.length ?? 0,
               onIndexChanged: (index) {
-                var r = d.documents[index];
-
+                var r = d.data[index];
                 dispatch(FavoritesPageActionCreator.setBackground(
                     r,
                     Color.fromRGBO(random.nextInt(200), random.nextInt(150),
@@ -173,8 +173,8 @@ Widget buildView(
   Widget _buildHeader() {
     final d = state.selectedMedia;
     if (d != null) {
-      String name = d['name'];
-      String datetime = d['releaseDate'];
+      String name = d.name;
+      String datetime = d.releaseDate;
       return FadeTransition(
           opacity:
               Tween(begin: 0.0, end: 1.0).animate(state.animationController),
@@ -216,12 +216,12 @@ Widget buildView(
                         color: Colors.amber,
                       ),
                       unratedColor: Colors.grey,
-                      rating: (d['rate'] ?? 0) / 2,
+                      rating: (d.rated ?? 0) / 2,
                     ),
                     SizedBox(
                       width: Adapt.px(10),
                     ),
-                    Text(d['rate']?.toStringAsFixed(1) ?? '0.0',
+                    Text(d.rated?.toStringAsFixed(1) ?? '0.0',
                         style: TextStyle(fontSize: Adapt.px(26)))
                   ],
                 ),
@@ -229,7 +229,7 @@ Widget buildView(
                   height: Adapt.px(10),
                 ),
                 Text(
-                  d['overwatch'] ?? '',
+                  d.overwatch ?? '',
                   maxLines: 9,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -294,9 +294,9 @@ Widget buildView(
             ? AnimatedSwitcher(
                 duration: Duration(milliseconds: 800),
                 child: CachedNetworkImage(
-                  key: ValueKey(state.selectedMedia['photourl']),
+                  key: ValueKey(state.selectedMedia.photoUrl),
                   imageUrl: ImageUrl.getUrl(
-                      state?.selectedMedia['photourl'], ImageSize.w500),
+                      state?.selectedMedia?.photoUrl, ImageSize.w500),
                   imageBuilder: (ctx, image) => Container(
                       decoration: BoxDecoration(
                           image: DecorationImage(

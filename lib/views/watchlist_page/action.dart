@@ -1,15 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/base_api_model/user_media.dart';
 import 'package:movie/models/videolist.dart';
 
 //TODO replace with your own action
 enum WatchlistPageAction {
   action,
-  setTVShowSnapshot,
+  setTVShow,
   widthChanged,
   swiperChanged,
   swiperCellTapped,
-  setMovieSnapshot,
+  setMovie,
 }
 
 class WatchlistPageActionCreator {
@@ -17,15 +18,15 @@ class WatchlistPageActionCreator {
     return const Action(WatchlistPageAction.action);
   }
 
-  static Action setTVShowSnapshot(QuerySnapshot d) {
-    return Action(WatchlistPageAction.setTVShowSnapshot, payload: d);
+  static Action setTVShow(UserMediaModel d) {
+    return Action(WatchlistPageAction.setTVShow, payload: d);
   }
 
   static Action widthChanged(bool d) {
     return Action(WatchlistPageAction.widthChanged, payload: d);
   }
 
-  static Action swiperChanged(DocumentSnapshot d) {
+  static Action swiperChanged(UserMedia d) {
     return Action(WatchlistPageAction.swiperChanged, payload: d);
   }
 
@@ -33,7 +34,7 @@ class WatchlistPageActionCreator {
     return const Action(WatchlistPageAction.swiperCellTapped);
   }
 
-  static Action setMovieSnapshot(QuerySnapshot d) {
-    return Action(WatchlistPageAction.setMovieSnapshot, payload: d);
+  static Action setMovie(UserMediaModel d) {
+    return Action(WatchlistPageAction.setMovie, payload: d);
   }
 }

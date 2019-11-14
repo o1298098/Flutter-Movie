@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart' hide Action;
+import 'package:movie/actions/base_api.dart';
 import 'package:movie/actions/pop_result.dart';
+import 'package:movie/globalbasestate/action.dart';
+import 'package:movie/globalbasestate/store.dart';
 import 'package:toast/toast.dart';
 import 'action.dart';
 import 'state.dart';
@@ -43,15 +46,19 @@ void _onRegisterWithEmail(Action action, Context<RegisterPageState> ctx) async {
         assert(ctx.state.name != null);
         final UserUpdateInfo userUpdateInfo = UserUpdateInfo()
           ..displayName = ctx.state.name;
-        await user.updateProfile(userUpdateInfo);
-        Navigator.pop(
-          ctx.context,
-          PopWithResults(
-            fromPage: "registerPage",
-            toPage: 'mainpage',
-            results: true,
-          ),
-        );
+        user.updateProfile(userUpdateInfo).then((d) {
+          GlobalStore.store.dispatch(GlobalActionCreator.setUser(user));
+          BaseApi.updateUser(user.uid, user.email, user.photoUrl,
+              ctx.state.name, user.phoneNumber);
+          Navigator.pop(
+            ctx.context,
+            PopWithResults(
+              fromPage: "registerPage",
+              toPage: 'mainpage',
+              results: {'s': true, 'name': ctx.state.name},
+            ),
+          );
+        });
       }
     } on Exception catch (e) {
       ctx.state.submitAnimationController.reverse();

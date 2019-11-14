@@ -12,6 +12,9 @@ A Flutter movie app build with Fish-Redux and TMDB api.
 - [x] share movie or tv show
 - [x] rate movie or tv show
 
+## Api doc
+<a href='https://movie-apidoc.web.app/'>https://movie-apidoc.web.app/</a>
+
 ## Demo
 <a href='https://github.com/o1298098/Flutter-Movie/releases/download/demo/demo.apk'>Download</a>
 ## Flutter version

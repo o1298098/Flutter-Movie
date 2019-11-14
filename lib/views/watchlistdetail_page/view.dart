@@ -42,7 +42,7 @@ Widget buildView(WatchlistDetailPageState state, Dispatch dispatch,
   }
 
   Widget _buildInfo() {
-    var _d = state.mediaData.data;
+    var _d = state.mediaData;
     var curve = Curves.ease;
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
@@ -74,7 +74,7 @@ Widget buildView(WatchlistDetailPageState state, Dispatch dispatch,
                       opacity: titleOpacity.value,
                       child: Container(
                         child: Text(
-                          _d['name'],
+                          _d.name,
                           maxLines: 1,
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -93,7 +93,7 @@ Widget buildView(WatchlistDetailPageState state, Dispatch dispatch,
                       child: Opacity(
                           opacity: owOpacity.value,
                           child: Text(
-                            _d['overwatch'],
+                            _d.overwatch,
                             maxLines: 3,
                           ))),
                   SizedBox(
@@ -102,7 +102,7 @@ Widget buildView(WatchlistDetailPageState state, Dispatch dispatch,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      _buildColumnCell(_d['rate'].toString(), 'Score',
+                      _buildColumnCell(_d.rated.toString(), 'Score',
                           start: 0.6, end: 0.8),
                       Opacity(
                           opacity: Tween(begin: 0.0, end: 1.0)
@@ -120,7 +120,7 @@ Widget buildView(WatchlistDetailPageState state, Dispatch dispatch,
                           child: Opacity(
                               opacity: owOpacity.value,
                               child: _buildColumnCell(
-                                  _d['ratedCount']?.toString() ?? '', 'Rated',
+                                  _d.ratedCount?.toString() ?? '', 'Rated',
                                   start: 0.7, end: 0.9))),
                       Opacity(
                           opacity: Tween(begin: 0.0, end: 1.0)
@@ -140,7 +140,7 @@ Widget buildView(WatchlistDetailPageState state, Dispatch dispatch,
                           child: Opacity(
                               opacity: owOpacity.value,
                               child: _buildColumnCell(
-                                  _d['popular']?.toStringAsFixed(0) ?? '',
+                                  _d.popular?.toStringAsFixed(0) ?? '',
                                   'Popular',
                                   start: 0.8,
                                   end: 1.0))),
@@ -158,7 +158,7 @@ Widget buildView(WatchlistDetailPageState state, Dispatch dispatch,
       child: Column(
         children: <Widget>[
           Hero(
-            tag: 'Background${state.mediaData.documentID}',
+            tag: 'Background${state.mediaData.mediaId}',
             child: Material(
                 child: Container(
               height: Adapt.screenH() / 2 + Adapt.px(120),
@@ -169,7 +169,7 @@ Widget buildView(WatchlistDetailPageState state, Dispatch dispatch,
                       alignment: Alignment.bottomCenter,
                       fit: BoxFit.cover,
                       image: CachedNetworkImageProvider(ImageUrl.getUrl(
-                          state.mediaData.data['photourl'], ImageSize.w500))),
+                          state.mediaData.photoUrl, ImageSize.w500))),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
                         blurRadius: 20,

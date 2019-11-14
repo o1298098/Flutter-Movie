@@ -1,15 +1,11 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/Adapt.dart';
-import 'package:movie/actions/apihelper.dart';
+import 'package:movie/actions/base_api.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/models/enums/imagesize.dart';
-import 'package:movie/models/videolist.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'action.dart';
 import 'state.dart';
@@ -31,22 +27,13 @@ Future _onInit(Action action, Context<FavoritesPageState> ctx) async {
       AnimationController(vsync: ticker, duration: Duration(milliseconds: 600));
 
   if (ctx.state.user != null) {
-    var movieSnapshots = await Firestore.instance
-        .collection("Favorites")
-        .document(ctx.state.user.uid)
-        .collection("FavoriteMovie")
-        .getDocuments();
-    if (movieSnapshots.documents.length > 0)
-      ctx.state.animationController.forward(from: 0.0);
-    ctx.dispatch(FavoritesPageActionCreator.setBackground(
-        movieSnapshots.documents[0], Colors.black));
-    ctx.dispatch(FavoritesPageActionCreator.setMovieSnapshot(movieSnapshots));
-    var tvSnapshots = await Firestore.instance
-        .collection("Favorites")
-        .document(ctx.state.user.uid)
-        .collection("FavoriteTVShow")
-        .getDocuments();
-    ctx.dispatch(FavoritesPageActionCreator.setTVShowSnapshot(tvSnapshots));
+    final movie = await BaseApi.getFavorite(ctx.state.user.uid, 'movie');
+    if (movie != null) ctx.state.animationController.forward(from: 0.0);
+    ctx.dispatch(
+        FavoritesPageActionCreator.setBackground(movie.data[0], Colors.black));
+    ctx.dispatch(FavoritesPageActionCreator.setMovie(movie));
+    final tv = await BaseApi.getFavorite(ctx.state.user.uid, 'movie');
+    if (tv != null) ctx.dispatch(FavoritesPageActionCreator.setTVShow(tv));
   }
 }
 

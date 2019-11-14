@@ -25,8 +25,13 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 void _onAction(Action action, Context<AccountPageState> ctx) {}
 
 Future _onLogin(Action action, Context<AccountPageState> ctx) async {
-  var r = await Navigator.of(ctx.context).pushNamed('loginpage');
-  if (r == true) _onInit(action, ctx);
+  var r = (await Navigator.of(ctx.context).pushNamed('loginpage')) as Map;
+  if (r['s'] == true) {
+    String name = r['name'];
+    String avatar = ctx.state.user?.photoUrl;
+    bool islogin = ctx.state.user != null;
+    ctx.dispatch(AccountPageActionCreator.onInit(name, avatar, islogin));
+  }
 }
 
 Future _onInit(Action action, Context<AccountPageState> ctx) async {
@@ -35,19 +40,11 @@ Future _onInit(Action action, Context<AccountPageState> ctx) async {
     ctx.state.animationController = AnimationController(
         vsync: ticker, duration: Duration(milliseconds: 1000));
   }
-  var prefs = await SharedPreferences.getInstance();
-
   //final FirebaseUser currentUser = await _auth.currentUser();
-  //String name = prefs.getString('accountname');
-  //String avatar = prefs.getString('accountgravatar');
-  //bool islogin = prefs.getBool('islogin') ?? false;
-  int accountIdV3 = prefs.getInt('accountid');
   String name = ctx.state.user?.displayName;
   String avatar = ctx.state.user?.photoUrl;
   bool islogin = ctx.state.user != null;
-  String accountIdV4 = prefs.getString('accountIdV4');
-  ctx.dispatch(AccountPageActionCreator.onInit(
-      name, avatar, islogin, accountIdV3, accountIdV4));
+  ctx.dispatch(AccountPageActionCreator.onInit(name, avatar, islogin));
 }
 
 void _onBuild(Action action, Context<AccountPageState> ctx) {

@@ -1,4 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/base_api_model/account_state.dart';
 import 'package:movie/models/firebase/firebase_accountstate.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/moviedetail.dart';
@@ -48,7 +49,7 @@ MovieDetailPageState _onSetImages(MovieDetailPageState state, Action action) {
 
 MovieDetailPageState _onSetAccountState(
     MovieDetailPageState state, Action action) {
-  AccountStateModel c = action.payload;
+  AccountState c = action.payload;
   final MovieDetailPageState newState = state.clone();
   newState.accountState = c;
   return newState;

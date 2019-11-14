@@ -1,4 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/base_api_model/account_state.dart';
 import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/firebase/firebase_accountstate.dart';
 import 'package:movie/models/imagemodel.dart';
@@ -76,7 +77,7 @@ class TVDetailPageActionCreator {
         payload: [peopleid, profilePath, profileName]);
   }
 
-  static Action onSetAccountState(AccountStateModel model) {
+  static Action onSetAccountState(AccountState model) {
     return Action(TVDetailPageAction.setAccountState, payload: model);
   }
 

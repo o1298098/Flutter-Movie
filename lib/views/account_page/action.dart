@@ -20,10 +20,8 @@ class AccountPageActionCreator {
     return Action(AccountPageAction.login);
   }
 
-  static Action onInit(String name, String avatar, bool islogin, int acountIdV3,
-      String acountIdV4) {
-    return Action(AccountPageAction.init,
-        payload: [name, avatar, islogin, acountIdV3, acountIdV4]);
+  static Action onInit(String name, String avatar, bool islogin) {
+    return Action(AccountPageAction.init, payload: [name, avatar, islogin]);
   }
 
   static Action onLogout() {

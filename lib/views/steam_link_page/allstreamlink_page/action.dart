@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/sortcondition.dart';
 
@@ -29,11 +29,11 @@ class AllStreamLinkPageActionCreator {
         payload: [id, bgpic, title, posterpic, type]);
   }
 
-  static Action initStreamList(QuerySnapshot d) {
+  static Action initStreamList(BaseMovieModel d) {
     return Action(AllStreamLinkPageAction.initStreamList, payload: d);
   }
 
-  static Action loadMore(QuerySnapshot d) {
+  static Action loadMore(BaseMovieModel d) {
     return Action(AllStreamLinkPageAction.loadMore, payload: d);
   }
 

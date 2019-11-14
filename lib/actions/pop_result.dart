@@ -9,7 +9,7 @@ class PopWithResults<T> {
   final String toPage;
 
   /// results
-  final bool results;
+  final dynamic results;
 
   /// constructor
   PopWithResults(

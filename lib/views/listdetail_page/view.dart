@@ -8,6 +8,7 @@ import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/share_card.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
+import 'package:movie/models/base_api_model/user_list_detail.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/sortcondition.dart';
 import 'package:movie/models/videolist.dart';
@@ -68,8 +69,8 @@ Widget buildView(
 
   Widget _buildInfoGroup() {
     var d = state.listDetailModel;
-    int _itemcout = d['itemCount'];
-    double _totalRated = d['totalRated'];
+    int _itemcout = d.itemCount;
+    double _totalRated = d.totalRated;
     return Container(
       padding: EdgeInsets.symmetric(vertical: Adapt.px(20)),
       decoration: BoxDecoration(
@@ -110,14 +111,14 @@ Widget buildView(
             width: Adapt.px(1),
             height: Adapt.px(60),
           ),
-          _buildInfoCell(_covertDuration(d['runTime'] ?? 0), 'RUNTIME'),
+          _buildInfoCell(_covertDuration(d.runTime ?? 0), 'RUNTIME'),
           Container(
             color: Colors.grey[300],
             width: Adapt.px(1),
             height: Adapt.px(60),
           ),
           _buildInfoCell(
-              '\$${((d['revenue'] ?? 0) / 1000000000).toStringAsFixed(1)} B',
+              '\$${((d.revenue ?? 0) / 1000000000).toStringAsFixed(1)} B',
               'REVENUE'),
         ],
       ),
@@ -223,15 +224,15 @@ Widget buildView(
 
   Widget _buildShareCardHeader() {
     var d = state.listDetailModel;
-    int _itemCount = d['itemCount'];
+    int _itemCount = d.itemCount;
     double cellwidth = Adapt.px(145);
-    double _totalRated = d['totalRated'];
+    double _totalRated = d.totalRated;
     return Column(
       children: <Widget>[
         SizedBox(
           height: Adapt.px(20),
         ),
-        Text(d.documentID,
+        Text(d.listName,
             style: TextStyle(
                 color: Colors.white,
                 fontSize: Adapt.px(45),
@@ -255,7 +256,7 @@ Widget buildView(
                           borderRadius: BorderRadius.circular(Adapt.px(40)),
                           image: DecorationImage(
                               image: CachedNetworkImageProvider(
-                                  state.user.photoUrl))),
+                                  state.user.photoUrl ?? ''))),
                     ),
                     SizedBox(
                       height: Adapt.px(10),
@@ -310,7 +311,7 @@ Widget buildView(
                   Row(
                     children: <Widget>[
                       _buildInfoCell(
-                        _covertDuration(d['runTime'] ?? 0),
+                        _covertDuration(d.runTime ?? 0),
                         'RUNTIME',
                         labelColor: Colors.white,
                         titleColor: Colors.white,
@@ -319,7 +320,7 @@ Widget buildView(
                         width: Adapt.px(20),
                       ),
                       _buildInfoCell(
-                        '\$${((d['revenue'] ?? 0) / 1000000000).toStringAsFixed(1)} B',
+                        '\$${((d.revenue ?? 0) / 1000000000).toStringAsFixed(1)} B',
                         'REVENUE',
                         labelColor: Colors.white,
                         titleColor: Colors.white,
@@ -341,8 +342,8 @@ Widget buildView(
             image: DecorationImage(
           fit: BoxFit.cover,
           //colorFilter: ColorFilter.mode(Colors.black87, BlendMode.color),
-          image: CachedNetworkImageProvider(
-              state?.listDetailModel['backGroundUrl']),
+          image:
+              CachedNetworkImageProvider(state?.listDetailModel?.backGroundUrl),
         )),
         child: Container(
           alignment: Alignment.bottomLeft,
@@ -362,7 +363,7 @@ Widget buildView(
                           borderRadius: BorderRadius.circular(Adapt.px(50)),
                           image: DecorationImage(
                               image: CachedNetworkImageProvider(
-                                  state.user.photoUrl))),
+                                  state.user.photoUrl ?? ''))),
                     ),
                     SizedBox(
                       width: Adapt.px(20),
@@ -399,9 +400,9 @@ Widget buildView(
                           builder: (ctx) {
                             return ShareCard(
                               backgroundImage:
-                                  state.listDetailModel['backGroundUrl'],
+                                  state.listDetailModel.backGroundUrl,
                               qrValue:
-                                  "https://www.themoviedb.org/list/${state.listDetailModel.documentID}",
+                                  "https://www.themoviedb.org/list/${state.listDetailModel.id}",
                               header: _buildShareCardHeader(),
                             );
                           });
@@ -449,7 +450,7 @@ Widget buildView(
                     width: Adapt.screenW() - Adapt.px(60),
                     height: Adapt.px(120),
                     child: Text(
-                      d['description'] ?? '',
+                      d.description ?? '',
                       overflow: TextOverflow.ellipsis,
                       maxLines: 4,
                       style: TextStyle(
@@ -469,16 +470,16 @@ Widget buildView(
       return _buildShimmerHeader();
   }
 
-  Widget _buildListCell(DocumentSnapshot d) {
+  Widget _buildListCell(UserListDetail d) {
     return GestureDetector(
-      //onTap: () => dispatch(ListDetailPageActionCreator.cellTapped(d)),
+      onTap: () => dispatch(ListDetailPageActionCreator.cellTapped(d)),
       child: Container(
         decoration: BoxDecoration(
             color: Colors.grey[200],
             image: DecorationImage(
                 fit: BoxFit.cover,
                 image: CachedNetworkImageProvider(
-                    ImageUrl.getUrl(d['photourl'], ImageSize.w300)))),
+                    ImageUrl.getUrl(d.photoUrl, ImageSize.w300)))),
         child: Column(
           children: <Widget>[
             Container(
@@ -492,7 +493,7 @@ Widget buildView(
                       size: Adapt.px(30),
                     ),
                     Text(
-                      d['rated'].toStringAsFixed(1),
+                      d.rated.toStringAsFixed(1),
                       style: TextStyle(color: Colors.white),
                     )
                   ],
@@ -507,11 +508,8 @@ Widget buildView(
     var d = state.listDetailModel;
     var width = Adapt.screenW() / 3;
     var height = Adapt.px(300);
-    return StreamBuilder<QuerySnapshot>(
-      stream: state.listDetailModel.reference.collection('Media').snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData)
-          return SliverGrid.extent(
+    return state.listItems == null
+        ? SliverGrid.extent(
             childAspectRatio: 2 / 3,
             maxCrossAxisExtent: width,
             crossAxisSpacing: Adapt.px(10),
@@ -527,16 +525,14 @@ Widget buildView(
               ShimmerCell(width, height, 0),
               ShimmerCell(width, height, 0),
             ],
+          )
+        : SliverGrid.extent(
+            childAspectRatio: 2 / 3,
+            maxCrossAxisExtent: width,
+            crossAxisSpacing: Adapt.px(10),
+            mainAxisSpacing: Adapt.px(10),
+            children: state.listItems.data.map(_buildListCell).toList(),
           );
-        return SliverGrid.extent(
-          childAspectRatio: 2 / 3,
-          maxCrossAxisExtent: width,
-          crossAxisSpacing: Adapt.px(10),
-          mainAxisSpacing: Adapt.px(10),
-          children: snapshot.data.documents.map(_buildListCell).toList(),
-        );
-      },
-    );
   }
 
   return Scaffold(
@@ -547,7 +543,7 @@ Widget buildView(
           backgroundColor: Color.fromRGBO(50, 50, 50, 1),
           pinned: true,
           title: Text(
-            state?.listDetailModel?.documentID ?? '',
+            state?.listDetailModel?.listName ?? '',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           expandedHeight: Adapt.px(550),

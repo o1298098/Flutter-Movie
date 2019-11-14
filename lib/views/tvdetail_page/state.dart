@@ -4,11 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/state.dart';
+import 'package:movie/globalbasestate/store.dart';
+import 'package:movie/models/base_api_model/account_state.dart';
 import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/firebase/firebase_accountstate.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/keyword.dart';
-import 'package:movie/models/media_accountstatemodel.dart';
 import 'package:movie/models/review.dart';
 import 'package:movie/models/tvdetail.dart';
 import 'package:movie/models/videolist.dart';
@@ -32,7 +33,7 @@ class TVDetailPageState
   String backdropPic;
   Color mainColor;
   Color tabTintColor;
-  AccountStateModel accountState;
+  AccountState accountState;
   AnimationController animationController;
 
   @override
@@ -92,7 +93,12 @@ TVDetailPageState initState(Map<String, dynamic> args) {
   state.keywords = new KeyWordModel.fromParams(
       keywords: List<KeyWordData>(), results: List<KeyWordData>());
   state.videomodel = new VideoModel.fromParams(results: List<VideoResult>());
-  state.accountState =
-      AccountStateModel.fromParams(favorite: false, watchlist: false, rated: 0);
+  state.accountState = AccountState.fromParams(
+      id: 0,
+      uid: GlobalStore.store.getState().user?.uid,
+      mediaId: state.tvid,
+      favorite: false,
+      watchlist: false,
+      mediaType: 'tv');
   return state;
 }

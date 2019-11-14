@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
+import 'package:movie/actions/base_api.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/sortcondition.dart';
 import 'package:movie/views/detail_page/page.dart';
@@ -58,27 +59,14 @@ Future _sortChanged(Action action, Context<AllStreamLinkPageState> ctx) async {
 }
 
 void _loadMore(Context<AllStreamLinkPageState> ctx) async {
-  ctx.state.streamList.documents.last;
-  Firestore.instance
-      .collection('StreamLinks')
-      .orderBy(ctx.state.orderBy, descending: ctx.state.desc)
-      .startAfterDocument(ctx.state.streamList.documents.last)
-      .limit(21)
-      .getDocuments()
-      .then((d) {
-    if (d.documents.length > 0)
-      ctx.dispatch(AllStreamLinkPageActionCreator.loadMore(d));
+  BaseApi.getMovies(page: ctx.state.streamList.page + 1).then((d) {
+    if (d != null) ctx.dispatch(AllStreamLinkPageActionCreator.loadMore(d));
   });
 }
 
 void _initlist(Context<AllStreamLinkPageState> ctx) {
-  Firestore.instance
-      .collection('StreamLinks')
-      .orderBy(ctx.state.orderBy, descending: ctx.state.desc)
-      .limit(21)
-      .getDocuments()
-      .then((d) {
-    if (d.documents.length > 0)
+  BaseApi.getMovies().then((d) {
+    if (d != null)
       ctx.dispatch(AllStreamLinkPageActionCreator.initStreamList(d));
   });
 }
@@ -86,14 +74,8 @@ void _initlist(Context<AllStreamLinkPageState> ctx) {
 void _onSearch(Action action, Context<AllStreamLinkPageState> ctx) {
   final String query = action.payload ?? '';
   if (query != '')
-    Firestore.instance
-        .collection('StreamLinks')
-        .where('name', isEqualTo: query)
-        .orderBy('updateTime', descending: true)
-        .limit(21)
-        .getDocuments()
-        .then((d) {
-      if (d.documents.length > 0)
+    BaseApi.searchMovies(query).then((d) {
+      if (d != null)
         ctx.dispatch(AllStreamLinkPageActionCreator.initStreamList(d));
     });
 }

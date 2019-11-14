@@ -1,6 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/firebase/firebase_accountstate.dart';
-import 'package:movie/models/media_accountstatemodel.dart';
+import 'package:movie/models/base_api_model/account_state.dart';
 import 'package:movie/models/tvdetail.dart';
 
 import '../../state.dart';
@@ -11,7 +10,7 @@ class MenuState implements Cloneable<MenuState> {
   String posterPic;
   String name;
   String overWatch;
-  AccountStateModel accountState;
+  AccountState accountState;
   TVDetailModel detail;
 
   @override

@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +12,7 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/backdrop.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/generated/i18n.dart';
+import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/videolist.dart';
@@ -493,17 +493,13 @@ Widget buildView(
             ));
       }
 
-      Widget _buildShareCell(DocumentSnapshot d) {
+      Widget _buildShareCell(BaseMovie d) {
         return Padding(
-          key: ValueKey(d['id']),
+          key: ValueKey(d),
           padding: EdgeInsets.only(left: Adapt.px(30)),
           child: GestureDetector(
             onTap: () => dispatch(HomePageActionCreator.onCellTapped(
-                d['id'],
-                d['photourl'],
-                d['name'],
-                d['photourl'],
-                d['type'] == 'Movie' ? MediaType.movie : MediaType.tv)),
+                d.id, d.photourl, d.name, d.photourl, MediaType.movie)),
             child: Column(
               children: <Widget>[
                 ClipRRect(
@@ -514,7 +510,7 @@ Widget buildView(
                     width: Adapt.px(250),
                     height: Adapt.px(350),
                     fit: BoxFit.cover,
-                    imageUrl: ImageUrl.getUrl(d['photourl'], ImageSize.w400),
+                    imageUrl: ImageUrl.getUrl(d.photourl, ImageSize.w400),
                     placeholder: (ctx, s) {
                       return Image.asset(
                         'images/CacheBG.jpg',
@@ -530,7 +526,7 @@ Widget buildView(
                     width: Adapt.px(250),
                     padding: EdgeInsets.all(Adapt.px(10)),
                     child: Text(
-                      d['name'] ?? '',
+                      d.name ?? '',
                       maxLines: 2,
                       //textAlign: TextAlign.center,
                       style: TextStyle(
@@ -578,7 +574,7 @@ Widget buildView(
       }
 
       Widget _buildShareBody() {
-        var model = state.shareVideo?.documents ?? [];
+        var model = state.shareVideo?.data ?? [];
         return AnimatedSwitcher(
             duration: Duration(milliseconds: 600),
             child: Container(
@@ -658,7 +654,7 @@ Widget buildView(
                         _buildTrending(),
                         SizedBox(height: Adapt.px(50)),
                         _buildFrontTitel(
-                            'Share',
+                            'New Share',
                             GestureDetector(
                               onTap: () =>
                                   dispatch(HomePageActionCreator.onShareMore()),

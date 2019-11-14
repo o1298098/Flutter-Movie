@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/base_api_model/user_list_detail.dart';
 import 'package:movie/models/enums/screenshot_type.dart';
 import 'package:movie/models/listdetailmode.dart';
 import 'package:movie/models/sortcondition.dart';
@@ -21,11 +22,11 @@ class ListDetailPageActionCreator {
     return const Action(ListDetailPageAction.action);
   }
 
-  static Action setListDetail(Stream<DocumentSnapshot> d) {
+  static Action setListDetail(UserListDetailModel d) {
     return Action(ListDetailPageAction.setListDetail, payload: d);
   }
 
-  static Action cellTapped(VideoListResult result) {
+  static Action cellTapped(UserListDetail result) {
     return Action(ListDetailPageAction.cellTapped, payload: result);
   }
 

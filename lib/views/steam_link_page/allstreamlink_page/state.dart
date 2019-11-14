@@ -1,11 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/sortcondition.dart';
 
 class AllStreamLinkPageState implements Cloneable<AllStreamLinkPageState> {
-  QuerySnapshot streamList;
+  BaseMovieModel streamList;
   ScrollController scrollController;
   GlobalKey<ScaffoldState> scaffoldKey;
   AnimationController animationController;

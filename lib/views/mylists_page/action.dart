@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/base_api_model/user_list.dart';
 import 'package:movie/models/mylistmodel.dart';
 
 //TODO replace with your own action
@@ -23,7 +24,7 @@ class MyListsPageActionCreator {
     return Action(MyListsPageAction.setAccount, payload: accountid);
   }
 
-  static Action setList(Stream<QuerySnapshot> list) {
+  static Action setList(Future<UserListModel> list) {
     return Action(MyListsPageAction.setList, payload: list);
   }
 
@@ -31,7 +32,7 @@ class MyListsPageActionCreator {
     return Action(MyListsPageAction.loadMore, payload: list);
   }
 
-  static Action cellTapped(DocumentSnapshot d) {
+  static Action cellTapped(UserList d) {
     return Action(MyListsPageAction.cellTapped, payload: d);
   }
 
@@ -43,7 +44,7 @@ class MyListsPageActionCreator {
     return Action(MyListsPageAction.onEdit, payload: isEdit);
   }
 
-  static Action deleteList(DocumentSnapshot d) {
+  static Action deleteList(UserList d) {
     return Action(MyListsPageAction.deleteList, payload: d);
   }
 }

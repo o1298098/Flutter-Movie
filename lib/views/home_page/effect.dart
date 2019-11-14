@@ -3,6 +3,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter/services.dart';
 import 'package:movie/actions/apihelper.dart';
+import 'package:movie/actions/base_api.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/customwidgets/searchbar_delegate.dart';
 import 'package:movie/models/enums/media_type.dart';
@@ -41,15 +42,9 @@ Future _onInit(Action action, Context<HomePageState> ctx) async {
   var trending = await ApiHelper.getTrending(MediaType.all, TimeWindow.day);
   if (trending != null)
     ctx.dispatch(HomePageActionCreator.initTrending(trending));
-  Firestore.instance
-      .collection('StreamLinks')
-      .limit(10)
-      .orderBy('updateTime', descending: true)
-      .getDocuments()
-      .then((d) {
-    if (d.documents.length > 0)
-      ctx.dispatch(HomePageActionCreator.initShareVideo(d));
-  });
+  var shareMovie = await BaseApi.getMovies();
+  if (shareMovie != null)
+    ctx.dispatch(HomePageActionCreator.initShareVideo(shareMovie));
   var p = await ApiHelper.getPopularMovies();
   if (p != null) ctx.dispatch(HomePageActionCreator.onInitPopularMovie(p));
   var t = await ApiHelper.getPopularTVShows();

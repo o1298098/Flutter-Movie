@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie/actions/Adapt.dart';
-import 'package:movie/actions/apihelper.dart';
+import 'package:movie/actions/base_api.dart';
+import 'package:movie/actions/imageurl.dart';
 import 'package:movie/globalbasestate/store.dart';
+import 'package:movie/models/base_api_model/user_list.dart';
+import 'package:movie/models/base_api_model/user_list_detail.dart';
+import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/media_type.dart';
-import 'package:movie/models/listmediaitem.dart';
 import 'package:movie/models/mylistmodel.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class MediaListCardDialog extends StatefulWidget {
   final MediaType type;
@@ -36,64 +36,58 @@ class MediaListCardDialog extends StatefulWidget {
 class MediaListCardDialogState extends State<MediaListCardDialog> {
   Future<MyListModel> lists;
   ScrollController scrollController;
-  String _accountid;
-  List<DocumentSnapshot> _documents;
+  Future<UserListModel> _userList;
   int _page;
 
   final _user = GlobalStore.store.getState().user;
 
+  initUserlist() {
+    if (_user != null)
+      setState(() {
+        _userList = BaseApi.getUserList(_user.uid);
+      });
+  }
+
   void _createList(String name, String description) {
     if (_user != null) {
-      Firestore.instance
-          .collection("MyList")
-          .document(_user.uid)
-          .collection('List')
-          .document(name)
-          .setData({
-        'description': description,
-        'backGroundUrl': '',
-        'selected': false,
-        'createDateTime': DateTime.now(),
-        'updateDateTime': DateTime.now(),
-        'itemCount': 0,
-        'totalRated': 0.0,
-        'runTime': 0,
-        'revenue': 0
+      setState(() {
+        _userList = null;
       });
+      BaseApi.createUserList(UserList.fromParams(
+              uid: _user.uid,
+              listName: name,
+              description: description,
+              backGroundUrl: ImageUrl.getUrl(widget.photourl, ImageSize.w300)))
+          .then((d) => initUserlist());
+
       Navigator.pop(context);
     }
   }
 
   Future _submit() async {
+    final _list = await _userList;
     Navigator.of(context).pop();
     String _mediaType = widget.type == MediaType.movie ? 'movie' : 'tv';
-    if (_user != null && _documents != null) {
-      var d = _documents.singleWhere((f) => f['selected']);
-
-      if (d.data != null) {
-        var item = await d.reference
-            .collection('Media')
-            .document('$_mediaType${widget.mediaId}')
-            .get();
-        if (item?.data == null) {
-          d.reference.updateData({
-            'totalRated': d['totalRated'] + widget.rated,
-            'runTime': d['runTime'] + widget.runtime,
-            'itemCount': d['itemCount'] + 1,
-            'revenue': d['revenue'] + widget.revenue,
-            'updateDateTime': DateTime.now(),
-          });
-          d.reference
-              .collection('Media')
-              .document('$_mediaType${widget.mediaId}')
-              .setData({
-            'id': widget.mediaId,
-            'name': widget.name,
-            'mediaType': _mediaType,
-            'rated': widget.rated,
-            'photourl': widget.photourl,
-            'releaseDate': widget.releaseDate
-          });
+    if (_user != null && _list != null) {
+      var d = _list.data.singleWhere((f) => f.selected == 1);
+      if (d != null) {
+        var item = await BaseApi.getUserListDetailItem(
+            d.id, _mediaType, widget.mediaId);
+        if (item == null) {
+          d.totalRated += widget.rated;
+          d.runTime += widget.runtime;
+          d.itemCount += 1;
+          d.revenue += widget.revenue;
+          await BaseApi.updateUserList(d);
+          await BaseApi.addUserListDetail(UserListDetail.fromParams(
+              mediaid: widget.mediaId,
+              mediaName: widget.name,
+              mediaType: _mediaType,
+              rated: widget.rated,
+              runTime: widget.runtime,
+              revenue: double.parse(widget.revenue?.toString() ?? '0.0'),
+              photoUrl: widget.photourl,
+              listid: d.id));
         }
       }
     }
@@ -163,22 +157,24 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
         });
   }
 
-  Widget _buildListCell(DocumentSnapshot d) {
-    bool _selected = d['selected'] ?? false;
+  Widget _buildListCell(UserList d) {
+    bool _selected = d.selected == 1 ? true : false;
     return Column(
       children: <Widget>[
         ListTile(
           selected: _selected,
           title: Text(
-            d.documentID,
+            d.listName,
             style: TextStyle(fontSize: Adapt.px(30)),
           ),
           trailing: _selected ? Icon(Icons.check) : SizedBox(),
           onTap: () async {
-            _documents.forEach((f) {
-              if (f['selected']) f.reference.updateData({'selected': false});
-              d.reference.updateData({'selected': !_selected});
+            final l = await _userList;
+            l.data.forEach((f) {
+              if (f.selected == 1) f.selected = 0;
             });
+            d.selected = 1;
+            setState(() {});
           },
         ),
         Divider(
@@ -190,6 +186,7 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
 
   @override
   void initState() {
+    initUserlist();
     scrollController = ScrollController()
       ..addListener(() async {
         bool isBottom = scrollController.position.pixels ==
@@ -234,14 +231,10 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
           Container(
             width: Adapt.screenW() - Adapt.px(60),
             height: Adapt.px(600),
-            child: StreamBuilder<QuerySnapshot>(
-              stream: Firestore.instance
-                  .collection('MyList')
-                  .document(_user.uid)
-                  .collection('List')
-                  .snapshots(),
+            child: FutureBuilder<UserListModel>(
+              future: _userList,
               builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                  AsyncSnapshot<UserListModel> snapshot) {
                 if (!snapshot.hasData)
                   return Container(
                     margin: EdgeInsets.only(top: Adapt.px(30)),
@@ -250,10 +243,8 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
                       valueColor: AlwaysStoppedAnimation(Colors.black),
                     ),
                   );
-                _documents = snapshot.data.documents;
                 return ListView(
-                  children:
-                      snapshot.data.documents.map(_buildListCell).toList(),
+                  children: snapshot.data.data.map(_buildListCell).toList(),
                 );
               },
             ),

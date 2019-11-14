@@ -4,6 +4,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
+import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/sortcondition.dart';
@@ -14,121 +15,118 @@ import 'state.dart';
 Widget buildView(
     AllStreamLinkPageState state, Dispatch dispatch, ViewService viewService) {
   Widget _buildMenu() {
-    return AnimatedBuilder(
-        animation: state.animationController,
-        builder: (_, __) {
-          return Container(
-              color: Colors.white,
-              height: Tween<double>(begin: 0.0, end: Adapt.px(130))
-                  .animate(CurvedAnimation(
-                    parent: state.animationController,
-                    curve: Curves.ease,
-                  ))
-                  .value,
-              child: Opacity(
-                  opacity: state.animationController.value,
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        width: Adapt.screenW() - Adapt.px(160),
-                        margin: EdgeInsets.all(Adapt.px(25)),
-                        padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-                        decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(Adapt.px(35))),
-                        child: TextField(
-                          onSubmitted: (s) => dispatch(
-                              AllStreamLinkPageActionCreator.search(s)),
-                          cursorColor: Colors.grey,
-                          decoration: InputDecoration(
-                            fillColor: Colors.black,
-                            hintStyle: TextStyle(fontSize: Adapt.px(35)),
-                            labelStyle: TextStyle(fontSize: Adapt.px(35)),
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.transparent, width: 0)),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.transparent, width: 0)),
-                            hintText: 'Search not available right now',
-                          ),
-                        ),
-                      ),
-                      PopupMenuButton<SortCondition>(
-                        padding: EdgeInsets.zero,
-                        offset: Offset(0, Adapt.px(100)),
-                        icon: Icon(Icons.sort),
-                        onSelected: (selected) => dispatch(
-                            AllStreamLinkPageActionCreator.sortChanged(
-                                selected)),
-                        itemBuilder: (ctx) {
-                          return state.sortTypes.map((s) {
-                            var unSelectedStyle = TextStyle(color: Colors.grey);
-                            var selectedStyle =
-                                TextStyle(fontWeight: FontWeight.bold);
-                            return PopupMenuItem<SortCondition>(
-                              value: s,
-                              child: Row(
-                                children: <Widget>[
-                                  Text(
-                                    s.name,
-                                    style: s.isSelected
-                                        ? selectedStyle
-                                        : unSelectedStyle,
-                                  ),
-                                  Expanded(
-                                    child: Container(),
-                                  ),
-                                  s.isSelected ? Icon(Icons.check) : SizedBox()
-                                ],
+    return SliverToBoxAdapter(
+        child: AnimatedBuilder(
+            animation: state.animationController,
+            builder: (_, __) {
+              return Container(
+                  color: Colors.white,
+                  height: Tween<double>(begin: 0.0, end: Adapt.px(130))
+                      .animate(CurvedAnimation(
+                        parent: state.animationController,
+                        curve: Curves.ease,
+                      ))
+                      .value,
+                  child: Opacity(
+                      opacity: state.animationController.value,
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            width: Adapt.screenW() - Adapt.px(160),
+                            margin: EdgeInsets.all(Adapt.px(25)),
+                            padding:
+                                EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+                            decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius:
+                                    BorderRadius.circular(Adapt.px(35))),
+                            child: TextField(
+                              onSubmitted: (s) => dispatch(
+                                  AllStreamLinkPageActionCreator.search(s)),
+                              cursorColor: Colors.grey,
+                              decoration: InputDecoration(
+                                fillColor: Colors.black,
+                                hintStyle: TextStyle(fontSize: Adapt.px(35)),
+                                labelStyle: TextStyle(fontSize: Adapt.px(35)),
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.transparent, width: 0)),
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.transparent, width: 0)),
+                                hintText: 'Search not available right now',
                               ),
-                            );
-                          }).toList();
-                        },
-                      )
-                    ],
-                  )));
-        });
+                            ),
+                          ),
+                          PopupMenuButton<SortCondition>(
+                            padding: EdgeInsets.zero,
+                            offset: Offset(0, Adapt.px(100)),
+                            icon: Icon(Icons.sort),
+                            onSelected: (selected) => dispatch(
+                                AllStreamLinkPageActionCreator.sortChanged(
+                                    selected)),
+                            itemBuilder: (ctx) {
+                              return state.sortTypes.map((s) {
+                                var unSelectedStyle =
+                                    TextStyle(color: Colors.grey);
+                                var selectedStyle =
+                                    TextStyle(fontWeight: FontWeight.bold);
+                                return PopupMenuItem<SortCondition>(
+                                  value: s,
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
+                                        s.name,
+                                        style: s.isSelected
+                                            ? selectedStyle
+                                            : unSelectedStyle,
+                                      ),
+                                      Expanded(
+                                        child: Container(),
+                                      ),
+                                      s.isSelected
+                                          ? Icon(Icons.check)
+                                          : SizedBox()
+                                    ],
+                                  ),
+                                );
+                              }).toList();
+                            },
+                          )
+                        ],
+                      )));
+            }));
   }
 
-  Widget _buildCell(DocumentSnapshot d) {
+  Widget _buildCell(BaseMovie d) {
     return GestureDetector(
       onTap: () => dispatch(AllStreamLinkPageActionCreator.gridCellTapped(
-          d['id'],
-          d['pohoturl'],
-          d['name'],
-          d['pohoturl'],
-          d['type'] == 'Movie' ? MediaType.movie : MediaType.tv)),
+          d.id, d.photourl, d.name, d.photourl, MediaType.movie)),
       child: Container(
         key: ValueKey(d),
         decoration: BoxDecoration(
             color: Colors.grey[200],
             image: DecorationImage(
                 image: CachedNetworkImageProvider(
-                    ImageUrl.getUrl(d['photourl'], ImageSize.w300)))),
+                    ImageUrl.getUrl(d.photourl, ImageSize.w300)))),
       ),
     );
   }
 
   Widget _buildGridView() {
-    return Container(
-      child: state.streamList == null
-          ? Container(
-              height: Adapt.px(400),
-              child: Center(
-                  child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(Color(0xFF505050)),
-              )))
-          : Container(
-              child: GridView.count(
-                shrinkWrap: true,
-                controller: state.scrollController,
-                childAspectRatio: 2 / 3,
-                crossAxisCount: 3,
-                children: state.streamList.documents.map(_buildCell).toList(),
-              ),
-            ),
-    );
+    return state.streamList == null
+        ? SliverToBoxAdapter(
+            child: Container(
+                height: Adapt.px(400),
+                child: Center(
+                    child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Color(0xFF505050)),
+                ))))
+        : SliverGrid.count(
+            crossAxisCount: 3,
+            childAspectRatio: 2 / 3,
+            children: state.streamList.data.map(_buildCell).toList(),
+          );
   }
 
   return Scaffold(
@@ -158,8 +156,9 @@ Widget buildView(
         )
       ],
     ),
-    body: Column(
-      children: <Widget>[
+    body: CustomScrollView(
+      controller: state.scrollController,
+      slivers: <Widget>[
         _buildMenu(),
         _buildGridView(),
       ],

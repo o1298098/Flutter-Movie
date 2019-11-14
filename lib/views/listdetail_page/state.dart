@@ -3,15 +3,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/state.dart';
+import 'package:movie/models/base_api_model/user_list.dart';
+import 'package:movie/models/base_api_model/user_list_detail.dart';
 import 'package:movie/models/enums/list_sort_type.dart';
-import 'package:movie/models/listdetailmode.dart';
 import 'package:movie/models/sortcondition.dart';
-import 'package:screenshot/screenshot.dart';
 
 class ListDetailPageState
     implements GlobalBaseState, Cloneable<ListDetailPageState> {
   String listId;
-  DocumentSnapshot listDetailModel;
+  UserList listDetailModel;
+  UserListDetailModel listItems;
   ScrollController scrollController;
   List<SortCondition> sortBy;
   String sortType;
@@ -23,6 +24,7 @@ class ListDetailPageState
       ..listId = listId
       ..sortBy = sortBy
       ..sortType = sortType
+      ..listItems = listItems
       ..scrollController = scrollController
       ..user = user;
   }

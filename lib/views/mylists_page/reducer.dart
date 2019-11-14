@@ -1,6 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/mylistmodel.dart';
+import 'package:movie/models/base_api_model/user_list.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -29,7 +28,7 @@ MyListsPageState _setAccount(MyListsPageState state, Action action) {
 }
 
 MyListsPageState _setList(MyListsPageState state, Action action) {
-  final Stream<QuerySnapshot> model = action.payload;
+  final Future<UserListModel> model = action.payload;
   final MyListsPageState newState = state.clone();
   newState.listData = model;
   return newState;

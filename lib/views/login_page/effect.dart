@@ -3,6 +3,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart' hide Action;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:movie/actions/apihelper.dart';
+import 'package:movie/actions/base_api.dart';
 import 'package:movie/actions/pop_result.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/globalbasestate/action.dart';
@@ -68,8 +69,11 @@ Future _onLoginClicked(Action action, Context<LoginPageState> ctx) async {
         duration: 3, gravity: Toast.BOTTOM);
     ctx.state.submitAnimationController.reverse();
   } else {
-    GlobalStore.store.dispatch(GlobalActionCreator.setUser(result?.user));
-    Navigator.of(ctx.context).pop(true);
+    var user = result?.user;
+    GlobalStore.store.dispatch(GlobalActionCreator.setUser(user));
+    BaseApi.updateUser(user.uid, user.email, user.photoUrl, user.displayName,
+        user.phoneNumber);
+    Navigator.of(ctx.context).pop({'s': true, 'name': user.displayName});
   }
 }
 
@@ -88,7 +92,7 @@ Future _onSignUp(Action action, Context<LoginPageState> ctx) async {
   })).then((results) {
     if (results is PopWithResults) {
       PopWithResults popResult = results;
-      if (popResult.toPage != 'mainpage')
+      if (popResult.toPage == 'mainpage')
         Navigator.of(ctx.context).pop(results.results);
     }
   });
@@ -117,7 +121,9 @@ void _onGoogleSignIn(Action action, Context<LoginPageState> ctx) async {
     assert(user.uid == currentUser.uid);
     if (user != null) {
       GlobalStore.store.dispatch(GlobalActionCreator.setUser(user));
-      Navigator.of(ctx.context).pop(true);
+      BaseApi.updateUser(user.uid, user.email, user.photoUrl, user.displayName,
+          user.phoneNumber);
+      Navigator.of(ctx.context).pop({'s': true, 'name': user.displayName});
     } else {
       ctx.state.submitAnimationController.reverse();
       Toast.show("Google signIn fail", ctx.context,

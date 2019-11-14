@@ -1,6 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:movie/globalbasestate/store.dart';
+import 'package:movie/models/base_api_model/account_state.dart';
 import 'package:movie/models/firebase/firebase_accountstate.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/media_accountstatemodel.dart';
@@ -12,7 +14,7 @@ class MovieDetailPageState implements Cloneable<MovieDetailPageState> {
   String bgPic;
   MovieDetailModel detail;
   ImageModel imagesmodel;
-  AccountStateModel accountState;
+  AccountState accountState;
   AnimationController animationController;
   ScrollController scrollController;
   bool hasStreamLink;
@@ -39,8 +41,13 @@ MovieDetailPageState initState(Map<String, dynamic> args) {
   state.bgPic = args['bgpic'];
   state.detail = MovieDetailModel.fromParams();
   state.imagesmodel = ImageModel.fromParams(backdrops: [], posters: []);
-  state.accountState =
-      AccountStateModel.fromParams(favorite: false, watchlist: false);
+  state.accountState = AccountState.fromParams(
+      id: 0,
+      uid: GlobalStore.store.getState().user?.uid,
+      mediaId: state.mediaId,
+      favorite: false,
+      watchlist: false,
+      mediaType: 'movie');
   state.hasStreamLink = false;
   return state;
 }

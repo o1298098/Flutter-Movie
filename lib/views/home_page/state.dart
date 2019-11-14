@@ -1,7 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/searchresult.dart';
 import 'package:movie/models/videolist.dart';
 
@@ -10,7 +9,7 @@ class HomePageState implements Cloneable<HomePageState> {
   VideoListModel tv;
   VideoListModel popularMovies;
   VideoListModel popularTVShows;
-  QuerySnapshot shareVideo;
+  BaseMovieModel shareVideo;
   SearchResultModel trending;
   ScrollController scrollController;
   bool showHeaderMovie;

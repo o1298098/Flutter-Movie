@@ -210,10 +210,10 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
           height: Adapt.px(10),
         ),
         _buildListTitel(
-            state.accountState.isRated == true ? Icons.star : Icons.star_border,
+            state.accountState.rated != null ? Icons.star : Icons.star_border,
             'Rate It',
             _rateIt,
-            iconColor: state.accountState.isRated == true
+            iconColor: state.accountState.rated != null
                 ? Colors.amber
                 : Color.fromRGBO(50, 50, 50, 1)),
         Divider(

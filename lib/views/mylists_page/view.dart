@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
+import 'package:movie/models/base_api_model/user_list.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/mylistmodel.dart';
 import 'dart:ui' as ui;
@@ -30,9 +31,8 @@ Widget buildView(
     TweenSequenceItem(tween: Tween<double>(begin: -0.003, end: 0.0), weight: 1),
   ]);
 
-  Widget _buildListCell(DocumentSnapshot d) {
-    Timestamp timestamp = d['updateDateTime'];
-    var date = DateTime.fromMillisecondsSinceEpoch(timestamp.seconds * 1000);
+  Widget _buildListCell(UserList d) {
+    var date = DateTime.parse(d.updateTime);
     return RotationTransition(
       turns: animate.animate(CurvedAnimation(
           parent: state.cellAnimationController, curve: Curves.ease)),
@@ -50,7 +50,7 @@ Widget buildView(
                 color: Colors.grey[200],
                 image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: CachedNetworkImageProvider(d['backGroundUrl']))),
+                    image: CachedNetworkImageProvider(d.backGroundUrl))),
             child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Adapt.px(30)),
@@ -64,7 +64,7 @@ Widget buildView(
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
                         Text(
-                          d.documentID,
+                          d.listName,
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: Adapt.px(45),
@@ -77,7 +77,7 @@ Widget buildView(
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text('${d['itemCount']} Items',
+                            Text('${d.itemCount} Items',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: Adapt.px(30),
@@ -194,17 +194,21 @@ Widget buildView(
   }
 
   Widget _buildList() {
-    return SliverToBoxAdapter(
-      child: StreamBuilder<QuerySnapshot>(
-        stream: state.listData,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) return _buildListShimmerCell();
-          return ListView(
-            shrinkWrap: true,
-            children: snapshot.data.documents.map(_buildListCell).toList(),
-          );
-        },
-      ),
+    return FutureBuilder<UserListModel>(
+      future: state.listData,
+      builder: (BuildContext context, AsyncSnapshot<UserListModel> snapshot) {
+        if (!snapshot.hasData)
+          return SliverToBoxAdapter(
+              child: Column(children: <Widget>[
+            _buildListShimmerCell(),
+            _buildListShimmerCell(),
+            _buildListShimmerCell()
+          ]));
+        return SliverList(
+          delegate: SliverChildListDelegate(
+              snapshot.data.data.map(_buildListCell).toList()),
+        );
+      },
     );
   }
 

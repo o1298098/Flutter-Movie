@@ -8,6 +8,7 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/hero_dialog_route.dart';
 import 'package:movie/customwidgets/watchlistdetail.dart';
 import 'package:movie/generated/i18n.dart';
+import 'package:movie/models/base_api_model/user_media.dart';
 import 'package:movie/models/enums/genres.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/videolist.dart';
@@ -42,7 +43,7 @@ Widget buildView(
   }*/
 
   Widget _buildInfo() {
-    var _d = state.selectMdeia?.data;
+    var _d = state.selectMdeia;
     Widget _child = _d == null
         ? Shimmer.fromColors(
             baseColor: Colors.grey[200],
@@ -94,24 +95,18 @@ Widget buildView(
             key: ValueKey(_d),
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(_d['name'],
+              Text(_d.name,
                   style: TextStyle(
                       fontSize: Adapt.px(45), fontWeight: FontWeight.bold)),
               SizedBox(
                 height: Adapt.px(20),
               ),
-              Text(_d['genre']
-                      ?.map((f) {
-                        return Genres.genres[f];
-                      })
-                      ?.toList()
-                      ?.join(' / ') ??
-                  ''),
+              Text(_d.genre.split(',')?.join(' / ') ?? ''),
               SizedBox(
                 height: Adapt.px(20),
               ),
               Text(
-                _d['overwatch'] ?? '',
+                _d.overwatch ?? '',
                 maxLines: 5,
               )
             ],
@@ -138,9 +133,9 @@ Widget buildView(
   }
 
   Widget _buildmySeiper() {
-    List<DocumentSnapshot> _list = state.isMovie
-        ? (state?.movieSnapshot?.documents ?? [])
-        : (state?.tvSnapshot?.documents ?? []);
+    List<UserMedia> _list = state.isMovie
+        ? (state?.movies?.data ?? [])
+        : (state?.tvshows?.data ?? []);
     Widget _child = _list.length == 0
         ? Shimmer.fromColors(
             baseColor: Colors.grey[200],
@@ -172,7 +167,7 @@ Widget buildView(
                   key: ValueKey(_d),
                   margin: EdgeInsets.only(right: Adapt.px(20)),
                   child: Hero(
-                      tag: 'Background${_d.documentID}',
+                      tag: 'Background${_d.mediaId}',
                       child: Stack(
                         alignment: Alignment.bottomRight,
                         children: <Widget>[
@@ -190,7 +185,7 @@ Widget buildView(
                                     alignment: Alignment.bottomCenter,
                                     image: CachedNetworkImageProvider(
                                         ImageUrl.getUrl(
-                                            _d['photourl'], ImageSize.w500))),
+                                            _d.photoUrl, ImageSize.w500))),
                                 boxShadow: <BoxShadow>[
                                   BoxShadow(
                                       blurRadius: 20,
@@ -213,7 +208,7 @@ Widget buildView(
                             child: Material(
                               color: Colors.transparent,
                               child: Text(
-                                _d['rate'].toString(),
+                                _d.rated.toString(),
                                 style: TextStyle(
                                     color:
                                         Colors.tealAccent[700].withAlpha(200),

@@ -1,9 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/state.dart';
-import 'package:movie/models/mylistmodel.dart';
+import 'package:movie/models/base_api_model/user_list.dart';
 
 class MyListsPageState implements GlobalBaseState, Cloneable<MyListsPageState> {
   String accountId;
@@ -12,7 +11,7 @@ class MyListsPageState implements GlobalBaseState, Cloneable<MyListsPageState> {
   AnimationController animationController;
   AnimationController cellAnimationController;
   GlobalKey<AnimatedListState> listkey;
-  Stream<QuerySnapshot> listData;
+  Future<UserListModel> listData;
 
   @override
   MyListsPageState clone() {

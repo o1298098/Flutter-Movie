@@ -1,6 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/moviedetail.dart';
+import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/searchresult.dart';
 import 'package:movie/models/videolist.dart';
 
@@ -29,7 +28,7 @@ HomePageState _onAction(HomePageState state, Action action) {
 }
 
 HomePageState _onInitShareVideo(HomePageState state, Action action) {
-  final QuerySnapshot d = action.payload;
+  final BaseMovieModel d = action.payload;
   final HomePageState newState = state.clone();
   newState.shareVideo = d;
   return newState;

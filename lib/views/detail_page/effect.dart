@@ -4,10 +4,12 @@ import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/apihelper.dart';
+import 'package:movie/actions/base_api.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/customwidgets/gallery_photoview_wrapper.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/enums/imagesize.dart';
+import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/firebase/firebase_accountstate.dart';
 import 'package:movie/views/peopledetail_page/page.dart';
 import 'package:toast/toast.dart';
@@ -57,16 +59,11 @@ Future _onInit(Action action, Context<MovieDetailPageState> ctx) async {
     ctx.dispatch(MovieDetailPageActionCreator.onSetImages(images));
   final _user = GlobalStore.store.getState().user;
   if (_user != null) {
-    var accountstate = await Firestore.instance
-        .collection('AccountState')
-        .document(_user.uid)
-        .collection('Moives')
-        .document(ctx.state.mediaId.toString())
-        .get();
-    if (accountstate != null) {
-      var _statemodel = AccountStateModel(accountstate?.data);
-      ctx.dispatch(MovieDetailPageActionCreator.onSetAccountState(_statemodel));
-    }
+    var accountstate = await BaseApi.getAccountState(
+        _user.uid, ctx.state.mediaId, MediaType.movie);
+    if (accountstate != null)
+      ctx.dispatch(
+          MovieDetailPageActionCreator.onSetAccountState(accountstate));
   }
 }
 

@@ -1,9 +1,9 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/base_api_model/account_state.dart';
 import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/firebase/firebase_accountstate.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/keyword.dart';
-import 'package:movie/models/media_accountstatemodel.dart';
 import 'package:movie/models/review.dart';
 import 'package:movie/models/tvdetail.dart';
 import 'package:movie/models/videolist.dart';
@@ -97,7 +97,7 @@ TVDetailPageState _onSetVideos(TVDetailPageState state, Action action) {
 }
 
 TVDetailPageState _onSetAccountState(TVDetailPageState state, Action action) {
-  AccountStateModel c = action.payload;
+  AccountState c = action.payload;
   final TVDetailPageState newState = state.clone();
   newState.accountState = c;
   return newState;
