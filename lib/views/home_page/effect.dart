@@ -35,19 +35,22 @@ Future _onInit(Action action, Context<HomePageState> ctx) async {
   ctx.state.animatedController =
       AnimationController(vsync: ticker, duration: Duration(milliseconds: 600));
   ctx.state.scrollController = new ScrollController();
-  var r = await ApiHelper.getNowPlayingMovie();
+  final r = await ApiHelper.getNowPlayingMovie();
   if (r != null) ctx.dispatch(HomePageActionCreator.onInitMovie(r));
-  var s = await ApiHelper.getTVOnTheAir();
+  final s = await ApiHelper.getTVOnTheAir();
   if (s != null) ctx.dispatch(HomePageActionCreator.onInitTV(s));
-  var trending = await ApiHelper.getTrending(MediaType.all, TimeWindow.day);
+  final trending = await ApiHelper.getTrending(MediaType.all, TimeWindow.day);
   if (trending != null)
     ctx.dispatch(HomePageActionCreator.initTrending(trending));
-  var shareMovie = await BaseApi.getMovies();
+  final shareMovie = await BaseApi.getMovies(pageSize: 10);
   if (shareMovie != null)
-    ctx.dispatch(HomePageActionCreator.initShareVideo(shareMovie));
-  var p = await ApiHelper.getPopularMovies();
+    ctx.dispatch(HomePageActionCreator.initShareMovies(shareMovie));
+  final sharetv = await BaseApi.getTvShows(pageSize: 10);
+  if (sharetv != null)
+    ctx.dispatch(HomePageActionCreator.initShareTvShows(sharetv));
+  final p = await ApiHelper.getPopularMovies();
   if (p != null) ctx.dispatch(HomePageActionCreator.onInitPopularMovie(p));
-  var t = await ApiHelper.getPopularTVShows();
+  final t = await ApiHelper.getPopularTVShows();
   if (t != null) ctx.dispatch(HomePageActionCreator.onInitPopularTV(t));
 }
 
@@ -106,7 +109,8 @@ Future _shareMore(Action action, Context<HomePageState> ctx) async {
       .push(PageRouteBuilder(pageBuilder: (context, animation, secAnimation) {
     return FadeTransition(
       opacity: animation,
-      child: AllStreamLinkPage().buildPage(null),
+      child: AllStreamLinkPage().buildPage(
+          {'type': ctx.state.showShareMovie ? MediaType.movie : MediaType.tv}),
     );
   }));
 }

@@ -55,7 +55,7 @@ class BaseMovie {
     id = jsonRes['id'];
     ratedCount = jsonRes['ratedCount'];
     popular = jsonRes['popular'];
-    rate = jsonRes['rate'];
+    rate = double.parse(jsonRes['rate']?.toString() ?? '0.0');
     genre = jsonRes['genre'];
     name = jsonRes['name'];
     overwatch = jsonRes['overwatch'];

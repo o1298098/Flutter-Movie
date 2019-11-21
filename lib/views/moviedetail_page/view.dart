@@ -661,8 +661,7 @@ Widget buildView(
                                     strokeWidth: 6.0,
                                     valueColor:
                                         new AlwaysStoppedAnimation<Color>(
-                                            VoteColorHelper.getColor(
-                                                animate)),
+                                            VoteColorHelper.getColor(animate)),
                                     backgroundColor: Colors.grey,
                                     value: animate / 10,
                                   )),
@@ -702,7 +701,7 @@ Widget buildView(
                   child: Row(
                     children: <Widget>[
                       Icon(Icons.play_arrow, color: Colors.white),
-                      Text(I18n.of(viewService.context).playTraller,
+                      Text(I18n.of(viewService.context).playTrailer,
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: Adapt.px(30),

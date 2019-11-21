@@ -25,6 +25,7 @@ Effect<TVDetailPageState> buildEffect() {
     TVDetailPageAction.openMenu: _openMenu,
     TVDetailPageAction.showSnackBar: _showSnackBar,
     TVDetailPageAction.onImageCellTapped: _onImageCellTapped,
+    TVDetailPageAction.plyaTapped: _onPlayTapped,
     Lifecycle.initState: _onInit,
   });
 }
@@ -62,6 +63,13 @@ Future _onInit(Action action, Context<TVDetailPageState> ctx) async {
         ctx.dispatch(TVDetailPageActionCreator.onSetAccountState(accountstate));
     }
   } on Exception catch (e) {}
+}
+
+void _onPlayTapped(Action action, Context<TVDetailPageState> ctx) async {
+  await Navigator.of(ctx.context).pushNamed('seasonLinkPage', arguments: {
+    'tvid': ctx.state.tvid,
+    'detail': ctx.state.tvDetailModel,
+  });
 }
 
 Future _onRecommendationTapped(

@@ -1,5 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/base_movie.dart';
+import 'package:movie/models/base_api_model/base_tvshow.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/searchresult.dart';
 import 'package:movie/models/videolist.dart';
@@ -13,13 +14,15 @@ enum HomePageAction {
   initPopularTVShows,
   popularFilterChanged,
   headerFilterChanged,
+  shareFilterChanged,
   moreTapped,
   initTrending,
   searchBarTapped,
   cellTapped,
   trendingMore,
   shareMore,
-  initShareVideo,
+  initShareMovies,
+  initShareTvShows,
 }
 
 class HomePageActionCreator {
@@ -51,6 +54,10 @@ class HomePageActionCreator {
     return Action(HomePageAction.headerFilterChanged, payload: e);
   }
 
+  static Action onShareFilterChanged(bool e) {
+    return Action(HomePageAction.shareFilterChanged, payload: e);
+  }
+
   static Action onMoreTapped(VideoListModel model, MediaType t) {
     return Action(HomePageAction.moreTapped, payload: [model, t]);
   }
@@ -77,7 +84,11 @@ class HomePageActionCreator {
     return const Action(HomePageAction.shareMore);
   }
 
-  static Action initShareVideo(BaseMovieModel d) {
-    return Action(HomePageAction.initShareVideo, payload: d);
+  static Action initShareMovies(BaseMovieModel d) {
+    return Action(HomePageAction.initShareMovies, payload: d);
+  }
+
+  static Action initShareTvShows(BaseTvShowModel d) {
+    return Action(HomePageAction.initShareTvShows, payload: d);
   }
 }

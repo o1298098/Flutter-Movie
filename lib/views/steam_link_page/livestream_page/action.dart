@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/base_api_model/movie_stream_link.dart';
 import 'package:movie/models/firebase/firebase_streamlink.dart';
 
 //TODO replace with your own action
@@ -16,11 +17,11 @@ class LiveStreamPageActionCreator {
     return const Action(LiveStreamPageAction.action);
   }
 
-  static Action setStreamLinks(List<StreamLinkModel> streamLinks) {
+  static Action setStreamLinks(List<MovieStreamLink> streamLinks) {
     return Action(LiveStreamPageAction.setStreamLinks, payload: streamLinks);
   }
 
-  static Action chipSelected(StreamLinkModel d) {
+  static Action chipSelected(MovieStreamLink d) {
     return Action(LiveStreamPageAction.chipSelected, payload: d);
   }
 

@@ -1,7 +1,6 @@
 import 'dart:convert' show json;
 import 'dart:ui' as ui;
 import 'dart:io';
-import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:movie/models/accountdetail.dart';
@@ -42,7 +41,6 @@ class ApiHelper {
   static DateTime _sessionExpiresTime;
   static SharedPreferences prefs;
   static String _appDocPath;
-  static CookieJar _cj;
   static String language = ui.window.locale.languageCode;
   static String region = ui.window.locale.countryCode;
 
@@ -50,7 +48,6 @@ class ApiHelper {
     prefs = await SharedPreferences.getInstance();
     Directory appDocDir = await getApplicationDocumentsDirectory();
     _appDocPath = appDocDir.path;
-    _cj = new PersistCookieJar(dir: "$_appDocPath/cookies");
   }
 
   static Future createGuestSession() async {
@@ -92,7 +89,7 @@ class ApiHelper {
     bool result = false;
     if (_requestToken == null) await createRequestToken();
     String param = '/authentication/token/validate_with_login?api_key=$_apikey';
-    FormData formData = new FormData.from(
+    FormData formData = new FormData.fromMap(
         {"username": account, "password": pwd, "request_token": _requestToken});
     dynamic r = await httpPost(param, formData);
     if (r != null) {
@@ -107,7 +104,7 @@ class ApiHelper {
     bool result = false;
     if (session != null) {
       String param = '/authentication/session/new?api_key=$_apikey';
-      FormData formData = new FormData.from({"request_token": sessionToken});
+      FormData formData = new FormData.fromMap({"request_token": sessionToken});
       dynamic r = await httpPost(param, formData);
       if (r != null) {
         if (r['success']) {
@@ -123,7 +120,7 @@ class ApiHelper {
 
   static Future createSessionWithV4(String sessionToken) async {
     String param = '/authentication/session/convert/4?api_key=$_apikey';
-    FormData formData = new FormData.from({"access_token": _apikeyV4});
+    FormData formData = new FormData.fromMap({"access_token": _apikeyV4});
     dynamic r = await httpPost(param, formData);
     if (r != null) {
       if (r['success']) {
@@ -155,7 +152,7 @@ class ApiHelper {
   static Future<bool> deleteSession() async {
     String param = '/authentication/session';
     if (session != null) {
-      FormData formData = new FormData.from({"session_id": session});
+      FormData formData = new FormData.fromMap({"session_id": session});
       dynamic r = await httpDelete(param, formData);
       if (r != null) {
         if (r['status_code'] == 6) {
@@ -175,7 +172,7 @@ class ApiHelper {
   static Future<String> createRequestTokenV4() async {
     String result;
     String param = "/auth/request_token";
-    FormData formData = new FormData.from({});
+    FormData formData = new FormData.fromMap({});
     var r = await httpPostV4(param, formData, _apikeyV4);
     if (r != null) {
       var jsonobject = json.decode(r);
@@ -190,7 +187,7 @@ class ApiHelper {
     if (requestTokenV4 == null) return false;
     bool result = false;
     String param = "/auth/access_token";
-    FormData formData = new FormData.from({"request_token": requestTokenV4});
+    FormData formData = new FormData.fromMap({"request_token": requestTokenV4});
     var r = await httpPostV4(param, formData, _apikeyV4);
     if (r != null) {
       var jsonobject = json.decode(r);
@@ -369,7 +366,7 @@ class ApiHelper {
       return false;
     else
       param += '&session_id=$session';
-    FormData formData = new FormData.from({"value": rating});
+    FormData formData = new FormData.fromMap({"value": rating});
     var r = await httpPost(param, formData);
     if (r != null) {
       var jsonobject = json.decode(r);
@@ -387,7 +384,7 @@ class ApiHelper {
       return false;
     else
       param += '&session_id=$session';
-    FormData formData = new FormData.from({"value": rating});
+    FormData formData = new FormData.fromMap({"value": rating});
     var r = await httpPost(param, formData);
     if (r != null) {
       var jsonobject = json.decode(r);
@@ -884,7 +881,6 @@ class ApiHelper {
       var dio = new Dio();
       if (cached)
         dio.interceptors.add(DioCacheManager(CacheConfig()).interceptor);
-      dio.options.cookies = _cj.loadForRequest(Uri.parse(_apihost));
       var response = await dio.get(
         _apihost + param,
         options: buildCacheOptions(
@@ -907,7 +903,6 @@ class ApiHelper {
       dio.options.headers = {
         'ContentType': 'application/json;charset=utf-8',
       };
-      dio.options.cookies = _cj.loadForRequest(Uri.parse(_apihost));
       var response = await dio.post(_apihost + params, data: formData);
       return response.data;
     } on DioError catch (e) {
@@ -922,7 +917,6 @@ class ApiHelper {
       }
       var dio = new Dio();
       dio.options.headers = {'Authorization': 'Bearer $_apikeyV4'};
-      dio.options.cookies = _cj.loadForRequest(Uri.parse(_apihostV4));
       var response = await dio.get(_apihostV4 + param);
       return response.data;
     } on DioError catch (e) {

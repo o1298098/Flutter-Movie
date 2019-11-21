@@ -101,8 +101,7 @@ Future _onSignUp(Action action, Context<LoginPageState> ctx) async {
 void _onGoogleSignIn(Action action, Context<LoginPageState> ctx) async {
   ctx.state.submitAnimationController.forward();
   try {
-    GoogleSignIn _googleSignIn =
-        GoogleSignIn(signInOption: SignInOption.standard);
+    GoogleSignIn _googleSignIn = GoogleSignIn();
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;

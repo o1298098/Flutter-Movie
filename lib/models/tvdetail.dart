@@ -3,6 +3,7 @@ import 'dart:convert' show json;
 import 'package:movie/models/externalidsmodel.dart';
 
 import 'creditsmodel.dart';
+import 'episodemodel.dart';
 import 'imagemodel.dart';
 import 'keyword.dart';
 import 'review.dart';
@@ -255,6 +256,7 @@ class Season {
   String name;
   String overview;
   String poster_path;
+  List<Episode> episodes;
 
   Season.fromParams(
       {this.episode_count,
@@ -263,7 +265,8 @@ class Season {
       this.air_date,
       this.name,
       this.overview,
-      this.poster_path});
+      this.poster_path,
+      this.episodes});
 
   Season.fromJson(jsonRes) {
     episode_count = jsonRes['episode_count'];

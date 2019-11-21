@@ -665,16 +665,24 @@ Widget buildView(
                   height: Adapt.px(40),
                   color: Colors.grey[400],
                 ),
-                Container(
-                  child: Row(
-                    children: <Widget>[
-                      Icon(Icons.play_arrow, color: Colors.white),
-                      Text(I18n.of(viewService.context).playTraller,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: Adapt.px(30),
-                              color: Colors.white))
-                    ],
+                GestureDetector(
+                  onTap: () =>
+                      dispatch(TVDetailPageActionCreator.onPlayTapped()),
+                  child: Container(
+                    width: Adapt.px(180),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.play_arrow, color: Colors.white),
+                        SizedBox(
+                          width: Adapt.px(10),
+                        ),
+                        Text(I18n.of(viewService.context).play,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: Adapt.px(30),
+                                color: Colors.white))
+                      ],
+                    ),
                   ),
                 )
               ],

@@ -12,7 +12,6 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/backdrop.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/generated/i18n.dart';
-import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/videolist.dart';
@@ -493,13 +492,17 @@ Widget buildView(
             ));
       }
 
-      Widget _buildShareCell(BaseMovie d) {
+      Widget _buildShareCell(dynamic d) {
         return Padding(
           key: ValueKey(d),
           padding: EdgeInsets.only(left: Adapt.px(30)),
           child: GestureDetector(
             onTap: () => dispatch(HomePageActionCreator.onCellTapped(
-                d.id, d.photourl, d.name, d.photourl, MediaType.movie)),
+                d.id,
+                d.photourl,
+                d.name,
+                d.photourl,
+                state.showShareMovie ? MediaType.movie : MediaType.tv)),
             child: Column(
               children: <Widget>[
                 ClipRRect(
@@ -573,8 +576,38 @@ Widget buildView(
         );
       }
 
+      Widget _buildMoreCell() {
+        return InkWell(
+            onTap: () => dispatch(HomePageActionCreator.onShareMore()),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(Adapt.px(15)),
+                  ),
+                  width: Adapt.px(250),
+                  height: Adapt.px(350),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          I18n.of(viewService.context).more,
+                          style: TextStyle(
+                              color: Colors.black, fontSize: Adapt.px(35)),
+                        ),
+                        Icon(Icons.arrow_forward, size: Adapt.px(35))
+                      ]),
+                )
+              ],
+            ));
+      }
+
       Widget _buildShareBody() {
-        var model = state.shareVideo?.data ?? [];
+        var model = state.showShareMovie
+            ? (state.shareMovies?.data ?? [])
+            : (state.shareTvshows?.data ?? []);
         return AnimatedSwitcher(
             duration: Duration(milliseconds: 600),
             child: Container(
@@ -585,7 +618,8 @@ Widget buildView(
                 physics: PageScrollPhysics(),
                 shrinkWrap: true,
                 children: model.length > 0
-                    ? (model.map(_buildShareCell).toList())
+                    ? (model.map(_buildShareCell).toList()
+                      ..add(_buildMoreCell()))
                     : <Widget>[
                         SizedBox(width: Adapt.px(20)),
                         _buildShimmerCell(),
@@ -658,9 +692,30 @@ Widget buildView(
                             GestureDetector(
                               onTap: () =>
                                   dispatch(HomePageActionCreator.onShareMore()),
-                              child: Text(
-                                I18n.of(viewService.context).more,
-                                style: TextStyle(color: Colors.grey[600]),
+                              child: Row(
+                                children: <Widget>[
+                                  GestureDetector(
+                                    onTap: () => dispatch(HomePageActionCreator
+                                        .onShareFilterChanged(true)),
+                                    child: Text(
+                                        I18n.of(viewService.context).movies,
+                                        style: state.showShareMovie
+                                            ? _selectPopStyle
+                                            : _unselectPopStyle),
+                                  ),
+                                  SizedBox(
+                                    width: Adapt.px(20),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () => dispatch(HomePageActionCreator
+                                        .onShareFilterChanged(false)),
+                                    child: Text(
+                                        I18n.of(viewService.context).tvShows,
+                                        style: state.showShareMovie
+                                            ? _unselectPopStyle
+                                            : _selectPopStyle),
+                                  )
+                                ],
                               ),
                             ),
                             padding:

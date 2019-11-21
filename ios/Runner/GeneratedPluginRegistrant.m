@@ -22,12 +22,6 @@
 @import firebase_core;
 #endif
 
-#if __has_include(<firebase_database/FirebaseDatabasePlugin.h>)
-#import <firebase_database/FirebaseDatabasePlugin.h>
-#else
-@import firebase_database;
-#endif
-
 #if __has_include(<google_sign_in/GoogleSignInPlugin.h>)
 #import <google_sign_in/GoogleSignInPlugin.h>
 #else
@@ -94,7 +88,6 @@
   [FLTCloudFirestorePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTCloudFirestorePlugin"]];
   [FLTFirebaseAuthPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseAuthPlugin"]];
   [FLTFirebaseCorePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseCorePlugin"]];
-  [FLTFirebaseDatabasePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseDatabasePlugin"]];
   [FLTGoogleSignInPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleSignInPlugin"]];
   [FLTPathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPathProviderPlugin"]];
   [PermissionHandlerPlugin registerWithRegistrar:[registry registrarForPlugin:@"PermissionHandlerPlugin"]];

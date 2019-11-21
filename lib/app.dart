@@ -4,7 +4,6 @@ import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart' hide Action;
 
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/actions/apihelper.dart';
 import 'package:movie/views/account_page/page.dart';
 import 'package:movie/views/coming_page/page.dart';
 import 'package:movie/views/createlist_page/page.dart';
@@ -25,12 +24,13 @@ import 'package:movie/views/seasons_page/page.dart';
 import 'package:movie/views/steam_link_page/addlink_page/page.dart';
 import 'package:movie/views/steam_link_page/allstreamlink_page/page.dart';
 import 'package:movie/views/steam_link_page/livestream_page/page.dart';
+import 'package:movie/views/steam_link_page/season_link_page/page.dart';
 import 'package:movie/views/steam_link_page/steamlinks_page/page.dart';
+import 'package:movie/views/steam_link_page/tvshow_livestream_page/page.dart';
 import 'package:movie/views/test_page/page.dart';
 import 'package:movie/views/tvdetail_page/page.dart';
 import 'package:movie/views/watchlist_page/page.dart';
 import 'package:movie/views/watchlistdetail_page/page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'actions/timeline.dart';
 import 'generated/i18n.dart';
@@ -89,6 +89,8 @@ Future<Widget> createApp() async {
       'createListPage': CreateListPage(),
       'allStreamLinkPage': AllStreamLinkPage(),
       'liveStreamPage': LiveStreamPage(),
+      'tvShowLiveStreamPage': TvShowLiveStreamPage(),
+      'seasonLinkPage': SeasonLinkPage(),
       'testPage': TestPage(),
     },
     visitor: (String path, Page<Object, dynamic> page) {

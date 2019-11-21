@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart' hide Action;
@@ -10,7 +9,6 @@ import 'package:movie/customwidgets/gallery_photoview_wrapper.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/media_type.dart';
-import 'package:movie/models/firebase/firebase_accountstate.dart';
 import 'package:movie/views/peopledetail_page/page.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -41,13 +39,8 @@ Future _onInit(Action action, Context<MovieDetailPageState> ctx) async {
   ctx.state.animationController = AnimationController(
       vsync: ticker, duration: Duration(milliseconds: 2000));
   ctx.state.scrollController = ScrollController();
-  Firestore.instance
-      .collection('StreamLinks')
-      .document('Movie${ctx.state.mediaId}')
-      .get()
-      .then((d) {
-    if (d.exists)
-      ctx.dispatch(MovieDetailPageActionCreator.setHasStreamLink(true));
+  BaseApi.hasMovieStreamLinks(ctx.state.mediaId).then((d) {
+    if (d) ctx.dispatch(MovieDetailPageActionCreator.setHasStreamLink(true));
   });
   if (_id == null) return;
   var r = await ApiHelper.getMovieDetail(_id,
@@ -75,7 +68,7 @@ void _onDispose(Action action, Context<MovieDetailPageState> ctx) {
 Future _playTrailer(Action action, Context<MovieDetailPageState> ctx) async {
   if (ctx.state.hasStreamLink)
     await Navigator.of(ctx.context).pushNamed('liveStreamPage', arguments: {
-      'id': 'Movie${ctx.state.mediaId}',
+      'id': ctx.state.mediaId,
       'name': ctx.state.detail.title,
       'rated': ctx.state.detail.vote_average,
       'rateCount': ctx.state.detail.vote_count,
@@ -97,14 +90,14 @@ Future _playTrailer(Action action, Context<MovieDetailPageState> ctx) async {
                   width: Adapt.screenW(),
                   height: Adapt.screenW() * 9 / 16,
                   child: YoutubePlayer(
-                    context: ctx.context,
-                    initialVideoId: _model[0].key,
-                    flags: YoutubePlayerFlags(
-                      mute: false,
-                      autoPlay: true,
-                      forceHideAnnotation: true,
-                      showVideoProgressIndicator: true,
-                    ),
+                    controller: YoutubePlayerController(
+                        initialVideoId: _model[0].key,
+                        flags: YoutubePlayerFlags(
+                          mute: false,
+                          autoPlay: true,
+                          forceHideAnnotation: true,
+                        )),
+                    showVideoProgressIndicator: true,
                     progressIndicatorColor: Colors.red,
                     progressColors: ProgressBarColors(
                       playedColor: Colors.red,

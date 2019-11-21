@@ -12,9 +12,9 @@ class MovieStreamLinks {
           : new MovieStreamLinks.fromJson(jsonStr);
 
   MovieStreamLinks.fromJson(jsonRes) {
-    list = jsonRes['json_list'] == null ? null : [];
+    list = jsonRes == null ? null : [];
 
-    for (var listItem in list == null ? [] : jsonRes['json_list']) {
+    for (var listItem in list == null ? [] : jsonRes) {
       list.add(
           listItem == null ? null : new MovieStreamLink.fromJson(listItem));
     }
@@ -36,6 +36,7 @@ class MovieStreamLink {
   Language language;
   Quality quality;
   StreamLinkType streamLinkType;
+  bool selected;
 
   MovieStreamLink.fromParams(
       {this.language,
@@ -55,6 +56,7 @@ class MovieStreamLink {
     streamLink = jsonRes['streamLink'];
     uid = jsonRes['uid'];
     updateTime = jsonRes['updateTime'];
+    selected = false;
     language = jsonRes['languageNavigation'] == null
         ? null
         : new Language.fromJson(jsonRes['languageNavigation']);

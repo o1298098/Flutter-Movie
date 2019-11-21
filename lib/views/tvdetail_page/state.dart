@@ -7,6 +7,7 @@ import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/base_api_model/account_state.dart';
 import 'package:movie/models/creditsmodel.dart';
+import 'package:movie/models/enums/theme_color.dart';
 import 'package:movie/models/firebase/firebase_accountstate.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/keyword.dart';
@@ -79,10 +80,12 @@ TVDetailPageState initState(Map<String, dynamic> args) {
   state.tvDetailModel = new TVDetailModel.fromParams();
   state.creditsModel = new CreditsModel.fromParams(
       cast: List<CastData>(), crew: List<CrewData>());
-  state.mainColor = Color.fromRGBO(
+  state.mainColor = ThemeColor.color[random.nextInt(10)];
+  state.tabTintColor = ThemeColor.color[random.nextInt(10)];
+  /*state.mainColor = Color.fromRGBO(
       random.nextInt(200), random.nextInt(100), random.nextInt(200), 1);
   state.tabTintColor = Color.fromRGBO(
-      random.nextInt(200), random.nextInt(100), random.nextInt(200), 1);
+      random.nextInt(200), random.nextInt(100), random.nextInt(200), 1);*/
   state.palette = new PaletteGenerator.fromColors(
       List<PaletteColor>()..add(new PaletteColor(Colors.black87, 0)));
   state.imagesmodel = new ImageModel.fromParams(

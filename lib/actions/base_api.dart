@@ -1,10 +1,9 @@
-import 'package:dio/dio.dart';
-import 'dart:convert' show json;
-
 import 'package:movie/actions/request.dart';
 import 'package:movie/models/base_api_model/account_state.dart';
 import 'package:movie/models/base_api_model/base_movie.dart';
+import 'package:movie/models/base_api_model/base_tvshow.dart';
 import 'package:movie/models/base_api_model/movie_stream_link.dart';
+import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/models/base_api_model/user_list.dart';
 import 'package:movie/models/base_api_model/user_list_detail.dart';
 import 'package:movie/models/base_api_model/user_media.dart';
@@ -243,5 +242,48 @@ class BaseApi {
     var r = await _http.request(_url);
     if (r != null) model = MovieStreamLinks(r);
     return model;
+  }
+
+  static Future<bool> hasMovieStreamLinks(int movieid) async {
+    String _url = '/MovieStreamLinks/Exist/$movieid';
+    return (await _http.request(_url)) ?? false;
+  }
+
+  static Future<BaseTvShowModel> getTvShows(
+      {int page = 1, int pageSize = 20}) async {
+    BaseTvShowModel model;
+    String _url = '/TvShows?page=$page&pageSize=$pageSize';
+    var r = await _http.request(_url,
+        cached: true, cacheDuration: Duration(days: 0));
+    if (r != null) model = BaseTvShowModel(r);
+    return model;
+  }
+
+  static Future<BaseTvShowModel> searchTvShows(String query,
+      {int page = 1, int pageSize = 20}) async {
+    BaseTvShowModel model;
+    String _url = '/TvShows/Search/$query&page=$page&pageSize=$pageSize';
+    var r = await _http.request(_url);
+    if (r != null) model = BaseTvShowModel(r);
+    return model;
+  }
+
+  static Future<TvShowStreamLinks> getTvSeasonStreamLinks(
+      int tvid, int season) async {
+    TvShowStreamLinks model;
+    String _url = '/TvShowStreamLinks/$tvid/$season';
+    var r = await _http.request(_url);
+    if (r != null) model = TvShowStreamLinks(r);
+    return model;
+  }
+
+  static Future<bool> hasTvShowStreamLinks(int tvid) async {
+    String _url = '/TvShowStreamLinks/Exist/$tvid';
+    return (await _http.request(_url)) ?? false;
+  }
+
+  static Future<bool> hasTvSeasonStreamLinks(int tvid, int season) async {
+    String _url = '/TvShowStreamLinks/Exist/$tvid/$season';
+    return (await _http.request(_url)) ?? false;
   }
 }

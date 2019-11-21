@@ -59,29 +59,53 @@ Future _sortChanged(Action action, Context<AllStreamLinkPageState> ctx) async {
 }
 
 void _loadMore(Context<AllStreamLinkPageState> ctx) async {
-  BaseApi.getMovies(page: ctx.state.streamList.page + 1).then((d) {
-    if (d != null) ctx.dispatch(AllStreamLinkPageActionCreator.loadMore(d));
-  });
+  final _loading = ctx.state.loading;
+  if (!_loading) {
+    ctx.state.loading = true;
+    if (ctx.state.mediaType == MediaType.movie)
+      BaseApi.getMovies(page: ctx.state.movieList.page + 1).then((d) {
+        ctx.state.loading = false;
+        if (d != null)
+          ctx.dispatch(AllStreamLinkPageActionCreator.loadMoreMovie(d));
+      });
+    else
+      BaseApi.getTvShows(page: ctx.state.tvList.page + 1).then((d) {
+        ctx.state.loading = false;
+        if (d != null)
+          ctx.dispatch(AllStreamLinkPageActionCreator.loadMoreTvShows(d));
+      });
+  }
 }
 
 void _initlist(Context<AllStreamLinkPageState> ctx) {
-  BaseApi.getMovies().then((d) {
-    if (d != null)
-      ctx.dispatch(AllStreamLinkPageActionCreator.initStreamList(d));
-  });
+  if (ctx.state.mediaType == MediaType.movie)
+    BaseApi.getMovies().then((d) {
+      if (d != null)
+        ctx.dispatch(AllStreamLinkPageActionCreator.initMovieList(d));
+    });
+  else
+    BaseApi.getTvShows().then((d) {
+      if (d != null)
+        ctx.dispatch(AllStreamLinkPageActionCreator.initTvShowList(d));
+    });
 }
 
 void _onSearch(Action action, Context<AllStreamLinkPageState> ctx) {
   final String query = action.payload ?? '';
-  if (query != '')
+  if (query != '') if (ctx.state.mediaType == MediaType.movie)
     BaseApi.searchMovies(query).then((d) {
       if (d != null)
-        ctx.dispatch(AllStreamLinkPageActionCreator.initStreamList(d));
+        ctx.dispatch(AllStreamLinkPageActionCreator.initMovieList(d));
+    });
+  else
+    BaseApi.searchTvShows(query).then((d) {
+      if (d != null)
+        ctx.dispatch(AllStreamLinkPageActionCreator.initTvShowList(d));
     });
 }
 
 Future _onCellTapped(Action action, Context<AllStreamLinkPageState> ctx) async {
-  final MediaType type = action.payload[4];
+  final MediaType type = ctx.state.mediaType;
   final int id = action.payload[0];
   final String bgpic = action.payload[1];
   final String title = action.payload[2];
@@ -91,7 +115,7 @@ Future _onCellTapped(Action action, Context<AllStreamLinkPageState> ctx) async {
   var data = {
     type == MediaType.movie ? 'id' : 'tvid': id,
     'bgpic': type == MediaType.movie ? posterpic : bgpic,
-    type == MediaType.movie ? 'title' : 'name': title,
+    type == MediaType.tv ? 'title' : 'name': title,
     'posterpic': posterpic
   };
   Page page = type == MediaType.movie ? MovieDetailPage() : TVDetailPage();

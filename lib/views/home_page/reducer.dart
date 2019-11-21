@@ -1,5 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/base_movie.dart';
+import 'package:movie/models/base_api_model/base_tvshow.dart';
 import 'package:movie/models/searchresult.dart';
 import 'package:movie/models/videolist.dart';
 
@@ -16,8 +17,10 @@ Reducer<HomePageState> buildReducer() {
       HomePageAction.initPopularTVShows: _onInitPopularTVShows,
       HomePageAction.popularFilterChanged: _onPopularFilterChanged,
       HomePageAction.headerFilterChanged: _onHeaderFilterChanged,
+      HomePageAction.shareFilterChanged: _onShareFilterChanged,
       HomePageAction.initTrending: _onInitTrending,
-      HomePageAction.initShareVideo: _onInitShareVideo,
+      HomePageAction.initShareMovies: _onInitShareMovies,
+      HomePageAction.initShareTvShows: _onInitShareTvShows,
     },
   );
 }
@@ -27,10 +30,17 @@ HomePageState _onAction(HomePageState state, Action action) {
   return newState;
 }
 
-HomePageState _onInitShareVideo(HomePageState state, Action action) {
+HomePageState _onInitShareMovies(HomePageState state, Action action) {
   final BaseMovieModel d = action.payload;
   final HomePageState newState = state.clone();
-  newState.shareVideo = d;
+  newState.shareMovies = d;
+  return newState;
+}
+
+HomePageState _onInitShareTvShows(HomePageState state, Action action) {
+  final BaseTvShowModel d = action.payload;
+  final HomePageState newState = state.clone();
+  newState.shareTvshows = d;
   return newState;
 }
 
@@ -80,5 +90,12 @@ HomePageState _onHeaderFilterChanged(HomePageState state, Action action) {
   final bool e = action.payload ?? true;
   final HomePageState newState = state.clone();
   newState.showHeaderMovie = e;
+  return newState;
+}
+
+HomePageState _onShareFilterChanged(HomePageState state, Action action) {
+  final bool e = action.payload ?? true;
+  final HomePageState newState = state.clone();
+  newState.showShareMovie = e;
   return newState;
 }

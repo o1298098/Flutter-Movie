@@ -9,6 +9,7 @@ import 'package:movie/actions/Adapt.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/customwidgets/sliverappbar_delegate.dart';
 import 'package:movie/models/enums/streamlink_type.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import 'dart:ui' as ui;
@@ -18,6 +19,57 @@ import 'state.dart';
 
 Widget buildView(
     LiveStreamPageState state, Dispatch dispatch, ViewService viewService) {
+  Widget _getPlayer() {
+    double _height = Adapt.screenW() * 9 / 16;
+    String key = state.streamLinkType?.name ?? '';
+    switch (key) {
+      case 'YouTube':
+        return YoutubePlayer(
+          controller: state.youtubePlayerController,
+          topActions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.chevron_left,
+                color: Colors.white,
+                size: Adapt.px(80),
+              ),
+              onPressed: () => Navigator.of(viewService.context).pop(),
+            )
+          ],
+          progressIndicatorColor: Colors.red,
+          progressColors: ProgressBarColors(
+            playedColor: Colors.amber,
+            handleColor: Colors.amberAccent,
+          ),
+        );
+      case 'WebView':
+        return AspectRatio(
+          aspectRatio: 16 / 9,
+          child: WebView(
+            key: ValueKey(state.streamAddress),
+            initialUrl: state.streamAddress,
+            javascriptMode: JavascriptMode.unrestricted,
+          ),
+        );
+      case 'other':
+        return Container(
+          color: Colors.black,
+          alignment: Alignment.bottomCenter,
+          height: _height,
+          child: state.chewieController != null
+              ? Chewie(
+                  key: ValueKey(state.chewieController),
+                  controller: state.chewieController)
+              : SizedBox(),
+        );
+      default:
+        return Container(
+          height: _height,
+          color: Colors.black,
+        );
+    }
+  }
+
   Widget _buildVideoPlayer() {
     double _height = Adapt.screenW() * 9 / 16;
     return SliverPersistentHeader(
@@ -25,48 +77,17 @@ Widget buildView(
       delegate: SliverAppBarDelegate(
           maxHeight: _height + Adapt.padTopH(),
           minHeight: _height + Adapt.padTopH(),
-          child: Column(
-            children: <Widget>[
-              Container(
-                color: Colors.black,
-                height: Adapt.padTopH(),
-              ),
-              state.streamLinkType != StreamLinkType.youtube
-                  ? Container(
-                      color: Colors.black,
-                      alignment: Alignment.bottomCenter,
-                      height: _height,
-                      child: state.chewieController != null
-                          ? Chewie(
-                              key: ValueKey(state.chewieController),
-                              controller: state.chewieController)
-                          : SizedBox(),
-                    )
-                  : YoutubePlayer(
-                      context: viewService.context,
-                      initialVideoId: state.youtubeID,
-                      topActions: <Widget>[
-                        IconButton(
-                          icon: Icon(
-                            Icons.chevron_left,
-                            color: Colors.white,
-                            size: Adapt.px(80),
-                          ),
-                          onPressed: () =>
-                              Navigator.of(viewService.context).pop(),
-                        )
-                      ],
-                      flags: YoutubePlayerFlags(
-                        autoPlay: true,
-                        showVideoProgressIndicator: true,
-                      ),
-                      progressIndicatorColor: Colors.red,
-                      progressColors: ProgressBarColors(
-                        playedColor: Colors.amber,
-                        handleColor: Colors.amberAccent,
-                      ),
-                    )
-            ],
+          child: Container(
+            color: Colors.black,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  color: Colors.black,
+                  height: Adapt.padTopH(),
+                ),
+                _getPlayer()
+              ],
+            ),
           )),
     );
   }
@@ -301,7 +322,7 @@ Widget buildView(
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance
           .collection('StreamLinks')
-          .document(state.id)
+          .document('Movie${state.id}')
           .collection('Comments')
           .orderBy('createTime', descending: true)
           .snapshots(),

@@ -1,6 +1,6 @@
 {
   "name": "permission_handler",
-  "version": "3.2.2",
+  "version": "3.3.0",
   "summary": "Permission plugin for Flutter.",
   "description": "A new Flutter project.",
   "homepage": "https://github.com/baseflowit/flutter-permission-handler",

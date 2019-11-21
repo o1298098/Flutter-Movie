@@ -2,7 +2,9 @@ import 'package:chewie/chewie.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
+import 'package:movie/actions/base_api.dart';
 import 'package:movie/customwidgets/custom_video_controls.dart';
+import 'package:movie/models/base_api_model/movie_stream_link.dart';
 import 'package:movie/models/enums/streamlink_type.dart';
 import 'package:movie/models/firebase/firebase_streamlink.dart';
 import 'package:video_player/video_player.dart';
@@ -23,7 +25,7 @@ Effect<LiveStreamPageState> buildEffect() {
 void _onAction(Action action, Context<LiveStreamPageState> ctx) {}
 
 void _chipSelected(Action action, Context<LiveStreamPageState> ctx) {
-  final StreamLinkModel d = action.payload;
+  final MovieStreamLink d = action.payload;
   if (d != null) {
     assert(!d.selected);
     int index = ctx.state.streamLinks.indexOf(d);
@@ -36,8 +38,24 @@ void _chipSelected(Action action, Context<LiveStreamPageState> ctx) {
       ctx.state.chewieController.videoPlayerController.pause();
     }
 
-    ctx.state.streamLinkType = d.type;
-    if (d.type != StreamLinkType.youtube)
+    ctx.state.streamLinkType = d.streamLinkType;
+    if (d.streamLinkType.name == 'WebView') {
+      ctx.state.streamAddress = d.streamLink;
+      ctx.state.chewieController = null;
+    } else if (d.streamLinkType.name == 'YouTube') {
+      ctx.state.streamAddress = YoutubePlayer.convertUrlToId(d.streamLink);
+      ctx.state.chewieController = null;
+      if (ctx.state.youtubePlayerController == null)
+        ctx.state.youtubePlayerController = new YoutubePlayerController(
+          initialVideoId: ctx.state.streamAddress,
+          flags: YoutubePlayerFlags(
+            autoPlay: true,
+          ),
+        );
+      else {
+        ctx.state.youtubePlayerController.load(ctx.state.streamAddress);
+      }
+    } else
       ctx.state.chewieController = ChewieController(
           customControls: CustomCupertinoControls(
             backgroundColor: Colors.black,
@@ -46,10 +64,6 @@ void _chipSelected(Action action, Context<LiveStreamPageState> ctx) {
           autoInitialize: true,
           autoPlay: true,
           videoPlayerController: ctx.state.videoControllers[index]);
-    else {
-      ctx.state.youtubeID = YoutubePlayer.convertUrlToId(d.streamLink);
-      ctx.state.chewieController = null;
-    }
 
     ctx.dispatch(
         LiveStreamPageActionCreator.setStreamLinks(ctx.state.streamLinks));
@@ -63,7 +77,7 @@ void _addComment(Action action, Context<LiveStreamPageState> ctx) {
   if (ctx.state.user != null && comment != '')
     Firestore.instance
         .collection('StreamLinks')
-        .document(ctx.state.id)
+        .document('Movie${ctx.state.id}')
         .collection('Comments')
         .add({
       'userID': ctx.state.user.uid,
@@ -80,22 +94,27 @@ void _addComment(Action action, Context<LiveStreamPageState> ctx) {
 void _onInit(Action action, Context<LiveStreamPageState> ctx) {
   ctx.state.commentFocusNode = FocusNode();
   ctx.state.commentController = TextEditingController();
-  Firestore.instance
-      .collection('StreamLinks')
-      .document(ctx.state.id)
-      .collection('Link')
-      .getDocuments()
-      .then((d) {
-    if (d.documents != null) {
-      final List<StreamLinkModel> _list =
-          d.documents.map((f) => StreamLinkModel.fromMap(f)).toList();
+  BaseApi.getMovieStreamLinks(ctx.state.id).then((d) {
+    if (d != null) {
+      final _list = d.list;
       if (_list.length > 0) {
         ctx.state.videoControllers = _list
             .map((f) => VideoPlayerController.network(f.streamLink))
             .toList();
         _list[0].selected = true;
-        ctx.state.streamLinkType = _list[0].type;
-        if (_list[0].type != StreamLinkType.youtube)
+        ctx.state.streamLinkType = _list[0].streamLinkType;
+        if (_list[0].streamLinkType.name == 'WebView')
+          ctx.state.streamAddress = _list[0].streamLink;
+        else if (_list[0].streamLinkType.name == 'YouTube') {
+          ctx.state.streamAddress =
+              YoutubePlayer.convertUrlToId(_list[0].streamLink);
+          ctx.state.youtubePlayerController = new YoutubePlayerController(
+            initialVideoId: ctx.state.streamAddress,
+            flags: YoutubePlayerFlags(
+              autoPlay: true,
+            ),
+          );
+        } else
           ctx.state.chewieController = ChewieController(
               customControls: CustomCupertinoControls(
                 backgroundColor: Colors.black,
@@ -104,9 +123,6 @@ void _onInit(Action action, Context<LiveStreamPageState> ctx) {
               autoInitialize: true,
               autoPlay: true,
               videoPlayerController: ctx.state.videoControllers[0]);
-        else
-          ctx.state.youtubeID =
-              YoutubePlayer.convertUrlToId(_list[0].streamLink);
         ctx.dispatch(LiveStreamPageActionCreator.setStreamLinks(_list));
       }
     }
@@ -116,4 +132,6 @@ void _onInit(Action action, Context<LiveStreamPageState> ctx) {
 void _onDispose(Action action, Context<LiveStreamPageState> ctx) {
   ctx.state.videoControllers.forEach((f) => f.dispose());
   ctx.state.chewieController.dispose();
+  if (ctx.state.youtubePlayerController != null)
+    ctx.state.youtubePlayerController.dispose();
 }

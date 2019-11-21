@@ -1,13 +1,16 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/base_movie.dart';
+import 'package:movie/models/base_api_model/base_tvshow.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/sortcondition.dart';
 
 //TODO replace with your own action
 enum AllStreamLinkPageAction {
   action,
-  initStreamList,
-  loadMore,
+  initMovieList,
+  initTvShowList,
+  loadMoreMovies,
+  loadMoreTvShows,
   openMenu,
   search,
   gridCellTapped,
@@ -24,17 +27,25 @@ class AllStreamLinkPageActionCreator {
   }
 
   static Action gridCellTapped(
-      int id, String bgpic, String title, String posterpic, MediaType type) {
+      int id, String bgpic, String title, String posterpic) {
     return Action(AllStreamLinkPageAction.gridCellTapped,
-        payload: [id, bgpic, title, posterpic, type]);
+        payload: [id, bgpic, title, posterpic]);
   }
 
-  static Action initStreamList(BaseMovieModel d) {
-    return Action(AllStreamLinkPageAction.initStreamList, payload: d);
+  static Action initMovieList(BaseMovieModel d) {
+    return Action(AllStreamLinkPageAction.initMovieList, payload: d);
   }
 
-  static Action loadMore(BaseMovieModel d) {
-    return Action(AllStreamLinkPageAction.loadMore, payload: d);
+  static Action initTvShowList(BaseTvShowModel d) {
+    return Action(AllStreamLinkPageAction.initTvShowList, payload: d);
+  }
+
+  static Action loadMoreMovie(BaseMovieModel d) {
+    return Action(AllStreamLinkPageAction.loadMoreMovies, payload: d);
+  }
+
+  static Action loadMoreTvShows(BaseTvShowModel d) {
+    return Action(AllStreamLinkPageAction.loadMoreTvShows, payload: d);
   }
 
   static Action openMenu() {

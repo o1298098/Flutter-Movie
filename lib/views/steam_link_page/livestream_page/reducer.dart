@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/base_api_model/movie_stream_link.dart';
 import 'package:movie/models/firebase/firebase_streamlink.dart';
 
 import 'action.dart';
@@ -28,7 +29,7 @@ LiveStreamPageState _commentChanged(LiveStreamPageState state, Action action) {
 }
 
 LiveStreamPageState _setStreamLinks(LiveStreamPageState state, Action action) {
-  final List<StreamLinkModel> streamLinks = action.payload ?? [];
+  final List<MovieStreamLink> streamLinks = action.payload ?? [];
   final LiveStreamPageState newState = state.clone();
   newState.streamLinks = streamLinks;
   return newState;

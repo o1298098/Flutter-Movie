@@ -26,7 +26,8 @@ enum TVDetailPageAction {
   castCellTapped,
   openMenu,
   showSnackBar,
-  onImageCellTapped
+  onImageCellTapped,
+  plyaTapped,
 }
 
 class TVDetailPageActionCreator {
@@ -91,5 +92,9 @@ class TVDetailPageActionCreator {
 
   static Action onImageCellTapped(int index, List<ImageData> data) {
     return Action(TVDetailPageAction.onImageCellTapped, payload: [index, data]);
+  }
+
+  static Action onPlayTapped() {
+    return Action(TVDetailPageAction.plyaTapped);
   }
 }

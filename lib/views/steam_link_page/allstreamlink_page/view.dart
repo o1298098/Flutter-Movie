@@ -54,7 +54,7 @@ Widget buildView(
                                 focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.transparent, width: 0)),
-                                hintText: 'Search not available right now',
+                                hintText: 'Search',
                               ),
                             ),
                           ),
@@ -98,10 +98,10 @@ Widget buildView(
             }));
   }
 
-  Widget _buildCell(BaseMovie d) {
+  Widget _buildCell(dynamic d) {
     return GestureDetector(
       onTap: () => dispatch(AllStreamLinkPageActionCreator.gridCellTapped(
-          d.id, d.photourl, d.name, d.photourl, MediaType.movie)),
+          d.id, d.photourl, d.name, d.photourl)),
       child: Container(
         key: ValueKey(d),
         decoration: BoxDecoration(
@@ -114,7 +114,9 @@ Widget buildView(
   }
 
   Widget _buildGridView() {
-    return state.streamList == null
+    var _list =
+        state.mediaType == MediaType.movie ? state.movieList : state.tvList;
+    return _list == null
         ? SliverToBoxAdapter(
             child: Container(
                 height: Adapt.px(400),
@@ -125,7 +127,9 @@ Widget buildView(
         : SliverGrid.count(
             crossAxisCount: 3,
             childAspectRatio: 2 / 3,
-            children: state.streamList.data.map(_buildCell).toList(),
+            children: state.mediaType == MediaType.movie
+                ? state.movieList.data.map(_buildCell).toList()
+                : state.tvList.data.map(_buildCell).toList(),
           );
   }
 
@@ -138,7 +142,7 @@ Widget buildView(
       backgroundColor: Colors.white,
       iconTheme: IconThemeData(color: Colors.black),
       title: Text(
-        'Video Share',
+        '${state.mediaType == MediaType.movie ? 'Movie' : 'TvShows'} Share',
         style: TextStyle(color: Colors.black),
       ),
       actions: <Widget>[
