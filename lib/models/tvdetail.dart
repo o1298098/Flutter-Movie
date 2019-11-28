@@ -257,6 +257,7 @@ class Season {
   String overview;
   String poster_path;
   List<Episode> episodes;
+  CreditsModel credits;
 
   Season.fromParams(
       {this.episode_count,
@@ -266,7 +267,8 @@ class Season {
       this.name,
       this.overview,
       this.poster_path,
-      this.episodes});
+      this.episodes,
+      this.credits});
 
   Season.fromJson(jsonRes) {
     episode_count = jsonRes['episode_count'];

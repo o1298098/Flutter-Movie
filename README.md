@@ -18,8 +18,8 @@ A Flutter movie app build with Fish-Redux and TMDB api.
 ## Demo
 <a href='https://github.com/o1298098/Flutter-Movie/releases/download/demo/demo.apk'>Download</a>
 ## Flutter version
->Flutter 1.10.14  
->Tools • Dart 2.5.0  
+>Flutter 1.12.11  
+>Tools • Dart 2.7.0  
 ## Preview 
 <img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios.gif" width="150">  
 
@@ -32,10 +32,11 @@ A Flutter movie app build with Fish-Redux and TMDB api.
 <img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios15.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios16.png" width="150">  
 ### other page  
 <img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios7.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios8.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios12.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios13.png" width="150">  
-<img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios17.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios19.gif" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios20.png" width="150">
+<img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios17.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios19.gif" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios20.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios22.png" width="150">
 
 ## Other
-homepage based on https://dribbble.com/shots/6070474--Movie
+homepage based on https://dribbble.com/shots/6070474--Movie  
+seasonpage based on https://dribbble.com/shots/6379112-TV-Streaming-App
 
 ## LICENSE
     Copyright 2019 o1298098

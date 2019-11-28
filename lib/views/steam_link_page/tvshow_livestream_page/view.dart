@@ -3,6 +3,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie/actions/Adapt.dart';
+import 'package:movie/customwidgets/keepalive_widget.dart';
 import 'package:movie/customwidgets/sliverappbar_delegate.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -13,6 +14,41 @@ import 'state.dart';
 
 Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
     ViewService viewService) {
+  Widget _buildCommentInputCell() {
+    return Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(top: BorderSide(color: Colors.grey[200]))),
+        child: SafeArea(
+          top: false,
+          child: Container(
+              padding: EdgeInsets.fromLTRB(
+                  Adapt.px(30), Adapt.px(10), Adapt.px(30), 0),
+              margin: EdgeInsets.symmetric(
+                  vertical: Adapt.px(20), horizontal: Adapt.px(20)),
+              height: Adapt.px(80),
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(Adapt.px(40))),
+              child: TextField(
+                onSubmitted: (s) =>
+                    dispatch(TvShowLiveStreamPageActionCreator.addComment(s)),
+                cursorColor: Colors.grey,
+                decoration: InputDecoration(
+                  hintStyle: TextStyle(fontSize: Adapt.px(35)),
+                  labelStyle: TextStyle(fontSize: Adapt.px(35)),
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.transparent, width: 0)),
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.transparent, width: 0)),
+                  hintText: 'Add a comment',
+                ),
+              )),
+        ));
+  }
+
   Widget _getPlayer() {
     double _height = Adapt.screenW() * 9 / 16;
     String key = state.streamLinkType?.name ?? '';
@@ -93,49 +129,79 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
   }
 
   Widget _buildHeader() {
-    return SliverToBoxAdapter(
-        key: ValueKey('HeaderInfo'),
-        child: Container(
-          padding: EdgeInsets.all(Adapt.px(30)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      key: ValueKey('HeaderInfo'),
+      padding: EdgeInsets.symmetric(
+          horizontal: Adapt.px(30), vertical: Adapt.px(50)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
             children: <Widget>[
               Container(
+                width: Adapt.screenW() - Adapt.px(95),
                 child: Text(
-                  'no title',
+                  state.selectedEpisode?.name ?? 'no title',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                      fontSize: Adapt.px(50), fontWeight: FontWeight.bold),
+                      fontSize: Adapt.px(35), fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(height: Adapt.px(20)),
-              Row(
-                children: <Widget>[
-                  Text('2019-12-01'),
-                  SizedBox(width: Adapt.px(20)),
-                  RatingBarIndicator(
-                    itemSize: Adapt.px(30),
-                    itemPadding: EdgeInsets.symmetric(horizontal: Adapt.px(2)),
-                    physics: BouncingScrollPhysics(),
-                    itemBuilder: (context, _) => Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    unratedColor: Colors.grey,
-                    rating: (9 ?? 0) / 2,
-                  ),
-                  SizedBox(width: Adapt.px(8)),
-                  Text('${9}   (${3000})')
-                ],
-              )
+              InkWell(
+                onTap: () => dispatch(
+                    TvShowLiveStreamPageActionCreator.headerExpanded()),
+                child: Icon(
+                  state.isExpanded != CrossFadeState.showFirst
+                      ? Icons.keyboard_arrow_up
+                      : Icons.keyboard_arrow_down,
+                  size: Adapt.px(35),
+                ),
+              ),
             ],
           ),
-        ));
+          SizedBox(height: Adapt.px(20)),
+          Row(
+            children: <Widget>[
+              Text('${state.selectedEpisode?.air_date}'),
+              SizedBox(width: Adapt.px(20)),
+              RatingBarIndicator(
+                itemSize: Adapt.px(30),
+                itemPadding: EdgeInsets.symmetric(horizontal: Adapt.px(2)),
+                physics: BouncingScrollPhysics(),
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                unratedColor: Colors.grey,
+                rating: (state.selectedEpisode?.vote_average ?? 0) / 2,
+              ),
+              SizedBox(width: Adapt.px(8)),
+              Text(
+                  '${state.selectedEpisode?.vote_average?.toStringAsFixed(1)}   (${state.selectedEpisode?.vote_count})'),
+            ],
+          ),
+          AnimatedCrossFade(
+            alignment: Alignment.center,
+            crossFadeState: state.isExpanded,
+            duration: Duration(milliseconds: 300),
+            firstChild: SizedBox(),
+            secondChild: Padding(
+                padding: EdgeInsets.only(top: Adapt.px(10)),
+                child: Material(
+                    child: Text(state.selectedEpisode?.overview ?? ''))),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildStreamLinkCell(TvShowStreamLink d) {
-    return InkWell(
-        onTap: () => dispatch(
-            TvShowLiveStreamPageActionCreator.episodeCellTapped(d.episode)),
+    return GestureDetector(
+        onTap: () {
+          if (d.episode != state.episodeNumber)
+            dispatch(TvShowLiveStreamPageActionCreator.episodeCellTapped(d));
+        },
         child: Container(
           margin: EdgeInsets.only(left: Adapt.px(30)),
           padding: EdgeInsets.all(Adapt.px(20)),
@@ -143,9 +209,9 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Adapt.px(20)),
             border: Border.all(
-                color: d.episode == state.selectedEpisode
-                    ? Colors.blueAccent
-                    : Color(0xFF505050)),
+                color: d.episode == state.episodeNumber
+                    ? Colors.black
+                    : Colors.grey),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -163,9 +229,19 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
         ));
   }
 
+  Widget _buildShimmerLinkCell() {
+    return Container(
+      margin: EdgeInsets.only(left: Adapt.px(30)),
+      width: Adapt.px(300),
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(Adapt.px(20)),
+      ),
+    );
+  }
+
   Widget _buildStreamLinkList() {
-    return SliverToBoxAdapter(
-        child: Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
@@ -192,18 +268,100 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
               children: state.streamLinks?.list
                       ?.map(_buildStreamLinkCell)
                       ?.toList() ??
-                  []),
+                  [
+                    _buildShimmerLinkCell(),
+                    _buildShimmerLinkCell(),
+                    _buildShimmerLinkCell()
+                  ]),
         )
       ],
-    ));
+    );
+  }
+
+  Widget _buildTabBar() {
+    return SliverPersistentHeader(
+      pinned: true,
+      delegate: SliverAppBarDelegate(
+          maxHeight: Adapt.px(100),
+          minHeight: Adapt.px(100),
+          child: Container(
+              color: Colors.white,
+              child: TabBar(
+                  isScrollable: true,
+                  indicatorWeight: 3,
+                  indicatorSize: TabBarIndicatorSize.label,
+                  controller: state.tabController,
+                  labelColor: Colors.black,
+                  indicatorColor: Color(0xFF505050),
+                  unselectedLabelColor: Colors.grey,
+                  labelStyle: TextStyle(
+                      fontSize: Adapt.px(35), fontWeight: FontWeight.bold),
+                  unselectedLabelStyle: TextStyle(
+                      fontSize: Adapt.px(35), fontWeight: FontWeight.bold),
+                  tabs: [
+                    Tab(text: 'Episoeds'),
+                    Tab(
+                      text: 'Comments',
+                    )
+                  ]))),
+    );
+  }
+
+  Widget _buildEpisoedsView() {
+    return MediaQuery.removePadding(
+        context: viewService.context,
+        removeTop: true,
+        child: ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            _buildHeader(),
+            _buildStreamLinkList(),
+            viewService.buildComponent('castComponent')
+          ],
+        ));
+  }
+
+  Widget _buildTabViews() {
+    return TabBarView(
+      controller: state.tabController,
+      children: [
+        KeepAliveWidget(_buildEpisoedsView()),
+        KeepAliveWidget(viewService.buildComponent('commentComponent'))
+      ],
+    );
   }
 
   return Scaffold(
-    body: CustomScrollView(
-      slivers: <Widget>[
-        _buildVideoPlayer(),
-        _buildHeader(),
-        _buildStreamLinkList(),
+    key: state.scaffold,
+    backgroundColor: Colors.white,
+    resizeToAvoidBottomInset: true,
+    //bottomNavigationBar: state.showBottom ? _buildCommentInputCell() : null,
+    body: Stack(
+      children: <Widget>[
+        NestedScrollView(
+          headerSliverBuilder: (_, __) {
+            return <Widget>[
+              _buildVideoPlayer(),
+              _buildTabBar(),
+            ];
+          },
+          body: _buildTabViews(),
+        ),
+        Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: AnimatedSwitcher(
+              duration: Duration(milliseconds: 300),
+              transitionBuilder: (widget, animation) {
+                return SlideTransition(
+                  position: animation
+                      .drive(Tween(begin: Offset(0, 1), end: Offset.zero)),
+                  child: widget,
+                );
+              },
+              child: state.showBottom ? _buildCommentInputCell() : SizedBox(),
+            ))
       ],
     ),
   );

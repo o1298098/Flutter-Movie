@@ -88,6 +88,7 @@ flutter:
   - images/c3po.png
   - images/r2d2.png
   - images/google.png
+  - images/empty_comment.png
   
 
   # An image asset can refer to one or more resolution-specific "variants", see

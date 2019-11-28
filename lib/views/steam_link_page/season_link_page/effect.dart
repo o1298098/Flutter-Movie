@@ -59,10 +59,12 @@ void _onDispose(Action action, Context<SeasonLinkPageState> ctx) {
 void _getSeasonDetail(Action action, Context<SeasonLinkPageState> ctx) {
   final Season season = action.payload;
   if (season != null) if (season.episodes == null)
-    ApiHelper.getTVSeasonDetail(ctx.state.detial.id, season.season_number)
+    ApiHelper.getTVSeasonDetail(ctx.state.detial.id, season.season_number,
+            appendToResponse: 'credits')
         .then((d) {
       if (d != null) {
         season.episodes = d.episodes;
+        season.credits = d.credits;
         ctx.dispatch(
             SeasonLinkPageActionCreator.updateSeason(ctx.state.detial));
       }
@@ -74,7 +76,8 @@ void _onEpisodeCellTapped(
   final _episode = action.payload as Episode;
   await Navigator.of(ctx.context).pushNamed('tvShowLiveStreamPage', arguments: {
     'tvid': ctx.state.detial.id,
-    'season': _episode.season_number,
-    'episode': _episode.episode_number,
+    'season': ctx.state.detial.seasons
+        .singleWhere((d) => d.season_number == _episode.season_number),
+    'episode': _episode,
   });
 }

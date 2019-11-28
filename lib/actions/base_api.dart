@@ -2,7 +2,9 @@ import 'package:movie/actions/request.dart';
 import 'package:movie/models/base_api_model/account_state.dart';
 import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/base_api_model/base_tvshow.dart';
+import 'package:movie/models/base_api_model/movie_comment.dart';
 import 'package:movie/models/base_api_model/movie_stream_link.dart';
+import 'package:movie/models/base_api_model/tvshow_comment.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/models/base_api_model/user_list.dart';
 import 'package:movie/models/base_api_model/user_list_detail.dart';
@@ -285,5 +287,58 @@ class BaseApi {
   static Future<bool> hasTvSeasonStreamLinks(int tvid, int season) async {
     String _url = '/TvShowStreamLinks/Exist/$tvid/$season';
     return (await _http.request(_url)) ?? false;
+  }
+
+  static Future createMovieComment(
+      int movieid, String uid, String comment) async {
+    String _url = '/MovieComments';
+    final DateTime _dateTime = DateTime.now();
+    var _data = {
+      'mediaId': movieid,
+      'comment': comment,
+      'uid': uid,
+      'createTime': _dateTime,
+      'updateTime': _dateTime,
+      'like': 0,
+    };
+    await _http.request(_url, method: 'POST', data: _data);
+  }
+
+  static Future<TvShowComment> createTvShowComment(
+      TvShowComment comment) async {
+    TvShowComment model;
+    String _url = '/TvShowComments';
+    var _data = {
+      'mediaId': comment.mediaId,
+      'comment': comment.comment,
+      'uid': comment.uid,
+      'createTime': comment.createTime,
+      'updateTime': comment.updateTime,
+      'like': comment.like,
+      'season': comment.season,
+      'episode': comment.episode
+    };
+    var r = await _http.request(_url, method: 'POST', data: _data);
+    if (r != null) model = TvShowComment.fromJson(r);
+    return model;
+  }
+
+  static Future<TvShowComments> getTvShowComments(
+      int tvid, int season, int episode,
+      {int page = 1, int pageSize = 40}) async {
+    TvShowComments model;
+    String _url = '/TvShowComments/$tvid/$season/$episode';
+    var r = await _http.request(_url);
+    if (r != null) model = TvShowComments(r);
+    return model;
+  }
+
+  static Future<MovieComments> getMovieComments(int movieid,
+      {int page = 1, int pageSize = 40}) async {
+    MovieComments model;
+    String _url = '/MovieComments/$movieid';
+    var r = await _http.request(_url);
+    if (r != null) model = MovieComments(r);
+    return model;
   }
 }
