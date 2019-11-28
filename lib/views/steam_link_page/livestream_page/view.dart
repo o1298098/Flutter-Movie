@@ -49,6 +49,12 @@ Widget buildView(
             key: ValueKey(state.streamAddress),
             initialUrl: state.streamAddress,
             javascriptMode: JavascriptMode.unrestricted,
+            //debuggingEnabled: true,
+            navigationDelegate: (NavigationRequest request) {
+              if (request.url != state.streamAddress)
+                return NavigationDecision.prevent;
+              return NavigationDecision.navigate;
+            },
           ),
         );
       case 'other':

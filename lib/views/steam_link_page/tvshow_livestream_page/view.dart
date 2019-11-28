@@ -79,6 +79,11 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
             key: ValueKey(state.streamAddress),
             initialUrl: state.streamAddress,
             javascriptMode: JavascriptMode.unrestricted,
+            navigationDelegate: (NavigationRequest request) {
+              if (request.url != state.streamAddress)
+                return NavigationDecision.prevent;
+              return NavigationDecision.navigate;
+            },
           ),
         );
       case 'other':
