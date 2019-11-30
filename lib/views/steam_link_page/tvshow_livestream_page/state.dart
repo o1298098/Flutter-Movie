@@ -43,6 +43,7 @@ class TvShowLiveStreamPageState
       ..selectedEpisode = selectedEpisode
       ..streamLinks = streamLinks
       ..streamLinkType = streamLinkType
+      ..streamAddress = streamAddress
       ..comments = comments
       ..chewieController = chewieController
       ..youtubePlayerController = youtubePlayerController
