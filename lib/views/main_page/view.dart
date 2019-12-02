@@ -11,6 +11,7 @@ Widget buildView(
     MainPageState state, Dispatch dispatch, ViewService viewService) {
   return Builder(
     builder: (context) {
+      Adapt.initContext(context);
       final pageController = PageController();
       final _lightTheme = ThemeData.light().copyWith(
           backgroundColor: Colors.white,

@@ -289,16 +289,14 @@ class BaseApi {
     return (await _http.request(_url)) ?? false;
   }
 
-  static Future createMovieComment(
-      int movieid, String uid, String comment) async {
+  static Future createMovieComment(MovieComment comment) async {
     String _url = '/MovieComments';
-    final DateTime _dateTime = DateTime.now();
     var _data = {
-      'mediaId': movieid,
-      'comment': comment,
-      'uid': uid,
-      'createTime': _dateTime,
-      'updateTime': _dateTime,
+      'mediaId': comment.mediaId,
+      'comment': comment.comment,
+      'uid': comment.uid,
+      'createTime': comment.createTime,
+      'updateTime': comment.updateTime,
       'like': 0,
     };
     await _http.request(_url, method: 'POST', data: _data);

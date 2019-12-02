@@ -4,6 +4,8 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/base_api.dart';
 import 'package:movie/customwidgets/custom_video_controls.dart';
+import 'package:movie/models/base_api_model/base_user.dart';
+import 'package:movie/models/base_api_model/movie_comment.dart';
 import 'package:movie/models/base_api_model/movie_stream_link.dart';
 import 'package:movie/models/enums/streamlink_type.dart';
 import 'package:movie/models/firebase/firebase_streamlink.dart';
@@ -74,21 +76,25 @@ void _addComment(Action action, Context<LiveStreamPageState> ctx) {
   ctx.state.commentController.clear();
   ctx.state.commentFocusNode.unfocus();
   final String comment = action.payload ?? '';
-  if (ctx.state.user != null && comment != '')
-    Firestore.instance
-        .collection('StreamLinks')
-        .document('Movie${ctx.state.id}')
-        .collection('Comments')
-        .add({
-      'userID': ctx.state.user.uid,
-      'userName': ctx.state.user.displayName,
-      'userPhotoUrl': ctx.state.user.photoUrl,
-      'like': 0,
-      'createTime': DateTime.now(),
-      'comment': comment
-    }).then((d) {
+  if (ctx.state.user != null && comment != '') {
+    final datetime = DateTime.now().toString();
+    final commentModel = MovieComment.fromParams(
+        uid: ctx.state.user.uid,
+        mediaId: ctx.state.id,
+        createTime: datetime,
+        updateTime: datetime,
+        like: 0,
+        u: BaseUser.fromParams(
+            uid: ctx.state.user.uid,
+            userName: ctx.state.user.displayName,
+            photoUrl: ctx.state.user.photoUrl),
+        comment: comment);
+    ctx.dispatch(LiveStreamPageActionCreator.insertComment(commentModel));
+    BaseApi.createMovieComment(commentModel).then((d) {
       ctx.state.comment = null;
+      if (d != null) commentModel.id = d.id;
     });
+  }
 }
 
 void _onInit(Action action, Context<LiveStreamPageState> ctx) {
@@ -127,11 +133,14 @@ void _onInit(Action action, Context<LiveStreamPageState> ctx) {
       }
     }
   });
+  BaseApi.getMovieComments(ctx.state.id).then((d) {
+    if (d != null) ctx.dispatch(LiveStreamPageActionCreator.setComment(d));
+  });
 }
 
 void _onDispose(Action action, Context<LiveStreamPageState> ctx) {
   ctx.state.videoControllers.forEach((f) => f.dispose());
-  ctx.state.chewieController.dispose();
+  ctx.state.chewieController?.dispose();
   if (ctx.state.youtubePlayerController != null)
     ctx.state.youtubePlayerController.dispose();
 }
