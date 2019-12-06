@@ -150,8 +150,7 @@ Widget buildView(
                     AccountPageActionCreator.navigatorPush('streamLinksPage'))),
             _buildGirdCell('images/c3po.png', 'MyRated',
                 ontap: () => dispatch(Theme3ActionCreator.onTestTapped())),
-            _buildGirdCell('images/r2d2.png', 'Setting',
-                ontap: () => dispatch(AccountPageActionCreator.themeChange())),
+            _buildGirdCell('images/r2d2.png', 'Setting', ontap: () {}),
           ],
         ),
       );

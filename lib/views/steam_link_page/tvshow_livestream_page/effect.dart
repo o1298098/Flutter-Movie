@@ -18,6 +18,7 @@ Effect<TvShowLiveStreamPageState> buildEffect() {
     TvShowLiveStreamPageAction.action: _onAction,
     TvShowLiveStreamPageAction.episodeCellTapped: _episodeCellTapped,
     TvShowLiveStreamPageAction.addComment: _addComment,
+    TvShowLiveStreamPageAction.episodesMoreTapped: _episodesMoreTapped,
     Lifecycle.initState: _onInit,
     Lifecycle.dispose: _onDispose,
   });
@@ -102,6 +103,35 @@ void _episodeCellTapped(
   }
 }
 
+void _episodesMoreTapped(
+    Action action, Context<TvShowLiveStreamPageState> ctx) async {
+  await Navigator.push(
+      ctx.context,
+      PageRouteBuilder(
+          opaque: false,
+          barrierLabel: '',
+          barrierColor: Colors.black.withOpacity(0.8),
+          barrierDismissible: true,
+          fullscreenDialog: false,
+          maintainState: true,
+          transitionDuration: Duration(milliseconds: 300),
+          transitionsBuilder: (_, animation, ___, widget) {
+            return SlideTransition(
+              position: Tween(begin: Offset(0, 1), end: Offset(0, .3)).animate(
+                  CurvedAnimation(parent: animation, curve: Curves.ease)),
+              child: widget,
+            );
+          },
+          pageBuilder: (_, animation, ___) {
+            return Material(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: Adapt.px(30)),
+                child: action.payload,
+              ),
+            );
+          }));
+}
+
 void initVideoPlayer(
     Context<TvShowLiveStreamPageState> ctx, TvShowStreamLinks streamLinks) {
   final _list = streamLinks.list;
@@ -115,7 +145,7 @@ void videoSourceChange(
     Context<TvShowLiveStreamPageState> ctx, TvShowStreamLink d) {
   int index = ctx.state.streamLinks.list.indexOf(d);
   if (ctx.state.chewieController != null) {
-    ctx.state.chewieController.dispose();
+    ctx.state.chewieController?.dispose();
     ctx.state.chewieController.videoPlayerController
         .seekTo(Duration(seconds: 0));
     ctx.state.chewieController.videoPlayerController.pause();

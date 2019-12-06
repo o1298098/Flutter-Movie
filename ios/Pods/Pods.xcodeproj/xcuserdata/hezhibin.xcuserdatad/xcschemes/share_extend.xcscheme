@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "31665D4FFEF4FF83DC7B1A10A3F436D7"
-               BuildableName = "libshare_extend.a"
+               BuildableName = "share_extend.framework"
                BlueprintName = "share_extend"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>

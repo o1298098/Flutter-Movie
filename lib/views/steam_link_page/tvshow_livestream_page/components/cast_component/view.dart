@@ -68,7 +68,7 @@ Widget buildView(CastState state, Dispatch dispatch, ViewService viewService) {
                   fontWeight: FontWeight.w600, fontSize: Adapt.px(30)),
             ),
             Text(
-              'more',
+              'More',
               style: TextStyle(fontSize: Adapt.px(30), color: Colors.grey),
             )
           ],

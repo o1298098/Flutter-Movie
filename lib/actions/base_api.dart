@@ -205,8 +205,7 @@ class BaseApi {
     UserMediaModel model;
     String _url =
         '/UserWatchlist/$uid?mediaType=$mediaType&page=$page&pageSize=$pageSize';
-    var r = await _http.request(_url,
-        cached: true, cacheDuration: Duration(days: 0));
+    var r = await _http.request(_url);
     if (r != null) model = UserMediaModel(r);
     return model;
   }

@@ -10,12 +10,14 @@ class Adapt {
   static double _pixelRatio;
   static var _ratio;
   static initContext(BuildContext context) {
-    mediaQuery = MediaQuery.of(context);
-    _width = mediaQuery.size.width;
-    _height = mediaQuery.size.height;
-    _topbarH = mediaQuery.padding.top;
-    _botbarH = mediaQuery.padding.bottom;
-    _pixelRatio = mediaQuery.devicePixelRatio;
+    if (mediaQuery == null) {
+      mediaQuery = MediaQuery.of(context);
+      _width = mediaQuery.size.width;
+      _height = mediaQuery.size.height;
+      _topbarH = mediaQuery.padding.top;
+      _botbarH = mediaQuery.padding.bottom;
+      _pixelRatio = mediaQuery.devicePixelRatio;
+    }
   }
 
   static init(int number) {

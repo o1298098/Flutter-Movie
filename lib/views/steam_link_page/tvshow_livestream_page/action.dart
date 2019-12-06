@@ -1,4 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:flutter/material.dart' hide Action;
 import 'package:movie/models/base_api_model/tvshow_comment.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/models/episodemodel.dart';
@@ -14,6 +15,7 @@ enum TvShowLiveStreamPageAction {
   showBottom,
   addComment,
   insertComment,
+  episodesMoreTapped,
 }
 
 class TvShowLiveStreamPageActionCreator {
@@ -52,5 +54,10 @@ class TvShowLiveStreamPageActionCreator {
 
   static Action insertComment(TvShowComment comment) {
     return Action(TvShowLiveStreamPageAction.insertComment, payload: comment);
+  }
+
+  static Action episodesMoreTapped(Widget child) {
+    return Action(TvShowLiveStreamPageAction.episodesMoreTapped,
+        payload: child);
   }
 }

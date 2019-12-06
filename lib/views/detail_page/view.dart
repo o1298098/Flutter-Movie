@@ -341,7 +341,7 @@ Widget buildView(
                 height: Adapt.px(8),
               ),
               Text(
-                  '${DateTime.parse(d.release_date.isEmpty ? '2020-01-01' : d.release_date).year}',
+                  '${DateTime.parse(d.release_date == null || d.release_date == '' ? '2020-01-01' : d.release_date).year}',
                   style: TextStyle(fontSize: Adapt.px(24))),
               SizedBox(
                 height: Adapt.px(8),
@@ -821,14 +821,15 @@ Widget buildView(
                           ),
                           _buildRecommendationShimmerCell()
                         ]
-                      : (state.detail.recommendations.results
-                          .map(_buildRecommendationCell)
-                          .toList()
-                            ..insert(
-                                0,
-                                SizedBox(
-                                  width: Adapt.px(40),
-                                )))),
+                      : (state.detail.recommendations?.results
+                              ?.map(_buildRecommendationCell)
+                              ?.toList() ??
+                          []
+                        ..insert(
+                            0,
+                            SizedBox(
+                              width: Adapt.px(40),
+                            )))),
             ),
             SizedBox(
               height: Adapt.px(30),

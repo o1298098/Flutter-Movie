@@ -18,7 +18,7 @@ A Flutter movie app build with Fish-Redux and TMDB api.
 ## Demo
 <a href='https://github.com/o1298098/Flutter-Movie/releases/download/demo/demo.apk'>Download</a>
 ## Flutter version
->Flutter 1.12.11  
+>Flutter 1.12.16  
 >Tools • Dart 2.7.0  
 ## Preview 
 <img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios.gif" width="150">  

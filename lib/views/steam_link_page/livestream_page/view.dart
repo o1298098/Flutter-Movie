@@ -4,11 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/customwidgets/sliverappbar_delegate.dart';
 import 'package:movie/models/base_api_model/movie_comment.dart';
+import 'package:movie/models/base_api_model/movie_stream_link.dart';
 import 'package:movie/models/enums/streamlink_type.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -46,17 +48,13 @@ Widget buildView(
       case 'WebView':
         return AspectRatio(
           aspectRatio: 16 / 9,
-          child: WebView(
-            key: ValueKey(state.streamAddress),
-            initialUrl: state.streamAddress,
-            javascriptMode: JavascriptMode.unrestricted,
-            debuggingEnabled: true,
-            navigationDelegate: (NavigationRequest request) {
-              if (request.url != state.streamAddress)
-                return NavigationDecision.prevent;
-              return NavigationDecision.navigate;
-            },
-          ),
+          child: InAppWebView(
+              initialUrl: state.streamAddress,
+              initialHeaders: {},
+              initialOptions: InAppWebViewWidgetOptions(
+                  inAppWebViewOptions: InAppWebViewOptions(
+                debuggingEnabled: true,
+              ))),
         );
       case 'other':
         return Container(
@@ -139,69 +137,96 @@ Widget buildView(
         ));
   }
 
-  Widget _buildLinkGroup() {
-    double padding = Adapt.px(30);
-    return SliverToBoxAdapter(
-      child: Container(
-          padding: EdgeInsets.all(padding),
-          child: Column(
+  Widget _buildStreamLinkCell(MovieStreamLink d) {
+    return GestureDetector(
+        onTap: () {
+          if (!d.selected)
+            dispatch(LiveStreamPageActionCreator.chipSelected(d));
+        },
+        child: Container(
+          margin: EdgeInsets.only(left: Adapt.px(30)),
+          padding: EdgeInsets.all(Adapt.px(20)),
+          width: Adapt.px(300),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(Adapt.px(20)),
+            border: Border.all(color: d.selected ? Colors.black : Colors.grey),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                'Stream Links',
-                style: TextStyle(
-                    fontSize: Adapt.px(40), fontWeight: FontWeight.w500),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text('${d.linkName}'),
+                  SizedBox(height: Adapt.px(15)),
+                  Text(
+                    '${d.language.name}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style:
+                        TextStyle(color: Colors.grey, fontSize: Adapt.px(30)),
+                  ),
+                ],
               ),
-              SizedBox(height: Adapt.px(30)),
               Container(
-                  padding: EdgeInsets.all(padding),
-                  width: Adapt.screenW() - padding * 2,
-                  decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(Adapt.px(20))),
-                  child: (state?.streamLinks?.length ?? 0) > 0
-                      ? Wrap(
-                          spacing: Adapt.px(20),
-                          children: state.streamLinks.map((f) {
-                            return ChoiceChip(
-                              key: ValueKey(f.linkName + f.streamLink),
-                              onSelected: (b) => dispatch(
-                                  LiveStreamPageActionCreator.chipSelected(f)),
-                              selectedColor: Color(0xFF505050),
-                              disabledColor: Colors.white,
-                              labelStyle: TextStyle(
-                                  color: f.selected
-                                      ? Color(0xFFFFFFFF)
-                                      : Colors.black,
-                                  fontSize: Adapt.px(30)),
-                              label: Text(f.linkName ?? ''),
-                              selected: f.selected,
-                            );
-                          }).toList())
-                      : Padding(
-                          padding: EdgeInsets.symmetric(vertical: Adapt.px(10)),
-                          child: Row(
-                            children: <Widget>[
-                              ShimmerCell(
-                                Adapt.px(120),
-                                Adapt.px(60),
-                                Adapt.px(30),
-                                baseColor: Colors.grey[300],
-                                highlightColor: Colors.grey[200],
-                              ),
-                              SizedBox(width: Adapt.px(20)),
-                              ShimmerCell(
-                                Adapt.px(120),
-                                Adapt.px(60),
-                                Adapt.px(30),
-                                baseColor: Colors.grey[300],
-                                highlightColor: Colors.grey[200],
-                              )
-                            ],
-                          ),
-                        ))
+                height: Adapt.px(45),
+                padding: EdgeInsets.all(Adapt.px(10)),
+                decoration: BoxDecoration(
+                    color: Color(0xFF505050),
+                    borderRadius: BorderRadius.circular(Adapt.px(25))),
+                child: Text(
+                  d.quality.name,
+                  style: TextStyle(color: Colors.white, fontSize: Adapt.px(20)),
+                ),
+              )
             ],
-          )),
+          ),
+        ));
+  }
+
+  Widget _buildShimmerLinkCell() {
+    return Container(
+      margin: EdgeInsets.only(left: Adapt.px(30)),
+      width: Adapt.px(300),
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(Adapt.px(20)),
+      ),
+    );
+  }
+
+  Widget _buildLinkGroup() {
+    return SliverToBoxAdapter(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+                Adapt.px(30), Adapt.px(30), Adapt.px(30), 0),
+            child: Text(
+              'Stream Links',
+              style: TextStyle(
+                  fontSize: Adapt.px(40), fontWeight: FontWeight.w500),
+            ),
+          ),
+          SizedBox(height: Adapt.px(30)),
+          SizedBox(
+              height: Adapt.px(130),
+              child: ListView(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                children:
+                    state.streamLinks?.map(_buildStreamLinkCell)?.toList() ??
+                        [
+                          _buildShimmerLinkCell(),
+                          _buildShimmerLinkCell(),
+                          _buildShimmerLinkCell()
+                        ],
+              )),
+          SizedBox(height: Adapt.px(30))
+        ],
+      ),
     );
   }
 

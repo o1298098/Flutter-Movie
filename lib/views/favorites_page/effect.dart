@@ -32,7 +32,7 @@ Future _onInit(Action action, Context<FavoritesPageState> ctx) async {
     ctx.dispatch(
         FavoritesPageActionCreator.setBackground(movie.data[0], Colors.black));
     ctx.dispatch(FavoritesPageActionCreator.setMovie(movie));
-    final tv = await BaseApi.getFavorite(ctx.state.user.uid, 'movie');
+    final tv = await BaseApi.getFavorite(ctx.state.user.uid, 'tv');
     if (tv != null) ctx.dispatch(FavoritesPageActionCreator.setTVShow(tv));
   }
 }

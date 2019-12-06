@@ -16,6 +16,6 @@ Widget buildView(
         switchOutCurve: Curves.easeOut,
         switchInCurve: Curves.easeIn,
         duration: Duration(milliseconds: 300),
-        child: viewService.buildComponent('theme${state.themeIndex + 1}')),
+        child: viewService.buildComponent('theme3')),
   );
 }

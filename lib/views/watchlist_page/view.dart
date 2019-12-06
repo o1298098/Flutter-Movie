@@ -156,6 +156,7 @@ Widget buildView(
             key: ValueKey(_list),
             itemCount: _list.length,
             viewportFraction: 0.85,
+            physics: BouncingScrollPhysics(),
             scale: 0.9,
             itemTapped: (index) =>
                 dispatch(WatchlistPageActionCreator.swiperCellTapped()),

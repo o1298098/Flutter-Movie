@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E4C4C799C14D439F70B839FAFFD23147"
-               BuildableName = "libshared_preferences.a"
+               BuildableName = "shared_preferences.framework"
                BlueprintName = "shared_preferences"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "89910176C769BA8265A0D619A4862E5C"
-               BuildableName = "libscreen.a"
+               BuildableName = "screen.framework"
                BlueprintName = "screen"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>

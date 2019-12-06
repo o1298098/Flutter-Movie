@@ -1,6 +1,7 @@
 import 'package:chewie/chewie.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/customwidgets/keepalive_widget.dart';
@@ -75,16 +76,13 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
       case 'WebView':
         return AspectRatio(
           aspectRatio: 16 / 9,
-          child: WebView(
-            key: ValueKey(state.streamAddress),
-            initialUrl: state.streamAddress,
-            javascriptMode: JavascriptMode.unrestricted,
-            navigationDelegate: (NavigationRequest request) {
-              if (request.url != state.streamAddress)
-                return NavigationDecision.prevent;
-              return NavigationDecision.navigate;
-            },
-          ),
+          child: InAppWebView(
+              initialUrl: state.streamAddress,
+              initialHeaders: {},
+              initialOptions: InAppWebViewWidgetOptions(
+                  inAppWebViewOptions: InAppWebViewOptions(
+                debuggingEnabled: true,
+              ))),
         );
       case 'other':
         return Container(
@@ -234,6 +232,40 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
         ));
   }
 
+  Widget _buildMoreStreamLinkCell(TvShowStreamLink d) {
+    return GestureDetector(
+        onTap: () {
+          if (d.episode != state.episodeNumber)
+            dispatch(TvShowLiveStreamPageActionCreator.episodeCellTapped(d));
+          Navigator.pop(viewService.context);
+        },
+        child: Container(
+          margin: EdgeInsets.only(left: Adapt.px(30)),
+          padding: EdgeInsets.all(Adapt.px(20)),
+          width: Adapt.screenW() / 2 - Adapt.px(45),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(Adapt.px(20)),
+            border: Border.all(
+                color: d.episode == state.episodeNumber
+                    ? Colors.black
+                    : Colors.grey),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text('Episode ${d.episode}'),
+              SizedBox(height: Adapt.px(15)),
+              Text(
+                '${d.linkName}',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Colors.grey, fontSize: Adapt.px(30)),
+              ),
+            ],
+          ),
+        ));
+  }
+
   Widget _buildShimmerLinkCell() {
     return Container(
       margin: EdgeInsets.only(left: Adapt.px(30)),
@@ -245,23 +277,47 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
     );
   }
 
+  Widget _buildEpisodesMore() {
+    return SizedBox(
+      height: Adapt.px(300),
+      child: Wrap(
+        runSpacing: Adapt.px(30),
+        children: state.streamLinks.list.map(_buildMoreStreamLinkCell).toList(),
+      ),
+    );
+  }
+
   Widget _buildStreamLinkList() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
           padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-          child: Text.rich(TextSpan(children: <TextSpan>[
-            TextSpan(
-              text: 'Episodes',
-              style: TextStyle(
-                  fontWeight: FontWeight.w600, fontSize: Adapt.px(30)),
-            ),
-            TextSpan(
-              text: ' ${state.streamLinks?.list?.length ?? ''}',
-              style: TextStyle(fontSize: Adapt.px(28), color: Colors.grey),
-            )
-          ])),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text.rich(TextSpan(children: <TextSpan>[
+                TextSpan(
+                  text: 'Episodes',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600, fontSize: Adapt.px(30)),
+                ),
+                TextSpan(
+                  text: ' ${state.streamLinks?.list?.length ?? ''}',
+                  style: TextStyle(fontSize: Adapt.px(28), color: Colors.grey),
+                )
+              ])),
+              InkWell(
+                onTap: () => dispatch(
+                    TvShowLiveStreamPageActionCreator.episodesMoreTapped(
+                        _buildEpisodesMore())),
+                child: Text(
+                  'More',
+                  style: TextStyle(fontSize: Adapt.px(30), color: Colors.grey),
+                ),
+              )
+            ],
+          ),
         ),
         SizedBox(height: Adapt.px(30)),
         SizedBox(
