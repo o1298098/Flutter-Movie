@@ -6,8 +6,13 @@ import 'package:chewie/src/chewie_player.dart';
 import 'package:chewie/src/chewie_progress_colors.dart';
 import 'package:chewie/src/cupertino_progress_bar.dart';
 import 'package:chewie/src/utils.dart';
+import 'package:dart_chromecast/casting/cast_device.dart';
+import 'package:dart_chromecast/casting/cast_media.dart';
+import 'package:dart_chromecast/casting/cast_sender.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:movie/customwidgets/device_picker.dart';
+import 'package:movie/customwidgets/service_discovery.dart';
 import 'package:open_iconic_flutter/open_iconic_flutter.dart';
 import 'package:video_player/video_player.dart';
 
@@ -34,9 +39,26 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
   final marginSize = 5.0;
   Timer _expandCollapseTimer;
   Timer _initTimer;
+  ServiceDiscovery _serviceDiscovery;
+  CastSender _castSender;
+
+  bool connected = false;
 
   VideoPlayerController controller;
   ChewieController chewieController;
+  void _connectToDevice(CastDevice device) async {
+    _castSender = CastSender(device);
+    connected = await _castSender.connect();
+    if (!connected) {
+      // show error message...
+      return;
+    }
+
+    setState(() {});
+
+    //if you want to connect to your custom app, send AppID as a parameter i.e. _castSender.launch("appId")
+    _castSender.launch();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +111,13 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
   }
 
   @override
+  void initState() {
+    _serviceDiscovery = ServiceDiscovery();
+    _serviceDiscovery.startDiscovery();
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _dispose();
     super.dispose();
@@ -99,6 +128,8 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
     _hideTimer?.cancel();
     _expandCollapseTimer?.cancel();
     _initTimer?.cancel();
+    _castSender?.stop();
+    _castSender?.disconnect();
   }
 
   @override
@@ -199,6 +230,54 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
                   OpenIconicIcons.chevronLeft,
                   color: iconColor,
                   size: 12.0,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  GestureDetector _buildChromeCastButton(
+    Color backgroundColor,
+    Color iconColor,
+    double barHeight,
+    double buttonPadding,
+  ) {
+    return GestureDetector(
+      onTap: () {
+        showGeneralDialog(
+            context: context,
+            barrierLabel: '',
+            barrierColor: Colors.black87,
+            transitionDuration: Duration(milliseconds: 200),
+            barrierDismissible: true,
+            pageBuilder: (_, __, ___) => DevicePicker(
+                videoController: controller,
+                castSender: _castSender,
+                serviceDiscovery: _serviceDiscovery,
+                onDevicePicked: _connectToDevice));
+      },
+      child: AnimatedOpacity(
+        opacity: _hideStuff ? 0.0 : 1.0,
+        duration: Duration(milliseconds: 300),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10.0),
+          child: BackdropFilter(
+            filter: ui.ImageFilter.blur(sigmaX: 10.0),
+            child: Container(
+              height: barHeight,
+              padding: EdgeInsets.only(
+                left: buttonPadding,
+                right: buttonPadding,
+              ),
+              color: backgroundColor,
+              child: Center(
+                child: Icon(
+                  Icons.cast,
+                  color: iconColor,
+                  size: 15.0,
                 ),
               ),
             ),
@@ -443,6 +522,8 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
               ? _buildMuteButton(controller, backgroundColor, iconColor,
                   barHeight, buttonPadding)
               : Container(),
+          _buildChromeCastButton(
+              backgroundColor, iconColor, barHeight, buttonPadding)
         ],
       ),
     );

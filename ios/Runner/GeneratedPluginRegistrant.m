@@ -28,6 +28,12 @@
 @import flutter_inappbrowser;
 #endif
 
+#if __has_include(<flutter_mdns_plugin/FlutterMdnsPlugin.h>)
+#import <flutter_mdns_plugin/FlutterMdnsPlugin.h>
+#else
+@import flutter_mdns_plugin;
+#endif
+
 #if __has_include(<google_sign_in/GoogleSignInPlugin.h>)
 #import <google_sign_in/GoogleSignInPlugin.h>
 #else
@@ -95,6 +101,7 @@
   [FLTFirebaseAuthPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseAuthPlugin"]];
   [FLTFirebaseCorePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseCorePlugin"]];
   [InAppBrowserFlutterPlugin registerWithRegistrar:[registry registrarForPlugin:@"InAppBrowserFlutterPlugin"]];
+  [FlutterMdnsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterMdnsPlugin"]];
   [FLTGoogleSignInPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleSignInPlugin"]];
   [FLTPathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPathProviderPlugin"]];
   [PermissionHandlerPlugin registerWithRegistrar:[registry registrarForPlugin:@"PermissionHandlerPlugin"]];

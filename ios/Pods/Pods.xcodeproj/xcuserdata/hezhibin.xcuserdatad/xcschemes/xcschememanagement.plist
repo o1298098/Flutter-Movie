@@ -134,6 +134,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>flutter_mdns_plugin.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>gRPC-C++-gRPCCertificates-Cpp.xcscheme</key>
 		<dict>
 			<key>isShown</key>

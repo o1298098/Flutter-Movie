@@ -239,6 +239,8 @@ PODS:
   - Flutter (1.0.0)
   - flutter_inappbrowser (0.0.1):
     - Flutter
+  - flutter_mdns_plugin (0.0.1):
+    - Flutter
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -333,6 +335,7 @@ DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
   - flutter_inappbrowser (from `.symlinks/plugins/flutter_inappbrowser/ios`)
+  - flutter_mdns_plugin (from `.symlinks/plugins/flutter_mdns_plugin/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
@@ -382,6 +385,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_inappbrowser:
     :path: ".symlinks/plugins/flutter_inappbrowser/ios"
+  flutter_mdns_plugin:
+    :path: ".symlinks/plugins/flutter_mdns_plugin/ios"
   google_sign_in:
     :path: ".symlinks/plugins/google_sign_in/ios"
   path_provider:
@@ -421,6 +426,7 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: ebd2ea79ee38db0cb5f5167b17a0d387e1cc7b6e
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_inappbrowser: cd1fa70c62958a5674ffba8ecc3f3cfae845466d
+  flutter_mdns_plugin: 3b8fa566cc39005527b515c77243cfdba77b70bc
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   google_sign_in: decaf71f56e22fb1dc179de062177ae6df415716
   GoogleAppMeasurement: dfe55efa543e899d906309eaaac6ca26d249862f
