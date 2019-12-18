@@ -1,6 +1,8 @@
 import 'package:dart_chromecast/casting/cast_device.dart';
 import 'package:dart_chromecast/casting/cast_media.dart';
+import 'package:dart_chromecast/casting/cast_media_status.dart';
 import 'package:dart_chromecast/casting/cast_sender.dart';
+import 'package:dart_chromecast/casting/cast_session.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mdns_plugin/flutter_mdns_plugin.dart';
@@ -11,15 +13,9 @@ import 'package:video_player/video_player.dart';
 
 class DevicePicker extends StatefulWidget {
   final ServiceDiscovery serviceDiscovery;
-  final Function(CastDevice) onDevicePicked;
   final VideoPlayerController videoController;
-  final CastSender castSender;
 
-  DevicePicker(
-      {this.serviceDiscovery,
-      this.onDevicePicked,
-      this.videoController,
-      this.castSender});
+  DevicePicker({this.serviceDiscovery, this.videoController});
 
   @override
   _DevicePickerState createState() => _DevicePickerState();
@@ -27,8 +23,12 @@ class DevicePicker extends StatefulWidget {
 
 class _DevicePickerState extends State<DevicePicker> {
   List<CastDevice> _devices = [];
-  bool deviceSelected = false;
 
+  bool connected = false;
+  bool _isPlaying = false;
+  CastSender _castSender;
+  double _position = 0.0;
+  @override
   void initState() {
     super.initState();
     widget.serviceDiscovery.changes.listen((List<ChangeRecord> _) {
@@ -37,16 +37,35 @@ class _DevicePickerState extends State<DevicePicker> {
     _updateDevices();
   }
 
-  _updateDevices() {
-    _devices =
-        widget.serviceDiscovery.foundServices.map((ServiceInfo serviceInfo) {
-      return CastDevice(
-          name: serviceInfo.name,
-          type: serviceInfo.type,
-          host: serviceInfo.hostName,
-          port: serviceInfo.port);
-    }).toList();
+  @override
+  void dispose() {
+    if (!_castSender.connectionDidClose) _castSender.disconnect();
+    super.dispose();
+  }
+
+  void _connectToDevice(CastDevice device) async {
+    _castSender = CastSender(device);
+    connected = await _castSender.connect();
+    if (!connected) {
+      // show error message...
+      return;
+    }
     setState(() {});
+    //if you want to connect to your custom app, send AppID as a parameter i.e. _castSender.launch("appId")
+    _castSender.launch();
+  }
+
+  _updateDevices() {
+    setState(() {
+      _devices =
+          widget.serviceDiscovery.foundServices.map((ServiceInfo serviceInfo) {
+        return CastDevice(
+            name: serviceInfo.name,
+            type: serviceInfo.type,
+            host: serviceInfo.hostName,
+            port: serviceInfo.port);
+      }).toList();
+    });
   }
 
   Widget _buildListViewItem(CastDevice castDevice) {
@@ -54,12 +73,25 @@ class _DevicePickerState extends State<DevicePicker> {
       children: <Widget>[
         ListTile(
           title: Text(castDevice.friendlyName),
-          onTap: () {
-            if (null != widget.onDevicePicked) {
-              widget.onDevicePicked(castDevice);
-              deviceSelected = true;
-              setState(() {});
-            }
+          onTap: () async {
+            _connectToDevice(castDevice);
+            connected = true;
+            setState(() {});
+            await Future.delayed(Duration(milliseconds: 300), () {
+              _castSender?.load(CastMedia(
+                  contentId: widget.videoController.dataSource,
+                  title: 'Test video',
+                  autoPlay: true));
+            });
+            _castSender.castMediaStatusController.stream.listen((onData) {
+              setState(() {
+                _isPlaying = onData.isPlaying;
+              });
+            }, onDone: () {
+              setState(() {
+                connected = false;
+              });
+            });
           },
         ),
         Divider(
@@ -81,12 +113,6 @@ class _DevicePickerState extends State<DevicePicker> {
   }
 
   Widget _buildControlPanel() {
-    CastSender _castSender = widget.castSender;
-    _castSender.load(CastMedia(
-        contentId: widget.videoController.dataSource,
-        title: 'Test video',
-        autoPlay: true));
-
     return Column(children: <Widget>[
       SizedBox(height: Adapt.px(20)),
       Text(
@@ -103,7 +129,8 @@ class _DevicePickerState extends State<DevicePicker> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              _buildControlButton(Icons.play_arrow, () => _castSender.play()),
+              _buildControlButton(_isPlaying ? Icons.pause : Icons.play_arrow,
+                  () => _isPlaying ? _castSender.pause() : _castSender.play()),
               _buildControlButton(Icons.pause, () => _castSender.pause()),
               _buildControlButton(
                   Icons.fast_rewind,
@@ -121,14 +148,13 @@ class _DevicePickerState extends State<DevicePicker> {
       ),
       InkWell(
         onTap: () {
-          setState(() {
-            _castSender.stop();
-            _castSender.disconnect().then((d) {
-              if (d)
-                setState(() {
-                  deviceSelected = false;
-                });
-            });
+          _castSender.castSessionController.close();
+          _castSender.stop();
+          _castSender.disconnect().then((d) {
+            if (d)
+              setState(() {
+                connected = false;
+              });
           });
         },
         child: Container(
@@ -171,7 +197,7 @@ class _DevicePickerState extends State<DevicePicker> {
             ),
             Expanded(
                 child: _devices.length != 0
-                    ? !deviceSelected
+                    ? !connected
                         ? MediaQuery.removePadding(
                             context: context,
                             removeTop: true,

@@ -20,10 +20,11 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_mdns_plugin:
-    git: https://github.com/terrabythia/flutter_mdns_plugin.git
+    git: 
+      url: https://github.com/terrabythia/flutter_mdns_plugin.git
+      ref: master
   observable: any
-  dart_chromecast:
-    git: https://github.com/terrabythia/dart_chromecast.git
+  dart_chromecast: ^0.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

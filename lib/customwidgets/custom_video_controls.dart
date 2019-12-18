@@ -40,25 +40,9 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
   Timer _expandCollapseTimer;
   Timer _initTimer;
   ServiceDiscovery _serviceDiscovery;
-  CastSender _castSender;
-
-  bool connected = false;
 
   VideoPlayerController controller;
   ChewieController chewieController;
-  void _connectToDevice(CastDevice device) async {
-    _castSender = CastSender(device);
-    connected = await _castSender.connect();
-    if (!connected) {
-      // show error message...
-      return;
-    }
-
-    setState(() {});
-
-    //if you want to connect to your custom app, send AppID as a parameter i.e. _castSender.launch("appId")
-    _castSender.launch();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,8 +112,6 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
     _hideTimer?.cancel();
     _expandCollapseTimer?.cancel();
     _initTimer?.cancel();
-    _castSender?.stop();
-    _castSender?.disconnect();
   }
 
   @override
@@ -247,6 +229,7 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
   ) {
     return GestureDetector(
       onTap: () {
+        controller.pause();
         showGeneralDialog(
             context: context,
             barrierLabel: '',
@@ -255,9 +238,7 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
             barrierDismissible: true,
             pageBuilder: (_, __, ___) => DevicePicker(
                 videoController: controller,
-                castSender: _castSender,
-                serviceDiscovery: _serviceDiscovery,
-                onDevicePicked: _connectToDevice));
+                serviceDiscovery: _serviceDiscovery));
       },
       child: AnimatedOpacity(
         opacity: _hideStuff ? 0.0 : 1.0,

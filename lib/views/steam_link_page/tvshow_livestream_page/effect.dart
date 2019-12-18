@@ -168,13 +168,17 @@ void videoSourceChange(
     else {
       ctx.state.youtubePlayerController.load(ctx.state.streamAddress);
     }
-  } else
-    ctx.state.chewieController = ChewieController(
-        customControls: CustomCupertinoControls(
-          backgroundColor: Colors.black,
-          iconColor: Colors.white,
-        ),
-        autoInitialize: true,
-        autoPlay: true,
-        videoPlayerController: ctx.state.videoControllers[index]);
+  } else {
+    ctx.state.videoControllers[index].initialize().then((d) {
+      ctx.state.chewieController = ChewieController(
+          customControls: CustomCupertinoControls(
+            backgroundColor: Colors.black,
+            iconColor: Colors.white,
+          ),
+          allowedScreenSleep: false,
+          autoPlay: true,
+          aspectRatio: ctx.state.videoControllers[index].value.aspectRatio,
+          videoPlayerController: ctx.state.videoControllers[index]);
+    });
+  }
 }
