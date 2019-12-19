@@ -21,6 +21,7 @@ import 'package:movie/views/peopledetail_page/page.dart';
 import 'package:movie/views/register_page/page.dart';
 import 'package:movie/views/seasondetail_page/page.dart';
 import 'package:movie/views/seasons_page/page.dart';
+import 'package:movie/views/setting_page/page.dart';
 import 'package:movie/views/steam_link_page/addlink_page/page.dart';
 import 'package:movie/views/steam_link_page/allstreamlink_page/page.dart';
 import 'package:movie/views/steam_link_page/livestream_page/page.dart';
@@ -43,18 +44,7 @@ import 'package:movie/views/detail_page/page.dart' as detail;
 
 Future _init() async {
   if (Platform.isAndroid)
-    Map<PermissionGroup, PermissionStatus> permissions =
-        await PermissionHandler()
-            .requestPermissions([PermissionGroup.contacts]);
-  /*SharedPreferences prefs = await SharedPreferences.getInstance();
-  var session = prefs.getString('loginsession');
-  String accessToken = prefs.getString('accessTokenV4');
-  if (session == null) {
-    await ApiHelper.createGuestSession();
-  } else {
-    ApiHelper.session = session;
-  }
-  if (accessToken != null) ApiHelper.accessTokenV4 = accessToken;*/
+    await PermissionHandler().requestPermissions([PermissionGroup.contacts]);
   setLocaleInfo('zh', TimelineInfoCN());
   setLocaleInfo('en', TimelineInfoEN());
   setLocaleInfo('Ja', TimelineInfoJA());
@@ -92,6 +82,7 @@ Future<Widget> createApp() async {
       'tvShowLiveStreamPage': TvShowLiveStreamPage(),
       'seasonLinkPage': SeasonLinkPage(),
       'testPage': TestPage(),
+      'settingPage': SettingPage()
     },
     visitor: (String path, Page<Object, dynamic> page) {
       if (page.isTypeof<GlobalBaseState>()) {

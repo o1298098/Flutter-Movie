@@ -49,6 +49,7 @@ Widget buildView(
         return AspectRatio(
           aspectRatio: 16 / 9,
           child: InAppWebView(
+              key: ValueKey(state.streamAddress),
               initialUrl: state.streamAddress,
               initialHeaders: {},
               initialOptions: InAppWebViewWidgetOptions(
@@ -65,7 +66,13 @@ Widget buildView(
               ? Chewie(
                   key: ValueKey(state.chewieController),
                   controller: state.chewieController)
-              : SizedBox(),
+              : SizedBox(
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation(Colors.white),
+                    ),
+                  ),
+                ),
         );
       default:
         return Container(

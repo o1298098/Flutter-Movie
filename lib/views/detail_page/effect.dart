@@ -39,25 +39,27 @@ Future _onInit(Action action, Context<MovieDetailPageState> ctx) async {
   ctx.state.animationController = AnimationController(
       vsync: ticker, duration: Duration(milliseconds: 2000));
   ctx.state.scrollController = ScrollController();
-  BaseApi.hasMovieStreamLinks(ctx.state.mediaId).then((d) {
-    if (d) ctx.dispatch(MovieDetailPageActionCreator.setHasStreamLink(true));
+  Future.delayed(Duration(milliseconds: 300), () async {
+    BaseApi.hasMovieStreamLinks(ctx.state.mediaId).then((d) {
+      if (d) ctx.dispatch(MovieDetailPageActionCreator.setHasStreamLink(true));
+    });
+    if (_id == null) return;
+    var r = await ApiHelper.getMovieDetail(_id,
+        appendtoresponse:
+            'keywords,recommendations,credits,external_ids,release_dates,images,videos');
+    if (r != null) ctx.dispatch(MovieDetailPageActionCreator.updateDetail(r));
+    var images = await ApiHelper.getMovieImages(_id);
+    if (images != null)
+      ctx.dispatch(MovieDetailPageActionCreator.onSetImages(images));
+    final _user = GlobalStore.store.getState().user;
+    if (_user != null) {
+      var accountstate = await BaseApi.getAccountState(
+          _user.uid, ctx.state.mediaId, MediaType.movie);
+      if (accountstate != null)
+        ctx.dispatch(
+            MovieDetailPageActionCreator.onSetAccountState(accountstate));
+    }
   });
-  if (_id == null) return;
-  var r = await ApiHelper.getMovieDetail(_id,
-      appendtoresponse:
-          'keywords,recommendations,credits,external_ids,release_dates,images,videos');
-  if (r != null) ctx.dispatch(MovieDetailPageActionCreator.updateDetail(r));
-  var images = await ApiHelper.getMovieImages(_id);
-  if (images != null)
-    ctx.dispatch(MovieDetailPageActionCreator.onSetImages(images));
-  final _user = GlobalStore.store.getState().user;
-  if (_user != null) {
-    var accountstate = await BaseApi.getAccountState(
-        _user.uid, ctx.state.mediaId, MediaType.movie);
-    if (accountstate != null)
-      ctx.dispatch(
-          MovieDetailPageActionCreator.onSetAccountState(accountstate));
-  }
 }
 
 void _onDispose(Action action, Context<MovieDetailPageState> ctx) {

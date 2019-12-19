@@ -8,6 +8,7 @@ enum AccountPageAction {
   init,
   logout,
   navigatorPush,
+  settingCellTapped,
   themeChanged
 }
 
@@ -35,5 +36,9 @@ class AccountPageActionCreator {
 
   static Action themeChange() {
     return const Action(AccountPageAction.themeChanged);
+  }
+
+  static Action settingCellTapped() {
+    return const Action(AccountPageAction.settingCellTapped);
   }
 }

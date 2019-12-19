@@ -39,7 +39,7 @@ class _DevicePickerState extends State<DevicePicker> {
 
   @override
   void dispose() {
-    if (!_castSender.connectionDidClose) _castSender.disconnect();
+    if (!(_castSender?.connectionDidClose ?? true)) _castSender.disconnect();
     super.dispose();
   }
 

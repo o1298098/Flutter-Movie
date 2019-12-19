@@ -35,8 +35,8 @@ A Flutter movie app build with Fish-Redux and TMDB api.
 <img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios17.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios19.gif" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios20.png" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios22.png" width="150">
 
 ## Other
-homepage based on https://dribbble.com/shots/6070474--Movie  
-seasonpage based on https://dribbble.com/shots/6379112-TV-Streaming-App
+home page based on https://dribbble.com/shots/6070474--Movie  
+season page based on https://dribbble.com/shots/6379112-TV-Streaming-App
 
 ## LICENSE
     Copyright 2019 o1298098

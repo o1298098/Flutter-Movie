@@ -1,3 +1,4 @@
+import 'package:chewie/chewie.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/movie_comment.dart';
@@ -13,11 +14,16 @@ enum LiveStreamPageAction {
   commentChanged,
   addComment,
   insertComment,
+  videoPlayerUpdate,
 }
 
 class LiveStreamPageActionCreator {
   static Action onAction() {
     return const Action(LiveStreamPageAction.action);
+  }
+
+  static Action videoPlayerUpdate() {
+    return Action(LiveStreamPageAction.videoPlayerUpdate);
   }
 
   static Action setStreamLinks(List<MovieStreamLink> streamLinks) {

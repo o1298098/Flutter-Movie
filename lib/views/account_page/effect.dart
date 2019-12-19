@@ -5,6 +5,7 @@ import 'package:movie/actions/apihelper.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/globalbasestate/action.dart';
 import 'package:movie/globalbasestate/store.dart';
+import 'package:movie/views/setting_page/page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'action.dart';
 import 'state.dart';
@@ -18,6 +19,7 @@ Effect<AccountPageState> buildEffect() {
     AccountPageAction.login: _onLogin,
     AccountPageAction.logout: _onLogout,
     AccountPageAction.navigatorPush: _navigatorPush,
+    AccountPageAction.settingCellTapped: _settingCellTapped,
   });
 }
 
@@ -77,4 +79,10 @@ Future _navigatorPush(Action action, Context<AccountPageState> ctx) async {
     Object data = action.payload[1];
     await Navigator.of(ctx.context).pushNamed(routerName, arguments: data);
   }
+}
+
+void _settingCellTapped(Action action, Context<AccountPageState> ctx) async {
+  Navigator.of(ctx.context).push(PageRouteBuilder(pageBuilder: (_, __, ___) {
+    return SettingPage().buildPage(null);
+  }));
 }

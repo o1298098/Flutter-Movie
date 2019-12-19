@@ -503,6 +503,7 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
               ? _buildMuteButton(controller, backgroundColor, iconColor,
                   barHeight, buttonPadding)
               : Container(),
+          SizedBox(width: 10),
           _buildChromeCastButton(
               backgroundColor, iconColor, barHeight, buttonPadding)
         ],

@@ -40,28 +40,31 @@ Future _onInit(Action action, Context<TVDetailPageState> ctx) async {
     /*var paletteGenerator = await PaletteGenerator.fromImageProvider(
           CachedNetworkImageProvider(ImageUrl.getUrl(ctx.state.posterPic, ImageSize.w300)));
       ctx.dispatch(TVDetailPageActionCreator.onsetColor(paletteGenerator));*/
-    var r = await ApiHelper.getTVDetail(ctx.state.tvid,
-        appendtoresponse:
-            'keywords,recommendations,credits,external_ids,content_ratings');
-    if (r != null) {
-      ctx.dispatch(TVDetailPageActionCreator.onInit(r));
-      ctx.state.animationController.forward();
-    }
-    var l = await ApiHelper.getTVReviews(ctx.state.tvid);
-    if (l != null) ctx.dispatch(TVDetailPageActionCreator.onSetReviews(l));
+    Future.delayed(Duration(milliseconds: 300), () async {
+      var r = await ApiHelper.getTVDetail(ctx.state.tvid,
+          appendtoresponse:
+              'keywords,recommendations,credits,external_ids,content_ratings');
+      if (r != null) {
+        ctx.dispatch(TVDetailPageActionCreator.onInit(r));
+        ctx.state.animationController.forward();
+      }
+      var l = await ApiHelper.getTVReviews(ctx.state.tvid);
+      if (l != null) ctx.dispatch(TVDetailPageActionCreator.onSetReviews(l));
 
-    var k = await ApiHelper.getTVImages(ctx.state.tvid);
-    if (k != null) ctx.dispatch(TVDetailPageActionCreator.onSetImages(k));
-    var f = await ApiHelper.getTVVideo(ctx.state.tvid);
-    if (f != null) ctx.dispatch(TVDetailPageActionCreator.onSetVideos(f));
+      var k = await ApiHelper.getTVImages(ctx.state.tvid);
+      if (k != null) ctx.dispatch(TVDetailPageActionCreator.onSetImages(k));
+      var f = await ApiHelper.getTVVideo(ctx.state.tvid);
+      if (f != null) ctx.dispatch(TVDetailPageActionCreator.onSetVideos(f));
 
-    final _user = GlobalStore.store.getState().user;
-    if (_user != null) {
-      var accountstate = await BaseApi.getAccountState(
-          _user.uid, ctx.state.tvid, MediaType.tv);
-      if (accountstate != null)
-        ctx.dispatch(TVDetailPageActionCreator.onSetAccountState(accountstate));
-    }
+      final _user = GlobalStore.store.getState().user;
+      if (_user != null) {
+        var accountstate = await BaseApi.getAccountState(
+            _user.uid, ctx.state.tvid, MediaType.tv);
+        if (accountstate != null)
+          ctx.dispatch(
+              TVDetailPageActionCreator.onSetAccountState(accountstate));
+      }
+    });
   } on Exception catch (e) {}
 }
 

@@ -88,7 +88,6 @@ void _episodeCellTapped(
     Action action, Context<TvShowLiveStreamPageState> ctx) async {
   final TvShowStreamLink e = action.payload;
   if (e != null) {
-    videoSourceChange(ctx, e);
     final Episode episode = ctx.state.season.episodes
         .singleWhere((d) => d.episode_number == e.episode);
     ctx.dispatch(TvShowLiveStreamPageActionCreator.episodeChanged(episode));
@@ -96,6 +95,7 @@ void _episodeCellTapped(
         Adapt.px(330) * (e.episode - 1),
         curve: Curves.ease,
         duration: Duration(milliseconds: 300));
+    videoSourceChange(ctx, e);
     final comment = await BaseApi.getTvShowComments(
         ctx.state.tvid, ctx.state.season.season_number, e.episode);
     if (comment != null)
@@ -141,20 +141,20 @@ void initVideoPlayer(
   }
 }
 
-void videoSourceChange(
-    Context<TvShowLiveStreamPageState> ctx, TvShowStreamLink d) {
+Future videoSourceChange(
+    Context<TvShowLiveStreamPageState> ctx, TvShowStreamLink d) async {
   int index = ctx.state.streamLinks.list.indexOf(d);
   if (ctx.state.chewieController != null) {
     ctx.state.chewieController?.dispose();
     ctx.state.chewieController.videoPlayerController
         .seekTo(Duration(seconds: 0));
     ctx.state.chewieController.videoPlayerController.pause();
+    ctx.state.chewieController = null;
   }
 
   ctx.state.streamLinkType = d.streamLinkType;
   if (d.streamLinkType.name == 'WebView') {
     ctx.state.streamAddress = d.streamLink;
-    ctx.state.chewieController = null;
   } else if (d.streamLinkType.name == 'YouTube') {
     ctx.state.streamAddress = YoutubePlayer.convertUrlToId(d.streamLink);
     ctx.state.chewieController = null;
@@ -169,16 +169,18 @@ void videoSourceChange(
       ctx.state.youtubePlayerController.load(ctx.state.streamAddress);
     }
   } else {
-    ctx.state.videoControllers[index].initialize().then((d) {
-      ctx.state.chewieController = ChewieController(
-          customControls: CustomCupertinoControls(
-            backgroundColor: Colors.black,
-            iconColor: Colors.white,
-          ),
-          allowedScreenSleep: false,
-          autoPlay: true,
-          aspectRatio: ctx.state.videoControllers[index].value.aspectRatio,
-          videoPlayerController: ctx.state.videoControllers[index]);
-    });
+    await ctx.state.videoControllers[index].initialize();
+    ctx.state.chewieController = ChewieController(
+        customControls: CustomCupertinoControls(
+          backgroundColor: Colors.black,
+          iconColor: Colors.white,
+        ),
+        allowedScreenSleep: false,
+        autoInitialize: true,
+        autoPlay: true,
+        aspectRatio: ctx.state.videoControllers[index].value.aspectRatio,
+        videoPlayerController: ctx.state.videoControllers[index]);
   }
+  ctx.dispatch(
+      TvShowLiveStreamPageActionCreator.setStreamLinks(ctx.state.streamLinks));
 }

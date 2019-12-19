@@ -75,6 +75,7 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
         );
       case 'WebView':
         return AspectRatio(
+          key: ValueKey(state.streamAddress),
           aspectRatio: 16 / 9,
           child: InAppWebView(
               initialUrl: state.streamAddress,
@@ -93,7 +94,13 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
               ? Chewie(
                   key: ValueKey(state.chewieController),
                   controller: state.chewieController)
-              : SizedBox(),
+              : SizedBox(
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation(Colors.white),
+                    ),
+                  ),
+                ),
         );
       default:
         return Container(

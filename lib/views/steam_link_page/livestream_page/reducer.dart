@@ -1,3 +1,4 @@
+import 'package:chewie/chewie.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/movie_comment.dart';
@@ -14,13 +15,22 @@ Reducer<LiveStreamPageState> buildReducer() {
       LiveStreamPageAction.setStreamLinks: _setStreamLinks,
       LiveStreamPageAction.commentChanged: _commentChanged,
       LiveStreamPageAction.setComment: _setComment,
-      LiveStreamPageAction.insertComment: _insertComment
+      LiveStreamPageAction.insertComment: _insertComment,
+      LiveStreamPageAction.videoPlayerUpdate: _videoPlayerUpdate
     },
   );
 }
 
 LiveStreamPageState _onAction(LiveStreamPageState state, Action action) {
   final LiveStreamPageState newState = state.clone();
+  return newState;
+}
+
+LiveStreamPageState _videoPlayerUpdate(
+    LiveStreamPageState state, Action action) {
+  final LiveStreamPageState newState = state.clone();
+  newState.chewieController = state.chewieController;
+  newState.streamAddress = state.streamAddress;
   return newState;
 }
 

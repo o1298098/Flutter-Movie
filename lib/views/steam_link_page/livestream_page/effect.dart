@@ -30,49 +30,13 @@ void _chipSelected(Action action, Context<LiveStreamPageState> ctx) {
   final MovieStreamLink d = action.payload;
   if (d != null) {
     assert(!d.selected);
-    int index = ctx.state.streamLinks.indexOf(d);
     ctx.state.streamLinks.forEach((f) => f.selected = false);
     d.selected = true;
-    if (ctx.state.chewieController != null) {
-      ctx.state.chewieController.dispose();
-      ctx.state.chewieController.videoPlayerController
-          .seekTo(Duration(seconds: 0));
-      ctx.state.chewieController.videoPlayerController.pause();
-    }
 
     ctx.state.streamLinkType = d.streamLinkType;
-    if (d.streamLinkType.name == 'WebView') {
-      ctx.state.streamAddress = d.streamLink;
-      ctx.state.chewieController = null;
-    } else if (d.streamLinkType.name == 'YouTube') {
-      ctx.state.streamAddress = YoutubePlayer.convertUrlToId(d.streamLink);
-      ctx.state.chewieController = null;
-      if (ctx.state.youtubePlayerController == null)
-        ctx.state.youtubePlayerController = new YoutubePlayerController(
-          initialVideoId: ctx.state.streamAddress,
-          flags: YoutubePlayerFlags(
-            autoPlay: true,
-          ),
-        );
-      else {
-        ctx.state.youtubePlayerController.load(ctx.state.streamAddress);
-      }
-    } else {
-      ctx.state.videoControllers[index].initialize().then((d) {
-        ctx.state.chewieController = ChewieController(
-            customControls: CustomCupertinoControls(
-              backgroundColor: Colors.black,
-              iconColor: Colors.white,
-            ),
-            allowedScreenSleep: false,
-            autoPlay: true,
-            aspectRatio: ctx.state.videoControllers[index].value.aspectRatio,
-            videoPlayerController: ctx.state.videoControllers[index]);
-      });
-    }
-
     ctx.dispatch(
         LiveStreamPageActionCreator.setStreamLinks(ctx.state.streamLinks));
+    _changedVideoSource(ctx, d);
   }
 }
 
@@ -112,33 +76,10 @@ void _onInit(Action action, Context<LiveStreamPageState> ctx) {
             .map((f) => VideoPlayerController.network(f.streamLink))
             .toList();
         _list[0].selected = true;
-        ctx.state.streamLinkType = _list[0].streamLinkType;
-        if (_list[0].streamLinkType.name == 'WebView')
-          ctx.state.streamAddress = _list[0].streamLink;
-        else if (_list[0].streamLinkType.name == 'YouTube') {
-          ctx.state.streamAddress =
-              YoutubePlayer.convertUrlToId(_list[0].streamLink);
-          ctx.state.youtubePlayerController = new YoutubePlayerController(
-            initialVideoId: ctx.state.streamAddress,
-            flags: YoutubePlayerFlags(
-              autoPlay: true,
-            ),
-          );
-        } else {
-          ctx.state.videoControllers[0].initialize().then((d) {
-            ctx.state.chewieController = ChewieController(
-                customControls: CustomCupertinoControls(
-                  backgroundColor: Colors.black,
-                  iconColor: Colors.white,
-                ),
-                allowedScreenSleep: false,
-                autoPlay: true,
-                aspectRatio: ctx.state.videoControllers[0].value.aspectRatio,
-                videoPlayerController: ctx.state.videoControllers[0]);
-          });
-        }
 
+        ctx.state.streamLinkType = _list[0].streamLinkType;
         ctx.dispatch(LiveStreamPageActionCreator.setStreamLinks(_list));
+        _changedVideoSource(ctx, _list[0]);
       }
     }
   });
@@ -152,4 +93,45 @@ void _onDispose(Action action, Context<LiveStreamPageState> ctx) {
   ctx.state.chewieController?.dispose();
   if (ctx.state.youtubePlayerController != null)
     ctx.state.youtubePlayerController.dispose();
+}
+
+void _changedVideoSource(
+    Context<LiveStreamPageState> ctx, MovieStreamLink d) async {
+  int index = ctx.state.streamLinks.indexOf(d);
+  if (ctx.state.chewieController != null) {
+    ctx.state.chewieController.videoPlayerController
+        .seekTo(Duration(seconds: 0));
+    ctx.state.chewieController.videoPlayerController.pause();
+    ctx.state.chewieController.dispose();
+    ctx.state.chewieController = null;
+  }
+  if (d.streamLinkType.name == 'WebView') {
+    ctx.state.streamAddress = d.streamLink;
+  } else if (d.streamLinkType.name == 'YouTube') {
+    ctx.state.streamAddress = YoutubePlayer.convertUrlToId(d.streamLink);
+    ctx.state.chewieController = null;
+    if (ctx.state.youtubePlayerController == null)
+      ctx.state.youtubePlayerController = new YoutubePlayerController(
+        initialVideoId: ctx.state.streamAddress,
+        flags: YoutubePlayerFlags(
+          autoPlay: true,
+        ),
+      );
+    else {
+      ctx.state.youtubePlayerController.load(ctx.state.streamAddress);
+    }
+  } else {
+    await ctx.state.videoControllers[index].initialize();
+    ctx.state.chewieController = ChewieController(
+        customControls: CustomCupertinoControls(
+          backgroundColor: Colors.black,
+          iconColor: Colors.white,
+        ),
+        allowedScreenSleep: false,
+        autoPlay: true,
+        aspectRatio: ctx.state.videoControllers[index].value.aspectRatio,
+        videoPlayerController: ctx.state.videoControllers[index]);
+  }
+
+  ctx.dispatch(LiveStreamPageActionCreator.videoPlayerUpdate());
 }
