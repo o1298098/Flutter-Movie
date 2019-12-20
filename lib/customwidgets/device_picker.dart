@@ -120,7 +120,7 @@ class _DevicePickerState extends State<DevicePicker> {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: Adapt.px(30)),
       ),
       Container(
-        height: Adapt.px(300),
+        height: Adapt.px(250),
         margin: EdgeInsets.all(Adapt.px(20)),
         color: Colors.grey,
       ),

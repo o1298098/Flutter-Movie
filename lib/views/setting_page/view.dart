@@ -26,7 +26,7 @@ Widget buildView(
   Widget _buildBackGround() {
     final CurvedAnimation _heightAnimation =
         CurvedAnimation(parent: state.pageAnimation, curve: Curves.ease);
-    final Animation _height = Tween(begin: Adapt.px(380), end: Adapt.px(900))
+    final Animation _height = Tween(begin: Adapt.px(380), end: Adapt.px(1200))
         .animate(_heightAnimation);
     final CurvedAnimation _pathAnimation = CurvedAnimation(
         parent: state.pageAnimation,
@@ -93,8 +93,8 @@ Widget buildView(
             )));
   }
 
-  Widget _buildAvatarCell() {
-    return _buildListCell(.1, .8,
+  Widget _buildUserCell() {
+    return _buildListCell(.1, .7,
         child: Padding(
           padding: EdgeInsets.symmetric(
               horizontal: Adapt.px(30), vertical: Adapt.px(60)),
@@ -118,13 +118,14 @@ Widget buildView(
             ),
             subtitle: Text(
               state.user?.email ?? '-',
+              maxLines: 1,
               style: TextStyle(
-                color: Colors.grey,
-                fontWeight: FontWeight.bold,
-              ),
+                  color: Colors.grey,
+                  fontWeight: FontWeight.bold,
+                  fontSize: Adapt.px(24)),
             ),
             trailing: IconButton(
-              onPressed: () {},
+              onPressed: () => state.userEditAnimation.forward(),
               icon: Icon(Icons.edit),
               color: Colors.white,
               iconSize: Adapt.px(60),
@@ -134,14 +135,15 @@ Widget buildView(
   }
 
   Widget _buildAdultCell() {
-    return _buildListCell(.2, .9,
+    return _buildListCell(.2, .8,
         shadowColor: Color(0xFF303030),
         child: Padding(
           padding: EdgeInsets.symmetric(
               horizontal: Adapt.px(30), vertical: Adapt.px(60)),
           child: ListTile(
+            onTap: () => dispatch(SettingPageActionCreator.adultCellTapped()),
             leading: Icon(
-              Icons.visibility_off,
+              state.adultSwitchValue ? Icons.visibility : Icons.visibility_off,
               color: Colors.white,
               size: Adapt.px(80),
             ),
@@ -153,24 +155,25 @@ Widget buildView(
                   fontSize: Adapt.px(35)),
             ),
             subtitle: Text(
-              'off',
+              state.adultSwitchValue ? 'on' : 'off',
               style: TextStyle(
                   color: Colors.grey,
                   fontWeight: FontWeight.bold,
                   fontSize: Adapt.px(35)),
             ),
             trailing: CupertinoSwitch(
-              onChanged: (b) {},
+              onChanged: (b) =>
+                  dispatch(SettingPageActionCreator.adultCellTapped()),
               activeColor: Color(0xFF111111),
-              trackColor: Color(0xFF505050),
-              value: false,
+              trackColor: Color(0xFFD0D0D0),
+              value: state.adultSwitchValue,
             ),
           ),
         ));
   }
 
   Widget _buildCachedCell() {
-    return _buildListCell(.3, 1.0,
+    return _buildListCell(.3, .9,
         child: Padding(
           padding: EdgeInsets.symmetric(
               horizontal: Adapt.px(30), vertical: Adapt.px(60)),
@@ -188,15 +191,50 @@ Widget buildView(
                   fontSize: Adapt.px(35)),
             ),
             subtitle: Text(
-              '3.5 MB',
+              '${state.cachedSize.toStringAsFixed(2)} MB',
               style: TextStyle(
                   color: Colors.grey,
                   fontWeight: FontWeight.bold,
                   fontSize: Adapt.px(35)),
             ),
             trailing: IconButton(
-              onPressed: () {},
+              onPressed: () => dispatch(SettingPageActionCreator.cleanCached()),
               icon: Icon(Icons.delete_outline),
+              color: Colors.white,
+              iconSize: Adapt.px(60),
+            ),
+          ),
+        ));
+  }
+
+  Widget _buildVersionCell() {
+    return _buildListCell(.4, 1.0,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: Adapt.px(30), vertical: Adapt.px(60)),
+          child: ListTile(
+            leading: Icon(
+              Icons.system_update,
+              color: Colors.white,
+              size: Adapt.px(80),
+            ),
+            title: Text(
+              'Version',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: Adapt.px(35)),
+            ),
+            subtitle: Text(
+              '1.0',
+              style: TextStyle(
+                  color: Colors.grey,
+                  fontWeight: FontWeight.bold,
+                  fontSize: Adapt.px(35)),
+            ),
+            trailing: IconButton(
+              onPressed: () => dispatch(SettingPageActionCreator.cleanCached()),
+              icon: Icon(Icons.refresh),
               color: Colors.white,
               iconSize: Adapt.px(60),
             ),
@@ -206,19 +244,153 @@ Widget buildView(
 
   Widget _buildBody() {
     final double _margin = Adapt.px(120) + Adapt.padTopH();
-    return Container(
-        margin: EdgeInsets.only(top: _margin),
-        height: Adapt.screenH() - _margin,
-        child: ListView(
-          physics: ClampingScrollPhysics(),
-          padding: EdgeInsets.symmetric(horizontal: Adapt.px(60)),
-          shrinkWrap: true,
+    final Animation _run = Tween(begin: .00, end: 1.0).animate(
+        CurvedAnimation(parent: state.userEditAnimation, curve: Curves.ease));
+    return AnimatedBuilder(
+      animation: state.userEditAnimation,
+      builder: (_, __) {
+        return Padding(
+            padding: EdgeInsets.only(
+                top: _margin, left: Adapt.px(60), right: Adapt.px(60)),
+            child: Container(
+                transform: Matrix4.identity()
+                  ..scale(1.0 - _run.value, 1.0, 1.0),
+                height: Adapt.screenH() - _margin,
+                child: ListView(
+                  physics: ClampingScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  //padding: EdgeInsets.symmetric(horizontal: Adapt.px(60)),
+                  shrinkWrap: true,
+                  children: <Widget>[
+                    _buildUserCell(),
+                    _buildAdultCell(),
+                    _buildCachedCell(),
+                    _buildVersionCell()
+                  ],
+                )));
+      },
+    );
+  }
+
+  Widget _buildButtonGrounp() {
+    return Padding(
+        padding: EdgeInsets.all(Adapt.px(40)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _buildAvatarCell(),
-            _buildAdultCell(),
-            _buildCachedCell(),
+            InkWell(
+              onTap: () => state.userEditAnimation.reverse(),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+                height: Adapt.px(80),
+                width: Adapt.px(200),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(Adapt.px(40)),
+                    border: Border.all(color: Colors.white, width: 3)),
+                child: Center(
+                    child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: Adapt.px(35),
+                      fontWeight: FontWeight.w500),
+                )),
+              ),
+            ),
+            SizedBox(width: Adapt.px(60)),
+            InkWell(
+              onTap: () => state.userEditAnimation.reverse(),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+                height: Adapt.px(80),
+                width: Adapt.px(200),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(Adapt.px(40)),
+                    border: Border.all(color: Colors.white, width: 3)),
+                child: Center(
+                    child: Text(
+                  'OK',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: Adapt.px(35),
+                      fontWeight: FontWeight.w500),
+                )),
+              ),
+            )
           ],
         ));
+  }
+
+  Widget _buildTextFields() {
+    return Padding(
+        padding:
+            EdgeInsets.fromLTRB(Adapt.px(40), Adapt.px(60), Adapt.px(40), 0),
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: Adapt.px(80),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Adapt.px(40)),
+                color: Color(0xFF353535),
+              ),
+            ),
+            SizedBox(height: Adapt.px(30)),
+            Container(
+              height: Adapt.px(80),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Adapt.px(40)),
+                color: Color(0xFF353535),
+              ),
+            ),
+            SizedBox(height: Adapt.px(30)),
+            Container(
+              height: Adapt.px(80),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Adapt.px(40)),
+                color: Color(0xFF353535),
+              ),
+            )
+          ],
+        ));
+  }
+
+  Widget _buildUserProfilePanel() {
+    final double _margin = Adapt.px(120) + Adapt.padTopH();
+    final CurvedAnimation _run =
+        CurvedAnimation(parent: state.userEditAnimation, curve: Curves.ease);
+    return AnimatedBuilder(
+        animation: state.userEditAnimation,
+        builder: (_, __) {
+          return Padding(
+              padding:
+                  EdgeInsets.fromLTRB(Adapt.px(40), _margin, Adapt.px(40), 0),
+              child: SlideTransition(
+                  position: Tween(begin: Offset(1, 0.0), end: Offset.zero)
+                      .animate(_run),
+                  child: Container(
+                    transform: Matrix4.identity()..scale(_run.value, 1.0, 1.0),
+                    margin: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
+                    width: Adapt.screenH() - Adapt.px(120),
+                    height: Adapt.px(1120),
+                    decoration: BoxDecoration(
+                        color: Color(0xFF202020),
+                        borderRadius: BorderRadius.circular(Adapt.px(20))),
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(height: Adapt.px(60)),
+                        Container(
+                          width: Adapt.px(150),
+                          height: Adapt.px(150),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.grey),
+                        ),
+                        _buildTextFields(),
+                        Expanded(child: SizedBox()),
+                        _buildButtonGrounp(),
+                      ],
+                    ),
+                  )));
+        });
   }
 
   return Scaffold(
@@ -226,6 +398,7 @@ Widget buildView(
       children: <Widget>[
         _buildBackGround(),
         _buildBody(),
+        _buildUserProfilePanel(),
         _buildAppBar(),
       ],
     ),
