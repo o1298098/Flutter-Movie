@@ -7,6 +7,12 @@ class SettingPageState implements Cloneable<SettingPageState> {
   AnimationController pageAnimation;
   AnimationController userEditAnimation;
   FirebaseUser user;
+  String userName;
+  String photoUrl;
+  String phone;
+  TextEditingController userNameController;
+  TextEditingController photoController;
+  TextEditingController phoneController;
   bool adultSwitchValue;
   bool isEditProfile;
   double cachedSize;
@@ -18,14 +24,27 @@ class SettingPageState implements Cloneable<SettingPageState> {
       ..adultSwitchValue = adultSwitchValue
       ..isEditProfile = isEditProfile
       ..cachedSize = cachedSize
-      ..user = user;
+      ..user = user
+      ..userName = userName
+      ..phone = phone
+      ..photoUrl = photoUrl
+      ..userNameController = userNameController
+      ..phoneController = phoneController
+      ..photoController = photoController;
   }
 }
 
 SettingPageState initState(Map<String, dynamic> args) {
-  return SettingPageState()
-    ..user = GlobalStore.store.getState().user
-    ..cachedSize = 0
-    ..adultSwitchValue = false
-    ..isEditProfile = false;
+  SettingPageState state = SettingPageState();
+  final user = GlobalStore.store.getState().user;
+  if (user != null) {
+    state.user = user;
+    state.userName = user.displayName;
+    state.phone = user.phoneNumber;
+    state.photoUrl = user.photoUrl;
+  }
+  state.adultSwitchValue = false;
+  state.isEditProfile = false;
+  state.cachedSize = 0;
+  return state;
 }

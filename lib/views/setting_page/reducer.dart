@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 
 import 'action.dart';
@@ -9,7 +10,7 @@ Reducer<SettingPageState> buildReducer() {
       SettingPageAction.action: _onAction,
       SettingPageAction.adultValueUpadte: _adultValueUpadte,
       SettingPageAction.cachedSizeUpdate: _cachedSizeUpdate,
-      SettingPageAction.profileEdit: _profileEdit,
+      SettingPageAction.userUpdate: _userUpdate,
     },
   );
 }
@@ -33,9 +34,11 @@ SettingPageState _cachedSizeUpdate(SettingPageState state, Action action) {
   return newState;
 }
 
-SettingPageState _profileEdit(SettingPageState state, Action action) {
-  final bool _isEdit = action.payload ?? false;
+SettingPageState _userUpdate(SettingPageState state, Action action) {
+  final FirebaseUser _user = action.payload;
   final SettingPageState newState = state.clone();
-  newState.isEditProfile = _isEdit;
+  newState.user = _user;
+  newState.userName = _user.displayName;
+  newState.photoUrl = _user.photoUrl;
   return newState;
 }

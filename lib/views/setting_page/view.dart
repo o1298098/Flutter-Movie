@@ -233,7 +233,7 @@ Widget buildView(
                   fontSize: Adapt.px(35)),
             ),
             trailing: IconButton(
-              onPressed: () => dispatch(SettingPageActionCreator.cleanCached()),
+              onPressed: () {},
               icon: Icon(Icons.refresh),
               color: Colors.white,
               iconSize: Adapt.px(60),
@@ -299,7 +299,10 @@ Widget buildView(
             ),
             SizedBox(width: Adapt.px(60)),
             InkWell(
-              onTap: () => state.userEditAnimation.reverse(),
+              onTap: () {
+                state.userEditAnimation.reverse();
+                dispatch(SettingPageActionCreator.profileEdit());
+              },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
                 height: Adapt.px(80),
@@ -321,35 +324,51 @@ Widget buildView(
         ));
   }
 
+  Widget _buildTextFieldCell(String title, {TextEditingController controller}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          title,
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: Adapt.px(35),
+              fontWeight: FontWeight.w600),
+        ),
+        SizedBox(height: Adapt.px(20)),
+        Container(
+          height: Adapt.px(80),
+          padding: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(Adapt.px(20)),
+            color: Color(0xFF353535),
+          ),
+          child: TextField(
+            style: TextStyle(color: Colors.white, fontSize: Adapt.px(26)),
+            cursorColor: Colors.white,
+            controller: controller,
+            decoration: InputDecoration(
+                focusedBorder:
+                    UnderlineInputBorder(borderSide: BorderSide(width: 0))),
+          ),
+        )
+      ],
+    );
+  }
+
   Widget _buildTextFields() {
     return Padding(
         padding:
-            EdgeInsets.fromLTRB(Adapt.px(40), Adapt.px(60), Adapt.px(40), 0),
+            EdgeInsets.fromLTRB(Adapt.px(40), Adapt.px(80), Adapt.px(40), 0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              height: Adapt.px(80),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Adapt.px(40)),
-                color: Color(0xFF353535),
-              ),
-            ),
-            SizedBox(height: Adapt.px(30)),
-            Container(
-              height: Adapt.px(80),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Adapt.px(40)),
-                color: Color(0xFF353535),
-              ),
-            ),
-            SizedBox(height: Adapt.px(30)),
-            Container(
-              height: Adapt.px(80),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Adapt.px(40)),
-                color: Color(0xFF353535),
-              ),
-            )
+            _buildTextFieldCell('UserName',
+                controller: state.userNameController),
+            SizedBox(height: Adapt.px(40)),
+            _buildTextFieldCell('Phone', controller: state.phoneController),
+            SizedBox(height: Adapt.px(40)),
+            _buildTextFieldCell('PhotoUrl', controller: state.photoController),
           ],
         ));
   }
@@ -375,17 +394,44 @@ Widget buildView(
                     decoration: BoxDecoration(
                         color: Color(0xFF202020),
                         borderRadius: BorderRadius.circular(Adapt.px(20))),
-                    child: Column(
+                    child: ListView(
+                      padding: EdgeInsets.zero,
+                      physics: ClampingScrollPhysics(),
+                      shrinkWrap: true,
                       children: <Widget>[
                         SizedBox(height: Adapt.px(60)),
                         Container(
                           width: Adapt.px(150),
                           height: Adapt.px(150),
                           decoration: BoxDecoration(
-                              shape: BoxShape.circle, color: Colors.grey),
+                              shape: BoxShape.circle,
+                              color: Colors.grey,
+                              image: DecorationImage(
+                                  image: CachedNetworkImageProvider(
+                                      state.photoUrl ?? ''))),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.black38,
+                            ),
+                            child: Icon(
+                              Icons.file_upload,
+                              color: Colors.black45,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: Adapt.px(30)),
+                        Text(
+                          '${state.user.email}',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: Adapt.px(35)),
                         ),
                         _buildTextFields(),
-                        Expanded(child: SizedBox()),
+                        SizedBox(height: Adapt.px(60)),
+                        //Expanded(child: SizedBox()),
                         _buildButtonGrounp(),
                       ],
                     ),

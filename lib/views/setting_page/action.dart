@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 
 //TODO replace with your own action
@@ -8,6 +9,7 @@ enum SettingPageAction {
   cleanCached,
   cachedSizeUpdate,
   profileEdit,
+  userUpdate,
 }
 
 class SettingPageActionCreator {
@@ -31,7 +33,11 @@ class SettingPageActionCreator {
     return Action(SettingPageAction.cachedSizeUpdate, payload: d);
   }
 
-  static Action profileEdit(bool b) {
-    return Action(SettingPageAction.profileEdit, payload: b);
+  static Action profileEdit() {
+    return Action(SettingPageAction.profileEdit);
+  }
+
+  static Action userUpadate(FirebaseUser user) {
+    return Action(SettingPageAction.userUpdate, payload: user);
   }
 }
