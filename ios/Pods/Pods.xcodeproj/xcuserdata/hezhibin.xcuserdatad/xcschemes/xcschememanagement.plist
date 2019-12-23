@@ -64,6 +64,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>FirebaseStorage.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Flutter.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -129,6 +134,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>firebase_storage.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>flutter_inappbrowser.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -155,6 +165,11 @@
 			<false/>
 		</dict>
 		<key>google_sign_in.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>image_picker.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

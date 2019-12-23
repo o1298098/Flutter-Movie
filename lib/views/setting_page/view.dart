@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/customwidgets/customcliper_path.dart';
-
 import 'action.dart';
 import 'state.dart';
 
@@ -18,7 +17,7 @@ Widget buildView(
       child: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
-        title: Text('Setting'),
+        title: Text('Settings'),
       ),
     );
   }
@@ -93,6 +92,21 @@ Widget buildView(
             )));
   }
 
+  Widget _buildLoadingPanel() {
+    return state.uploading
+        ? Container(
+            width: Adapt.screenW(),
+            height: Adapt.screenH(),
+            color: Colors.black38,
+            child: Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(Colors.white),
+              ),
+            ),
+          )
+        : SizedBox();
+  }
+
   Widget _buildUserCell() {
     return _buildListCell(.1, .7,
         child: Padding(
@@ -106,6 +120,7 @@ Widget buildView(
                   shape: BoxShape.circle,
                   color: Colors.grey,
                   image: DecorationImage(
+                      fit: BoxFit.cover,
                       image: CachedNetworkImageProvider(
                           state.user?.photoUrl ?? ''))),
             ),
@@ -300,7 +315,6 @@ Widget buildView(
             SizedBox(width: Adapt.px(60)),
             InkWell(
               onTap: () {
-                state.userEditAnimation.reverse();
                 dispatch(SettingPageActionCreator.profileEdit());
               },
               child: Container(
@@ -373,6 +387,35 @@ Widget buildView(
         ));
   }
 
+  Widget _buildUserProfileAvatar() {
+    return InkWell(
+      onTap: () => dispatch(SettingPageActionCreator.openPhotoPicker()),
+      child: Container(
+        width: Adapt.px(150),
+        height: Adapt.px(150),
+        alignment: Alignment.center,
+        child: Container(
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.grey,
+              image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: CachedNetworkImageProvider(
+                      state.userPanelPhotoUrl ?? ''))),
+          child: Container(
+            width: Adapt.px(150),
+            height: Adapt.px(150),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.black38,
+            ),
+            child: Icon(Icons.file_upload, color: Colors.white54),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildUserProfilePanel() {
     final double _margin = Adapt.px(120) + Adapt.padTopH();
     final CurvedAnimation _run =
@@ -400,26 +443,7 @@ Widget buildView(
                       shrinkWrap: true,
                       children: <Widget>[
                         SizedBox(height: Adapt.px(60)),
-                        Container(
-                          width: Adapt.px(150),
-                          height: Adapt.px(150),
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.grey,
-                              image: DecorationImage(
-                                  image: CachedNetworkImageProvider(
-                                      state.photoUrl ?? ''))),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.black38,
-                            ),
-                            child: Icon(
-                              Icons.file_upload,
-                              color: Colors.black45,
-                            ),
-                          ),
-                        ),
+                        _buildUserProfileAvatar(),
                         SizedBox(height: Adapt.px(30)),
                         Text(
                           '${state.user.email}',
@@ -445,6 +469,7 @@ Widget buildView(
         _buildBackGround(),
         _buildBody(),
         _buildUserProfilePanel(),
+        _buildLoadingPanel(),
         _buildAppBar(),
       ],
     ),

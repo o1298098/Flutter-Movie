@@ -9,12 +9,14 @@ class SettingPageState implements Cloneable<SettingPageState> {
   FirebaseUser user;
   String userName;
   String photoUrl;
+  String userPanelPhotoUrl;
   String phone;
   TextEditingController userNameController;
   TextEditingController photoController;
   TextEditingController phoneController;
   bool adultSwitchValue;
   bool isEditProfile;
+  bool uploading;
   double cachedSize;
   @override
   SettingPageState clone() {
@@ -28,9 +30,11 @@ class SettingPageState implements Cloneable<SettingPageState> {
       ..userName = userName
       ..phone = phone
       ..photoUrl = photoUrl
+      ..userPanelPhotoUrl = userPanelPhotoUrl
       ..userNameController = userNameController
       ..phoneController = phoneController
-      ..photoController = photoController;
+      ..photoController = photoController
+      ..uploading = uploading;
   }
 }
 
@@ -42,9 +46,11 @@ SettingPageState initState(Map<String, dynamic> args) {
     state.userName = user.displayName;
     state.phone = user.phoneNumber;
     state.photoUrl = user.photoUrl;
+    state.userPanelPhotoUrl = user.photoUrl;
   }
   state.adultSwitchValue = false;
   state.isEditProfile = false;
+  state.uploading = false;
   state.cachedSize = 0;
   return state;
 }

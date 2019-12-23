@@ -10,6 +10,9 @@ enum SettingPageAction {
   cachedSizeUpdate,
   profileEdit,
   userUpdate,
+  openPhotoPicker,
+  userPanelPhotoUrlUpdate,
+  uploading,
 }
 
 class SettingPageActionCreator {
@@ -39,5 +42,17 @@ class SettingPageActionCreator {
 
   static Action userUpadate(FirebaseUser user) {
     return Action(SettingPageAction.userUpdate, payload: user);
+  }
+
+  static Action openPhotoPicker() {
+    return const Action(SettingPageAction.openPhotoPicker);
+  }
+
+  static Action userPanelPhotoUrlUpdate(String url) {
+    return Action(SettingPageAction.userPanelPhotoUrlUpdate, payload: url);
+  }
+
+  static Action onUploading(bool isUploading) {
+    return Action(SettingPageAction.uploading, payload: isUploading);
   }
 }
