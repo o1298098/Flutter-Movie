@@ -9,15 +9,19 @@ import 'package:movie/customwidgets/medialist_card.dart';
 import 'package:movie/customwidgets/share_card.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/media_type.dart';
+import 'package:movie/style/themestyle.dart';
 
 import 'action.dart';
 import 'state.dart';
 
 Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
+  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
+  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
+      ? ThemeStyle.lightTheme
+      : ThemeStyle.darkTheme;
   Widget _buildListTitel(IconData icon, String title, void onTap(),
       {Color iconColor = const Color.fromRGBO(50, 50, 50, 1)}) {
-    TextStyle titleStyle =
-        TextStyle(color: Color.fromRGBO(50, 50, 50, 1), fontSize: Adapt.px(35));
+    TextStyle titleStyle = TextStyle(fontSize: Adapt.px(35));
     return ListTile(
       leading: Icon(
         icon,
@@ -136,7 +140,7 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
 
   return Container(
     decoration: BoxDecoration(
-        color: Colors.white,
+        color: _theme.backgroundColor,
         borderRadius:
             BorderRadius.vertical(top: Radius.circular(Adapt.px(50)))),
     //padding: EdgeInsets.only(top:Adapt.px(30)),
@@ -167,9 +171,7 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
                   child: Text(
                     state.name,
                     style: TextStyle(
-                        color: Colors.black,
-                        fontSize: Adapt.px(40),
-                        fontWeight: FontWeight.bold),
+                        fontSize: Adapt.px(40), fontWeight: FontWeight.bold),
                   )),
             ],
           ),
@@ -177,7 +179,8 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
         Divider(
           height: 1,
         ),
-        _buildListTitel(Icons.format_list_bulleted, 'Add to List', _addToList),
+        _buildListTitel(Icons.format_list_bulleted, 'Add to List', _addToList,
+            iconColor: _theme.iconTheme.color),
         Divider(
           height: Adapt.px(1),
         ),
@@ -191,7 +194,7 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
         },
             iconColor: state.accountState.favorite
                 ? Colors.pink[400]
-                : Color.fromRGBO(50, 50, 50, 1)),
+                : _theme.iconTheme.color),
         Divider(
           height: Adapt.px(1),
         ),
@@ -205,7 +208,7 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
           },
           iconColor: state.accountState.watchlist
               ? Colors.red
-              : Color.fromRGBO(50, 50, 50, 1),
+              : _theme.iconTheme.color,
         ),
         Divider(
           height: Adapt.px(1),
@@ -216,11 +219,12 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
             _rateIt,
             iconColor: state.accountState.rated != null
                 ? Colors.amber
-                : Color.fromRGBO(50, 50, 50, 1)),
+                : _theme.iconTheme.color),
         Divider(
           height: Adapt.px(1),
         ),
-        _buildListTitel(Icons.share, 'Share', _share),
+        _buildListTitel(Icons.share, 'Share', _share,
+            iconColor: _theme.iconTheme.color),
         Divider(
           height: Adapt.px(1),
         ),

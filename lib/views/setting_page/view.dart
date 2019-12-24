@@ -362,8 +362,12 @@ Widget buildView(
             cursorColor: Colors.white,
             controller: controller,
             decoration: InputDecoration(
-                focusedBorder:
-                    UnderlineInputBorder(borderSide: BorderSide(width: 0))),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide:
+                        BorderSide(width: 0, color: Colors.transparent)),
+                enabledBorder: UnderlineInputBorder(
+                    borderSide:
+                        BorderSide(width: 0, color: Colors.transparent))),
           ),
         )
       ],

@@ -7,14 +7,14 @@ import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
+import 'package:movie/style/themestyle.dart';
 
 import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
     SeasonsPageState state, Dispatch dispatch, ViewService viewService) {
-  
-  Random random=Random(DateTime.now().millisecondsSinceEpoch);
+  final Random random = Random(DateTime.now().millisecondsSinceEpoch);
 
   Widget _buildCell(int index) {
     var d = state.seasons[index];
@@ -43,11 +43,18 @@ Widget buildView(
                       width: Adapt.px(225),
                       height: Adapt.px(380),
                       decoration: BoxDecoration(
-                          color: Color.fromRGBO(random.nextInt(255), random.nextInt(255), random.nextInt(255), random.nextDouble()),
+                          color: Color.fromRGBO(
+                              random.nextInt(255),
+                              random.nextInt(255),
+                              random.nextInt(255),
+                              random.nextDouble()),
                           image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: CachedNetworkImageProvider(d.poster_path==null?ImageUrl.emptyimage: ImageUrl.getUrl(
-                                  d.poster_path, ImageSize.w300)))),
+                              image: CachedNetworkImageProvider(
+                                  d.poster_path == null
+                                      ? ImageUrl.emptyimage
+                                      : ImageUrl.getUrl(
+                                          d.poster_path, ImageSize.w300)))),
                     ),
                     SizedBox(
                       width: Adapt.px(20),
@@ -102,24 +109,30 @@ Widget buildView(
         ));
   }
 
-  return Scaffold(
-    appBar: AppBar(
-      brightness: Brightness.light,
-      backgroundColor: Colors.white,
-      iconTheme: IconThemeData(color: Colors.black),
-      title: Text(
-        'All Seasons',
-        style: TextStyle(color: Colors.black),
+  return Builder(builder: (context) {
+    final MediaQueryData _mediaQuery = MediaQuery.of(context);
+    final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
+        ? ThemeStyle.lightTheme
+        : ThemeStyle.darkTheme;
+    return Scaffold(
+      appBar: AppBar(
+        brightness: _theme.brightness,
+        backgroundColor: _theme.backgroundColor,
+        iconTheme: _theme.iconTheme,
+        title: Text(
+          'All Seasons',
+          style: _theme.textTheme.body1,
+        ),
       ),
-    ),
-    body: Padding(
-      padding: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
-      child: ListView.builder(
-        itemCount: state.seasons.length,
-        itemBuilder: (ctx, index) {
-          return _buildCell(index);
-        },
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
+        child: ListView.builder(
+          itemCount: state.seasons.length,
+          itemBuilder: (ctx, index) {
+            return _buildCell(index);
+          },
+        ),
       ),
-    ),
-  );
+    );
+  });
 }

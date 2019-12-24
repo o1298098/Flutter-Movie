@@ -4,6 +4,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/models/base_api_model/tvshow_comment.dart';
+import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'dart:ui' as ui;
@@ -12,6 +13,10 @@ import 'state.dart';
 
 Widget buildView(
     CommentState state, Dispatch dispatch, ViewService viewService) {
+  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
+  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
+      ? ThemeStyle.lightTheme
+      : ThemeStyle.darkTheme;
   Widget _buildShimmerCell() {
     final Color _baseColor = Colors.grey;
     final _rightWidth = Adapt.screenW() - Adapt.px(170);
@@ -72,8 +77,8 @@ Widget buildView(
   List<Widget> _buildShimmerGroup() {
     return [
       Shimmer.fromColors(
-        baseColor: Colors.grey[300],
-        highlightColor: Colors.grey[100],
+        baseColor: _theme.primaryColorDark,
+        highlightColor: _theme.primaryColorLight,
         child: Column(
           children: <Widget>[
             SizedBox(height: Adapt.px(30)),
@@ -111,7 +116,7 @@ Widget buildView(
             height: Adapt.px(80),
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.grey[300],
+                color: _theme.primaryColorDark,
                 image: DecorationImage(
                     fit: BoxFit.cover,
                     image: CachedNetworkImageProvider(d?.u?.photoUrl ?? ''))),

@@ -15,6 +15,7 @@ import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/videolist.dart';
+import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'action.dart';
@@ -31,21 +32,10 @@ Widget buildView(
 
       final TextStyle _unselectPopStyle =
           TextStyle(fontSize: Adapt.px(24), color: Colors.grey);
-      final _lightTheme = ThemeData.light().copyWith(
-          backgroundColor: Colors.white,
-          bottomAppBarColor: Color.fromRGBO(45, 45, 48, 1),
-          cardColor: Colors.white,
-          cursorColor: Colors.grey[200]);
-      final _darkTheme = ThemeData.dark().copyWith(
-          backgroundColor: Color(0xFF303030),
-          bottomAppBarColor: Color(0xFF101010),
-          cardColor: Color(0xFF404040),
-          cursorColor: Colors.transparent);
       final MediaQueryData _mediaQuery = MediaQuery.of(context);
+      final _isLight = _mediaQuery.platformBrightness == Brightness.light;
       final ThemeData _theme =
-          _mediaQuery.platformBrightness == Brightness.light
-              ? _lightTheme
-              : _darkTheme;
+          _isLight ? ThemeStyle.lightTheme : ThemeStyle.darkTheme;
 
       Widget _buildSearchBar() {
         return GestureDetector(
@@ -235,10 +225,11 @@ Widget buildView(
               children: <Widget>[
                 Container(
                   decoration: new BoxDecoration(
-                    color: _theme.cardColor,
+                    color: _isLight ? Colors.white : Color(0xFF404040),
                     boxShadow: <BoxShadow>[
                       BoxShadow(
-                          color: _theme.cursorColor,
+                          color:
+                              _isLight ? Colors.grey[200] : Colors.transparent,
                           offset: Offset(0, Adapt.px(20)),
                           blurRadius: Adapt.px(30),
                           spreadRadius: Adapt.px(1)),
@@ -253,7 +244,7 @@ Widget buildView(
                         width: Adapt.px(120),
                         height: Adapt.px(170),
                         decoration: BoxDecoration(
-                            color: Colors.grey[200],
+                            color: _theme.primaryColorLight,
                             image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: CachedNetworkImageProvider(
@@ -347,7 +338,12 @@ Widget buildView(
             : Container(
                 margin: EdgeInsets.only(bottom: Adapt.px(55)),
                 child: ShimmerCell(
-                    Adapt.screenW() - Adapt.px(60), Adapt.px(170), 0),
+                  Adapt.screenW() - Adapt.px(60),
+                  Adapt.px(170),
+                  0,
+                  baseColor: _theme.primaryColorDark,
+                  highlightColor: _theme.primaryColorLight,
+                ),
               );
         return Container(
           height: Adapt.px(225),
@@ -432,7 +428,7 @@ Widget buildView(
                         padding: EdgeInsets.symmetric(horizontal: Adapt.px(10)),
                         alignment: Alignment.bottomLeft,
                         decoration: BoxDecoration(
-                            color: Colors.grey[200],
+                            color: _theme.primaryColorDark,
                             image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: CachedNetworkImageProvider(
@@ -442,7 +438,8 @@ Widget buildView(
                           d.title ?? d.name,
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: Adapt.px(30),
+                              fontSize:
+                                  Adapt.px(30) / _mediaQuery.textScaleFactor,
                               fontWeight: FontWeight.bold,
                               shadows: <Shadow>[Shadow(offset: Offset(1, 1))]),
                         ),
@@ -450,8 +447,8 @@ Widget buildView(
                 },
               )
             : Shimmer.fromColors(
-                baseColor: Colors.grey[200],
-                highlightColor: Colors.grey[100],
+                baseColor: _theme.primaryColorDark,
+                highlightColor: _theme.primaryColorLight,
                 child: Row(
                   children: <Widget>[
                     Container(
@@ -505,24 +502,16 @@ Widget buildView(
                 state.showShareMovie ? MediaType.movie : MediaType.tv)),
             child: Column(
               children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(Adapt.px(15)),
-                  child: CachedNetworkImage(
-                    fadeOutDuration: Duration(milliseconds: 200),
-                    fadeInDuration: Duration(milliseconds: 200),
-                    width: Adapt.px(250),
-                    height: Adapt.px(350),
-                    fit: BoxFit.cover,
-                    imageUrl: ImageUrl.getUrl(d.photourl, ImageSize.w400),
-                    placeholder: (ctx, s) {
-                      return Image.asset(
-                        'images/CacheBG.jpg',
-                        fit: BoxFit.cover,
-                        width: Adapt.px(250),
-                        height: Adapt.px(350),
-                      );
-                    },
-                  ),
+                Container(
+                  width: Adapt.px(250),
+                  height: Adapt.px(350),
+                  decoration: BoxDecoration(
+                      color: _theme.primaryColorDark,
+                      borderRadius: BorderRadius.circular(Adapt.px(15)),
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: CachedNetworkImageProvider(
+                              ImageUrl.getUrl(d.photourl, ImageSize.w400)))),
                 ),
                 Container(
                     //alignment: Alignment.bottomCenter,
@@ -549,8 +538,8 @@ Widget buildView(
           width: Adapt.px(250),
           height: Adapt.px(350),
           child: Shimmer.fromColors(
-            baseColor: Colors.grey[200],
-            highlightColor: Colors.grey[100],
+            baseColor: _theme.primaryColorDark,
+            highlightColor: _theme.primaryColorLight,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -584,7 +573,7 @@ Widget buildView(
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
+                    color: _theme.primaryColorLight,
                     borderRadius: BorderRadius.circular(Adapt.px(15)),
                   ),
                   width: Adapt.px(250),
@@ -594,8 +583,7 @@ Widget buildView(
                       children: <Widget>[
                         Text(
                           I18n.of(viewService.context).more,
-                          style: TextStyle(
-                              color: Colors.black, fontSize: Adapt.px(35)),
+                          style: TextStyle(fontSize: Adapt.px(35)),
                         ),
                         Icon(Icons.arrow_forward, size: Adapt.px(35))
                       ]),
@@ -634,105 +622,71 @@ Widget buildView(
             ));
       }
 
-      Widget _getStyle3() {
-        return Scaffold(
-            appBar: AppBar(
-              backgroundColor: _theme.bottomAppBarColor,
-              brightness: Brightness.dark,
-              elevation: 0.0,
-              automaticallyImplyLeading: false,
-              title: _buildSearchBar(),
-            ),
-            backgroundColor: Colors.white,
-            body: BackDrop(
-              height: Adapt.px(520),
-              backChild: Container(
-                color: _theme.bottomAppBarColor,
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: Adapt.px(30),
-                    ),
-                    _buildHeaderTitel(),
-                    SizedBox(
-                      height: Adapt.px(45),
-                    ),
-                    _buildHeaderBody()
-                  ],
-                ),
+      return Scaffold(
+          appBar: AppBar(
+            backgroundColor: _theme.bottomAppBarColor,
+            brightness: Brightness.dark,
+            elevation: 0.0,
+            automaticallyImplyLeading: false,
+            title: _buildSearchBar(),
+          ),
+          backgroundColor: Colors.white,
+          body: BackDrop(
+            height: Adapt.px(520),
+            backChild: Container(
+              color: _theme.bottomAppBarColor,
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: Adapt.px(30),
+                  ),
+                  _buildHeaderTitel(),
+                  SizedBox(
+                    height: Adapt.px(45),
+                  ),
+                  _buildHeaderBody()
+                ],
               ),
-              frontBackGroundColor: _theme.backgroundColor,
-              frontChild: Container(
-                color: _theme.backgroundColor,
-                child: ListView(
-                  dragStartBehavior: DragStartBehavior.down,
-                  physics: ClampingScrollPhysics(),
-                  children: <Widget>[
-                    _buildSwiper(),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        _buildFrontTitel(
-                            'Trending',
-                            GestureDetector(
-                              onTap: () => dispatch(
-                                  HomePageActionCreator.onTrendingMore()),
-                              child: Text(
-                                I18n.of(viewService.context).more,
-                                style: TextStyle(color: Colors.grey[600]),
-                              ),
+            ),
+            frontBackGroundColor: _theme.backgroundColor,
+            frontChild: Container(
+              color: _theme.backgroundColor,
+              child: ListView(
+                dragStartBehavior: DragStartBehavior.down,
+                physics: ClampingScrollPhysics(),
+                children: <Widget>[
+                  _buildSwiper(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      _buildFrontTitel(
+                          'Trending',
+                          GestureDetector(
+                            onTap: () => dispatch(
+                                HomePageActionCreator.onTrendingMore()),
+                            child: Text(
+                              I18n.of(viewService.context).more,
+                              style: TextStyle(color: Colors.grey[600]),
                             ),
-                            padding:
-                                EdgeInsets.symmetric(horizontal: Adapt.px(30))),
-                        SizedBox(height: Adapt.px(30)),
-                        _buildTrending(),
-                        SizedBox(height: Adapt.px(50)),
-                        _buildFrontTitel(
-                            'New Share',
-                            GestureDetector(
-                              onTap: () =>
-                                  dispatch(HomePageActionCreator.onShareMore()),
-                              child: Row(
-                                children: <Widget>[
-                                  GestureDetector(
-                                    onTap: () => dispatch(HomePageActionCreator
-                                        .onShareFilterChanged(true)),
-                                    child: Text(
-                                        I18n.of(viewService.context).movies,
-                                        style: state.showShareMovie
-                                            ? _selectPopStyle
-                                            : _unselectPopStyle),
-                                  ),
-                                  SizedBox(
-                                    width: Adapt.px(20),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () => dispatch(HomePageActionCreator
-                                        .onShareFilterChanged(false)),
-                                    child: Text(
-                                        I18n.of(viewService.context).tvShows,
-                                        style: state.showShareMovie
-                                            ? _unselectPopStyle
-                                            : _selectPopStyle),
-                                  )
-                                ],
-                              ),
-                            ),
-                            padding:
-                                EdgeInsets.symmetric(horizontal: Adapt.px(30))),
-                        SizedBox(height: Adapt.px(30)),
-                        _buildShareBody(),
-                        SizedBox(height: Adapt.px(30)),
-                        _buildFrontTitel(
-                            I18n.of(viewService.context).popular,
-                            Row(
+                          ),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: Adapt.px(30))),
+                      SizedBox(height: Adapt.px(30)),
+                      _buildTrending(),
+                      SizedBox(height: Adapt.px(50)),
+                      _buildFrontTitel(
+                          'New Share',
+                          GestureDetector(
+                            onTap: () =>
+                                dispatch(HomePageActionCreator.onShareMore()),
+                            child: Row(
                               children: <Widget>[
                                 GestureDetector(
                                   onTap: () => dispatch(HomePageActionCreator
-                                      .onPopularFilterChanged(true)),
+                                      .onShareFilterChanged(true)),
                                   child: Text(
                                       I18n.of(viewService.context).movies,
-                                      style: state.showPopMovie
+                                      style: state.showShareMovie
                                           ? _selectPopStyle
                                           : _unselectPopStyle),
                                 ),
@@ -741,30 +695,59 @@ Widget buildView(
                                 ),
                                 GestureDetector(
                                   onTap: () => dispatch(HomePageActionCreator
-                                      .onPopularFilterChanged(false)),
+                                      .onShareFilterChanged(false)),
                                   child: Text(
                                       I18n.of(viewService.context).tvShows,
-                                      style: state.showPopMovie
+                                      style: state.showShareMovie
                                           ? _unselectPopStyle
                                           : _selectPopStyle),
                                 )
                               ],
                             ),
-                            padding:
-                                EdgeInsets.symmetric(horizontal: Adapt.px(30))),
-                        SizedBox(
-                          height: Adapt.px(30),
-                        ),
-                        viewService.buildComponent('popularposter'),
-                      ],
-                    ),
-                  ],
-                ),
+                          ),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: Adapt.px(30))),
+                      SizedBox(height: Adapt.px(30)),
+                      _buildShareBody(),
+                      SizedBox(height: Adapt.px(30)),
+                      _buildFrontTitel(
+                          I18n.of(viewService.context).popular,
+                          Row(
+                            children: <Widget>[
+                              GestureDetector(
+                                onTap: () => dispatch(HomePageActionCreator
+                                    .onPopularFilterChanged(true)),
+                                child: Text(I18n.of(viewService.context).movies,
+                                    style: state.showPopMovie
+                                        ? _selectPopStyle
+                                        : _unselectPopStyle),
+                              ),
+                              SizedBox(
+                                width: Adapt.px(20),
+                              ),
+                              GestureDetector(
+                                onTap: () => dispatch(HomePageActionCreator
+                                    .onPopularFilterChanged(false)),
+                                child: Text(
+                                    I18n.of(viewService.context).tvShows,
+                                    style: state.showPopMovie
+                                        ? _unselectPopStyle
+                                        : _selectPopStyle),
+                              )
+                            ],
+                          ),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: Adapt.px(30))),
+                      SizedBox(
+                        height: Adapt.px(30),
+                      ),
+                      viewService.buildComponent('popularposter'),
+                    ],
+                  ),
+                ],
               ),
-            ));
-      }
-
-      return _getStyle3();
+            ),
+          ));
     },
   );
 }

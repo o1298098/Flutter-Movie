@@ -8,6 +8,7 @@ import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
+import 'package:movie/style/themestyle.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -15,7 +16,10 @@ import 'state.dart';
 Widget buildView(
     TVCellState state, Dispatch dispatch, ViewService viewService) {
 //Random random = new Random(DateTime.now().millisecondsSinceEpoch);
-
+  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
+  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
+      ? ThemeStyle.lightTheme
+      : ThemeStyle.darkTheme;
   Widget _buildTvCell(VideoListResult d) {
     return Column(
       children: <Widget>[
@@ -27,7 +31,7 @@ Widget buildView(
                 width: Adapt.px(120),
                 height: Adapt.px(180),
                 decoration: BoxDecoration(
-                    color: Colors.grey[100],
+                    color: _theme.primaryColorLight,
                     image: DecorationImage(
                         fit: BoxFit.cover,
                         image: CachedNetworkImageProvider(
@@ -42,17 +46,19 @@ Widget buildView(
                 children: <Widget>[
                   Container(
                     width: Adapt.screenW() - Adapt.px(180),
-                    child: Row(
-                      children: <Widget>[
-                        Text(d?.name ?? '-',
+                    child: Text.rich(
+                      TextSpan(children: [
+                        TextSpan(
+                            text: d?.name ?? '-',
                             style: TextStyle(
-                                color: Colors.black,
                                 fontSize: Adapt.px(30),
                                 fontWeight: FontWeight.bold)),
-                        Text(' (${d.nextEpisodeNumber ?? '-'})',
+                        TextSpan(
+                            text: ' (${d.nextEpisodeNumber ?? '-'})',
                             style: TextStyle(
                                 color: Colors.grey, fontSize: Adapt.px(30)))
-                      ],
+                      ]),
+                      maxLines: 1,
                     ),
                   ),
                   Text('Season:' + (d.season ?? '-')),

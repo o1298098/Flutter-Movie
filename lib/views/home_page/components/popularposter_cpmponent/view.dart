@@ -7,6 +7,7 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/videolist.dart';
+import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'action.dart';
@@ -14,13 +15,17 @@ import 'state.dart';
 
 Widget buildView(
     PopularPosterState state, Dispatch dispatch, ViewService viewService) {
+  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
+  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
+      ? ThemeStyle.lightTheme
+      : ThemeStyle.darkTheme;
   Widget _buildMoreCell() {
     return Column(
       children: <Widget>[
         Container(
           margin: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
           decoration: BoxDecoration(
-            color: Colors.grey[200],
+            color: _theme.primaryColorLight,
             borderRadius: BorderRadius.circular(Adapt.px(15)),
           ),
           width: Adapt.px(250),
@@ -30,7 +35,7 @@ Widget buildView(
               children: <Widget>[
                 Text(
                   I18n.of(viewService.context).more,
-                  style: TextStyle(color: Colors.black, fontSize: Adapt.px(35)),
+                  style: TextStyle(fontSize: Adapt.px(35)),
                 ),
                 Icon(Icons.arrow_forward, size: Adapt.px(35))
               ]),
@@ -51,25 +56,16 @@ Widget buildView(
             d.poster_path)),
         child: Column(
           children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(Adapt.px(15)),
-              child: CachedNetworkImage(
-                fadeOutDuration: Duration(milliseconds: 200),
-                fadeInDuration: Duration(milliseconds: 200),
+            Container(
                 width: Adapt.px(250),
                 height: Adapt.px(350),
-                fit: BoxFit.cover,
-                imageUrl: ImageUrl.getUrl(d.poster_path, ImageSize.w400),
-                placeholder: (ctx, s) {
-                  return Image.asset(
-                    'images/CacheBG.jpg',
-                    fit: BoxFit.cover,
-                    width: Adapt.px(250),
-                    height: Adapt.px(350),
-                  );
-                },
-              ),
-            ),
+                decoration: BoxDecoration(
+                    color: _theme.primaryColorDark,
+                    borderRadius: BorderRadius.circular(Adapt.px(15)),
+                    image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: CachedNetworkImageProvider(
+                            ImageUrl.getUrl(d.poster_path, ImageSize.w400))))),
             Container(
                 //alignment: Alignment.bottomCenter,
                 width: Adapt.px(250),
@@ -79,7 +75,6 @@ Widget buildView(
                   maxLines: 2,
                   //textAlign: TextAlign.center,
                   style: TextStyle(
-                    //color: Colors.black,
                     fontSize: Adapt.px(28),
                     fontWeight: FontWeight.bold,
                   ),
@@ -95,8 +90,8 @@ Widget buildView(
       width: Adapt.px(250),
       height: Adapt.px(350),
       child: Shimmer.fromColors(
-        baseColor: Colors.grey[200],
-        highlightColor: Colors.grey[100],
+        baseColor: _theme.primaryColorDark,
+        highlightColor: _theme.primaryColorLight,
         child: Column(
           children: <Widget>[
             Container(

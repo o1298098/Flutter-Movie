@@ -8,6 +8,7 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/combinedcredits.dart';
 import 'package:movie/models/enums/imagesize.dart';
+import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'action.dart';
@@ -15,6 +16,10 @@ import 'state.dart';
 
 Widget buildView(
     TimeLineState state, Dispatch dispatch, ViewService viewService) {
+  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
+  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
+      ? ThemeStyle.lightTheme
+      : ThemeStyle.darkTheme;
   List<CastData> _movies;
   List<CastData> _tvshows;
   void initList() {
@@ -27,8 +32,8 @@ Widget buildView(
     if (state.department == null)
       return SizedBox(
           child: Shimmer.fromColors(
-        baseColor: Colors.grey[200],
-        highlightColor: Colors.grey[100],
+        baseColor: _theme.primaryColorDark,
+        highlightColor: _theme.primaryColorLight,
         child: Container(
           height: Adapt.px(40),
           width: Adapt.px(150),
@@ -44,10 +49,9 @@ Widget buildView(
   }
 
   Widget _buildShimmerCell() {
-    Color _baseColor = Colors.grey[200];
     return Shimmer.fromColors(
-      baseColor: _baseColor,
-      highlightColor: Colors.grey[100],
+      baseColor: _theme.primaryColorDark,
+      highlightColor: _theme.primaryColorLight,
       child: Row(
         children: <Widget>[
           Column(
@@ -56,7 +60,7 @@ Widget buildView(
               Container(
                 height: Adapt.px(24),
                 width: Adapt.px(500),
-                color: _baseColor,
+                color: _theme.primaryColorDark,
               ),
               SizedBox(
                 height: Adapt.px(8),
@@ -64,7 +68,7 @@ Widget buildView(
               Container(
                 height: Adapt.px(24),
                 width: Adapt.px(150),
-                color: _baseColor,
+                color: _theme.primaryColorDark,
               ),
             ],
           ),

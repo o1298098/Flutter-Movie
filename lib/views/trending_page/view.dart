@@ -8,6 +8,7 @@ import 'package:movie/models/enums/genres.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/searchresult.dart';
 import 'package:movie/models/sortcondition.dart';
+import 'package:movie/style/themestyle.dart';
 import 'package:parallax_image/parallax_image.dart';
 
 import 'action.dart';
@@ -16,20 +17,10 @@ import 'state.dart';
 Widget buildView(
     TrendingPageState state, Dispatch dispatch, ViewService viewService) {
   return Builder(builder: (context) {
-    final _lightTheme = ThemeData.light().copyWith(
-        backgroundColor: Colors.white,
-        cardColor: Colors.white,
-        cursorColor: Colors.grey[200],
-        iconTheme: IconThemeData(color: Colors.black));
-    final _darkTheme = ThemeData.dark().copyWith(
-        backgroundColor: Color(0xFF303030),
-        cardColor: Color(0xFF505050),
-        cursorColor: Color(0xFF404040),
-        iconTheme: IconThemeData(color: Colors.white));
     final MediaQueryData _mediaQuery = MediaQuery.of(context);
     final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
-        ? _lightTheme
-        : _darkTheme;
+        ? ThemeStyle.lightTheme
+        : ThemeStyle.darkTheme;
 
     Widget _buildFilter() {
       final TextStyle _selectTS =
@@ -129,7 +120,7 @@ Widget buildView(
               BoxShadow(
                   blurRadius: Adapt.px(15),
                   offset: Offset(Adapt.px(10), Adapt.px(15)),
-                  color: _theme.cursorColor)
+                  color: _theme.primaryColorDark)
             ],
             borderRadius: BorderRadius.circular(Adapt.px(30)),
           ),
@@ -142,7 +133,7 @@ Widget buildView(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(Adapt.px(30)),
                   child: Container(
-                    color: Colors.grey[200],
+                    color: _theme.primaryColorDark,
                     child: ParallaxImage(
                       //controller: state.controller,
                       extent: Adapt.px(280),
@@ -235,7 +226,7 @@ Widget buildView(
           padding: EdgeInsets.only(bottom: Adapt.px(30)),
           alignment: Alignment.center,
           child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF505050)),
+            valueColor: AlwaysStoppedAnimation<Color>(_theme.iconTheme.color),
           ),
         ),
       );

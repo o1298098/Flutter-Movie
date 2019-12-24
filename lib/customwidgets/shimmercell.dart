@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerCell extends StatelessWidget {
   const ShimmerCell(this.width, this.height, this.borderRadius,
       {Key key,
       this.margin = EdgeInsets.zero,
-      this.baseColor = const Color(0xFFEEEEEE),
-      this.highlightColor = const Color(0xFFF5F5F5)})
+      this.baseColor,
+      this.highlightColor})
       : super(key: key);
 
   final double width;
@@ -19,9 +20,13 @@ class ShimmerCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MediaQueryData _mediaQuery = MediaQuery.of(context);
+    final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
+        ? ThemeStyle.lightTheme
+        : ThemeStyle.darkTheme;
     return Shimmer.fromColors(
-      baseColor: baseColor,
-      highlightColor: highlightColor,
+      baseColor: baseColor ?? _theme.primaryColorDark,
+      highlightColor: highlightColor ?? _theme.primaryColorLight,
       child: Container(
         width: width,
         height: height,

@@ -8,14 +8,14 @@ import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/episodemodel.dart';
+import 'package:movie/style/themestyle.dart';
 
 import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
     EpisodeHeaderState state, Dispatch dispatch, ViewService viewService) {
-  Random random = Random(DateTime.now().millisecondsSinceEpoch);
-
+  final Random random = Random(DateTime.now().millisecondsSinceEpoch);
   Widget _buildEpisodeCell(Episode d) {
     return Container(
       padding: EdgeInsets.fromLTRB(Adapt.px(28), 0, Adapt.px(28), 0),
@@ -97,9 +97,7 @@ Widget buildView(
                       '${d.episode_number}  ${d.name}',
                       maxLines: 2,
                       style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: Adapt.px(30)),
+                          fontWeight: FontWeight.bold, fontSize: Adapt.px(30)),
                     ),
                   ),
                 ],

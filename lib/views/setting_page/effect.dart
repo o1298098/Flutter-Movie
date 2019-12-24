@@ -119,7 +119,7 @@ Future _openPhotoPicker(Action action, Context<SettingPageState> ctx) async {
     ctx.dispatch(SettingPageActionCreator.onUploading(true));
     StorageReference storageReference = FirebaseStorage.instance
         .ref()
-        .child('avatar/${Path.basename(_image.path)}}');
+        .child('avatar/${Path.basename(_image.path)}');
     StorageUploadTask uploadTask = storageReference.putFile(_image);
     await uploadTask.onComplete;
     print('File Uploaded');

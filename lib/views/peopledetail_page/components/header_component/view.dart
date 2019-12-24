@@ -6,6 +6,7 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
+import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'action.dart';
@@ -13,6 +14,10 @@ import 'state.dart';
 
 Widget buildView(
     HeaderState state, Dispatch dispatch, ViewService viewService) {
+  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
+  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
+      ? ThemeStyle.lightTheme
+      : ThemeStyle.darkTheme;
   void _bioReadMore() async {
     if (state.biography == null || state.biography.isEmpty) return;
     await showGeneralDialog(
@@ -24,7 +29,7 @@ Widget buildView(
         pageBuilder: (context, animation, secAnimation) {
           return Center(
             child: Material(
-              color: Colors.white,
+              color: _theme.backgroundColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(Adapt.px(20))),
               child: Container(
@@ -39,7 +44,6 @@ Widget buildView(
                           ? "We don't have a biography for ${state.profileName}"
                           : state.biography,
                       style: TextStyle(
-                          color: Color(0xFF333333),
                           fontSize: Adapt.px(30),
                           height: 1.2,
                           fontWeight: FontWeight.w600),
@@ -56,8 +60,8 @@ Widget buildView(
     if (state.profileName == null)
       return SizedBox(
           child: Shimmer.fromColors(
-        baseColor: Colors.grey[200],
-        highlightColor: Colors.grey[100],
+        baseColor: _theme.primaryColorDark,
+        highlightColor: _theme.primaryColorLight,
         child: Container(
           height: Adapt.px(50),
           width: Adapt.px(300),
@@ -82,8 +86,8 @@ Widget buildView(
     if (state.biography == null)
       return SizedBox(
           child: Shimmer.fromColors(
-        baseColor: Colors.grey[200],
-        highlightColor: Colors.grey[100],
+        baseColor: _theme.primaryColorDark,
+        highlightColor: _theme.primaryColorLight,
         child: Container(
           child: Column(
             children: <Widget>[

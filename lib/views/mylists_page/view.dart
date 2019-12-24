@@ -9,6 +9,7 @@ import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/models/base_api_model/user_list.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/mylistmodel.dart';
+import 'package:movie/style/themestyle.dart';
 import 'dart:ui' as ui;
 
 import 'action.dart';
@@ -147,14 +148,6 @@ Widget buildView(
     );
   }
 
-  Widget _buildListShimmerCell() {
-    return Container(
-      margin: EdgeInsets.only(
-          top: Adapt.px(20), left: Adapt.px(20), right: Adapt.px(20)),
-      child: ShimmerCell(Adapt.screenW(), Adapt.px(400), Adapt.px(30)),
-    );
-  }
-
   Widget _buildAddCell() {
     return SizeTransition(
       sizeFactor: Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
@@ -173,7 +166,6 @@ Widget buildView(
             children: <Widget>[
               Icon(
                 Icons.add,
-                color: Colors.black,
                 size: Adapt.px(50),
               ),
               SizedBox(
@@ -182,9 +174,7 @@ Widget buildView(
               Text(
                 'Create new list',
                 style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: Adapt.px(35)),
+                    fontWeight: FontWeight.bold, fontSize: Adapt.px(35)),
               )
             ],
           ),
@@ -193,36 +183,44 @@ Widget buildView(
     );
   }
 
-  Widget _buildList() {
-    return FutureBuilder<UserListModel>(
-      future: state.listData,
-      builder: (BuildContext context, AsyncSnapshot<UserListModel> snapshot) {
-        if (!snapshot.hasData)
-          return SliverToBoxAdapter(
-              child: Column(children: <Widget>[
-            _buildListShimmerCell(),
-            _buildListShimmerCell(),
-            _buildListShimmerCell()
-          ]));
-        return SliverList(
-          delegate: SliverChildListDelegate(
-              snapshot.data.data.map(_buildListCell).toList()),
-        );
-      },
-    );
-  }
-
   return Builder(builder: (context) {
-    final _lightTheme = ThemeData.light().copyWith(
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black));
-    final _darkTheme = ThemeData.dark().copyWith(
-        backgroundColor: Color(0xFF303030),
-        iconTheme: IconThemeData(color: Colors.white));
     final MediaQueryData _mediaQuery = MediaQuery.of(context);
     final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
-        ? _lightTheme
-        : _darkTheme;
+        ? ThemeStyle.lightTheme
+        : ThemeStyle.darkTheme;
+    Widget _buildListShimmerCell() {
+      return Container(
+        margin: EdgeInsets.only(
+            top: Adapt.px(20), left: Adapt.px(20), right: Adapt.px(20)),
+        child: ShimmerCell(
+          Adapt.screenW(),
+          Adapt.px(400),
+          Adapt.px(30),
+          baseColor: _theme.primaryColorDark,
+          highlightColor: _theme.primaryColorLight,
+        ),
+      );
+    }
+
+    Widget _buildList() {
+      return FutureBuilder<UserListModel>(
+        future: state.listData,
+        builder: (BuildContext context, AsyncSnapshot<UserListModel> snapshot) {
+          if (!snapshot.hasData)
+            return SliverToBoxAdapter(
+                child: Column(children: <Widget>[
+              _buildListShimmerCell(),
+              _buildListShimmerCell(),
+              _buildListShimmerCell()
+            ]));
+          return SliverList(
+            delegate: SliverChildListDelegate(
+                snapshot.data.data.map(_buildListCell).toList()),
+          );
+        },
+      );
+    }
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: _theme.backgroundColor,

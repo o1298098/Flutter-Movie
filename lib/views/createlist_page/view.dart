@@ -1,6 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
+import 'package:movie/style/themestyle.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -77,18 +78,24 @@ Widget buildView(
     );
   }
 
-  return Scaffold(
-    backgroundColor: Colors.white,
-    resizeToAvoidBottomPadding: false,
-    appBar: AppBar(
-      iconTheme: IconThemeData(color: Colors.black),
-      elevation: 0.0,
-      backgroundColor: Colors.white,
-      title: Text(
-        'CreatList',
-        style: TextStyle(color: Colors.black),
+  return Builder(builder: (context) {
+    final MediaQueryData _mediaQuery = MediaQuery.of(context);
+    final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
+        ? ThemeStyle.lightTheme
+        : ThemeStyle.darkTheme;
+    return Scaffold(
+      backgroundColor: _theme.backgroundColor,
+      resizeToAvoidBottomPadding: false,
+      appBar: AppBar(
+        iconTheme: _theme.iconTheme,
+        elevation: 0.0,
+        backgroundColor: _theme.backgroundColor,
+        title: Text(
+          'CreatList',
+          style: _theme.textTheme.body1,
+        ),
       ),
-    ),
-    body: _buildBody(),
-  );
+      body: _buildBody(),
+    );
+  });
 }

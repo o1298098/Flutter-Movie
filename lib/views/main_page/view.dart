@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/customwidgets/keepalive_widget.dart';
 import 'package:movie/generated/i18n.dart';
+import 'package:movie/style/themestyle.dart';
 
 import 'action.dart';
 import 'state.dart';

@@ -4,16 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
+import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'state.dart';
 
 Widget buildView(
     HeaderState state, Dispatch dispatch, ViewService viewService) {
+  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
+  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
+      ? ThemeStyle.lightTheme
+      : ThemeStyle.darkTheme;
   Widget _buildAirDateShimmerCell() {
     return Shimmer.fromColors(
-      baseColor: Colors.grey[200],
-      highlightColor: Colors.grey[100],
+      baseColor: _theme.primaryColorDark,
+      highlightColor: _theme.primaryColorLight,
       child: Container(
         width: Adapt.px(300),
         height: Adapt.px(28),
@@ -21,34 +26,36 @@ Widget buildView(
       ),
     );
   }
- 
-  Widget _buildOverWatchShimmerCell(){
+
+  Widget _buildOverWatchShimmerCell() {
     return Shimmer.fromColors(
-      baseColor: Colors.grey[200],
-      highlightColor: Colors.grey[100],
-      child:Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-        Container(
-          width: Adapt.screenW() - Adapt.px(350),
-          height: Adapt.px(26),
-          color:Colors.grey[200]
-          ),
-          SizedBox(height: Adapt.px(8),),
-          Container(
-          width: Adapt.screenW() - Adapt.px(350),
-          height: Adapt.px(26),
-          color:Colors.grey[200]
-          ),
-          SizedBox(height: Adapt.px(8),),
-          Container(
-          width: Adapt.screenW() - Adapt.px(500),
-          height: Adapt.px(26),
-          color:Colors.grey[200]
-          ),
-      ],)
-    );
+        baseColor: _theme.primaryColorDark,
+        highlightColor: _theme.primaryColorLight,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+                width: Adapt.screenW() - Adapt.px(350),
+                height: Adapt.px(26),
+                color: Colors.grey[200]),
+            SizedBox(
+              height: Adapt.px(8),
+            ),
+            Container(
+                width: Adapt.screenW() - Adapt.px(350),
+                height: Adapt.px(26),
+                color: Colors.grey[200]),
+            SizedBox(
+              height: Adapt.px(8),
+            ),
+            Container(
+                width: Adapt.screenW() - Adapt.px(500),
+                height: Adapt.px(26),
+                color: Colors.grey[200]),
+          ],
+        ));
   }
+
   Widget _getAirDateCell() {
     if (state.airDate != null)
       return Text('Air Date:${state.airDate}');
@@ -60,9 +67,11 @@ Widget buildView(
     if (state.overwatch != null)
       return Container(
         width: Adapt.screenW() - Adapt.px(310),
-        child: Text(state.overwatch?.isEmpty==true||state.overwatch==null ?'No OverWatch have been added.':state.overwatch),
+        child: Text(state.overwatch?.isEmpty == true || state.overwatch == null
+            ? 'No OverWatch have been added.'
+            : state.overwatch),
       );
-      else
+    else
       return _buildOverWatchShimmerCell();
   }
 
@@ -96,9 +105,7 @@ Widget buildView(
                 child: Text(
                   state.name ?? '',
                   style: TextStyle(
-                      color: Colors.black,
-                      fontSize: Adapt.px(35),
-                      fontWeight: FontWeight.bold),
+                      fontSize: Adapt.px(35), fontWeight: FontWeight.bold),
                 ),
               ),
             ),

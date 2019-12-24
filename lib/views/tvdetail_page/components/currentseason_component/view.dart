@@ -6,6 +6,7 @@ import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
+import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'action.dart';
@@ -13,13 +14,16 @@ import 'state.dart';
 
 Widget buildView(
     CurrentSeasonState state, Dispatch dispatch, ViewService viewService) {
-  
+  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
+  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
+      ? ThemeStyle.lightTheme
+      : ThemeStyle.darkTheme;
   Widget _buildShimmerCell() {
-    return SizedBox(
+    return Container(
       height: Adapt.px(360),
       child: Shimmer.fromColors(
-        baseColor: Colors.grey[200],
-        highlightColor: Colors.grey[100],
+        baseColor: _theme.primaryColorDark,
+        highlightColor: _theme.primaryColorLight,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -111,14 +115,13 @@ Widget buildView(
                     Hero(
                       tag: 'seasonname${state.nowseason.season_number}',
                       child: Container(
-                        width: Adapt.screenW() - Adapt.px(340),
-                        child:Text(
-                        state.nowseason.name ?? '',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: Adapt.px(35),
-                            fontWeight: FontWeight.bold),
-                      )),
+                          width: Adapt.screenW() - Adapt.px(340),
+                          child: Text(
+                            state.nowseason.name ?? '',
+                            style: TextStyle(
+                                fontSize: Adapt.px(35),
+                                fontWeight: FontWeight.bold),
+                          )),
                     ),
                     Container(
                         width: Adapt.screenW() - Adapt.px(340),
@@ -126,7 +129,6 @@ Widget buildView(
                           text: TextSpan(
                               style: TextStyle(
                                   fontSize: Adapt.px(24),
-                                  color: Colors.black,
                                   fontWeight: FontWeight.bold),
                               children: [
                                 TextSpan(text: airdata?.air_date ?? ''),
@@ -142,7 +144,7 @@ Widget buildView(
                       child: Text(
                         state.nowseason.overview?.isNotEmpty == true
                             ? state.nowseason.overview
-                            : '${state.nowseason.name} of ${state.name} premiered on ${DateFormat.yMMMd().format(DateTime.tryParse(state.nowseason.air_date??'1900-01-01'))}',
+                            : '${state.nowseason.name} of ${state.name} premiered on ${DateFormat.yMMMd().format(DateTime.tryParse(state.nowseason.air_date ?? '1900-01-01'))}',
                         maxLines: 8,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -168,13 +170,16 @@ Widget buildView(
             children: <Widget>[
               Text(I18n.of(viewService.context).currentSeason,
                   style: TextStyle(
-                      color: Colors.black,
-                      fontSize: Adapt.px(40),
-                      fontWeight: FontWeight.w800)),
+                      fontSize: Adapt.px(40), fontWeight: FontWeight.w800)),
               GestureDetector(
-                child: Text('View All Seasons',style: TextStyle(color:Colors.grey),),
-                onTap: ()=>dispatch(CurrentSeasonActionCreator.onAllSeasonsTapped(state.tvid, state.seasons)),
-              ) 
+                child: Text(
+                  'View All Seasons',
+                  style: TextStyle(color: Colors.grey),
+                ),
+                onTap: () => dispatch(
+                    CurrentSeasonActionCreator.onAllSeasonsTapped(
+                        state.tvid, state.seasons)),
+              )
             ],
           )),
       _buildCell()

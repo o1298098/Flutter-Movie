@@ -8,6 +8,7 @@ import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/tvdetail.dart';
+import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/tvdetail_page/components/info_component/action.dart';
 
 import 'dart:ui' as ui;
@@ -15,6 +16,10 @@ import 'dart:ui' as ui;
 import 'state.dart';
 
 Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
+  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
+  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
+      ? ThemeStyle.lightTheme
+      : ThemeStyle.darkTheme;
   Widget _buildInfoCell(String title, String value) {
     return Container(
       width: Adapt.px(300),
@@ -23,20 +28,23 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
         children: <Widget>[
           Text(
             title,
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: Adapt.px(30),
-                fontWeight: FontWeight.bold),
+            style:
+                TextStyle(fontSize: Adapt.px(30), fontWeight: FontWeight.bold),
           ),
           SizedBox(
             height: Adapt.px(8),
           ),
           value == null
-              ? ShimmerCell(Adapt.px(150), Adapt.px(30), 0)
+              ? ShimmerCell(
+                  Adapt.px(150),
+                  Adapt.px(30),
+                  0,
+                  baseColor: _theme.primaryColorDark,
+                  highlightColor: _theme.primaryColorLight,
+                )
               : Text(
                   value,
-                  style:
-                      TextStyle(color: Colors.black87, fontSize: Adapt.px(24)),
+                  style: TextStyle(color: Colors.grey, fontSize: Adapt.px(24)),
                 )
         ],
       ),
@@ -53,6 +61,7 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
               height: Adapt.px(60),
               child: Image.asset(
                 icon,
+                color: _theme.iconTheme.color,
               ),
             ),
           )
@@ -62,7 +71,7 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
   Widget _buildGenderCell(Genre g) {
     return Chip(
       elevation: 3.0,
-      backgroundColor: Colors.white,
+      backgroundColor: _theme.cardColor,
       label: Text(g.name),
     );
   }
@@ -115,7 +124,13 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
         ],
       );
     else
-      return ShimmerCell(Adapt.px(80), Adapt.px(50), 0);
+      return ShimmerCell(
+        Adapt.px(80),
+        Adapt.px(50),
+        0,
+        baseColor: _theme.primaryColorDark,
+        highlightColor: _theme.primaryColorLight,
+      );
   }
 
   Widget _getExternal() {
@@ -158,6 +173,7 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
                     height: Adapt.px(40),
                     child: Image.asset(
                       'images/link_bold.png',
+                      color: _theme.iconTheme.color,
                     ),
                   ))
               : SizedBox(),
@@ -166,15 +182,33 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
     else
       return Row(
         children: <Widget>[
-          ShimmerCell(Adapt.px(60), Adapt.px(60), Adapt.px(30)),
+          ShimmerCell(
+            Adapt.px(60),
+            Adapt.px(60),
+            Adapt.px(30),
+            baseColor: _theme.primaryColorDark,
+            highlightColor: _theme.primaryColorLight,
+          ),
           SizedBox(
             width: Adapt.px(20),
           ),
-          ShimmerCell(Adapt.px(60), Adapt.px(60), Adapt.px(30)),
+          ShimmerCell(
+            Adapt.px(60),
+            Adapt.px(60),
+            Adapt.px(30),
+            baseColor: _theme.primaryColorDark,
+            highlightColor: _theme.primaryColorLight,
+          ),
           SizedBox(
             width: Adapt.px(20),
           ),
-          ShimmerCell(Adapt.px(60), Adapt.px(60), Adapt.px(30))
+          ShimmerCell(
+            Adapt.px(60),
+            Adapt.px(60),
+            Adapt.px(30),
+            baseColor: _theme.primaryColorDark,
+            highlightColor: _theme.primaryColorLight,
+          )
         ],
       );
   }
@@ -189,10 +223,8 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
           ),
           Text(
             I18n.of(viewService.context).facts,
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: Adapt.px(40),
-                fontWeight: FontWeight.bold),
+            style:
+                TextStyle(fontSize: Adapt.px(40), fontWeight: FontWeight.bold),
           ),
           SizedBox(
             height: Adapt.px(10),
@@ -203,9 +235,7 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
               Text(
                 I18n.of(viewService.context).network,
                 style: TextStyle(
-                    color: Colors.black,
-                    fontSize: Adapt.px(30),
-                    fontWeight: FontWeight.bold),
+                    fontSize: Adapt.px(30), fontWeight: FontWeight.bold),
               ),
               SizedBox(height: Adapt.px(10)),
               Wrap(
@@ -215,8 +245,20 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
                         .map(_buildNetworkCell)
                         .toList()
                     : <Widget>[
-                        ShimmerCell(Adapt.px(120), Adapt.px(60), 0),
-                        ShimmerCell(Adapt.px(120), Adapt.px(60), 0)
+                        ShimmerCell(
+                          Adapt.px(120),
+                          Adapt.px(60),
+                          0,
+                          baseColor: _theme.primaryColorDark,
+                          highlightColor: _theme.primaryColorLight,
+                        ),
+                        ShimmerCell(
+                          Adapt.px(120),
+                          Adapt.px(60),
+                          0,
+                          baseColor: _theme.primaryColorDark,
+                          highlightColor: _theme.primaryColorLight,
+                        )
                       ],
               )
             ],
@@ -227,9 +269,7 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
               Text(
                 'Certification',
                 style: TextStyle(
-                    color: Colors.black,
-                    fontSize: Adapt.px(30),
-                    fontWeight: FontWeight.bold),
+                    fontSize: Adapt.px(30), fontWeight: FontWeight.bold),
               ),
               SizedBox(height: Adapt.px(10)),
               _buildCertification()
@@ -271,18 +311,34 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
               Text(
                 I18n.of(viewService.context).genders,
                 style: TextStyle(
-                    color: Colors.black,
-                    fontSize: Adapt.px(30),
-                    fontWeight: FontWeight.bold),
+                    fontSize: Adapt.px(30), fontWeight: FontWeight.bold),
               ),
               Wrap(
                 spacing: Adapt.px(20),
                 children: state.tvDetailModel?.genres != null
                     ? state.tvDetailModel.genres.map(_buildGenderCell).toList()
                     : <Widget>[
-                        ShimmerCell(Adapt.px(100), Adapt.px(50), Adapt.px(25)),
-                        ShimmerCell(Adapt.px(120), Adapt.px(50), Adapt.px(25)),
-                        ShimmerCell(Adapt.px(80), Adapt.px(50), Adapt.px(25)),
+                        ShimmerCell(
+                          Adapt.px(100),
+                          Adapt.px(50),
+                          Adapt.px(25),
+                          baseColor: _theme.primaryColorDark,
+                          highlightColor: _theme.primaryColorLight,
+                        ),
+                        ShimmerCell(
+                          Adapt.px(120),
+                          Adapt.px(50),
+                          Adapt.px(25),
+                          baseColor: _theme.primaryColorDark,
+                          highlightColor: _theme.primaryColorLight,
+                        ),
+                        ShimmerCell(
+                          Adapt.px(80),
+                          Adapt.px(50),
+                          Adapt.px(25),
+                          baseColor: _theme.primaryColorDark,
+                          highlightColor: _theme.primaryColorLight,
+                        ),
                       ],
               )
             ],

@@ -1,17 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
-import 'package:movie/customwidgets/hero_dialog_route.dart';
-import 'package:movie/customwidgets/watchlistdetail.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/base_api_model/user_media.dart';
-import 'package:movie/models/enums/genres.dart';
 import 'package:movie/models/enums/imagesize.dart';
-import 'package:movie/models/videolist.dart';
+import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 import 'dart:math' as math;
 
@@ -41,300 +36,314 @@ Widget buildView(
               );
             }));
   }*/
+  return Builder(
+    builder: (context) {
+      final MediaQueryData _mediaQuery = MediaQuery.of(context);
+      final ThemeData _theme =
+          _mediaQuery.platformBrightness == Brightness.light
+              ? ThemeStyle.lightTheme
+              : ThemeStyle.darkTheme;
+      Widget _buildInfo() {
+        var _d = state.selectMdeia;
+        Widget _child = _d == null
+            ? Shimmer.fromColors(
+                baseColor: _theme.primaryColorDark,
+                highlightColor: _theme.primaryColorLight,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      height: Adapt.px(45),
+                      width: Adapt.px(400),
+                      color: Colors.grey[200],
+                    ),
+                    SizedBox(
+                      height: Adapt.px(30),
+                    ),
+                    Container(
+                      height: Adapt.px(24),
+                      color: Colors.grey[200],
+                    ),
+                    SizedBox(
+                      height: Adapt.px(8),
+                    ),
+                    Container(
+                      height: Adapt.px(24),
+                      color: Colors.grey[200],
+                    ),
+                    SizedBox(
+                      height: Adapt.px(8),
+                    ),
+                    Container(
+                      height: Adapt.px(24),
+                      color: Colors.grey[200],
+                    ),
+                    SizedBox(
+                      height: Adapt.px(8),
+                    ),
+                    Container(
+                      height: Adapt.px(24),
+                      width: Adapt.px(200),
+                      color: Colors.grey[200],
+                    ),
+                    SizedBox(
+                      height: Adapt.px(8),
+                    ),
+                  ],
+                ),
+              )
+            : Column(
+                key: ValueKey(_d),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(_d.name,
+                      style: TextStyle(
+                          fontSize: Adapt.px(45), fontWeight: FontWeight.bold)),
+                  SizedBox(
+                    height: Adapt.px(20),
+                  ),
+                  Text(_d.genre.split(',')?.join(' / ') ?? ''),
+                  SizedBox(
+                    height: Adapt.px(20),
+                  ),
+                  Text(
+                    _d.overwatch ?? '',
+                    maxLines: 5,
+                  )
+                ],
+              );
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: Adapt.px(50)),
+          child: AnimatedSwitcher(
+            //switchInCurve: Curves.easeIn,
+            //switchOutCurve: Curves.easeOut,
+            transitionBuilder: (w, a) {
+              return SlideTransition(
+                position:
+                    a.drive(Tween(begin: Offset(0, 0.2), end: Offset.zero)),
+                child: FadeTransition(
+                  opacity: a,
+                  child: w,
+                ),
+              );
+            },
+            duration: Duration(milliseconds: 300),
+            reverseDuration: Duration(milliseconds: 0),
+            child: _child,
+          ),
+        );
+      }
 
-  Widget _buildInfo() {
-    var _d = state.selectMdeia;
-    Widget _child = _d == null
-        ? Shimmer.fromColors(
-            baseColor: Colors.grey[200],
-            highlightColor: Colors.grey[100],
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  height: Adapt.px(45),
-                  width: Adapt.px(400),
-                  color: Colors.grey[200],
+      Widget _buildmySeiper() {
+        List<UserMedia> _list = state.isMovie
+            ? (state?.movies?.data ?? [])
+            : (state?.tvshows?.data ?? []);
+        Widget _child = _list.length == 0
+            ? Shimmer.fromColors(
+                baseColor: _theme.primaryColorDark,
+                highlightColor: _theme.primaryColorLight,
+                child: Center(
+                  child: Container(
+                    width: Adapt.screenW() * .85,
+                    height: Adapt.screenH() / 2 + Adapt.px(80),
+                    margin: EdgeInsets.only(
+                        right: Adapt.px(20), bottom: Adapt.px(70)),
+                    decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(Adapt.px(50))),
+                  ),
                 ),
-                SizedBox(
-                  height: Adapt.px(30),
-                ),
-                Container(
-                  height: Adapt.px(24),
-                  color: Colors.grey[200],
-                ),
-                SizedBox(
-                  height: Adapt.px(8),
-                ),
-                Container(
-                  height: Adapt.px(24),
-                  color: Colors.grey[200],
-                ),
-                SizedBox(
-                  height: Adapt.px(8),
-                ),
-                Container(
-                  height: Adapt.px(24),
-                  color: Colors.grey[200],
-                ),
-                SizedBox(
-                  height: Adapt.px(8),
-                ),
-                Container(
-                  height: Adapt.px(24),
-                  width: Adapt.px(200),
-                  color: Colors.grey[200],
-                ),
-                SizedBox(
-                  height: Adapt.px(8),
-                ),
-              ],
-            ),
-          )
-        : Column(
-            key: ValueKey(_d),
+              )
+            : _SwiperView(
+                key: ValueKey(_list),
+                itemCount: _list.length,
+                viewportFraction: 0.85,
+                physics: BouncingScrollPhysics(),
+                scale: 0.9,
+                itemTapped: (index) =>
+                    dispatch(WatchlistPageActionCreator.swiperCellTapped()),
+                onPageChanged: (index) => dispatch(
+                    WatchlistPageActionCreator.swiperChanged(_list[index])),
+                itemBuilder: (ctx, index) {
+                  var _d = _list[index];
+                  return Container(
+                      key: ValueKey(_d),
+                      margin: EdgeInsets.only(right: Adapt.px(20)),
+                      child: Hero(
+                          tag: 'Background${_d.mediaId}',
+                          child: Stack(
+                            alignment: Alignment.bottomRight,
+                            children: <Widget>[
+                              Container(
+                                height: Adapt.screenH() / 2 + Adapt.px(80),
+                                alignment: Alignment.bottomRight,
+                                margin: EdgeInsets.only(
+                                    right: Adapt.px(20), bottom: Adapt.px(70)),
+                                decoration: BoxDecoration(
+                                    color: index.isEven
+                                        ? Colors.amber
+                                        : Colors.blueAccent,
+                                    image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        alignment: Alignment.bottomCenter,
+                                        image: CachedNetworkImageProvider(
+                                            ImageUrl.getUrl(
+                                                _d.photoUrl, ImageSize.w500))),
+                                    boxShadow: <BoxShadow>[
+                                      BoxShadow(
+                                          blurRadius: 20,
+                                          offset: Offset(-5, 12),
+                                          color: Colors.black26)
+                                    ],
+                                    borderRadius:
+                                        BorderRadius.circular(Adapt.px(50))),
+                              ),
+                              Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(
+                                    right: Adapt.px(10), bottom: Adapt.px(60)),
+                                width: Adapt.px(120),
+                                height: Adapt.px(120),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                        BorderRadius.circular(Adapt.px(30))),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: Text(
+                                    _d.rated.toString(),
+                                    style: TextStyle(
+                                        color: Colors.tealAccent[700]
+                                            .withAlpha(200),
+                                        fontSize: Adapt.px(50),
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: Adapt.px(60),
+                                height: Adapt.px(60),
+                                margin: EdgeInsets.only(bottom: Adapt.px(140)),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle),
+                                child: Icon(Icons.star, color: Colors.yellow),
+                              )
+                            ],
+                          )));
+                },
+              );
+        return Container(
+            height: Adapt.screenH() / 2 + Adapt.px(150),
+            child: AnimatedSwitcher(
+              duration: Duration(milliseconds: 600),
+              child: _child,
+            ));
+      }
+
+      Widget _buildBody() {
+        TextStyle _selectTextStyle =
+            TextStyle(fontSize: Adapt.px(45), fontWeight: FontWeight.bold);
+        TextStyle _unselectTextStyle =
+            TextStyle(fontSize: Adapt.px(30), fontWeight: FontWeight.bold);
+        return SafeArea(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(_d.name,
-                  style: TextStyle(
-                      fontSize: Adapt.px(45), fontWeight: FontWeight.bold)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  InkWell(
+                    onTap: () {
+                      if (!state.isMovie) {
+                        dispatch(WatchlistPageActionCreator.widthChanged(true));
+                        state.animationController.reverse();
+                      }
+                    },
+                    child: Container(
+                      alignment: Alignment.bottomCenter,
+                      height: Adapt.px(60),
+                      width: Adapt.px(250),
+                      child: Text(
+                        I18n.of(viewService.context).movies,
+                        style: state.isMovie
+                            ? _selectTextStyle
+                            : _unselectTextStyle,
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      if (state.isMovie) {
+                        dispatch(
+                            WatchlistPageActionCreator.widthChanged(false));
+                        state.animationController.forward(from: 0.0);
+                      }
+                    },
+                    child: Container(
+                        alignment: Alignment.bottomCenter,
+                        height: Adapt.px(60),
+                        width: Adapt.px(250),
+                        child: Text(
+                          I18n.of(viewService.context).tvShows,
+                          style: state.isMovie
+                              ? _unselectTextStyle
+                              : _selectTextStyle,
+                        )),
+                  ),
+                  Expanded(
+                    child: Container(),
+                  ),
+                  Container(
+                    width: Adapt.px(50),
+                    height: Adapt.px(50),
+                    decoration: BoxDecoration(
+                        color: Colors.black87,
+                        borderRadius: BorderRadius.circular(Adapt.px(10))),
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      icon: Icon(Icons.close, color: Colors.white),
+                      onPressed: () => Navigator.of(viewService.context).pop(),
+                    ),
+                  ),
+                  SizedBox(
+                    width: Adapt.px(30),
+                  )
+                ],
+              ),
               SizedBox(
-                height: Adapt.px(20),
+                height: Adapt.px(10),
               ),
-              Text(_d.genre.split(',')?.join(' / ') ?? ''),
-              SizedBox(
-                height: Adapt.px(20),
-              ),
-              Text(
-                _d.overwatch ?? '',
-                maxLines: 5,
-              )
-            ],
-          );
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: Adapt.px(50)),
-      child: AnimatedSwitcher(
-        //switchInCurve: Curves.easeIn,
-        //switchOutCurve: Curves.easeOut,
-        transitionBuilder: (w, a) {
-          return SlideTransition(
-            position: a.drive(Tween(begin: Offset(0, 0.2), end: Offset.zero)),
-            child: FadeTransition(
-              opacity: a,
-              child: w,
-            ),
-          );
-        },
-        duration: Duration(milliseconds: 300),
-        reverseDuration: Duration(milliseconds: 0),
-        child: _child,
-      ),
-    );
-  }
-
-  Widget _buildmySeiper() {
-    List<UserMedia> _list = state.isMovie
-        ? (state?.movies?.data ?? [])
-        : (state?.tvshows?.data ?? []);
-    Widget _child = _list.length == 0
-        ? Shimmer.fromColors(
-            baseColor: Colors.grey[200],
-            highlightColor: Colors.grey[100],
-            child: Center(
-              child: Container(
-                width: Adapt.screenW() * .85,
-                height: Adapt.screenH() / 2 + Adapt.px(80),
-                margin:
-                    EdgeInsets.only(right: Adapt.px(20), bottom: Adapt.px(70)),
-                decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(Adapt.px(50))),
-              ),
-            ),
-          )
-        : _SwiperView(
-            key: ValueKey(_list),
-            itemCount: _list.length,
-            viewportFraction: 0.85,
-            physics: BouncingScrollPhysics(),
-            scale: 0.9,
-            itemTapped: (index) =>
-                dispatch(WatchlistPageActionCreator.swiperCellTapped()),
-            onPageChanged: (index) => dispatch(
-                WatchlistPageActionCreator.swiperChanged(_list[index])),
-            itemBuilder: (ctx, index) {
-              var _d = _list[index];
-              return Container(
-                  key: ValueKey(_d),
-                  margin: EdgeInsets.only(right: Adapt.px(20)),
-                  child: Hero(
-                      tag: 'Background${_d.mediaId}',
-                      child: Stack(
-                        alignment: Alignment.bottomRight,
-                        children: <Widget>[
-                          Container(
-                            height: Adapt.screenH() / 2 + Adapt.px(80),
-                            alignment: Alignment.bottomRight,
-                            margin: EdgeInsets.only(
-                                right: Adapt.px(20), bottom: Adapt.px(70)),
-                            decoration: BoxDecoration(
-                                color: index.isEven
-                                    ? Colors.amber
-                                    : Colors.blueAccent,
-                                image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    alignment: Alignment.bottomCenter,
-                                    image: CachedNetworkImageProvider(
-                                        ImageUrl.getUrl(
-                                            _d.photoUrl, ImageSize.w500))),
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                      blurRadius: 20,
-                                      offset: Offset(-5, 12),
-                                      color: Colors.black26)
-                                ],
-                                borderRadius:
-                                    BorderRadius.circular(Adapt.px(50))),
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.only(
-                                right: Adapt.px(10), bottom: Adapt.px(60)),
-                            width: Adapt.px(120),
-                            height: Adapt.px(120),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.circular(Adapt.px(30))),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: Text(
-                                _d.rated.toString(),
-                                style: TextStyle(
-                                    color:
-                                        Colors.tealAccent[700].withAlpha(200),
-                                    fontSize: Adapt.px(50),
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: Adapt.px(60),
-                            height: Adapt.px(60),
-                            margin: EdgeInsets.only(bottom: Adapt.px(140)),
-                            decoration: BoxDecoration(
-                                color: Colors.white, shape: BoxShape.circle),
-                            child: Icon(Icons.star, color: Colors.yellow),
-                          )
-                        ],
-                      )));
-            },
-          );
-    return Container(
-        height: Adapt.screenH() / 2 + Adapt.px(150),
-        child: AnimatedSwitcher(
-          duration: Duration(milliseconds: 600),
-          child: _child,
-        ));
-  }
-
-  Widget _buildBody() {
-    TextStyle _selectTextStyle =
-        TextStyle(fontSize: Adapt.px(45), fontWeight: FontWeight.bold);
-    TextStyle _unselectTextStyle =
-        TextStyle(fontSize: Adapt.px(30), fontWeight: FontWeight.bold);
-    return SafeArea(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              InkWell(
-                onTap: () {
-                  if (!state.isMovie) {
-                    dispatch(WatchlistPageActionCreator.widthChanged(true));
-                    state.animationController.reverse();
-                  }
-                },
-                child: Container(
-                  alignment: Alignment.bottomCenter,
-                  height: Adapt.px(60),
-                  width: Adapt.px(250),
-                  child: Text(
-                    I18n.of(viewService.context).movies,
-                    style:
-                        state.isMovie ? _selectTextStyle : _unselectTextStyle,
+              Container(
+                alignment: Alignment.centerLeft,
+                width: Adapt.px(500),
+                child: SlideTransition(
+                  position: Tween(begin: Offset.zero, end: Offset(1, 0))
+                      .animate(CurvedAnimation(
+                          curve: Curves.ease,
+                          parent: state.animationController)),
+                  child: Container(
+                    width: Adapt.px(250),
+                    height: Adapt.px(20),
+                    decoration: BoxDecoration(
+                        color: Colors.orange, shape: BoxShape.circle),
                   ),
                 ),
               ),
-              InkWell(
-                onTap: () {
-                  if (state.isMovie) {
-                    dispatch(WatchlistPageActionCreator.widthChanged(false));
-                    state.animationController.forward(from: 0.0);
-                  }
-                },
-                child: Container(
-                    alignment: Alignment.bottomCenter,
-                    height: Adapt.px(60),
-                    width: Adapt.px(250),
-                    child: Text(
-                      I18n.of(viewService.context).tvShows,
-                      style:
-                          state.isMovie ? _unselectTextStyle : _selectTextStyle,
-                    )),
-              ),
-              Expanded(
-                child: Container(),
-              ),
-              Container(
-                width: Adapt.px(50),
-                height: Adapt.px(50),
-                decoration: BoxDecoration(
-                    color: Colors.black87,
-                    borderRadius: BorderRadius.circular(Adapt.px(10))),
-                child: IconButton(
-                  padding: EdgeInsets.zero,
-                  icon: Icon(Icons.close, color: Colors.white),
-                  onPressed: () => Navigator.of(viewService.context).pop(),
-                ),
-              ),
               SizedBox(
-                width: Adapt.px(30),
-              )
+                height: Adapt.px(80),
+              ),
+              _buildmySeiper(),
+              _buildInfo(),
             ],
           ),
-          SizedBox(
-            height: Adapt.px(10),
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            width: Adapt.px(500),
-            child: SlideTransition(
-              position: Tween(begin: Offset.zero, end: Offset(1, 0)).animate(
-                  CurvedAnimation(
-                      curve: Curves.ease, parent: state.animationController)),
-              child: Container(
-                width: Adapt.px(250),
-                height: Adapt.px(20),
-                decoration:
-                    BoxDecoration(color: Colors.orange, shape: BoxShape.circle),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: Adapt.px(80),
-          ),
-          _buildmySeiper(),
-          _buildInfo(),
-        ],
-      ),
-    );
-  }
+        );
+      }
 
-  return Scaffold(body: _buildBody());
+      return Scaffold(body: _buildBody());
+    },
+  );
 }
 
 class _SwiperView extends StatefulWidget {

@@ -60,7 +60,7 @@ void _onDispose(Action action, Context<TvShowLiveStreamPageState> ctx) {
 
 void _addComment(Action action, Context<TvShowLiveStreamPageState> ctx) async {
   final String _commentTxt = action.payload;
-  if (_commentTxt.isNotEmpty && ctx.state.user != null) {
+  if (_commentTxt != '' && _commentTxt != null && ctx.state.user != null) {
     final String _date = DateTime.now().toString();
     final TvShowComment _comment = TvShowComment.fromParams(
         mediaId: ctx.state.tvid,

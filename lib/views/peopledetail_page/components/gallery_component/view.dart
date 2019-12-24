@@ -6,6 +6,7 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/imagemodel.dart';
+import 'package:movie/style/themestyle.dart';
 import 'dart:math' as math;
 
 import 'action.dart';
@@ -13,6 +14,10 @@ import 'state.dart';
 
 Widget buildView(
     GalleryState state, Dispatch dispatch, ViewService viewService) {
+  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
+  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
+      ? ThemeStyle.lightTheme
+      : ThemeStyle.darkTheme;
   Widget _buildImageCell(ImageData d) {
     return Hero(
       key: ValueKey('image${d.file_path}'),
@@ -22,7 +27,7 @@ Widget buildView(
         width: Adapt.px(200),
         height: Adapt.px(180),
         decoration: BoxDecoration(
-            color: Colors.grey[200],
+            color: _theme.primaryColorDark,
             borderRadius: BorderRadius.circular(Adapt.px(20)),
             image: DecorationImage(
                 fit: BoxFit.cover,
@@ -50,19 +55,43 @@ Widget buildView(
                     SizedBox(
                       width: Adapt.px(30),
                     ),
-                    ShimmerCell(Adapt.px(200), Adapt.px(180), Adapt.px(20)),
+                    ShimmerCell(
+                      Adapt.px(200),
+                      Adapt.px(180),
+                      Adapt.px(20),
+                      baseColor: _theme.primaryColorDark,
+                      highlightColor: _theme.primaryColorLight,
+                    ),
                     SizedBox(
                       width: Adapt.px(30),
                     ),
-                    ShimmerCell(Adapt.px(200), Adapt.px(180), Adapt.px(20)),
+                    ShimmerCell(
+                      Adapt.px(200),
+                      Adapt.px(180),
+                      Adapt.px(20),
+                      baseColor: _theme.primaryColorDark,
+                      highlightColor: _theme.primaryColorLight,
+                    ),
                     SizedBox(
                       width: Adapt.px(30),
                     ),
-                    ShimmerCell(Adapt.px(200), Adapt.px(180), Adapt.px(20)),
+                    ShimmerCell(
+                      Adapt.px(200),
+                      Adapt.px(180),
+                      Adapt.px(20),
+                      baseColor: _theme.primaryColorDark,
+                      highlightColor: _theme.primaryColorLight,
+                    ),
                     SizedBox(
                       width: Adapt.px(30),
                     ),
-                    ShimmerCell(Adapt.px(200), Adapt.px(180), Adapt.px(20)),
+                    ShimmerCell(
+                      Adapt.px(200),
+                      Adapt.px(180),
+                      Adapt.px(20),
+                      baseColor: _theme.primaryColorDark,
+                      highlightColor: _theme.primaryColorLight,
+                    ),
                   ],
           )),
     );

@@ -7,6 +7,7 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/combinedcredits.dart';
 import 'package:movie/models/enums/imagesize.dart';
+import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'action.dart';
@@ -14,6 +15,10 @@ import 'state.dart';
 
 Widget buildView(
     KnownForState state, Dispatch dispatch, ViewService viewService) {
+  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
+  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
+      ? ThemeStyle.lightTheme
+      : ThemeStyle.darkTheme;
   Widget _buildCastCell(CastData d) {
     return Container(
       key: ValueKey('knowforCell${d.id}'),
@@ -29,8 +34,9 @@ Widget buildView(
               width: Adapt.px(240),
               height: Adapt.px(342),
               decoration: BoxDecoration(
-                  color: Colors.grey[200],
+                  color: _theme.primaryColorDark,
                   image: DecorationImage(
+                    fit: BoxFit.cover,
                     image: CachedNetworkImageProvider(
                         ImageUrl.getUrl(d.poster_path, ImageSize.w300)),
                   )),
@@ -56,8 +62,8 @@ Widget buildView(
       width: Adapt.px(240),
       height: Adapt.px(480),
       child: Shimmer.fromColors(
-        baseColor: Colors.grey[200],
-        highlightColor: Colors.grey[100],
+        baseColor: _theme.primaryColorDark,
+        highlightColor: _theme.primaryColorLight,
         child: Column(
           children: <Widget>[
             Container(

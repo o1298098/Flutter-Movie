@@ -6,6 +6,7 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/enums/imagesize.dart';
+import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'action.dart';
@@ -13,13 +14,17 @@ import 'state.dart';
 
 Widget buildView(
     SeasonCastState state, Dispatch dispatch, ViewService viewService) {
+  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
+  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
+      ? ThemeStyle.lightTheme
+      : ThemeStyle.darkTheme;
   Widget _buildCreditsShimmerCell() {
     return SizedBox(
       width: Adapt.px(220),
       height: Adapt.px(450),
       child: Shimmer.fromColors(
-        baseColor: Colors.grey[200],
-        highlightColor: Colors.grey[100],
+        baseColor: _theme.primaryColorDark,
+        highlightColor: _theme.primaryColorLight,
         child: Column(
           children: <Widget>[
             Container(
@@ -62,21 +67,15 @@ Widget buildView(
             children: <Widget>[
               Hero(
                   tag: 'people' + d.id.toString(),
-                  child: CachedNetworkImage(
+                  child: Container(
                     width: Adapt.px(220),
                     height: Adapt.px(300),
-                    fit: BoxFit.cover,
-                    placeholder: (ctx, s) {
-                      return Image.asset(
-                        'images/CacheBG.jpg',
-                        fit: BoxFit.cover,
-                        width: Adapt.px(220),
-                        height: Adapt.px(300),
-                      );
-                    },
-                    imageUrl: d.profile_path == null
-                        ? ImageUrl.emptyimage
-                        : ImageUrl.getUrl(d.profile_path, ImageSize.w200),
+                    decoration: BoxDecoration(
+                        color: _theme.primaryColorLight,
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: CachedNetworkImageProvider(ImageUrl.getUrl(
+                                d.profile_path, ImageSize.w200)))),
                   )),
               Container(
                 padding: EdgeInsets.fromLTRB(
@@ -85,9 +84,7 @@ Widget buildView(
                 child: Text(
                   d.name,
                   style: TextStyle(
-                      color: Colors.black,
-                      fontSize: Adapt.px(26),
-                      fontWeight: FontWeight.bold),
+                      fontSize: Adapt.px(26), fontWeight: FontWeight.bold),
                 ),
               ),
               Container(
@@ -150,9 +147,7 @@ Widget buildView(
             TextSpan(
                 text: I18n.of(viewService.context).seasonCast,
                 style: TextStyle(
-                    color: Colors.black,
-                    fontSize: Adapt.px(35),
-                    fontWeight: FontWeight.bold)),
+                    fontSize: Adapt.px(35), fontWeight: FontWeight.bold)),
             TextSpan(
                 text:
                     ' ${state.castData != null ? state.castData.length.toString() : ''}',

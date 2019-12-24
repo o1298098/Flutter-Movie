@@ -8,6 +8,7 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/imagemodel.dart';
+import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'action.dart';
@@ -15,8 +16,10 @@ import 'state.dart';
 
 Widget buildView(
     ImagesState state, Dispatch dispatch, ViewService viewService) {
-  Random random = new Random(DateTime.now().millisecondsSinceEpoch);
-
+  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
+  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
+      ? ThemeStyle.lightTheme
+      : ThemeStyle.darkTheme;
   Widget _buildImageCell(ImageData d) {
     String url = d.file_path == null
         ? ImageUrl.emptyimage
@@ -35,8 +38,7 @@ Widget buildView(
           width: Adapt.px(350),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(Adapt.px(15)),
-              color: Color.fromRGBO(random.nextInt(255), random.nextInt(255),
-                  random.nextInt(255), random.nextDouble()),
+              color: _theme.primaryColorDark,
               image: DecorationImage(
                   fit: BoxFit.cover, image: CachedNetworkImageProvider(url))),
         ),
@@ -45,17 +47,14 @@ Widget buildView(
   }
 
   Widget _buildImageShimmerCell() {
-    return Shimmer.fromColors(
-      baseColor: Colors.grey[200],
-      highlightColor: Colors.grey[100],
-      child: Container(
-          margin: EdgeInsets.only(right: Adapt.px(20)),
-          height: Adapt.px(200),
-          width: Adapt.px(350),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(Adapt.px(15)),
-            color: Colors.grey[200],
-          )),
+    return Container(
+      margin: EdgeInsets.only(right: Adapt.px(20)),
+      height: Adapt.px(200),
+      width: Adapt.px(350),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(Adapt.px(15)),
+        color: Colors.grey[200],
+      ),
     );
   }
 
@@ -81,16 +80,20 @@ Widget buildView(
           child: Text(I18n.of(viewService.context).episodeImages),
         );
     } else
-      return Container(
-          height: Adapt.px(200),
-          child: ListView(scrollDirection: Axis.horizontal, children: <Widget>[
-            SizedBox(
-              width: Adapt.px(28),
-            ),
-            _buildImageShimmerCell(),
-            _buildImageShimmerCell(),
-            _buildImageShimmerCell(),
-          ]));
+      return Shimmer.fromColors(
+          baseColor: _theme.primaryColorDark,
+          highlightColor: _theme.primaryColorLight,
+          child: Container(
+              height: Adapt.px(200),
+              child:
+                  ListView(scrollDirection: Axis.horizontal, children: <Widget>[
+                SizedBox(
+                  width: Adapt.px(28),
+                ),
+                _buildImageShimmerCell(),
+                _buildImageShimmerCell(),
+                _buildImageShimmerCell(),
+              ])));
   }
 
   return AnimatedSwitcher(
@@ -98,32 +101,30 @@ Widget buildView(
     switchOutCurve: Curves.easeOut,
     duration: Duration(milliseconds: 600),
     child: Column(
-        key: ValueKey(state.images),
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.fromLTRB(Adapt.px(28), 0, Adapt.px(28), 0),
-            child: Text.rich(TextSpan(children: [
-              TextSpan(
-                  text: I18n.of(viewService.context).episodeImages,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: Adapt.px(35),
-                      fontWeight: FontWeight.bold)),
-              TextSpan(
-                  text:
-                      ' ${state.images != null ? state.images.stills.length.toString() : ''}',
-                  style: TextStyle(color: Colors.grey, fontSize: Adapt.px(26)))
-            ])),
-          ),
-          SizedBox(
-            height: Adapt.px(30),
-          ),
-          _getImagesBody(),
-          SizedBox(
-            height: Adapt.px(30),
-          ),
-        ],
-      ),
+      key: ValueKey(state.images),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.fromLTRB(Adapt.px(28), 0, Adapt.px(28), 0),
+          child: Text.rich(TextSpan(children: [
+            TextSpan(
+                text: I18n.of(viewService.context).episodeImages,
+                style: TextStyle(
+                    fontSize: Adapt.px(35), fontWeight: FontWeight.bold)),
+            TextSpan(
+                text:
+                    ' ${state.images != null ? state.images.stills.length.toString() : ''}',
+                style: TextStyle(color: Colors.grey, fontSize: Adapt.px(26)))
+          ])),
+        ),
+        SizedBox(
+          height: Adapt.px(30),
+        ),
+        _getImagesBody(),
+        SizedBox(
+          height: Adapt.px(30),
+        ),
+      ],
+    ),
   );
 }

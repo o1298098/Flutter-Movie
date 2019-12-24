@@ -9,6 +9,7 @@ import 'package:movie/customwidgets/keepalive_widget.dart';
 import 'package:movie/models/enums/genres.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/videolist.dart';
+import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'action.dart';
@@ -16,7 +17,11 @@ import 'state.dart';
 
 Widget buildView(
     MovieListState state, Dispatch dispatch, ViewService viewService) {
-  Random random = new Random(DateTime.now().millisecondsSinceEpoch);
+  final Random random = new Random(DateTime.now().millisecondsSinceEpoch);
+  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
+  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
+      ? ThemeStyle.lightTheme
+      : ThemeStyle.darkTheme;
   Widget _buildGenreChip(int id) {
     return Container(
       margin: EdgeInsets.only(right: Adapt.px(10)),
@@ -34,8 +39,8 @@ Widget buildView(
   Widget _buildShimmerCell() {
     return SizedBox(
       child: Shimmer.fromColors(
-        baseColor: Colors.grey[200],
-        highlightColor: Colors.grey[100],
+        baseColor: _theme.primaryColorDark,
+        highlightColor: _theme.primaryColorLight,
         child: Container(
           padding: EdgeInsets.all(Adapt.px(20)),
           child: Row(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/models/sortcondition.dart';
+import 'package:movie/style/themestyle.dart';
 
 import '../../action.dart';
 import 'action.dart';
@@ -10,6 +11,10 @@ import 'state.dart';
 
 Widget buildView(
     FilterState state, Dispatch dispatch, ViewService viewService) {
+  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
+  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
+      ? ThemeStyle.lightTheme
+      : ThemeStyle.darkTheme;
   Widget _buildGernesCell(SortCondition d) {
     return ChoiceChip(
       label: Text(d.name),
@@ -42,7 +47,7 @@ Widget buildView(
             height: Adapt.px(80),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(Adapt.px(20)),
-              color: Colors.grey[200],
+              color: _theme.primaryColorDark,
             ),
             child: TextField(
                 keyboardAppearance: Brightness.light,
@@ -69,10 +74,8 @@ Widget buildView(
           ),
           Text(
             'Type',
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: Adapt.px(30),
-                fontWeight: FontWeight.w600),
+            style:
+                TextStyle(fontSize: Adapt.px(30), fontWeight: FontWeight.w600),
           ),
           SizedBox(
             height: Adapt.px(20),
@@ -130,10 +133,8 @@ Widget buildView(
           ),
           Text(
             'Genres',
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: Adapt.px(30),
-                fontWeight: FontWeight.w600),
+            style:
+                TextStyle(fontSize: Adapt.px(30), fontWeight: FontWeight.w600),
           ),
           Wrap(
             spacing: Adapt.px(10),

@@ -10,6 +10,7 @@ import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/genres.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/videolist.dart';
+import 'package:movie/style/themestyle.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -17,18 +18,10 @@ import 'state.dart';
 Widget buildView(
     ComingPageState state, Dispatch dispatch, ViewService viewService) {
   return Builder(builder: (context) {
-    final _lightTheme = ThemeData.light().copyWith(
-        backgroundColor: Colors.white,
-        tabBarTheme: TabBarTheme(
-            labelColor: Colors.black, unselectedLabelColor: Colors.grey));
-    final _darkTheme = ThemeData.dark().copyWith(
-        backgroundColor: Color(0xFF303030),
-        tabBarTheme: TabBarTheme(
-            labelColor: Colors.white, unselectedLabelColor: Colors.grey));
     final MediaQueryData _mediaQuery = MediaQuery.of(context);
     final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
-        ? _lightTheme
-        : _darkTheme;
+        ? ThemeStyle.lightTheme
+        : ThemeStyle.darkTheme;
     return DefaultTabController(
       length: 2,
       child: Scaffold(

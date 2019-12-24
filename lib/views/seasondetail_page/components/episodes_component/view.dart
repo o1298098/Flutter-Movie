@@ -11,6 +11,7 @@ import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/seasondetail.dart';
+import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'action.dart';
@@ -18,7 +19,10 @@ import 'state.dart';
 
 Widget buildView(
     EpisodesState state, Dispatch dispatch, ViewService viewService) {
-  Random random = Random(DateTime.now().millisecondsSinceEpoch);
+  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
+  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
+      ? ThemeStyle.lightTheme
+      : ThemeStyle.darkTheme;
 
   Widget _buildEpisodeCell(Episode d) {
     return Container(
@@ -28,10 +32,6 @@ Widget buildView(
         onTap: () => dispatch(EpisodesActionCreator.onCellTapped(d)),
         child: Card(
             elevation: 0.0,
-            shape: RoundedRectangleBorder(
-                side: BorderSide(
-              color: Colors.grey[300],
-            )),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -41,11 +41,7 @@ Widget buildView(
                     width: Adapt.screenW() - Adapt.px(40),
                     height: (Adapt.screenW() - Adapt.px(40)) * 9 / 16,
                     decoration: BoxDecoration(
-                        color: Color.fromRGBO(
-                            random.nextInt(255),
-                            random.nextInt(255),
-                            random.nextInt(255),
-                            random.nextDouble()),
+                        color: _theme.primaryColorDark,
                         image: DecorationImage(
                             fit: BoxFit.cover,
                             image: CachedNetworkImageProvider(
@@ -114,7 +110,6 @@ Widget buildView(
                             '${d.episode_number}  ${d.name}',
                             maxLines: 2,
                             style: TextStyle(
-                                color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: Adapt.px(30)),
                           ),
@@ -143,8 +138,8 @@ Widget buildView(
   Widget _buildShimmerCell() {
     return SizedBox(
       child: Shimmer.fromColors(
-          baseColor: Colors.grey[200],
-          highlightColor: Colors.grey[100],
+          baseColor: _theme.primaryColorDark,
+          highlightColor: _theme.primaryColorLight,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -227,9 +222,7 @@ Widget buildView(
             TextSpan(
                 text: I18n.of(viewService.context).episodes,
                 style: TextStyle(
-                    color: Colors.black,
-                    fontSize: Adapt.px(35),
-                    fontWeight: FontWeight.bold)),
+                    fontSize: Adapt.px(35), fontWeight: FontWeight.bold)),
             TextSpan(
                 text:
                     ' ${state.episodes != null ? state.episodes.length.toString() : ''}',

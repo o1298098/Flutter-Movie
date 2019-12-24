@@ -4,19 +4,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/scrollview_background.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
-import 'package:movie/customwidgets/sliverappbar_delegate.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/keyword.dart';
 import 'package:movie/models/videolist.dart';
+import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'action.dart';
@@ -36,20 +35,10 @@ Widget buildView(
   }
 
   return Builder(builder: (context) {
-    final _lightTheme = ThemeData.light().copyWith(
-        backgroundColor: Colors.white,
-        cardColor: Colors.white,
-        primaryColorLight: Colors.grey[100],
-        primaryColorDark: Colors.grey[200]);
-    final _darkTheme = ThemeData.dark().copyWith(
-        backgroundColor: Color(0xFF303030),
-        cardColor: Color(0xFF505050),
-        primaryColorLight: Color(0xFF505050),
-        primaryColorDark: Color(0xFF404040));
     final MediaQueryData _mediaQuery = MediaQuery.of(context);
     final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
-        ? _lightTheme
-        : _darkTheme;
+        ? ThemeStyle.lightTheme
+        : ThemeStyle.darkTheme;
     Widget _buildRecommendationShimmerCell() {
       double _width = Adapt.px(220);
       return SizedBox(

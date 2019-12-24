@@ -14,12 +14,18 @@ Widget buildView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(d.name,style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: Adapt.px(28)),),
-          Text(I18n.of(viewService.context).creator,style: TextStyle(color: Colors.black87,fontSize: Adapt.px(24)))
+          Text(
+            d.name,
+            style:
+                TextStyle(fontWeight: FontWeight.bold, fontSize: Adapt.px(28)),
+          ),
+          Text(I18n.of(viewService.context).creator,
+              style: TextStyle(color: Colors.grey, fontSize: Adapt.px(24)))
         ],
       ),
     );
   }
+
   Widget _buildBody() {
     if (state.createdBy.length > 0)
       return Container(
@@ -30,9 +36,7 @@ Widget buildView(
               padding: EdgeInsets.all(Adapt.px(30)),
               child: Text(I18n.of(viewService.context).featuredCrew,
                   style: TextStyle(
-                      color: Colors.black,
-                      fontSize: Adapt.px(40),
-                      fontWeight: FontWeight.w800)),
+                      fontSize: Adapt.px(40), fontWeight: FontWeight.w800)),
             ),
             Padding(
               padding: EdgeInsets.only(left: Adapt.px(30)),
