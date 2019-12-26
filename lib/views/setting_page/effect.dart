@@ -60,6 +60,8 @@ Future<void> _onInit(Action action, Context<SettingPageState> ctx) async {
 
 void _cleanCached(Action action, Context<SettingPageState> ctx) async {
   await DefaultCacheManager().emptyCache();
+  /*var appDir = (await getTemporaryDirectory()).path;
+  new Directory(appDir).delete(recursive: true);*/
   _getCachedSize(ctx);
 }
 
@@ -95,6 +97,7 @@ void _profileEdit(Action action, Context<SettingPageState> ctx) {
   if (ctx.state.user != null) {
     assert(ctx.state.userName != null && ctx.state.userName != '');
     assert(ctx.state.photoUrl != null && ctx.state.photoUrl != '');
+
     ctx.dispatch(SettingPageActionCreator.onUploading(true));
     final UserUpdateInfo _userInfo = UserUpdateInfo();
     _userInfo.displayName = ctx.state.userName;
@@ -102,8 +105,11 @@ void _profileEdit(Action action, Context<SettingPageState> ctx) {
     ctx.state.user.updateProfile(_userInfo)
       ..then((d) async {
         final _user = await FirebaseAuth.instance.currentUser();
+
         ctx.dispatch(SettingPageActionCreator.userUpadate(_user));
+
         GlobalStore.store.dispatch(GlobalActionCreator.setUser(_user));
+
         BaseApi.updateUser(_user.uid, _user.email, _user.photoUrl,
             _user.displayName, _user.phoneNumber);
         ctx.dispatch(SettingPageActionCreator.onUploading(false));

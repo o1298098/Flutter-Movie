@@ -9,15 +9,13 @@ import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../../style/themestyle.dart';
 import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
     HeaderState state, Dispatch dispatch, ViewService viewService) {
-  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
-  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
-      ? ThemeStyle.lightTheme
-      : ThemeStyle.darkTheme;
+  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
   void _bioReadMore() async {
     if (state.biography == null || state.biography.isEmpty) return;
     await showGeneralDialog(

@@ -16,10 +16,7 @@ import 'dart:ui' as ui;
 import 'state.dart';
 
 Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
-  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
-  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
-      ? ThemeStyle.lightTheme
-      : ThemeStyle.darkTheme;
+  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
   Widget _buildInfoCell(String title, String value) {
     return Container(
       width: Adapt.px(300),

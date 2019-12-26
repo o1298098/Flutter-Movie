@@ -69,10 +69,11 @@ Future _onInit(Action action, Context<TVDetailPageState> ctx) async {
 }
 
 void _onPlayTapped(Action action, Context<TVDetailPageState> ctx) async {
-  await Navigator.of(ctx.context).pushNamed('seasonLinkPage', arguments: {
-    'tvid': ctx.state.tvid,
-    'detail': ctx.state.tvDetailModel,
-  });
+  if (ctx.state.tvDetailModel != null)
+    await Navigator.of(ctx.context).pushNamed('seasonLinkPage', arguments: {
+      'tvid': ctx.state.tvid,
+      'detail': ctx.state.tvDetailModel,
+    });
 }
 
 Future _onRecommendationTapped(

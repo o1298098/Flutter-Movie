@@ -9,7 +9,9 @@ import 'package:movie/models/sortcondition.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:movie/views/discover_page/components/filter_component/state.dart';
 
-class DiscoverPageState
+import 'components/movicecell_component/state.dart';
+
+class DiscoverPageState extends MutableSource
     implements GlobalBaseState, Cloneable<DiscoverPageState> {
   List<SortCondition> sortType;
   List<String> filterTabNames;
@@ -44,6 +46,19 @@ class DiscoverPageState
 
   @override
   FirebaseUser user;
+
+  @override
+  Object getItemData(int index) =>
+      VideoCellState()..videodata = videoListModel?.results[index];
+
+  @override
+  String getItemType(int index) => 'moviecell';
+
+  @override
+  int get itemCount => videoListModel?.results?.length ?? 0;
+
+  @override
+  void setItemData(int index, Object data) {}
 }
 
 DiscoverPageState initState(Map<String, dynamic> args) {

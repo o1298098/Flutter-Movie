@@ -85,10 +85,7 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
   return Builder(
     builder: (context) {
       final MediaQueryData _mediaQuery = MediaQuery.of(context);
-      final ThemeData _theme =
-          _mediaQuery.platformBrightness == Brightness.light
-              ? ThemeStyle.lightTheme
-              : ThemeStyle.darkTheme;
+      final ThemeData _theme = ThemeStyle.getTheme(context);
       Widget _buildCommentInputCell() {
         return Container(
             decoration: BoxDecoration(

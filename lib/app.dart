@@ -98,7 +98,6 @@ Future<Widget> createApp() async {
               newState.themeColor = appState.themeColor;
               newState.locale = appState.locale;
               newState.user = appState.user;
-              //I18n.onLocaleChanged(appState.locale);
               return newState;
             }
           }
@@ -132,11 +131,6 @@ Future<Widget> createApp() async {
   final ThemeData _darkTheme = ThemeData.dark();
   await _init();
 
-  void onLocaleChanged(Locale l) {
-    I18n.locale = l;
-  }
-
-  I18n.onLocaleChanged = onLocaleChanged;
   return MaterialApp(
     title: 'Movie',
     debugShowCheckedModeBanner: false,

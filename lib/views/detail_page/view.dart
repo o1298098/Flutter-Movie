@@ -17,7 +17,6 @@ import 'package:movie/models/keyword.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
-
 import 'action.dart';
 import 'state.dart';
 
@@ -35,10 +34,7 @@ Widget buildView(
   }
 
   return Builder(builder: (context) {
-    final MediaQueryData _mediaQuery = MediaQuery.of(context);
-    final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
-        ? ThemeStyle.lightTheme
-        : ThemeStyle.darkTheme;
+    final ThemeData _theme = ThemeStyle.getTheme(context);
     Widget _buildRecommendationShimmerCell() {
       double _width = Adapt.px(220);
       return SizedBox(

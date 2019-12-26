@@ -2,9 +2,6 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/customwidgets/customcliper_path.dart';
-import 'package:movie/generated/i18n.dart';
-import 'package:movie/globalbasestate/action.dart';
-import 'package:movie/globalbasestate/store.dart';
 
 import '../../action.dart';
 import 'action.dart';
@@ -146,10 +143,8 @@ Widget buildView(
                     'FavoritesPage',
                     arguments: {'accountid': state.acountIdV3}))),
             _buildGirdCell('images/chewbacca.png', 'Stream Links',
-                ontap: () => dispatch(
-                    AccountPageActionCreator.navigatorPush('streamLinksPage'))),
-            _buildGirdCell('images/c3po.png', 'MyRated',
-                ontap: () => dispatch(Theme3ActionCreator.onTestTapped())),
+                ontap: () {}),
+            _buildGirdCell('images/c3po.png', 'MyRated', ontap: () {}),
             _buildGirdCell('images/r2d2.png', 'Settings',
                 ontap: () =>
                     dispatch(AccountPageActionCreator.settingCellTapped())),

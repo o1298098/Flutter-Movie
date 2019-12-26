@@ -14,10 +14,7 @@ import 'state.dart';
 
 Widget buildView(
     GalleryState state, Dispatch dispatch, ViewService viewService) {
-  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
-  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
-      ? ThemeStyle.lightTheme
-      : ThemeStyle.darkTheme;
+  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
   Widget _buildImageCell(ImageData d) {
     return Hero(
       key: ValueKey('image${d.file_path}'),

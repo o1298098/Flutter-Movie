@@ -16,10 +16,7 @@ import 'state.dart';
 
 Widget buildView(
     TimeLineState state, Dispatch dispatch, ViewService viewService) {
-  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
-  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
-      ? ThemeStyle.lightTheme
-      : ThemeStyle.darkTheme;
+  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
   List<CastData> _movies;
   List<CastData> _tvshows;
   void initList() {

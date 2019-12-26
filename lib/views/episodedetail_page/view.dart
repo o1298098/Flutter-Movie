@@ -17,10 +17,7 @@ Widget buildView(
   var adapter = viewService.buildAdapter();
   var d = state.episode;
   return Builder(builder: (context) {
-    final MediaQueryData _mediaQuery = MediaQuery.of(context);
-    final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
-        ? ThemeStyle.lightTheme
-        : ThemeStyle.darkTheme;
+    final ThemeData _theme = ThemeStyle.getTheme(context);
     return Scaffold(
       backgroundColor: _theme.backgroundColor,
       appBar: AppBar(

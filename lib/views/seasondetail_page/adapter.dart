@@ -10,7 +10,7 @@ import 'components/seasoncast_component/state.dart';
 import 'components/seasoncrew_component/state.dart';
 import 'state.dart';
 
-class SeasonDetailAdapter extends DynamicFlowAdapter<SeasonDetailPageState> {
+class SeasonDetailAdapter extends SourceFlowAdapter<SeasonDetailPageState> {
   SeasonDetailAdapter()
       : super(
           pool: <String, Component<Object>>{
@@ -19,7 +19,6 @@ class SeasonDetailAdapter extends DynamicFlowAdapter<SeasonDetailPageState> {
             'seasonCrew': SeasonCrewComponent(),
             'episodes': EpisodesComponent()
           },
-          connector: _SeasonDetailConnector(),
         );
 }
 
@@ -38,16 +37,19 @@ class _SeasonDetailConnector
             seasonNumber: state.seasonNumber)));
     items.add(ItemBean('seasonCast', state.seasonCastState));
     items.add(ItemBean('seasonCrew', SeasonCrewState()));
-    items.add(ItemBean('episodes', EpisodesState(episodes: state.seasonDetailModel.episodes,tvid: state.tvid)));
+    items.add(ItemBean(
+        'episodes',
+        EpisodesState(
+            episodes: state.seasonDetailModel.episodes, tvid: state.tvid)));
     return items;
   }
 
   @override
   void set(SeasonDetailPageState state, List<ItemBean> items) {
     SeasonCastState castState = items[1].data;
-    EpisodesState episodesState=items[3].data;
+    EpisodesState episodesState = items[3].data;
     state.seasonCastState = castState;
-    state.seasonDetailModel.episodes=episodesState.episodes;
+    state.seasonDetailModel.episodes = episodesState.episodes;
   }
 
   @override

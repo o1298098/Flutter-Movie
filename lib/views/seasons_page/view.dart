@@ -110,10 +110,7 @@ Widget buildView(
   }
 
   return Builder(builder: (context) {
-    final MediaQueryData _mediaQuery = MediaQuery.of(context);
-    final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
-        ? ThemeStyle.lightTheme
-        : ThemeStyle.darkTheme;
+    final ThemeData _theme = ThemeStyle.getTheme(context);
     return Scaffold(
       appBar: AppBar(
         brightness: _theme.brightness,

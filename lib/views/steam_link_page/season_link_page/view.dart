@@ -12,6 +12,8 @@ import 'package:movie/models/tvdetail.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
+import 'package:movie/customwidgets/scrollview_background.dart';
+import '../../../actions/Adapt.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -20,10 +22,7 @@ Widget buildView(
   return Builder(
     builder: (context) {
       final MediaQueryData _mediaQuery = MediaQuery.of(context);
-      final ThemeData _theme =
-          _mediaQuery.platformBrightness == Brightness.light
-              ? ThemeStyle.lightTheme
-              : ThemeStyle.darkTheme;
+      final ThemeData _theme = ThemeStyle.getTheme(context);
       Widget _buildAppBar() {
         return SliverAppBar(
           expandedHeight: Adapt.px(400),
@@ -39,7 +38,7 @@ Widget buildView(
                   image: DecorationImage(
                       fit: BoxFit.cover,
                       image: CachedNetworkImageProvider(ImageUrl.getUrl(
-                          state.detial.backdrop_path, ImageSize.w300)))),
+                          state.detial.backdrop_path, ImageSize.w500)))),
               child: SlideTransition(
                   position:
                       Tween<Offset>(begin: Offset.zero, end: Offset(1.6, 0))

@@ -32,10 +32,7 @@ Widget buildView(
   }
 
   return Builder(builder: (context) {
-    final MediaQueryData _mediaQuery = MediaQuery.of(context);
-    final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
-        ? ThemeStyle.lightTheme
-        : ThemeStyle.darkTheme;
+    final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
     Widget _buildIconButton(IconData icon, void onPress()) {
       return IconButton(
         icon: Icon(icon, color: Colors.white),

@@ -10,15 +10,13 @@ import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../../style/themestyle.dart';
 import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
     KnownForState state, Dispatch dispatch, ViewService viewService) {
-  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
-  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
-      ? ThemeStyle.lightTheme
-      : ThemeStyle.darkTheme;
+  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
   Widget _buildCastCell(CastData d) {
     return Container(
       key: ValueKey('knowforCell${d.id}'),
@@ -34,7 +32,7 @@ Widget buildView(
               width: Adapt.px(240),
               height: Adapt.px(342),
               decoration: BoxDecoration(
-                  color: _theme.primaryColorDark,
+                  color: _theme.primaryColorLight,
                   image: DecorationImage(
                     fit: BoxFit.cover,
                     image: CachedNetworkImageProvider(

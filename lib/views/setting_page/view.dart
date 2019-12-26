@@ -140,7 +140,9 @@ Widget buildView(
                   fontSize: Adapt.px(24)),
             ),
             trailing: IconButton(
-              onPressed: () => state.userEditAnimation.forward(),
+              onPressed: () {
+                if (state.user != null) state.userEditAnimation.forward();
+              },
               icon: Icon(Icons.edit),
               color: Colors.white,
               iconSize: Adapt.px(60),
@@ -450,7 +452,7 @@ Widget buildView(
                         _buildUserProfileAvatar(),
                         SizedBox(height: Adapt.px(30)),
                         Text(
-                          '${state.user.email}',
+                          '${state.user?.email ?? '-'}',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.white,

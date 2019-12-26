@@ -4,6 +4,7 @@ import 'package:movie/actions/Adapt.dart';
 import 'package:movie/customwidgets/keepalive_widget.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/style/themestyle.dart';
+import 'package:movie/style/themestyle_widget.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -45,22 +46,22 @@ Widget buildView(
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home, size: Adapt.px(44)),
-              title: Text(I18n.of(viewService.context).home),
+              title: Text(I18n.of(context).home),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.movie_creation, size: Adapt.px(44)),
-              title: Text(I18n.of(viewService.context).discover),
+              title: Text(I18n.of(context).discover),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_today, size: Adapt.px(44)),
-              title: Text(I18n.of(viewService.context).coming),
+              title: Text(I18n.of(context).coming),
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.account_circle,
                 size: Adapt.px(44),
               ),
-              title: Text(I18n.of(viewService.context).account),
+              title: Text(I18n.of(context).account),
             ),
           ],
           currentIndex: state.selectedIndex,

@@ -1,7 +1,13 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/models/combinedcredits.dart';
+import 'package:flutter/material.dart' hide Action;
 import 'action.dart';
+import 'components/gallery_component/state.dart';
+import 'components/header_component/state.dart';
+import 'components/knownfor_component/state.dart';
+import 'components/personalinfo_component/state.dart';
+import 'components/timeline_component/state.dart';
 import 'state.dart';
 
 Effect<PeopleDetailPageState> buildEffect() {

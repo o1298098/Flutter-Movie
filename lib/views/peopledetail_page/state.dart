@@ -7,8 +7,13 @@ import 'package:movie/actions/Adapt.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/combinedcredits.dart';
 import 'package:movie/models/peopledetail.dart';
+import 'components/gallery_component/state.dart';
+import 'components/header_component/state.dart';
+import 'components/knownfor_component/state.dart';
+import 'components/personalinfo_component/state.dart';
+import 'components/timeline_component/state.dart';
 
-class PeopleDetailPageState
+class PeopleDetailPageState extends MutableSource
     implements GlobalBaseState, Cloneable<PeopleDetailPageState> {
   PeopleDetailModel peopleDetailModel;
   CombinedCreditsModel creditsModel;
@@ -44,6 +49,57 @@ class PeopleDetailPageState
 
   @override
   FirebaseUser user;
+
+  @override
+  Object getItemData(int index) => [
+        HeaderState(
+            peopleid: peopleid,
+            biography: peopleDetailModel.biography,
+            profileName: profileName,
+            profilePath: profilePath,
+            character: character,
+            deathday: peopleDetailModel.deathday,
+            birthday: peopleDetailModel?.birthday),
+        PersonalInfoState(
+            peopleDetailModel: peopleDetailModel,
+            creditcount: creditsModel.cast.length + creditsModel.crew.length),
+        KnownForState(cast: knowForCast),
+        GalleryState(images: peopleDetailModel.images),
+        TimeLineState(
+            creditsModel: creditsModel,
+            department: peopleDetailModel.known_for_department,
+            showmovie: showmovie,
+            scrollPhysics: PageScrollPhysics(parent: pageScrollPhysics))
+      ][index];
+
+  @override
+  String getItemType(int index) {
+    switch (index) {
+      case 0:
+        return 'header';
+      case 1:
+        return 'personalinfo';
+      case 2:
+        return 'knownfor';
+      case 3:
+        return 'gallery';
+      case 4:
+        return 'timeline';
+      default:
+        return 'header';
+    }
+  }
+
+  @override
+  int get itemCount => 5;
+
+  @override
+  void setItemData(int index, Object data) {
+    if (index == 4) {
+      TimeLineState d = data;
+      showmovie = d.showmovie;
+    }
+  }
 }
 
 PeopleDetailPageState initState(Map<String, dynamic> args) {

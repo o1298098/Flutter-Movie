@@ -18,10 +18,7 @@ import 'state.dart';
 Widget buildView(
     ComingPageState state, Dispatch dispatch, ViewService viewService) {
   return Builder(builder: (context) {
-    final MediaQueryData _mediaQuery = MediaQuery.of(context);
-    final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
-        ? ThemeStyle.lightTheme
-        : ThemeStyle.darkTheme;
+    final ThemeData _theme = ThemeStyle.getTheme(context);
     return DefaultTabController(
       length: 2,
       child: Scaffold(

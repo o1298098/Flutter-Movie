@@ -7,9 +7,12 @@ import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/seasondetail.dart';
 
+import 'components/episodes_component/state.dart';
+import 'components/header_component/state.dart';
 import 'components/seasoncast_component/state.dart';
+import 'components/seasoncrew_component/state.dart';
 
-class SeasonDetailPageState
+class SeasonDetailPageState extends MutableSource
     implements GlobalBaseState, Cloneable<SeasonDetailPageState> {
   SeasonDetailModel seasonDetailModel;
   SeasonCastState seasonCastState;
@@ -39,6 +42,49 @@ class SeasonDetailPageState
 
   @override
   FirebaseUser user;
+
+  @override
+  Object getItemData(int index) {
+    switch (index) {
+      case 0:
+        return HeaderState(
+            name: name,
+            posterurl: seasonpic,
+            airDate: seasonDetailModel.air_date,
+            overwatch: seasonDetailModel.overview,
+            seasonNumber: seasonNumber);
+      case 1:
+        return seasonCastState;
+      case 2:
+        return SeasonCrewState();
+      case 3:
+        return EpisodesState(episodes: seasonDetailModel.episodes, tvid: tvid);
+      default:
+        return null;
+    }
+  }
+
+  @override
+  String getItemType(int index) {
+    switch (index) {
+      case 0:
+        return 'header';
+      case 1:
+        return 'seasonCast';
+      case 2:
+        return 'seasonCrew';
+      case 3:
+        return 'episodes';
+      default:
+        return null;
+    }
+  }
+
+  @override
+  int get itemCount => 4;
+
+  @override
+  void setItemData(int index, Object data) {}
 }
 
 SeasonDetailPageState initState(Map<String, dynamic> args) {

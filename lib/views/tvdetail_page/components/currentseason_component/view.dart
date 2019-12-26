@@ -14,10 +14,7 @@ import 'state.dart';
 
 Widget buildView(
     CurrentSeasonState state, Dispatch dispatch, ViewService viewService) {
-  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
-  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
-      ? ThemeStyle.lightTheme
-      : ThemeStyle.darkTheme;
+  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
   Widget _buildShimmerCell() {
     return Container(
       height: Adapt.px(360),
@@ -113,16 +110,18 @@ Widget buildView(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Hero(
-                      tag: 'seasonname${state.nowseason.season_number}',
-                      child: Container(
-                          width: Adapt.screenW() - Adapt.px(340),
-                          child: Text(
-                            state.nowseason.name ?? '',
-                            style: TextStyle(
-                                fontSize: Adapt.px(35),
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ),
+                        tag: 'seasonname${state.nowseason.season_number}',
+                        child: Material(
+                          color: Colors.transparent,
+                          child: Container(
+                              width: Adapt.screenW() - Adapt.px(340),
+                              child: Text(
+                                state.nowseason.name ?? '',
+                                style: TextStyle(
+                                    fontSize: Adapt.px(35),
+                                    fontWeight: FontWeight.bold),
+                              )),
+                        )),
                     Container(
                         width: Adapt.screenW() - Adapt.px(340),
                         child: RichText(

@@ -14,10 +14,7 @@ import 'state.dart';
 Widget buildView(
     GalleryPageState state, Dispatch dispatch, ViewService viewService) {
   return Builder(builder: (context) {
-    final MediaQueryData _mediaQuery = MediaQuery.of(context);
-    final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
-        ? ThemeStyle.lightTheme
-        : ThemeStyle.darkTheme;
+    final ThemeData _theme = ThemeStyle.getTheme(context);
     Widget _buildImageCell(ImageData d, int index) {
       double width = Adapt.screenW() / 2;
       return Hero(

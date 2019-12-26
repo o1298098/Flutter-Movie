@@ -17,7 +17,6 @@ import 'state.dart';
 
 Widget buildView(
     MovieListState state, Dispatch dispatch, ViewService viewService) {
-  final Random random = new Random(DateTime.now().millisecondsSinceEpoch);
   final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
   final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
       ? ThemeStyle.lightTheme
@@ -111,11 +110,7 @@ Widget buildView(
                   width: Adapt.px(120),
                   height: Adapt.px(180),
                   decoration: BoxDecoration(
-                      color: Color.fromRGBO(
-                          random.nextInt(255),
-                          random.nextInt(255),
-                          random.nextInt(255),
-                          random.nextDouble()),
+                      color: _theme.primaryColorDark,
                       image: DecorationImage(
                           fit: BoxFit.cover,
                           image: CachedNetworkImageProvider(

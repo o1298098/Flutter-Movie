@@ -15,10 +15,7 @@ import 'action.dart';
 import 'state.dart';
 
 Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
-  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
-  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
-      ? ThemeStyle.lightTheme
-      : ThemeStyle.darkTheme;
+  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
   Widget _buildListTitel(IconData icon, String title, void onTap(),
       {Color iconColor = const Color.fromRGBO(50, 50, 50, 1)}) {
     TextStyle titleStyle = TextStyle(fontSize: Adapt.px(35));

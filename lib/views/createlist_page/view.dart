@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:movie/actions/Adapt.dart';
 import 'package:movie/style/themestyle.dart';
 
+import '../../style/themestyle.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -79,10 +80,7 @@ Widget buildView(
   }
 
   return Builder(builder: (context) {
-    final MediaQueryData _mediaQuery = MediaQuery.of(context);
-    final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
-        ? ThemeStyle.lightTheme
-        : ThemeStyle.darkTheme;
+    final ThemeData _theme = ThemeStyle.getTheme(context);
     return Scaffold(
       backgroundColor: _theme.backgroundColor,
       resizeToAvoidBottomPadding: false,

@@ -6,15 +6,11 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
-
 import 'state.dart';
 
 Widget buildView(
     HeaderState state, Dispatch dispatch, ViewService viewService) {
-  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
-  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
-      ? ThemeStyle.lightTheme
-      : ThemeStyle.darkTheme;
+  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
   Widget _buildAirDateShimmerCell() {
     return Shimmer.fromColors(
       baseColor: _theme.primaryColorDark,
@@ -100,14 +96,16 @@ Widget buildView(
           children: <Widget>[
             Hero(
               tag: 'seasonname${state.seasonNumber}',
-              child: Container(
-                width: Adapt.screenW() - Adapt.px(310),
-                child: Text(
-                  state.name ?? '',
-                  style: TextStyle(
-                      fontSize: Adapt.px(35), fontWeight: FontWeight.bold),
-                ),
-              ),
+              child: Material(
+                  color: Colors.transparent,
+                  child: Container(
+                    width: Adapt.screenW() - Adapt.px(310),
+                    child: Text(
+                      state.name ?? '',
+                      style: TextStyle(
+                          fontSize: Adapt.px(35), fontWeight: FontWeight.bold),
+                    ),
+                  )),
             ),
             SizedBox(
               height: Adapt.px(8),

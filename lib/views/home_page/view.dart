@@ -34,8 +34,7 @@ Widget buildView(
           TextStyle(fontSize: Adapt.px(24), color: Colors.grey);
       final MediaQueryData _mediaQuery = MediaQuery.of(context);
       final _isLight = _mediaQuery.platformBrightness == Brightness.light;
-      final ThemeData _theme =
-          _isLight ? ThemeStyle.lightTheme : ThemeStyle.darkTheme;
+      final ThemeData _theme = ThemeStyle.getTheme(context);
 
       Widget _buildSearchBar() {
         return GestureDetector(
