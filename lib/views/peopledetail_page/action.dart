@@ -2,7 +2,6 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/combinedcredits.dart';
 import 'package:movie/models/peopledetail.dart';
 
-//TODO replace with your own action
 enum PeopleDetailPageAction { action, init, setCreditModel, showBiography }
 
 class PeopleDetailPageActionCreator {

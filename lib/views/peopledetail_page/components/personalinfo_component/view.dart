@@ -1,11 +1,9 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/generated/i18n.dart';
-import 'package:shimmer/shimmer.dart';
 
-import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
@@ -52,7 +50,7 @@ Widget buildView(
               height: Adapt.px(8),
             ),
             Text(
-              _data?.known_for_department ?? '',
+              _data?.knownForDepartment ?? '',
               style: _valueStyle,
             ),
             Divider(
@@ -66,7 +64,7 @@ Widget buildView(
               height: Adapt.px(8),
             ),
             Text(
-              '${birthday ?? ''} in ${_data?.place_of_birth ?? ''}',
+              '${birthday ?? ''} in ${_data?.placeOfBirth ?? ''}',
               style: _valueStyle,
             ),
             Divider(
@@ -108,7 +106,7 @@ Widget buildView(
               height: Adapt.px(8),
             ),
             Text(
-              _data?.also_known_as?.join(' , ') ?? '-',
+              _data?.alsoKnownAs?.join(' , ') ?? '-',
               style: _valueStyle,
             ),
           ],

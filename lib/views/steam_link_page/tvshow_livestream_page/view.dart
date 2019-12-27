@@ -3,12 +3,11 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/customwidgets/keepalive_widget.dart';
 import 'package:movie/customwidgets/sliverappbar_delegate.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/style/themestyle.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import 'action.dart';
@@ -179,7 +178,7 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
               SizedBox(height: Adapt.px(20)),
               Row(
                 children: <Widget>[
-                  Text('${state.selectedEpisode?.air_date}'),
+                  Text('${state.selectedEpisode?.airDate}'),
                   SizedBox(width: Adapt.px(20)),
                   RatingBarIndicator(
                     itemSize: Adapt.px(30),
@@ -190,11 +189,11 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
                       color: Colors.amber,
                     ),
                     unratedColor: Colors.grey,
-                    rating: (state.selectedEpisode?.vote_average ?? 0) / 2,
+                    rating: (state.selectedEpisode?.voteAverage ?? 0) / 2,
                   ),
                   SizedBox(width: Adapt.px(8)),
                   Text(
-                      '${state.selectedEpisode?.vote_average?.toStringAsFixed(1)}   (${state.selectedEpisode?.vote_count})'),
+                      '${state.selectedEpisode?.voteAverage?.toStringAsFixed(1)}   (${state.selectedEpisode?.voteCount})'),
                 ],
               ),
               AnimatedCrossFade(

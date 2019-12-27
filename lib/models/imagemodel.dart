@@ -34,28 +34,28 @@ class ImageModel {
 class ImageData {
 
   int height;
-  Object vote_average;
-  int vote_count;
+  Object voteAverage;
+  int voteCount;
   int width;
-  double aspect_ratio;
-  String file_path;
+  double aspectRatio;
+  String filePath;
   String iso_639_1;
 
-  ImageData.fromParams({this.height, this.vote_average, this.vote_count, this.width, this.aspect_ratio, this.file_path, this.iso_639_1});
+  ImageData.fromParams({this.height, this.voteAverage, this.voteCount, this.width, this.aspectRatio, this.filePath, this.iso_639_1});
   
   ImageData.fromJson(jsonRes) {
     height = jsonRes['height'];
-    vote_average = jsonRes['vote_average'];
-    vote_count = jsonRes['vote_count'];
+    voteAverage = jsonRes['vote_average'];
+    voteCount = jsonRes['vote_count'];
     width = jsonRes['width'];
-    aspect_ratio = jsonRes['aspect_ratio'];
-    file_path = jsonRes['file_path'];
+    aspectRatio = jsonRes['aspect_ratio'];
+    filePath = jsonRes['file_path'];
     iso_639_1 = jsonRes['iso_639_1'];
   }
 
   @override
   String toString() {
-    return '{"height": $height,"vote_average": $vote_average,"vote_count": $vote_count,"width": $width,"aspect_ratio": $aspect_ratio,"file_path": ${file_path != null?'${json.encode(file_path)}':'null'},"iso_639_1": ${iso_639_1 != null?'${json.encode(iso_639_1)}':'null'}}';
+    return '{"height": $height,"vote_average": $voteAverage,"vote_count": $voteCount,"width": $width,"aspect_ratio": $aspectRatio,"file_path": ${filePath != null?'${json.encode(filePath)}':'null'},"iso_639_1": ${iso_639_1 != null?'${json.encode(iso_639_1)}':'null'}}';
   }
 }
 

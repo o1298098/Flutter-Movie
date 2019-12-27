@@ -7,7 +7,7 @@ Reducer<EpisodesState> buildReducer() {
   return asReducer(
     <Object, Reducer<EpisodesState>>{
       EpisodesAction.action: _onAction,
-      EpisodesAction.expansionOpen:_onExpansionOpen
+      EpisodesAction.expansionOpen: _onExpansionOpen
     },
   );
 }
@@ -18,8 +18,6 @@ EpisodesState _onAction(EpisodesState state, Action action) {
 }
 
 EpisodesState _onExpansionOpen(EpisodesState state, Action action) {
- final int index=action.payload[0]??0;
- final bool opened=action.payload[1];
   final EpisodesState newState = state.clone();
   return newState;
 }

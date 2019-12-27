@@ -46,10 +46,10 @@ void _onDispose(Action action, Context<ComingPageState> ctx) {
 Future _onLoadMore(Action action, Context<ComingPageState> ctx) async {
   VideoListModel q;
   if (ctx.state.showmovie) {
-    if (ctx.state.moviecoming.page == ctx.state.moviecoming.total_pages) return;
+    if (ctx.state.moviecoming.page == ctx.state.moviecoming.totalPages) return;
     q = await ApiHelper.getMovieUpComing(page: ctx.state.moviecoming.page + 1);
   } else {
-    if (ctx.state.tvcoming.page == ctx.state.tvcoming.total_pages) return;
+    if (ctx.state.tvcoming.page == ctx.state.tvcoming.totalPages) return;
     q = await ApiHelper.getTVOnTheAir(page: ctx.state.tvcoming.page + 1);
   }
   if (q != null) ctx.dispatch(ComingPageActionCreator.onLoadMore(q));

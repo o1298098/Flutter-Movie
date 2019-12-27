@@ -1,7 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart' hide Action;
 import 'package:movie/actions/apihelper.dart';
-import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/enums/time_window.dart';
 import 'package:movie/models/searchresult.dart';
 import 'package:movie/models/sortcondition.dart';

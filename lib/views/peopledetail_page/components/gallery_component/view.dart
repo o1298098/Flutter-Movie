@@ -1,13 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/style/themestyle.dart';
-import 'dart:math' as math;
 
 import 'action.dart';
 import 'state.dart';
@@ -17,8 +16,8 @@ Widget buildView(
   final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
   Widget _buildImageCell(ImageData d) {
     return Hero(
-      key: ValueKey('image${d.file_path}'),
-      tag: 'image${d.file_path}',
+      key: ValueKey('image${d.filePath}'),
+      tag: 'image${d.filePath}',
       child: Container(
         margin: EdgeInsets.only(left: Adapt.px(30)),
         width: Adapt.px(200),
@@ -29,7 +28,7 @@ Widget buildView(
             image: DecorationImage(
                 fit: BoxFit.cover,
                 image: CachedNetworkImageProvider(
-                    ImageUrl.getUrl(d.file_path, ImageSize.w300)))),
+                    ImageUrl.getUrl(d.filePath, ImageSize.w300)))),
       ),
     );
   }

@@ -3,9 +3,8 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
-import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/media_type.dart';
@@ -31,83 +30,82 @@ Widget buildView(
       ),
     );
     return SlideTransition(
-      position:Tween(begin: Offset(0,1),end: Offset.zero).animate(curve),
-      child:FadeTransition(
+      position: Tween(begin: Offset(0, 1), end: Offset.zero).animate(curve),
+      child: FadeTransition(
         opacity: Tween<double>(begin: 0.0, end: 1.0).animate(curve),
-        child:  GestureDetector(
-        onTap: () => dispatch(MoreMediaPageActionCreator.cellTapped(
-            d.id, d.title ?? d.name, d.backdrop_path, d.poster_path)),
-        child: Container(
-          alignment: Alignment.bottomLeft,
-          width: w,
-          height: h,
-          padding: EdgeInsets.all(Adapt.px(10)),
-          decoration: BoxDecoration(
-              color: Color.fromRGBO(random.nextInt(255), random.nextInt(255),
-                  random.nextInt(255), random.nextDouble()),
-              image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: CachedNetworkImageProvider(d.poster_path == null
-                      ? ImageUrl.emptyimage
-                      : ImageUrl.getUrl(d.poster_path, ImageSize.w300)))),
-          child: Column(
-            children: <Widget>[
-              Container(
-                alignment: Alignment.topRight,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Icon(
-                      Icons.star,
-                      color: Colors.white,
-                      size: Adapt.px(30),
-                    ),
-                    SizedBox(
-                      width: Adapt.px(5),
-                    ),
-                    Text(
-                      d.vote_average.toStringAsFixed(1),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: Adapt.px(30),
-                          shadows: <Shadow>[
-                            Shadow(
-                                blurRadius: 2,
-                                //offset: Offset(Adapt.px(1),Adapt.px(1)),
-                                color: Colors.black87)
-                          ]),
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                child: SizedBox(),
-              ),
-              Row(
-                children: <Widget>[
-                  Container(
-                    width: w - Adapt.px(10) * 2,
-                    child: Text(d.title ?? d.name,
+        child: GestureDetector(
+          onTap: () => dispatch(MoreMediaPageActionCreator.cellTapped(
+              d.id, d.title ?? d.name, d.backdropPath, d.posterPath)),
+          child: Container(
+            alignment: Alignment.bottomLeft,
+            width: w,
+            height: h,
+            padding: EdgeInsets.all(Adapt.px(10)),
+            decoration: BoxDecoration(
+                color: Color.fromRGBO(random.nextInt(255), random.nextInt(255),
+                    random.nextInt(255), random.nextDouble()),
+                image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(d.posterPath == null
+                        ? ImageUrl.emptyimage
+                        : ImageUrl.getUrl(d.posterPath, ImageSize.w300)))),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  alignment: Alignment.topRight,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Icon(
+                        Icons.star,
+                        color: Colors.white,
+                        size: Adapt.px(30),
+                      ),
+                      SizedBox(
+                        width: Adapt.px(5),
+                      ),
+                      Text(
+                        d.voteAverage.toStringAsFixed(1),
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: Adapt.px(30),
                             fontWeight: FontWeight.bold,
+                            fontSize: Adapt.px(30),
                             shadows: <Shadow>[
                               Shadow(
-                                  blurRadius: 3,
+                                  blurRadius: 2,
                                   //offset: Offset(Adapt.px(1),Adapt.px(1)),
                                   color: Colors.black87)
-                            ])),
-                  )
-                ],
-              )
-            ],
+                            ]),
+                      )
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: SizedBox(),
+                ),
+                Row(
+                  children: <Widget>[
+                    Container(
+                      width: w - Adapt.px(10) * 2,
+                      child: Text(d.title ?? d.name,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: Adapt.px(30),
+                              fontWeight: FontWeight.bold,
+                              shadows: <Shadow>[
+                                Shadow(
+                                    blurRadius: 3,
+                                    //offset: Offset(Adapt.px(1),Adapt.px(1)),
+                                    color: Colors.black87)
+                              ])),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
-      )
-     ,
     );
   }
 
@@ -133,7 +131,7 @@ Widget buildView(
           SliverToBoxAdapter(
             child: Offstage(
               offstage: state.videoList.results.length ==
-                  state.videoList.total_results,
+                  state.videoList.totalResults,
               child: Container(
                 height: Adapt.px(120),
                 alignment: Alignment.center,

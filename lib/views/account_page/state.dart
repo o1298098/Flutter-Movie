@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/state.dart';
-import 'package:movie/models/videolist.dart';
 
 class AccountPageState implements GlobalBaseState, Cloneable<AccountPageState> {
   String name;

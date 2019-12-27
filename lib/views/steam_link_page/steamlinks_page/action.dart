@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 
-//TODO replace with your own action
 enum StreamLinksPageAction { action, setSnapshot }
 
 class StreamLinksPageActionCreator {

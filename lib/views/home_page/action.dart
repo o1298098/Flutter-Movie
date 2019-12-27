@@ -5,7 +5,6 @@ import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/searchresult.dart';
 import 'package:movie/models/videolist.dart';
 
-//TODO replace with your own action
 enum HomePageAction {
   action,
   initMovie,

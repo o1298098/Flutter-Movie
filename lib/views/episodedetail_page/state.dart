@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/episodemodel.dart';
-import 'package:movie/models/seasondetail.dart';
 
 import 'components/credits_component/state.dart';
 import 'components/header_component/state.dart';
@@ -38,7 +37,7 @@ class EpisodeDetailPageState extends MutableSource
         return EpisodeHeaderState(episode: episode);
       case 1:
         return CreditsState(
-            guestStars: episode?.credits?.guest_stars,
+            guestStars: episode?.credits?.guestStars,
             crew: episode?.credits?.crew);
       case 2:
         return ImagesState(images: episode?.images);

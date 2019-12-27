@@ -1,6 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
 
-//TODO replace with your own action
 enum MenuAction {
   action,
   setRating,
@@ -31,6 +30,7 @@ class MenuActionCreator {
   static Action updateFavorite(bool isFavorite) {
     return Action(MenuAction.updateFavorite, payload: isFavorite);
   }
+
   static Action setWatchlist(bool isAdd) {
     return Action(MenuAction.setWatchlist, payload: isAdd);
   }

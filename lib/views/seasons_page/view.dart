@@ -3,9 +3,8 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
-import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/style/themestyle.dart';
 
@@ -34,7 +33,7 @@ Widget buildView(
             padding: EdgeInsets.only(bottom: Adapt.px(20)),
             child: GestureDetector(
               onTap: () => dispatch(SeasonsPageActionCreator.onCellTapped(
-                  state.tvid, d.season_number, d.name, d.poster_path)),
+                  state.tvid, d.seasonNumber, d.name, d.posterPath)),
               child: Card(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,10 +50,10 @@ Widget buildView(
                           image: DecorationImage(
                               fit: BoxFit.cover,
                               image: CachedNetworkImageProvider(
-                                  d.poster_path == null
+                                  d.posterPath == null
                                       ? ImageUrl.emptyimage
                                       : ImageUrl.getUrl(
-                                          d.poster_path, ImageSize.w300)))),
+                                          d.posterPath, ImageSize.w300)))),
                     ),
                     SizedBox(
                       width: Adapt.px(20),
@@ -80,11 +79,11 @@ Widget buildView(
                         SizedBox(
                           height: Adapt.px(5),
                         ),
-                        Text('Air Date: ${d.air_date}'),
+                        Text('Air Date: ${d.airDate}'),
                         SizedBox(
                           height: Adapt.px(5),
                         ),
-                        Text('Episode Count: ${d.episode_count}'),
+                        Text('Episode Count: ${d.episodeCount}'),
                         SizedBox(
                           height: Adapt.px(10),
                         ),

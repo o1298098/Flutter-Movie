@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/actions/base_api.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
@@ -72,9 +72,9 @@ Future _playTrailer(Action action, Context<MovieDetailPageState> ctx) async {
     await Navigator.of(ctx.context).pushNamed('liveStreamPage', arguments: {
       'id': ctx.state.mediaId,
       'name': ctx.state.detail.title,
-      'rated': ctx.state.detail.vote_average,
-      'rateCount': ctx.state.detail.vote_count,
-      'releaseDate': ctx.state.detail.release_date
+      'rated': ctx.state.detail.voteAverage,
+      'rateCount': ctx.state.detail.voteCount,
+      'releaseDate': ctx.state.detail.releaseDate
     });
   else {
     var _model = ctx.state?.detail?.videos?.results ?? [];

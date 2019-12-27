@@ -57,7 +57,7 @@ TvShowLiveStreamPageState _episodeChanged(
   final Episode ep = action.payload;
   final TvShowLiveStreamPageState newState = state.clone();
   newState.selectedEpisode = ep;
-  newState.episodeNumber = ep.episode_number;
+  newState.episodeNumber = ep.episodeNumber;
   newState.comments = null;
   return newState;
 }

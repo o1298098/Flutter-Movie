@@ -5,13 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/state.dart';
-import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/imagemodel.dart';
-import 'package:movie/models/keyword.dart';
 import 'package:movie/models/media_accountstatemodel.dart';
 import 'package:movie/models/moviedetail.dart';
 import 'package:movie/models/review.dart';
-import 'package:movie/models/videolist.dart';
 import 'package:movie/models/videomodel.dart';
 import 'package:palette_generator/palette_generator.dart';
 

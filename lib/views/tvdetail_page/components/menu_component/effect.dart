@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/actions/base_api.dart';
@@ -31,11 +30,11 @@ void _setFavorite(Action action, Context<MenuState> ctx) async {
       await BaseApi.setFavorite(UserMedia.fromParams(
           uid: user.uid,
           name: ctx.state.name,
-          photoUrl: ctx.state.detail.poster_path,
+          photoUrl: ctx.state.detail.posterPath,
           overwatch: ctx.state.detail.overview,
-          rated: ctx.state.detail.vote_average,
-          ratedCount: ctx.state.detail.vote_count,
-          releaseDate: ctx.state.detail.first_air_date,
+          rated: ctx.state.detail.voteAverage,
+          ratedCount: ctx.state.detail.voteCount,
+          releaseDate: ctx.state.detail.firstAirDate,
           popular: ctx.state.detail.popularity,
           genre: ctx.state.detail.genres.map((f) => f.name).toList().join(','),
           mediaId: ctx.state.id,
@@ -68,11 +67,11 @@ Future _setWatchlist(Action action, Context<MenuState> ctx) async {
       await BaseApi.setWatchlist(UserMedia.fromParams(
           uid: user.uid,
           name: ctx.state.name,
-          photoUrl: ctx.state.detail.poster_path,
+          photoUrl: ctx.state.detail.posterPath,
           overwatch: ctx.state.detail.overview,
-          rated: ctx.state.detail.vote_average,
-          ratedCount: ctx.state.detail.vote_count,
-          releaseDate: ctx.state.detail.first_air_date,
+          rated: ctx.state.detail.voteAverage,
+          ratedCount: ctx.state.detail.voteCount,
+          releaseDate: ctx.state.detail.firstAirDate,
           popular: ctx.state.detail.popularity,
           genre: ctx.state.detail.genres.map((f) => f.name).toList().join(','),
           mediaId: ctx.state.id,

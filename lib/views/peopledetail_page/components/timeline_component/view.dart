@@ -1,13 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:movie/actions/Adapt.dart';
-import 'package:movie/actions/imageurl.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/combinedcredits.dart';
-import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -21,8 +17,8 @@ Widget buildView(
   List<CastData> _tvshows;
   void initList() {
     var _model = state.creditsModel.cast ?? [];
-    _movies = _model.where((d) => d.media_type == 'movie').toList();
-    _tvshows = _model.where((d) => d.media_type == 'tv').toList();
+    _movies = _model.where((d) => d.mediaType == 'movie').toList();
+    _tvshows = _model.where((d) => d.mediaType == 'tv').toList();
   }
 
   Widget _buildTitle() {
@@ -76,12 +72,12 @@ Widget buildView(
 
   Widget _buildActingCell(CastData d, bool hasline) {
     double _leftwidth = (Adapt.screenW() - Adapt.px(120)) * 0.8;
-    String date = d.media_type == 'movie' ? d.release_date : d.first_air_date;
+    String date = d.mediaType == 'movie' ? d.releaseDate : d.firstAirDate;
     date = date == null || date?.isEmpty == true
         ? '-'
         : DateTime.parse(date).year.toString();
     return Column(
-      key: ValueKey('timelineCell${d.credit_id}'),
+      key: ValueKey('timelineCell${d.creditId}'),
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,7 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/base_api.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/globalbasestate/store.dart';
@@ -37,7 +36,6 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
   Future<MyListModel> lists;
   ScrollController scrollController;
   Future<UserListModel> _userList;
-  int _page;
 
   final _user = GlobalStore.store.getState().user;
 
@@ -187,11 +185,7 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
   @override
   void initState() {
     initUserlist();
-    scrollController = ScrollController()
-      ..addListener(() async {
-        bool isBottom = scrollController.position.pixels ==
-            scrollController.position.maxScrollExtent;
-      });
+    scrollController = ScrollController();
     super.initState();
   }
 

@@ -1,13 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/models/combinedcredits.dart';
-import 'package:flutter/material.dart' hide Action;
 import 'action.dart';
-import 'components/gallery_component/state.dart';
-import 'components/header_component/state.dart';
-import 'components/knownfor_component/state.dart';
-import 'components/personalinfo_component/state.dart';
-import 'components/timeline_component/state.dart';
 import 'state.dart';
 
 Effect<PeopleDetailPageState> buildEffect() {
@@ -27,13 +21,11 @@ Future _onInit(Action action, Context<PeopleDetailPageState> ctx) async {
     if (r2 != null) {
       var cast = List<CastData>();
       cast = new List<CastData>()..addAll(r2.cast);
-      cast.sort((a, b) => b.vote_count.compareTo(a.vote_count));
+      cast.sort((a, b) => b.voteCount.compareTo(a.voteCount));
       r2.cast = new List<CastData>()..addAll(r2.cast);
       r2.cast.sort((a, b) {
-        String date1 =
-            a.media_type == 'movie' ? a.release_date : a.first_air_date;
-        String date2 =
-            b.media_type == 'movie' ? b.release_date : b.first_air_date;
+        String date1 = a.mediaType == 'movie' ? a.releaseDate : a.firstAirDate;
+        String date2 = b.mediaType == 'movie' ? b.releaseDate : b.firstAirDate;
         date1 = date1 == null || date1?.isEmpty == true ? '2099-01-01' : date1;
         date2 = date2 == null || date2?.isEmpty == true ? '2099-01-01' : date2;
         DateTime time1 = DateTime.parse(date1);

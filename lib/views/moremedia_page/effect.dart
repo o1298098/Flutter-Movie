@@ -45,7 +45,7 @@ void _onAction(Action action, Context<MoreMediaPageState> ctx) {}
 Future _loadMore(Action action, Context<MoreMediaPageState> ctx) async {
   VideoListModel model;
   int page = ctx.state.videoList.page + 1;
-  if (page <= ctx.state.videoList.total_pages) {
+  if (page <= ctx.state.videoList.totalPages) {
     if (ctx.state.mediaType == MediaType.movie)
       model = await ApiHelper.getNowPlayingMovie(page: page);
     else

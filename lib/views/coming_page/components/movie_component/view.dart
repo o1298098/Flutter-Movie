@@ -1,9 +1,7 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/keepalive_widget.dart';
 import 'package:movie/models/enums/genres.dart';
@@ -114,7 +112,7 @@ Widget buildView(
                       image: DecorationImage(
                           fit: BoxFit.cover,
                           image: CachedNetworkImageProvider(
-                              ImageUrl.getUrl(d.poster_path, ImageSize.w300)))),
+                              ImageUrl.getUrl(d.posterPath, ImageSize.w300)))),
                 ),
                 SizedBox(
                   width: Adapt.px(20),
@@ -132,7 +130,7 @@ Widget buildView(
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Text("Release on: " + d?.release_date ?? '-',
+                    Text("Release on: " + d?.releaseDate ?? '-',
                         style: TextStyle(
                             color: Colors.grey[700], fontSize: Adapt.px(24))),
                     SizedBox(
@@ -140,7 +138,7 @@ Widget buildView(
                     ),
                     Row(
                       children:
-                          d.genre_ids.take(3).map(_buildGenreChip).toList(),
+                          d.genreIds.take(3).map(_buildGenreChip).toList(),
                     ),
                     SizedBox(
                       height: Adapt.px(8),
@@ -172,7 +170,7 @@ Widget buildView(
         cacheExtent: Adapt.px(180),
         children: state.moviecoming.results.map(_buildMovieCell).toList()
           ..add(Offstage(
-            offstage: state.moviecoming.page == state.moviecoming.total_pages &&
+            offstage: state.moviecoming.page == state.moviecoming.totalPages &&
                 state.moviecoming.results.length > 0,
             child: Column(
               children: <Widget>[

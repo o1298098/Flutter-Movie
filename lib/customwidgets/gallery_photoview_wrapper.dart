@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/imagemodel.dart';
@@ -107,9 +107,9 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
 
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
     final ImageData item = widget.galleryItems[index];
-    String url = item.file_path == null
+    String url = item.filePath == null
         ? ImageUrl.emptyimage
-        : ImageUrl.getUrl(item.file_path, widget.imageSize);
+        : ImageUrl.getUrl(item.filePath, widget.imageSize);
     return PhotoViewGalleryPageOptions(
       imageProvider: CachedNetworkImageProvider(url),
       initialScale: PhotoViewComputedScale.contained,

@@ -1,11 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:movie/actions/apihelper.dart';
 import 'package:movie/actions/base_api.dart';
-import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/views/watchlistdetail_page/page.dart';
 import 'action.dart';
 import 'state.dart';

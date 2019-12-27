@@ -1,6 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/account_state.dart';
-import 'package:movie/models/firebase/firebase_accountstate.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/moviedetail.dart';
 
@@ -36,7 +35,7 @@ MovieDetailPageState _updateDetail(MovieDetailPageState state, Action action) {
   final MovieDetailModel model = action.payload;
   final MovieDetailPageState newState = state.clone();
   newState.detail = model;
-  if (newState.bgPic == null) newState.bgPic = model.poster_path;
+  if (newState.bgPic == null) newState.bgPic = model.posterPath;
   return newState;
 }
 

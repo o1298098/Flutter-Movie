@@ -6,27 +6,27 @@ import 'episodemodel.dart';
 class SeasonDetailModel {
 
   int id;
-  int season_number;
+  int seasonNumber;
   String uid;
-  String air_date;
+  String airDate;
   String name;
   String overview;
-  String poster_path;
+  String posterPath;
   List<Episode> episodes;
   CreditsModel credits;
 
-  SeasonDetailModel.fromParams({this.id, this.season_number, this.uid, this.air_date, this.name, this.overview, this.poster_path, this.episodes, this.credits});
+  SeasonDetailModel.fromParams({this.id, this.seasonNumber, this.uid, this.airDate, this.name, this.overview, this.posterPath, this.episodes, this.credits});
 
   factory SeasonDetailModel(jsonStr) => jsonStr == null ? null : jsonStr is String ? new SeasonDetailModel.fromJson(json.decode(jsonStr)) : new SeasonDetailModel.fromJson(jsonStr);
   
   SeasonDetailModel.fromJson(jsonRes) {
     id = jsonRes['id'];
-    season_number = jsonRes['season_number'];
+    seasonNumber = jsonRes['season_number'];
     uid = jsonRes['_id'];
-    air_date = jsonRes['air_date'];
+    airDate = jsonRes['air_date'];
     name = jsonRes['name'];
     overview = jsonRes['overview'];
-    poster_path = jsonRes['poster_path'];
+    posterPath = jsonRes['poster_path'];
     episodes = jsonRes['episodes'] == null ? null : [];
 
     for (var episodesItem in episodes == null ? [] : jsonRes['episodes']){
@@ -38,6 +38,6 @@ class SeasonDetailModel {
 
   @override
   String toString() {
-    return '{"id": $id,"season_number": $season_number,"_id": ${uid != null?'${json.encode(uid)}':'null'},"air_date": ${air_date != null?'${json.encode(air_date)}':'null'},"name": ${name != null?'${json.encode(name)}':'null'},"overview": ${overview != null?'${json.encode(overview)}':'null'},"poster_path": ${poster_path != null?'${json.encode(poster_path)}':'null'},"episodes": $episodes,"credits": $credits}';
+    return '{"id": $id,"season_number": $seasonNumber,"_id": ${uid != null?'${json.encode(uid)}':'null'},"air_date": ${airDate != null?'${json.encode(airDate)}':'null'},"name": ${name != null?'${json.encode(name)}':'null'},"overview": ${overview != null?'${json.encode(overview)}':'null'},"poster_path": ${posterPath != null?'${json.encode(posterPath)}':'null'},"episodes": $episodes,"credits": $credits}';
   }
 }

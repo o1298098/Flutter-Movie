@@ -1,7 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/account_state.dart';
 import 'package:movie/models/creditsmodel.dart';
-import 'package:movie/models/firebase/firebase_accountstate.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/keyword.dart';
 import 'package:movie/models/review.dart';
@@ -39,8 +38,8 @@ TVDetailPageState _onInit(TVDetailPageState state, Action action) {
   TVDetailModel model = action.payload ?? new TVDetailModel.fromParams();
   final TVDetailPageState newState = state.clone();
   newState.tvDetailModel = model;
-  newState.backdropPic = model.backdrop_path;
-  newState.posterPic = model.poster_path;
+  newState.backdropPic = model.backdropPath;
+  newState.posterPic = model.posterPath;
   newState.name = model.name;
   return newState;
 }

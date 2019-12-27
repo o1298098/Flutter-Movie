@@ -41,13 +41,13 @@ void _setFirebaseFavorite(Action action, Context<MenuState> ctx) async {
       await BaseApi.setFavorite(UserMedia.fromParams(
           uid: user.uid,
           name: ctx.state.name,
-          photoUrl: ctx.state.detail.poster_path,
+          photoUrl: ctx.state.detail.posterPath,
           overwatch: ctx.state.detail.overview,
-          rated: ctx.state.detail.vote_average,
-          ratedCount: ctx.state.detail.vote_count,
+          rated: ctx.state.detail.voteAverage,
+          ratedCount: ctx.state.detail.voteCount,
           popular: ctx.state.detail.popularity,
           genre: ctx.state.detail.genres.map((f) => f.name).toList().join(','),
-          releaseDate: ctx.state.detail.release_date,
+          releaseDate: ctx.state.detail.releaseDate,
           mediaId: ctx.state.id,
           mediaType: 'movie'));
     await BaseApi.updateAccountState(ctx.state.accountState);
@@ -87,12 +87,12 @@ Future _setWatchlist(Action action, Context<MenuState> ctx) async {
       await BaseApi.setWatchlist(UserMedia.fromParams(
           uid: user.uid,
           name: ctx.state.name,
-          photoUrl: ctx.state.detail.poster_path,
+          photoUrl: ctx.state.detail.posterPath,
           overwatch: ctx.state.detail.overview,
-          rated: ctx.state.detail.vote_average,
-          ratedCount: ctx.state.detail.vote_count,
+          rated: ctx.state.detail.voteAverage,
+          ratedCount: ctx.state.detail.voteCount,
           popular: ctx.state.detail.popularity,
-          releaseDate: ctx.state.detail.release_date,
+          releaseDate: ctx.state.detail.releaseDate,
           genre: ctx.state.detail.genres.map((f) => f.name).toList().join(','),
           mediaId: ctx.state.id,
           mediaType: 'movie'));

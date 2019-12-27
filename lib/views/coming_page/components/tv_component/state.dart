@@ -1,29 +1,57 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie/models/videolist.dart';
+import 'package:movie/views/coming_page/components/tv_component/tvcell_component/state.dart';
 import 'package:movie/views/coming_page/state.dart';
 
-class TVListState implements Cloneable<TVListState> {
+import 'shimmercell_component/state.dart';
+
+class TVListState extends MutableSource implements Cloneable<TVListState> {
   VideoListModel tvcoming;
   ScrollController tvController;
   @override
   TVListState clone() {
     return TVListState()
-    ..tvcoming=tvcoming
-    ..tvController=tvController;
+      ..tvcoming = tvcoming
+      ..tvController = tvController;
   }
+
+  @override
+  Object getItemData(int index) {
+    if (index < tvcoming.results.length)
+      return TVCellState(tvResult: tvcoming.results[index], index: index);
+    else
+      return ShimmerCellState(
+          showShimmer: tvcoming.page == tvcoming.totalResults &&
+              tvcoming.results.length > 0);
+  }
+
+  @override
+  String getItemType(int index) {
+    if (index < tvcoming.results.length)
+      return 'tvcell';
+    else
+      return 'shimmercell';
+  }
+
+  @override
+  int get itemCount => tvcoming.results.length + 1;
+
+  @override
+  void setItemData(int index, Object data) {}
 }
 
-class TVListConnector extends ConnOp<ComingPageState,TVListState>{
+class TVListConnector extends ConnOp<ComingPageState, TVListState> {
   @override
   TVListState get(ComingPageState state) {
-    TVListState substate=new TVListState();
-    substate.tvcoming=state.tvcoming;
-    substate.tvController=state.tvController;
+    TVListState substate = new TVListState();
+    substate.tvcoming = state.tvcoming;
+    substate.tvController = state.tvController;
     return substate;
   }
+
   @override
   void set(ComingPageState state, TVListState subState) {
-    state.tvcoming=subState.tvcoming;
+    state.tvcoming = subState.tvcoming;
   }
 }

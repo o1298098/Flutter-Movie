@@ -1,14 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/actions/Adapt.dart';
-import 'package:movie/actions/imageurl.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/models/base_api_model/user_list.dart';
-import 'package:movie/models/enums/imagesize.dart';
-import 'package:movie/models/mylistmodel.dart';
 import 'package:movie/style/themestyle.dart';
 import 'dart:ui' as ui;
 

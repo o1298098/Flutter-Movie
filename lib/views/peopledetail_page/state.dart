@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/combinedcredits.dart';
 import 'package:movie/models/peopledetail.dart';
@@ -51,26 +51,35 @@ class PeopleDetailPageState extends MutableSource
   FirebaseUser user;
 
   @override
-  Object getItemData(int index) => [
-        HeaderState(
+  Object getItemData(int index) {
+    switch (index) {
+      case 0:
+        return HeaderState(
             peopleid: peopleid,
             biography: peopleDetailModel.biography,
             profileName: profileName,
             profilePath: profilePath,
             character: character,
             deathday: peopleDetailModel.deathday,
-            birthday: peopleDetailModel?.birthday),
-        PersonalInfoState(
+            birthday: peopleDetailModel?.birthday);
+      case 1:
+        return PersonalInfoState(
             peopleDetailModel: peopleDetailModel,
-            creditcount: creditsModel.cast.length + creditsModel.crew.length),
-        KnownForState(cast: knowForCast),
-        GalleryState(images: peopleDetailModel.images),
-        TimeLineState(
+            creditcount: creditsModel.cast.length + creditsModel.crew.length);
+      case 2:
+        return KnownForState(cast: knowForCast);
+      case 3:
+        return GalleryState(images: peopleDetailModel.images);
+      case 4:
+        return TimeLineState(
             creditsModel: creditsModel,
-            department: peopleDetailModel.known_for_department,
+            department: peopleDetailModel.knownForDepartment,
             showmovie: showmovie,
-            scrollPhysics: PageScrollPhysics(parent: pageScrollPhysics))
-      ][index];
+            scrollPhysics: PageScrollPhysics(parent: pageScrollPhysics));
+      default:
+        return null;
+    }
+  }
 
   @override
   String getItemType(int index) {
@@ -105,7 +114,7 @@ class PeopleDetailPageState extends MutableSource
 PeopleDetailPageState initState(Map<String, dynamic> args) {
   var state = PeopleDetailPageState();
   state.peopleDetailModel =
-      PeopleDetailModel.fromParams(also_known_as: List<String>());
+      PeopleDetailModel.fromParams(alsoKnownAs: List<String>());
   state.creditsModel = CombinedCreditsModel.fromParams(
       cast: List<CastData>(), crew: List<CrewData>());
   state.biographyHeight = Adapt.px(200.0);

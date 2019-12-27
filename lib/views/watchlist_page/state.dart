@@ -1,11 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/base_api_model/user_media.dart';
-import 'package:movie/models/videolist.dart';
 
 class WatchlistPageState
     implements GlobalBaseState, Cloneable<WatchlistPageState> {

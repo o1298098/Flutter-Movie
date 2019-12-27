@@ -3,18 +3,18 @@ import 'dart:convert' show json;
 class MovieChangeModel {
 
   int page;
-  int totalpages;
-  int totalresults;
+  int totalPages;
+  int totalResults;
   List<ChangeResult> results;
 
-  MovieChangeModel.fromParams({this.page, this.totalpages, this.totalresults, this.results});
+  MovieChangeModel.fromParams({this.page, this.totalPages, this.totalResults, this.results});
 
   factory MovieChangeModel(jsonStr) => jsonStr == null ? null : jsonStr is String ? new MovieChangeModel.fromJson(json.decode(jsonStr)) : new MovieChangeModel.fromJson(jsonStr);
   
   MovieChangeModel.fromJson(jsonRes) {
     page = jsonRes['page'];
-    totalpages = jsonRes['total_pages'];
-    totalresults = jsonRes['total_results'];
+    totalPages = jsonRes['total_pages'];
+    totalResults = jsonRes['total_results'];
     results = jsonRes['results'] == null ? null : [];
 
     for (var resultsItem in results == null ? [] : jsonRes['results']){
@@ -24,7 +24,7 @@ class MovieChangeModel {
 
   @override
   String toString() {
-    return '{"page": $page,"total_pages": $totalpages,"total_results": $totalresults,"results": $results}';
+    return '{"page": $page,"total_pages": $totalPages,"total_results": $totalResults,"results": $results}';
   }
 }
 

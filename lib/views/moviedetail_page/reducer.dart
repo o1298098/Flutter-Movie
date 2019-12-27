@@ -32,8 +32,8 @@ MovieDetailPageState _onInit(MovieDetailPageState state, Action action) {
   MovieDetailModel model=action.payload??new MovieDetailModel.fromParams();
   final MovieDetailPageState newState = state.clone();
   newState.movieDetailModel=model;
-  newState.backdropPic=model.backdrop_path;
-  newState.posterPic=model.poster_path;
+  newState.backdropPic=model.backdropPath;
+  newState.posterPic=model.posterPath;
   newState.title=model.title;
   return newState;
 }

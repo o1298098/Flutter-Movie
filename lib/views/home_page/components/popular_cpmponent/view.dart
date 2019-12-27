@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
@@ -41,9 +41,9 @@ Widget buildView(
       child: GestureDetector(
         onTap: () => dispatch(PopularActionCreator.onCellTapped(
             d.id,
-            d.backdrop_path,
+            d.backdropPath,
             state.showmovie ? d.title : d.name,
-            d.poster_path)),
+            d.posterPath)),
         child: Stack(
           children: <Widget>[
             ClipRRect(
@@ -54,7 +54,7 @@ Widget buildView(
                 width: Adapt.px(400),
                 height: Adapt.px(225),
                 fit: BoxFit.cover,
-                imageUrl: ImageUrl.getUrl(d.backdrop_path, ImageSize.w400),
+                imageUrl: ImageUrl.getUrl(d.backdropPath, ImageSize.w400),
                 placeholder: (ctx, s) {
                   return Image.asset(
                     'images/CacheBG.jpg',

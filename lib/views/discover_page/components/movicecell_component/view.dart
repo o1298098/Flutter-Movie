@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/actions/votecolorhelper.dart';
 import 'package:movie/models/enums/imagesize.dart';
@@ -13,7 +13,7 @@ Widget buildView(
     VideoCellState state, Dispatch dispatch, ViewService viewService) {
   var d = state.videodata;
   return GestureDetector(
-    key: Key(d.original_title),
+    key: Key(d.originalTitle),
     child: Container(
       padding: EdgeInsets.fromLTRB(Adapt.px(20), 0, Adapt.px(20), Adapt.px(30)),
       child: Card(
@@ -27,7 +27,7 @@ Widget buildView(
                   fit: BoxFit.cover,
                   placeholder: 'images/CacheBG.jpg',
                   image: ImageUrl.getUrl(
-                      d.poster_path ?? '/lrzvimkeL72qxHN1FaSmjIoztvj.jpg',
+                      d.posterPath ?? '/lrzvimkeL72qxHN1FaSmjIoztvj.jpg',
                       ImageSize.w300),
                 )),
             Container(
@@ -61,9 +61,9 @@ Widget buildView(
                                     valueColor:
                                         new AlwaysStoppedAnimation<Color>(
                                             VoteColorHelper.getColor(
-                                                d.vote_average)),
+                                                d.voteAverage)),
                                     backgroundColor: Colors.grey,
-                                    value: d.vote_average / 10.0,
+                                    value: d.voteAverage / 10.0,
                                   )),
                             ),
                             Center(
@@ -72,7 +72,7 @@ Widget buildView(
                                   height: Adapt.px(60),
                                   child: Center(
                                     child: Text(
-                                      (d.vote_average * 10.0)
+                                      (d.voteAverage * 10.0)
                                               .floor()
                                               .toString() +
                                           '%',
@@ -107,7 +107,7 @@ Widget buildView(
                           ),
                           Text(
                             DateFormat.yMMMd()
-                                .format(DateTime.parse((d.release_date==null||d.release_date?.isEmpty==true)?'1970-01-01':d.release_date)),
+                                .format(DateTime.parse((d.releaseDate==null||d.releaseDate?.isEmpty==true)?'1970-01-01':d.releaseDate)),
                             style: TextStyle(
                                 color: Colors.grey[800],
                                 fontSize: Adapt.px(20)),

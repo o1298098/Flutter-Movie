@@ -3,7 +3,6 @@ import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/searchresult.dart';
 import 'package:movie/models/sortcondition.dart';
 
-//TODO replace with your own action
 enum TrendingPageAction {
   action,
   showFilter,

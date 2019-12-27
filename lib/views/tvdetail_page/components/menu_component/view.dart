@@ -2,7 +2,7 @@ import 'dart:ui' as ui;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/dialogratingbar.dart';
 import 'package:movie/customwidgets/medialist_card.dart';
@@ -34,16 +34,14 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
     showDialog(
         context: viewService.context,
         builder: (ctx) {
-          var width = (Adapt.screenW() - Adapt.px(60)).floorToDouble();
-          var height = ((width - Adapt.px(40)) / 2).floorToDouble();
           return MediaListCardDialog(
             type: MediaType.tv,
             mediaId: state.id,
             name: state.detail.name,
-            photourl: state.detail.poster_path,
-            rated: state.detail.vote_average,
-            runtime: state.detail.episode_run_time.fold(0, (p, c) => p + c),
-            releaseDate: state.detail.first_air_date,
+            photourl: state.detail.posterPath,
+            rated: state.detail.voteAverage,
+            runtime: state.detail.episodeRunTime.fold(0, (p, c) => p + c),
+            releaseDate: state.detail.firstAirDate,
           );
         });
   }

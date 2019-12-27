@@ -3,17 +3,14 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/sliverappbar_delegate.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/episodemodel.dart';
-import 'package:movie/models/tvdetail.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
-
-import 'package:movie/customwidgets/scrollview_background.dart';
-import '../../../actions/Adapt.dart';
+import '../../../actions/adapt.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -38,7 +35,7 @@ Widget buildView(
                   image: DecorationImage(
                       fit: BoxFit.cover,
                       image: CachedNetworkImageProvider(ImageUrl.getUrl(
-                          state.detial.backdrop_path, ImageSize.w500)))),
+                          state.detial.backdropPath, ImageSize.w500)))),
               child: SlideTransition(
                   position:
                       Tween<Offset>(begin: Offset.zero, end: Offset(1.6, 0))
@@ -113,7 +110,7 @@ Widget buildView(
                             image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: CachedNetworkImageProvider(
-                                    ImageUrl.getUrl(state.detial.poster_path,
+                                    ImageUrl.getUrl(state.detial.posterPath,
                                         ImageSize.w200)))),
                       ),
                       SizedBox(width: Adapt.px(25)),
@@ -180,7 +177,7 @@ Widget buildView(
                       image: DecorationImage(
                           fit: BoxFit.cover,
                           image: CachedNetworkImageProvider(
-                              ImageUrl.getUrl(d.still_path, ImageSize.w300)))),
+                              ImageUrl.getUrl(d.stillPath, ImageSize.w300)))),
                 ),
                 SizedBox(width: Adapt.px(20)),
                 Container(
@@ -191,7 +188,7 @@ Widget buildView(
                         Text.rich(
                           TextSpan(children: <TextSpan>[
                             TextSpan(
-                                text: '${d.episode_number}. ',
+                                text: '${d.episodeNumber}. ',
                                 style: TextStyle(fontSize: Adapt.px(28))),
                             TextSpan(
                                 text: '${d.name}',

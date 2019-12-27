@@ -2,19 +2,17 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/base_api_model/user_media.dart';
 import 'package:movie/models/enums/imagesize.dart';
-import 'package:movie/models/videolist.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
@@ -109,23 +107,6 @@ Widget buildView(
             ],
           ),
         ),
-      );
-    }
-
-    Widget _buildIconbutton(IconData icon) {
-      return GestureDetector(
-        child: Container(
-          width: Adapt.px(60),
-          height: Adapt.px(50),
-          margin: EdgeInsets.only(right: Adapt.px(10)),
-          decoration:
-              BoxDecoration(shape: BoxShape.circle, border: Border.all()),
-          child: Icon(
-            icon,
-            size: Adapt.px(30),
-          ),
-        ),
-        onTap: () {},
       );
     }
 

@@ -1,19 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:movie/actions/Adapt.dart';
-import 'package:movie/customwidgets/shimmercell.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/customwidgets/sliverappbar_delegate.dart';
 import 'package:movie/models/base_api_model/movie_comment.dart';
 import 'package:movie/models/base_api_model/movie_stream_link.dart';
-import 'package:movie/models/enums/streamlink_type.dart';
 import 'package:movie/style/themestyle.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import 'dart:ui' as ui;

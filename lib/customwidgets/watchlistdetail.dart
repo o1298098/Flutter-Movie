@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/videolist.dart';
@@ -20,7 +20,6 @@ class WatchlistDetailState extends State<WatchlistDetail>
     with TickerProviderStateMixin {
   double startY;
   double endY;
-  double _lastdeffY = 0;
   VideoPlayerController videoPlayerController;
   AnimationController animationController;
   FadeAnimation imageFadeAnim =
@@ -78,15 +77,12 @@ class WatchlistDetailState extends State<WatchlistDetail>
     return GestureDetector(
       onVerticalDragUpdate: (dragUpdateDetails) {
         endY = dragUpdateDetails.globalPosition.dy;
-        double newy = endY - startY;
         print(
             'dragUpdateDetails-' + dragUpdateDetails.globalPosition.toString());
         print('dddd' + (endY - startY).toString());
         if (endY - startY > 150 && startY <= 150) Navigator.of(context).pop();
-        _lastdeffY = newy;
       },
       onVerticalDragStart: (dragStartDetails) {
-        _lastdeffY = 0;
         startY = dragStartDetails.localPosition.dy;
         print('dragStartDetails' + dragStartDetails.localPosition.toString());
       },
@@ -124,8 +120,7 @@ class WatchlistDetailState extends State<WatchlistDetail>
                                   fit: BoxFit.cover,
                                   image: CachedNetworkImageProvider(
                                       ImageUrl.getUrl(
-                                          widget
-                                              .data.results[index].poster_path,
+                                          widget.data.results[index].posterPath,
                                           ImageSize.w300)))),
                           child: Container(
                             color: Colors.white.withAlpha(240),

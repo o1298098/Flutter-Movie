@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/videolist.dart';
@@ -14,7 +14,7 @@ Widget buildView(
     MovieCellsState state, Dispatch dispatch, ViewService viewService) {
   Widget _bulidcell(VideoListResult d) {
     return GestureDetector(
-      onTap: ()=>dispatch(MovieCellsActionCreator.onCellTapped(d.id,d.backdrop_path,d.title,d.poster_path)),
+      onTap: ()=>dispatch(MovieCellsActionCreator.onCellTapped(d.id,d.backdropPath,d.title,d.posterPath)),
       child: Container(
         child: Stack(
           children: <Widget>[
@@ -25,7 +25,7 @@ Widget buildView(
               height: Adapt.screenW() * 9 / 16,
               fit: BoxFit.cover,
               imageUrl: ImageUrl.getUrl(
-                  d.backdrop_path,
+                  d.backdropPath,
                   ImageSize.w500),
                   placeholder: (ctx,str){return Container(
                     width: Adapt.screenW(),

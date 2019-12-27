@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/backdrop.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
@@ -112,9 +112,9 @@ Widget buildView(
                 GestureDetector(
                   onTap: () => dispatch(HomePageActionCreator.onCellTapped(
                       f.id,
-                      f.backdrop_path,
+                      f.backdropPath,
                       name,
-                      f.poster_path,
+                      f.posterPath,
                       state.showHeaderMovie ? MediaType.movie : MediaType.tv)),
                   child: Container(
                     width: Adapt.px(200),
@@ -124,7 +124,7 @@ Widget buildView(
                         image: DecorationImage(
                             fit: BoxFit.cover,
                             image: CachedNetworkImageProvider(ImageUrl.getUrl(
-                                f.poster_path, ImageSize.w300)))),
+                                f.posterPath, ImageSize.w300)))),
                   ),
                 ),
                 SizedBox(
@@ -215,9 +215,9 @@ Widget buildView(
             key: ValueKey('card${d.id}'),
             onTap: () => dispatch(HomePageActionCreator.onCellTapped(
                 d.id,
-                d.backdrop_path,
+                d.backdropPath,
                 d.title ?? d.name,
-                d.poster_path,
+                d.posterPath,
                 state.showHeaderMovie ? MediaType.movie : MediaType.tv)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -248,7 +248,7 @@ Widget buildView(
                                 fit: BoxFit.cover,
                                 image: CachedNetworkImageProvider(
                                     ImageUrl.getUrl(
-                                        d.poster_path, ImageSize.w300)))),
+                                        d.posterPath, ImageSize.w300)))),
                       ),
                       SizedBox(
                         width: Adapt.px(20),
@@ -285,11 +285,11 @@ Widget buildView(
                                   itemSize: Adapt.px(22),
                                   itemPadding:
                                       EdgeInsets.only(right: Adapt.px(8)),
-                                  rating: d.vote_average / 2,
+                                  rating: d.voteAverage / 2,
                                 ),
                               ),
                               Text(
-                                d.vote_average.toStringAsFixed(1),
+                                d.voteAverage.toStringAsFixed(1),
                                 style: TextStyle(
                                     fontSize: Adapt.px(22),
                                     fontWeight: FontWeight.w700),
@@ -351,31 +351,6 @@ Widget buildView(
               switchInCurve: Curves.easeIn,
               switchOutCurve: Curves.easeOut,
               child: _child),
-        );
-      }
-
-      Widget _buildTitle(String title, void buttonTap(),
-          {IconData d = Icons.more_vert}) {
-        return Padding(
-          padding: EdgeInsets.fromLTRB(Adapt.px(20), 0, Adapt.px(20), 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                title,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: Adapt.px(45),
-                    fontWeight: FontWeight.w700),
-              ),
-              IconButton(
-                padding: EdgeInsets.only(right: 0),
-                alignment: Alignment.centerRight,
-                icon: Icon(d),
-                onPressed: () => buttonTap(),
-              )
-            ],
-          ),
         );
       }
 

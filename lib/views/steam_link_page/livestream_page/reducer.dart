@@ -1,9 +1,6 @@
-import 'package:chewie/chewie.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/movie_comment.dart';
 import 'package:movie/models/base_api_model/movie_stream_link.dart';
-import 'package:movie/models/firebase/firebase_streamlink.dart';
 
 import 'action.dart';
 import 'state.dart';

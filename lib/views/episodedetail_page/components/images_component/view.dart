@@ -1,9 +1,7 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
@@ -21,9 +19,9 @@ Widget buildView(
       ? ThemeStyle.lightTheme
       : ThemeStyle.darkTheme;
   Widget _buildImageCell(ImageData d) {
-    String url = d.file_path == null
+    String url = d.filePath == null
         ? ImageUrl.emptyimage
-        : ImageUrl.getUrl(d.file_path, ImageSize.w500);
+        : ImageUrl.getUrl(d.filePath, ImageSize.w500);
     int index = state.images.stills.indexOf(d);
     return GestureDetector(
       onTap: //() => dispatch(ImagesActionCreator.onImageTapped(url)),

@@ -1,17 +1,14 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/share_card.dart';
-import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/models/base_api_model/user_list_detail.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/sortcondition.dart';
-import 'package:movie/models/videolist.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -237,7 +234,6 @@ Widget buildView(
     Widget _buildShareCardHeader() {
       var d = state.listDetailModel;
       int _itemCount = d.itemCount;
-      double cellwidth = Adapt.px(145);
       double _totalRated = d.totalRated;
       return Column(
         children: <Widget>[
@@ -549,9 +545,7 @@ Widget buildView(
     }
 
     Widget _buildBody() {
-      var d = state.listDetailModel;
       var width = Adapt.screenW() / 3;
-      var height = Adapt.px(300);
       return state.listItems == null
           ? _buildShimmerBody()
           : SliverGrid.extent(

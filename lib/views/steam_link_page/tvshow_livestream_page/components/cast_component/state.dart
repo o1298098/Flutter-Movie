@@ -18,7 +18,7 @@ class CastConnector extends ConnOp<TvShowLiveStreamPageState, CastState> {
   CastState get(TvShowLiveStreamPageState state) {
     CastState substate = new CastState();
     substate.credits = state.season.credits;
-    substate.guestStars = state.selectedEpisode?.guest_stars;
+    substate.guestStars = state.selectedEpisode?.guestStars;
     substate.crew = state.selectedEpisode?.crew;
     return substate;
   }

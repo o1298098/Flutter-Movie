@@ -5,7 +5,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/scrollview_background.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
@@ -112,7 +112,7 @@ Widget buildView(
 
     Widget _getExternal() {
       var _detail = state.detail;
-      var _ids = _detail.externalids;
+      var _ids = _detail.externalIds;
       if (_ids != null)
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -186,7 +186,7 @@ Widget buildView(
       double width = Adapt.px(150);
       return GestureDetector(
         onTap: () => dispatch(MovieDetailPageActionCreator.castCellTapped(
-            d.id, d.profile_path, d.name, d.character)),
+            d.id, d.profilePath, d.name, d.character)),
         child: Column(
           key: ValueKey('Cast${d.id}'),
           children: <Widget>[
@@ -204,7 +204,7 @@ Widget buildView(
                         image: DecorationImage(
                             fit: BoxFit.cover,
                             image: CachedNetworkImageProvider(ImageUrl.getUrl(
-                                d.profile_path, ImageSize.w300)))),
+                                d.profilePath, ImageSize.w300)))),
                   ),
                 )),
             SizedBox(
@@ -268,10 +268,10 @@ Widget buildView(
     }
 
     Widget _buildImageCell(ImageData d) {
-      String url = ImageUrl.getUrl(d.file_path, ImageSize.w500);
+      String url = ImageUrl.getUrl(d.filePath, ImageSize.w500);
       int index = state.imagesmodel.backdrops.indexOf(d);
       return GestureDetector(
-        key: ValueKey('image${d.file_path}'),
+        key: ValueKey('image${d.filePath}'),
         onTap: () =>
             dispatch(MovieDetailPageActionCreator.stillImageTapped(index)),
         child: Hero(
@@ -300,13 +300,13 @@ Widget buildView(
       return GestureDetector(
         key: ValueKey('recommendation${d.id}'),
         onTap: () => dispatch(
-            MovieDetailPageActionCreator.movieCellTapped(d.id, d.poster_path)),
+            MovieDetailPageActionCreator.movieCellTapped(d.id, d.posterPath)),
         child: Padding(
           padding: EdgeInsets.only(right: Adapt.px(30)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _buildImage(ImageUrl.getUrl(d.poster_path, ImageSize.w500),
+              _buildImage(ImageUrl.getUrl(d.posterPath, ImageSize.w500),
                   _width, Adapt.px(320), Adapt.px(20)),
               SizedBox(
                 height: Adapt.px(15),
@@ -326,7 +326,7 @@ Widget buildView(
                 height: Adapt.px(8),
               ),
               Text(
-                  '${DateTime.parse(d.release_date == null || d.release_date == '' ? '2020-01-01' : d.release_date).year}',
+                  '${DateTime.parse(d.releaseDate == null || d.releaseDate == '' ? '2020-01-01' : d.releaseDate).year}',
                   style: TextStyle(fontSize: Adapt.px(24))),
               SizedBox(
                 height: Adapt.px(8),
@@ -341,7 +341,7 @@ Widget buildView(
                       color: Colors.amber,
                     ),
                     unratedColor: Colors.grey[300],
-                    rating: d.vote_average / 2,
+                    rating: d.voteAverage / 2,
                   ))
             ],
           ),
@@ -417,7 +417,7 @@ Widget buildView(
                   height: Adapt.px(10),
                 ),
                 Text(DateFormat.yMMMd().format(DateTime.parse(
-                    state.detail?.release_date ?? '1990-01-01'))),
+                    state.detail?.releaseDate ?? '1990-01-01'))),
                 SizedBox(
                   height: Adapt.px(10),
                 ),
@@ -445,7 +445,7 @@ Widget buildView(
                 Row(
                   children: <Widget>[
                     RatingBarIndicator(
-                      rating: (state.detail?.vote_average ?? 0.0) / 2,
+                      rating: (state.detail?.voteAverage ?? 0.0) / 2,
                       itemPadding: EdgeInsets.only(right: Adapt.px(8)),
                       itemCount: 5,
                       itemBuilder: (context, _) => Icon(
@@ -459,13 +459,13 @@ Widget buildView(
                       width: Adapt.px(8),
                     ),
                     Text(
-                      '${state.detail?.vote_average ?? 0.0}',
+                      '${state.detail?.voteAverage ?? 0.0}',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                       width: Adapt.px(8),
                     ),
-                    Text('(${state.detail?.vote_count ?? 0})'),
+                    Text('(${state.detail?.voteCount ?? 0})'),
                   ],
                 ),
               ],

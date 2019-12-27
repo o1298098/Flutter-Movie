@@ -2,7 +2,6 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/tvdetail.dart';
 
-//TODO replace with your own action
 enum SeasonLinkPageAction {
   action,
   getSeasonDetial,

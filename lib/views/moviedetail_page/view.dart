@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/actions/videourl.dart';
 import 'package:movie/actions/votecolorhelper.dart';
@@ -38,7 +38,7 @@ Widget buildView(
   Widget _buildCreditsCell(CastData p) {
     return GestureDetector(
       onTap: () => dispatch(MovieDetailPageActionCreator.onCastCellTapped(
-          p.id, p.profile_path, p.name)),
+          p.id, p.profilePath, p.name)),
       child: Container(
         margin: EdgeInsets.only(left: Adapt.px(20)),
         width: Adapt.px(240),
@@ -60,10 +60,10 @@ Widget buildView(
                       image: DecorationImage(
                           fit: BoxFit.cover,
                           image: CachedNetworkImageProvider(
-                              p.profile_path == null
+                              p.profilePath == null
                                   ? ImageUrl.emptyimage
                                   : ImageUrl.getUrl(
-                                      p.profile_path, ImageSize.w300)))),
+                                      p.profilePath, ImageSize.w300)))),
                 ),
               ),
               Padding(
@@ -119,7 +119,7 @@ Widget buildView(
                   height: Adapt.px(400) * 9 / 16,
                   placeholder: 'images/CacheBG.jpg',
                   image: ImageUrl.getUrl(
-                      d.backdrop_path ?? '/eIkFHNlfretLS1spAcIoihKUS62.jpg',
+                      d.backdropPath ?? '/eIkFHNlfretLS1spAcIoihKUS62.jpg',
                       ImageSize.w400),
                 ),
               ),
@@ -127,7 +127,7 @@ Widget buildView(
                 padding: EdgeInsets.all(Adapt.px(10)),
                 alignment: Alignment.bottomLeft,
                 child: Text(
-                  d.original_title,
+                  d.originalTitle,
                   softWrap: false,
                   style: TextStyle(
                       color: Colors.white,
@@ -151,7 +151,7 @@ Widget buildView(
                       color: Colors.white,
                       size: Adapt.px(28),
                     ),
-                    Text(d.vote_average.toString(),
+                    Text(d.voteAverage.toString(),
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: Adapt.px(28),
@@ -167,7 +167,7 @@ Widget buildView(
             ],
           )),
       onTap: () => dispatch(MovieDetailPageActionCreator.onRecommendationTapped(
-          d.id, d.backdrop_path)),
+          d.id, d.backdropPath)),
     );
   }
 
@@ -236,60 +236,9 @@ Widget buildView(
     );
   }
 
-  Widget _buildImageCell_1(ImageData d) {
-    double w = Adapt.screenW() - Adapt.px(80);
-    double h = w / d.aspect_ratio;
-    return Container(
-      padding: EdgeInsets.fromLTRB(Adapt.px(30), 0, Adapt.px(30), Adapt.px(20)),
-      child: Card(
-        elevation: 1.0,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              width: w,
-              height: h,
-              decoration: BoxDecoration(
-                  color: Color.fromRGBO(
-                      random.nextInt(255),
-                      random.nextInt(255),
-                      random.nextInt(255),
-                      random.nextDouble()),
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: CachedNetworkImageProvider(
-                          ImageUrl.getUrl(d.file_path, ImageSize.w300)))),
-              /*child: ParallaxImage(
-                  extent: h,
-                  image: CachedNetworkImageProvider(
-                      ImageUrl.getUrl(d.file_path, ImageSize.w300))),*/
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(30)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'Size:${d.width}x${d.height}',
-                    style:
-                        TextStyle(color: Colors.black, fontSize: Adapt.px(30)),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.cloud_download),
-                    onPressed: () {},
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildImageCell(ImageData d) {
     double w = (Adapt.screenW() - Adapt.px(100)) / 2;
-    double h = w / d.aspect_ratio;
+    double h = w / d.aspectRatio;
     return Container(
       width: w,
       height: h,
@@ -300,7 +249,7 @@ Widget buildView(
       child: ParallaxImage(
           extent: h,
           image: CachedNetworkImageProvider(
-              ImageUrl.getUrl(d.file_path, ImageSize.w300))),
+              ImageUrl.getUrl(d.filePath, ImageSize.w300))),
     );
   }
 
@@ -478,7 +427,7 @@ Widget buildView(
           TextSpan(
               text: s.title == null
                   ? ' (-)'
-                  : ' (${DateTime.tryParse(s.release_date)?.year.toString()})',
+                  : ' (${DateTime.tryParse(s.releaseDate)?.year.toString()})',
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Adapt.px(30),
@@ -643,7 +592,7 @@ Widget buildView(
                         animation: state.animationController,
                         builder: (ctx, widget) {
                           var animate = Tween<double>(
-                                  begin: 0.0, end: s.vote_average ?? evote)
+                                  begin: 0.0, end: s.voteAverage ?? evote)
                               .animate(CurvedAnimation(
                                 parent: state.animationController,
                                 curve: Curves.ease,
@@ -728,7 +677,7 @@ Widget buildView(
                 SliverOverlapAbsorber(
                   handle:
                       NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                  child: SliverAppBar(
+                  sliver: SliverAppBar(
                       pinned: true,
                       /*backgroundColor: state.palette.darkVibrantColor?.color ??
                           Colors.black87,*/

@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/generated/i18n.dart';
@@ -81,9 +81,9 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
       decoration: BoxDecoration(
           image: DecorationImage(
               fit: BoxFit.scaleDown,
-              image: CachedNetworkImageProvider(d.logo_path == null
+              image: CachedNetworkImageProvider(d.logoPath == null
                   ? ImageUrl.emptyimage
-                  : ImageUrl.getUrl(d.logo_path, ImageSize.w300)))),
+                  : ImageUrl.getUrl(d.logoPath, ImageSize.w300)))),
     );
   }
 
@@ -131,7 +131,7 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
   }
 
   Widget _getExternal() {
-    var d = state.tvDetailModel.externalids;
+    var d = state.tvDetailModel.externalIds;
     if (d != null)
       return Row(
         children: <Widget>[
@@ -289,13 +289,13 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
           Row(
             children: <Widget>[
               _buildInfoCell(I18n.of(viewService.context).originalLanguage,
-                  state.tvDetailModel?.original_language),
+                  state.tvDetailModel?.originalLanguage),
               _buildInfoCell(
                   I18n.of(viewService.context).runtime,
-                  state.tvDetailModel.episode_run_time == null ||
-                          state.tvDetailModel.episode_run_time?.length == 0
+                  state.tvDetailModel.episodeRunTime == null ||
+                          state.tvDetailModel.episodeRunTime?.length == 0
                       ? 'none'
-                      : state.tvDetailModel.episode_run_time[0].toString() +
+                      : state.tvDetailModel.episodeRunTime[0].toString() +
                           'M'),
             ],
           ),

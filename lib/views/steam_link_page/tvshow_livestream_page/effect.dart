@@ -1,7 +1,7 @@
 import 'package:chewie/chewie.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/base_api.dart';
 import 'package:movie/customwidgets/custom_video_controls.dart';
 import 'package:movie/models/base_api_model/base_user.dart';
@@ -38,7 +38,7 @@ void _onInit(Action action, Context<TvShowLiveStreamPageState> ctx) async {
         ctx.dispatch(TvShowLiveStreamPageActionCreator.onShowBottom(false));
     });
   final _streamLinks = await BaseApi.getTvSeasonStreamLinks(
-      ctx.state.tvid, ctx.state.season.season_number);
+      ctx.state.tvid, ctx.state.season.seasonNumber);
   if (_streamLinks != null) {
     initVideoPlayer(ctx, _streamLinks);
     ctx.dispatch(
@@ -68,7 +68,7 @@ void _addComment(Action action, Context<TvShowLiveStreamPageState> ctx) async {
         uid: ctx.state.user.uid,
         updateTime: _date,
         createTime: _date,
-        season: ctx.state.season.season_number,
+        season: ctx.state.season.seasonNumber,
         episode: ctx.state.episodeNumber,
         u: BaseUser.fromParams(
             uid: ctx.state.user.uid,
@@ -89,7 +89,7 @@ void _episodeCellTapped(
   final TvShowStreamLink e = action.payload;
   if (e != null) {
     final Episode episode = ctx.state.season.episodes
-        .singleWhere((d) => d.episode_number == e.episode);
+        .singleWhere((d) => d.episodeNumber == e.episode);
     ctx.dispatch(TvShowLiveStreamPageActionCreator.episodeChanged(episode));
     await ctx.state.episodelistController.animateTo(
         Adapt.px(330) * (e.episode - 1),
@@ -97,7 +97,7 @@ void _episodeCellTapped(
         duration: Duration(milliseconds: 300));
     videoSourceChange(ctx, e);
     final comment = await BaseApi.getTvShowComments(
-        ctx.state.tvid, ctx.state.season.season_number, e.episode);
+        ctx.state.tvid, ctx.state.season.seasonNumber, e.episode);
     if (comment != null)
       ctx.dispatch(TvShowLiveStreamPageActionCreator.setComments(comment));
   }

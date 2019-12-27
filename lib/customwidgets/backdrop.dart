@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 
 class BackDrop extends StatefulWidget {
   final Widget backChild;

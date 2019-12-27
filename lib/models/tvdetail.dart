@@ -11,76 +11,76 @@ import 'videolist.dart';
 
 class TVDetailModel {
   int id;
-  int number_of_episodes;
-  int number_of_seasons;
-  double vote_average;
-  int vote_count;
+  int numberOfEpisodes;
+  int numberOfSeasons;
+  double voteAverage;
+  int voteCount;
   double popularity;
-  bool in_production;
-  String backdrop_path;
-  String first_air_date;
+  bool inProduction;
+  String backdropPath;
+  String firstAirDate;
   String homepage;
-  String last_air_date;
+  String lastAirDate;
   String name;
-  String original_language;
-  String original_name;
+  String originalLanguage;
+  String originalName;
   String overview;
-  String poster_path;
+  String posterPath;
   String status;
   String type;
-  List<CreatedBy> created_by;
-  List<int> episode_run_time;
+  List<CreatedBy> createdBy;
+  List<int> episodeRunTime;
   List<Genre> genres;
   List<String> languages;
   List<NetWork> networks;
-  List<String> origin_country;
-  List<ProductionCompanie> production_companies;
+  List<String> originCountry;
+  List<ProductionCompanie> productionCompanies;
   List<Season> seasons;
-  AirData last_episode_to_air;
-  AirData next_episode_to_air;
+  AirData lastEpisodeToAir;
+  AirData nextEpisodeToAir;
   CreditsModel credits;
   ImageModel images;
   KeyWordModel keywords;
   VideoListModel recommendations;
   ReviewModel reviews;
-  ExternalIdsModel externalids;
+  ExternalIdsModel externalIds;
   ContentRatingModel contentRatings;
 
   TVDetailModel.fromParams(
       {this.id,
-      this.number_of_episodes,
-      this.number_of_seasons,
-      this.vote_average,
-      this.vote_count,
+      this.numberOfEpisodes,
+      this.numberOfSeasons,
+      this.voteAverage,
+      this.voteCount,
       this.popularity,
-      this.in_production,
-      this.backdrop_path,
-      this.first_air_date,
+      this.inProduction,
+      this.backdropPath,
+      this.firstAirDate,
       this.homepage,
-      this.last_air_date,
+      this.lastAirDate,
       this.name,
-      this.original_language,
-      this.original_name,
+      this.originalLanguage,
+      this.originalName,
       this.overview,
-      this.poster_path,
+      this.posterPath,
       this.status,
       this.type,
-      this.created_by,
-      this.episode_run_time,
+      this.createdBy,
+      this.episodeRunTime,
       this.genres,
       this.languages,
       this.networks,
-      this.origin_country,
-      this.production_companies,
+      this.originCountry,
+      this.productionCompanies,
       this.seasons,
-      this.last_episode_to_air,
-      this.next_episode_to_air,
+      this.lastEpisodeToAir,
+      this.nextEpisodeToAir,
       this.credits,
       this.images,
       this.keywords,
       this.recommendations,
       this.reviews,
-      this.externalids,
+      this.externalIds,
       this.contentRatings});
 
   factory TVDetailModel(jsonStr) => jsonStr == null
@@ -91,37 +91,37 @@ class TVDetailModel {
 
   TVDetailModel.fromJson(jsonRes) {
     id = jsonRes['id'];
-    number_of_episodes = jsonRes['number_of_episodes'];
-    number_of_seasons = jsonRes['number_of_seasons'];
-    vote_average = double.parse(jsonRes['vote_average'].toString());
-    vote_count = jsonRes['vote_count'];
+    numberOfEpisodes = jsonRes['number_of_episodes'];
+    numberOfSeasons = jsonRes['number_of_seasons'];
+    voteAverage = double.parse(jsonRes['vote_average'].toString());
+    voteCount = jsonRes['vote_count'];
     popularity = double.parse(jsonRes['popularity'].toString());
-    in_production = jsonRes['in_production'];
-    backdrop_path = jsonRes['backdrop_path'];
-    first_air_date = jsonRes['first_air_date'];
+    inProduction = jsonRes['in_production'];
+    backdropPath = jsonRes['backdrop_path'];
+    firstAirDate = jsonRes['first_air_date'];
     homepage = jsonRes['homepage'];
-    last_air_date = jsonRes['last_air_date'];
+    lastAirDate = jsonRes['last_air_date'];
     name = jsonRes['name'];
-    original_language = jsonRes['original_language'];
-    original_name = jsonRes['original_name'];
+    originalLanguage = jsonRes['original_language'];
+    originalName = jsonRes['original_name'];
     overview = jsonRes['overview'];
-    poster_path = jsonRes['poster_path'];
+    posterPath = jsonRes['poster_path'];
     status = jsonRes['status'];
     type = jsonRes['type'];
-    created_by = jsonRes['created_by'] == null ? null : [];
+    createdBy = jsonRes['created_by'] == null ? null : [];
 
     for (var created_byItem
-        in created_by == null ? [] : jsonRes['created_by']) {
-      created_by.add(created_byItem == null
+        in createdBy == null ? [] : jsonRes['created_by']) {
+      createdBy.add(created_byItem == null
           ? null
           : new CreatedBy.fromJson(created_byItem));
     }
 
-    episode_run_time = jsonRes['episode_run_time'] == null ? null : [];
+    episodeRunTime = jsonRes['episode_run_time'] == null ? null : [];
 
     for (var episode_run_timeItem
-        in episode_run_time == null ? [] : jsonRes['episode_run_time']) {
-      episode_run_time.add(episode_run_timeItem);
+        in episodeRunTime == null ? [] : jsonRes['episode_run_time']) {
+      episodeRunTime.add(episode_run_timeItem);
     }
 
     genres = jsonRes['genres'] == null ? null : [];
@@ -143,19 +143,19 @@ class TVDetailModel {
           networksItem == null ? null : new NetWork.fromJson(networksItem));
     }
 
-    origin_country = jsonRes['origin_country'] == null ? null : [];
+    originCountry = jsonRes['origin_country'] == null ? null : [];
 
     for (var origin_countryItem
-        in origin_country == null ? [] : jsonRes['origin_country']) {
-      origin_country.add(origin_countryItem);
+        in originCountry == null ? [] : jsonRes['origin_country']) {
+      originCountry.add(origin_countryItem);
     }
 
-    production_companies = jsonRes['production_companies'] == null ? null : [];
+    productionCompanies = jsonRes['production_companies'] == null ? null : [];
 
-    for (var production_companiesItem in production_companies == null
+    for (var production_companiesItem in productionCompanies == null
         ? []
         : jsonRes['production_companies']) {
-      production_companies.add(production_companiesItem == null
+      productionCompanies.add(production_companiesItem == null
           ? null
           : new ProductionCompanie.fromJson(production_companiesItem));
     }
@@ -167,10 +167,10 @@ class TVDetailModel {
           .add(seasonsItem == null ? null : new Season.fromJson(seasonsItem));
     }
 
-    last_episode_to_air = jsonRes['last_episode_to_air'] == null
+    lastEpisodeToAir = jsonRes['last_episode_to_air'] == null
         ? null
         : new AirData.fromJson(jsonRes['last_episode_to_air']);
-    next_episode_to_air = jsonRes['next_episode_to_air'] == null
+    nextEpisodeToAir = jsonRes['next_episode_to_air'] == null
         ? null
         : new AirData.fromJson(jsonRes['next_episode_to_air']);
     credits = jsonRes['credits'] == null
@@ -188,7 +188,7 @@ class TVDetailModel {
     reviews = jsonRes['reviews'] == null
         ? null
         : new ReviewModel.fromJson(jsonRes['reviews']);
-    externalids = jsonRes['external_ids'] == null
+    externalIds = jsonRes['external_ids'] == null
         ? null
         : new ExternalIdsModel.fromJson(jsonRes['external_ids']);
     contentRatings = jsonRes['content_ratings'] == null
@@ -198,134 +198,134 @@ class TVDetailModel {
 
   @override
   String toString() {
-    return '{"id": $id,"number_of_episodes": $number_of_episodes,"number_of_seasons": $number_of_seasons,"vote_average": $vote_average,"vote_count": $vote_count,"popularity": $popularity,"in_production": $in_production,"backdrop_path": ${backdrop_path != null ? '${json.encode(backdrop_path)}' : 'null'},"first_air_date": ${first_air_date != null ? '${json.encode(first_air_date)}' : 'null'},"homepage": ${homepage != null ? '${json.encode(homepage)}' : 'null'},"last_air_date": ${last_air_date != null ? '${json.encode(last_air_date)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"original_language": ${original_language != null ? '${json.encode(original_language)}' : 'null'},"original_name": ${original_name != null ? '${json.encode(original_name)}' : 'null'},"overview": ${overview != null ? '${json.encode(overview)}' : 'null'},"poster_path": ${poster_path != null ? '${json.encode(poster_path)}' : 'null'},"status": ${status != null ? '${json.encode(status)}' : 'null'},"type": ${type != null ? '${json.encode(type)}' : 'null'},"created_by": $created_by,"episode_run_time": $episode_run_time,"genres": $genres,"languages": $languages,"networks": $networks,"origin_country": $origin_country,"production_companies": $production_companies,"seasons": $seasons,"last_episode_to_air": $last_episode_to_air,"next_episode_to_air": $next_episode_to_air,"credits": $credits,"images": $images,"keywords": $keywords,"recommendations": $recommendations,"reviews": $reviews,"externalids":$externalids,"contentRatings":$contentRatings}';
+    return '{"id": $id,"number_of_episodes": $numberOfEpisodes,"number_of_seasons": $numberOfSeasons,"vote_average": $voteAverage,"vote_count": $voteCount,"popularity": $popularity,"in_production": $inProduction,"backdrop_path": ${backdropPath != null ? '${json.encode(backdropPath)}' : 'null'},"first_air_date": ${firstAirDate != null ? '${json.encode(firstAirDate)}' : 'null'},"homepage": ${homepage != null ? '${json.encode(homepage)}' : 'null'},"last_air_date": ${lastAirDate != null ? '${json.encode(lastAirDate)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"original_language": ${originalLanguage != null ? '${json.encode(originalLanguage)}' : 'null'},"original_name": ${originalName != null ? '${json.encode(originalName)}' : 'null'},"overview": ${overview != null ? '${json.encode(overview)}' : 'null'},"poster_path": ${posterPath != null ? '${json.encode(posterPath)}' : 'null'},"status": ${status != null ? '${json.encode(status)}' : 'null'},"type": ${type != null ? '${json.encode(type)}' : 'null'},"created_by": $createdBy,"episode_run_time": $episodeRunTime,"genres": $genres,"languages": $languages,"networks": $networks,"origin_country": $originCountry,"production_companies": $productionCompanies,"seasons": $seasons,"last_episode_to_air": $lastEpisodeToAir,"next_episode_to_air": $nextEpisodeToAir,"credits": $credits,"images": $images,"keywords": $keywords,"recommendations": $recommendations,"reviews": $reviews,"externalids":$externalIds,"contentRatings":$contentRatings}';
   }
 }
 
 class AirData {
-  Object still_path;
-  int episode_number;
+  Object stillPath;
+  int episodeNumber;
   int id;
-  int season_number;
-  int show_id;
-  double vote_average;
-  int vote_count;
-  String air_date;
+  int seasonNumber;
+  int showId;
+  double voteAverage;
+  int voteCount;
+  String airDate;
   String name;
   String overview;
-  String production_code;
+  String productionCode;
 
   AirData.fromParams(
-      {this.still_path,
-      this.episode_number,
+      {this.stillPath,
+      this.episodeNumber,
       this.id,
-      this.season_number,
-      this.show_id,
-      this.vote_average,
-      this.vote_count,
-      this.air_date,
+      this.seasonNumber,
+      this.showId,
+      this.voteAverage,
+      this.voteCount,
+      this.airDate,
       this.name,
       this.overview,
-      this.production_code});
+      this.productionCode});
 
   AirData.fromJson(jsonRes) {
-    still_path = jsonRes['still_path'];
-    episode_number = jsonRes['episode_number'];
+    stillPath = jsonRes['still_path'];
+    episodeNumber = jsonRes['episode_number'];
     id = jsonRes['id'];
-    season_number = jsonRes['season_number'];
-    show_id = jsonRes['show_id'];
-    vote_average = double.parse(jsonRes['vote_average'].toString());
-    vote_count = jsonRes['vote_count'];
-    air_date = jsonRes['air_date'];
+    seasonNumber = jsonRes['season_number'];
+    showId = jsonRes['show_id'];
+    voteAverage = double.parse(jsonRes['vote_average'].toString());
+    voteCount = jsonRes['vote_count'];
+    airDate = jsonRes['air_date'];
     name = jsonRes['name'];
     overview = jsonRes['overview'];
-    production_code = jsonRes['production_code'];
+    productionCode = jsonRes['production_code'];
   }
 
   @override
   String toString() {
-    return '{"still_path": $still_path,"episode_number": $episode_number,"id": $id,"season_number": $season_number,"show_id": $show_id,"vote_average": $vote_average,"vote_count": $vote_count,"air_date": ${air_date != null ? '${json.encode(air_date)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"overview": ${overview != null ? '${json.encode(overview)}' : 'null'},"production_code": ${production_code != null ? '${json.encode(production_code)}' : 'null'}}';
+    return '{"still_path": $stillPath,"episode_number": $episodeNumber,"id": $id,"season_number": $seasonNumber,"show_id": $showId,"vote_average": $voteAverage,"vote_count": $voteCount,"air_date": ${airDate != null ? '${json.encode(airDate)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"overview": ${overview != null ? '${json.encode(overview)}' : 'null'},"production_code": ${productionCode != null ? '${json.encode(productionCode)}' : 'null'}}';
   }
 }
 
 class Season {
-  int episode_count;
+  int episodeCount;
   int id;
-  int season_number;
-  String air_date;
+  int seasonNumber;
+  String airDate;
   String name;
   String overview;
-  String poster_path;
+  String posterPath;
   List<Episode> episodes;
   CreditsModel credits;
 
   Season.fromParams(
-      {this.episode_count,
+      {this.episodeCount,
       this.id,
-      this.season_number,
-      this.air_date,
+      this.seasonNumber,
+      this.airDate,
       this.name,
       this.overview,
-      this.poster_path,
+      this.posterPath,
       this.episodes,
       this.credits});
 
   Season.fromJson(jsonRes) {
-    episode_count = jsonRes['episode_count'];
+    episodeCount = jsonRes['episode_count'];
     id = jsonRes['id'];
-    season_number = jsonRes['season_number'];
-    air_date = jsonRes['air_date'];
+    seasonNumber = jsonRes['season_number'];
+    airDate = jsonRes['air_date'];
     name = jsonRes['name'];
     overview = jsonRes['overview'];
-    poster_path = jsonRes['poster_path'];
+    posterPath = jsonRes['poster_path'];
   }
 
   @override
   String toString() {
-    return '{"episode_count": $episode_count,"id": $id,"season_number": $season_number,"air_date": ${air_date != null ? '${json.encode(air_date)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"overview": ${overview != null ? '${json.encode(overview)}' : 'null'},"poster_path": ${poster_path != null ? '${json.encode(poster_path)}' : 'null'}}';
+    return '{"episode_count": $episodeCount,"id": $id,"season_number": $seasonNumber,"air_date": ${airDate != null ? '${json.encode(airDate)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"overview": ${overview != null ? '${json.encode(overview)}' : 'null'},"poster_path": ${posterPath != null ? '${json.encode(posterPath)}' : 'null'}}';
   }
 }
 
 class ProductionCompanie {
   int id;
-  String logo_path;
+  String logoPath;
   String name;
-  String origin_country;
+  String originCountry;
 
   ProductionCompanie.fromParams(
-      {this.id, this.logo_path, this.name, this.origin_country});
+      {this.id, this.logoPath, this.name, this.originCountry});
 
   ProductionCompanie.fromJson(jsonRes) {
     id = jsonRes['id'];
-    logo_path = jsonRes['logo_path'];
+    logoPath = jsonRes['logo_path'];
     name = jsonRes['name'];
-    origin_country = jsonRes['origin_country'];
+    originCountry = jsonRes['origin_country'];
   }
 
   @override
   String toString() {
-    return '{"id": $id,"logo_path": ${logo_path != null ? '${json.encode(logo_path)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"origin_country": ${origin_country != null ? '${json.encode(origin_country)}' : 'null'}}';
+    return '{"id": $id,"logo_path": ${logoPath != null ? '${json.encode(logoPath)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"origin_country": ${originCountry != null ? '${json.encode(originCountry)}' : 'null'}}';
   }
 }
 
 class NetWork {
   int id;
-  String logo_path;
+  String logoPath;
   String name;
-  String origin_country;
+  String originCountry;
 
-  NetWork.fromParams({this.id, this.logo_path, this.name, this.origin_country});
+  NetWork.fromParams({this.id, this.logoPath, this.name, this.originCountry});
 
   NetWork.fromJson(jsonRes) {
     id = jsonRes['id'];
-    logo_path = jsonRes['logo_path'];
+    logoPath = jsonRes['logo_path'];
     name = jsonRes['name'];
-    origin_country = jsonRes['origin_country'];
+    originCountry = jsonRes['origin_country'];
   }
 
   @override
   String toString() {
-    return '{"id": $id,"logo_path": ${logo_path != null ? '${json.encode(logo_path)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"origin_country": ${origin_country != null ? '${json.encode(origin_country)}' : 'null'}}';
+    return '{"id": $id,"logo_path": ${logoPath != null ? '${json.encode(logoPath)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"origin_country": ${originCountry != null ? '${json.encode(originCountry)}' : 'null'}}';
   }
 }
 
@@ -347,26 +347,26 @@ class Genre {
 }
 
 class CreatedBy {
-  Object profile_path;
+  Object profilePath;
   int gender;
   int id;
-  String credit_id;
+  String creditId;
   String name;
 
   CreatedBy.fromParams(
-      {this.profile_path, this.gender, this.id, this.credit_id, this.name});
+      {this.profilePath, this.gender, this.id, this.creditId, this.name});
 
   CreatedBy.fromJson(jsonRes) {
-    profile_path = jsonRes['profile_path'];
+    profilePath = jsonRes['profile_path'];
     gender = jsonRes['gender'];
     id = jsonRes['id'];
-    credit_id = jsonRes['credit_id'];
+    creditId = jsonRes['credit_id'];
     name = jsonRes['name'];
   }
 
   @override
   String toString() {
-    return '{"profile_path": $profile_path,"gender": $gender,"id": $id,"credit_id": ${credit_id != null ? '${json.encode(credit_id)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'}}';
+    return '{"profile_path": $profilePath,"gender": $gender,"id": $id,"credit_id": ${creditId != null ? '${json.encode(creditId)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'}}';
   }
 }
 

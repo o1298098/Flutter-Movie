@@ -2,10 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/state.dart';
-import 'package:movie/views/account_page/page.dart';
-import 'package:movie/views/coming_page/page.dart';
-import 'package:movie/views/discover_page/page.dart';
-import 'package:movie/views/home_page/page.dart';
 
 class MainPageState implements GlobalBaseState, Cloneable<MainPageState> {
   int selectedIndex = 0;

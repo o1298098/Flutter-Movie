@@ -72,7 +72,7 @@ TvShowLiveStreamPageState initState(Map<String, dynamic> args) {
   state.tvid = args['tvid'];
   state.season = args['season'];
   if (_episode != null) {
-    state.episodeNumber = _episode.episode_number;
+    state.episodeNumber = _episode.episodeNumber;
     state.selectedEpisode = _episode;
   }
   state.isExpanded = CrossFadeState.showFirst;

@@ -20,182 +20,182 @@ class CertificationModel {
 
 class Certification {
 
-  List<Order> AU;
-  List<Order> BG;
-  List<Order> BR;
-  List<Order> CA;
-  List<Order> CA_QC;
-  List<Order> DE;
-  List<Order> DK;
-  List<Order> ES;
-  List<Order> FI;
-  List<Order> FR;
-  List<Order> GB;
-  List<Order> HU;
-  List<Order> IN;
-  List<Order> IT;
-  List<Order> LT;
-  List<Order> MY;
-  List<Order> NL;
-  List<Order> NO;
-  List<Order> NZ;
-  List<Order> PH;
-  List<Order> PT;
-  List<Order> RU;
-  List<Order> SE;
-  List<Order> US;
+  List<Order> au;
+  List<Order> bg;
+  List<Order> br;
+  List<Order> ca;
+  List<Order> caQc;
+  List<Order> de;
+  List<Order> dk;
+  List<Order> es;
+  List<Order> fi;
+  List<Order> fr;
+  List<Order> gb;
+  List<Order> hu;
+  List<Order> inn;
+  List<Order> it;
+  List<Order> lt;
+  List<Order> my;
+  List<Order> nl;
+  List<Order> no;
+  List<Order> nz;
+  List<Order> ph;
+  List<Order> pt;
+  List<Order> ru;
+  List<Order> se;
+  List<Order> us;
 
-  Certification.fromParams({this.AU, this.BG, this.BR, this.CA, this.CA_QC, this.DE, this.DK, this.ES, this.FI, this.FR, this.GB, this.HU, this.IN, this.IT, this.LT, this.MY, this.NL, this.NO, this.NZ, this.PH, this.PT, this.RU, this.SE, this.US});
+  Certification.fromParams({this.au, this.bg, this.br, this.ca, this.caQc, this.de, this.dk, this.es, this.fi, this.fr, this.gb, this.hu, this.inn, this.it, this.lt, this.my, this.nl, this.no, this.nz, this.ph, this.pt, this.ru, this.se, this.us});
   
   Certification.fromJson(jsonRes) {
-    AU = jsonRes['AU'] == null ? null : [];
+    au = jsonRes['AU'] == null ? null : [];
 
-    for (var AUItem in AU == null ? [] : jsonRes['AU']){
-            AU.add(AUItem == null ? null : new Order.fromJson(AUItem));
+    for (var AUItem in au == null ? [] : jsonRes['AU']){
+            au.add(AUItem == null ? null : new Order.fromJson(AUItem));
     }
 
-    BG = jsonRes['BG'] == null ? null : [];
+    bg = jsonRes['BG'] == null ? null : [];
 
-    for (var BGItem in BG == null ? [] : jsonRes['BG']){
-            BG.add(BGItem == null ? null : new Order.fromJson(BGItem));
+    for (var BGItem in bg == null ? [] : jsonRes['BG']){
+            bg.add(BGItem == null ? null : new Order.fromJson(BGItem));
     }
 
-    BR = jsonRes['BR'] == null ? null : [];
+    br = jsonRes['BR'] == null ? null : [];
 
-    for (var BRItem in BR == null ? [] : jsonRes['BR']){
-            BR.add(BRItem == null ? null : new Order.fromJson(BRItem));
+    for (var BRItem in br == null ? [] : jsonRes['BR']){
+            br.add(BRItem == null ? null : new Order.fromJson(BRItem));
     }
 
-    CA = jsonRes['CA'] == null ? null : [];
+    ca = jsonRes['CA'] == null ? null : [];
 
-    for (var CAItem in CA == null ? [] : jsonRes['CA']){
-            CA.add(CAItem == null ? null : new Order.fromJson(CAItem));
+    for (var CAItem in ca == null ? [] : jsonRes['CA']){
+            ca.add(CAItem == null ? null : new Order.fromJson(CAItem));
     }
 
-    CA_QC = jsonRes['CA-QC'] == null ? null : [];
+    caQc = jsonRes['CA-QC'] == null ? null : [];
 
-    for (var CA_QCItem in CA_QC == null ? [] : jsonRes['CA-QC']){
-            CA_QC.add(CA_QCItem == null ? null : new Order.fromJson(CA_QCItem));
+    for (var CA_QCItem in caQc == null ? [] : jsonRes['CA-QC']){
+            caQc.add(CA_QCItem == null ? null : new Order.fromJson(CA_QCItem));
     }
 
-    DE = jsonRes['DE'] == null ? null : [];
+    de = jsonRes['DE'] == null ? null : [];
 
-    for (var DEItem in DE == null ? [] : jsonRes['DE']){
-            DE.add(DEItem == null ? null : new Order.fromJson(DEItem));
+    for (var DEItem in de == null ? [] : jsonRes['DE']){
+            de.add(DEItem == null ? null : new Order.fromJson(DEItem));
     }
 
-    DK = jsonRes['DK'] == null ? null : [];
+    dk = jsonRes['DK'] == null ? null : [];
 
-    for (var DKItem in DK == null ? [] : jsonRes['DK']){
-            DK.add(DKItem == null ? null : new Order.fromJson(DKItem));
+    for (var DKItem in dk == null ? [] : jsonRes['DK']){
+            dk.add(DKItem == null ? null : new Order.fromJson(DKItem));
     }
 
-    ES = jsonRes['ES'] == null ? null : [];
+    es = jsonRes['ES'] == null ? null : [];
 
-    for (var ESItem in ES == null ? [] : jsonRes['ES']){
-            ES.add(ESItem == null ? null : new Order.fromJson(ESItem));
+    for (var ESItem in es == null ? [] : jsonRes['ES']){
+            es.add(ESItem == null ? null : new Order.fromJson(ESItem));
     }
 
-    FI = jsonRes['FI'] == null ? null : [];
+    fi = jsonRes['FI'] == null ? null : [];
 
-    for (var FIItem in FI == null ? [] : jsonRes['FI']){
-            FI.add(FIItem == null ? null : new Order.fromJson(FIItem));
+    for (var FIItem in fi == null ? [] : jsonRes['FI']){
+            fi.add(FIItem == null ? null : new Order.fromJson(FIItem));
     }
 
-    FR = jsonRes['FR'] == null ? null : [];
+    fr = jsonRes['FR'] == null ? null : [];
 
-    for (var FRItem in FR == null ? [] : jsonRes['FR']){
-            FR.add(FRItem == null ? null : new Order.fromJson(FRItem));
+    for (var FRItem in fr == null ? [] : jsonRes['FR']){
+            fr.add(FRItem == null ? null : new Order.fromJson(FRItem));
     }
 
-    GB = jsonRes['GB'] == null ? null : [];
+    gb = jsonRes['GB'] == null ? null : [];
 
-    for (var GBItem in GB == null ? [] : jsonRes['GB']){
-            GB.add(GBItem == null ? null : new Order.fromJson(GBItem));
+    for (var GBItem in gb == null ? [] : jsonRes['GB']){
+            gb.add(GBItem == null ? null : new Order.fromJson(GBItem));
     }
 
-    HU = jsonRes['HU'] == null ? null : [];
+    hu = jsonRes['HU'] == null ? null : [];
 
-    for (var HUItem in HU == null ? [] : jsonRes['HU']){
-            HU.add(HUItem == null ? null : new Order.fromJson(HUItem));
+    for (var HUItem in hu == null ? [] : jsonRes['HU']){
+            hu.add(HUItem == null ? null : new Order.fromJson(HUItem));
     }
 
-    IN = jsonRes['IN'] == null ? null : [];
+    inn = jsonRes['IN'] == null ? null : [];
 
-    for (var INItem in IN == null ? [] : jsonRes['IN']){
-            IN.add(INItem == null ? null : new Order.fromJson(INItem));
+    for (var INItem in inn == null ? [] : jsonRes['IN']){
+            inn.add(INItem == null ? null : new Order.fromJson(INItem));
     }
 
-    IT = jsonRes['IT'] == null ? null : [];
+    it = jsonRes['IT'] == null ? null : [];
 
-    for (var ITItem in IT == null ? [] : jsonRes['IT']){
-            IT.add(ITItem == null ? null : new Order.fromJson(ITItem));
+    for (var ITItem in it == null ? [] : jsonRes['IT']){
+            it.add(ITItem == null ? null : new Order.fromJson(ITItem));
     }
 
-    LT = jsonRes['LT'] == null ? null : [];
+    lt = jsonRes['LT'] == null ? null : [];
 
-    for (var LTItem in LT == null ? [] : jsonRes['LT']){
-            LT.add(LTItem == null ? null : new Order.fromJson(LTItem));
+    for (var LTItem in lt == null ? [] : jsonRes['LT']){
+            lt.add(LTItem == null ? null : new Order.fromJson(LTItem));
     }
 
-    MY = jsonRes['MY'] == null ? null : [];
+    my = jsonRes['MY'] == null ? null : [];
 
-    for (var MYItem in MY == null ? [] : jsonRes['MY']){
-            MY.add(MYItem == null ? null : new Order.fromJson(MYItem));
+    for (var MYItem in my == null ? [] : jsonRes['MY']){
+            my.add(MYItem == null ? null : new Order.fromJson(MYItem));
     }
 
-    NL = jsonRes['NL'] == null ? null : [];
+    nl = jsonRes['NL'] == null ? null : [];
 
-    for (var NLItem in NL == null ? [] : jsonRes['NL']){
-            NL.add(NLItem == null ? null : new Order.fromJson(NLItem));
+    for (var NLItem in nl == null ? [] : jsonRes['NL']){
+            nl.add(NLItem == null ? null : new Order.fromJson(NLItem));
     }
 
-    NO = jsonRes['NO'] == null ? null : [];
+    no = jsonRes['NO'] == null ? null : [];
 
-    for (var NOItem in NO == null ? [] : jsonRes['NO']){
-            NO.add(NOItem == null ? null : new Order.fromJson(NOItem));
+    for (var NOItem in no == null ? [] : jsonRes['NO']){
+            no.add(NOItem == null ? null : new Order.fromJson(NOItem));
     }
 
-    NZ = jsonRes['NZ'] == null ? null : [];
+    nz = jsonRes['NZ'] == null ? null : [];
 
-    for (var NZItem in NZ == null ? [] : jsonRes['NZ']){
-            NZ.add(NZItem == null ? null : new Order.fromJson(NZItem));
+    for (var NZItem in nz == null ? [] : jsonRes['NZ']){
+            nz.add(NZItem == null ? null : new Order.fromJson(NZItem));
     }
 
-    PH = jsonRes['PH'] == null ? null : [];
+    ph = jsonRes['PH'] == null ? null : [];
 
-    for (var PHItem in PH == null ? [] : jsonRes['PH']){
-            PH.add(PHItem == null ? null : new Order.fromJson(PHItem));
+    for (var PHItem in ph == null ? [] : jsonRes['PH']){
+            ph.add(PHItem == null ? null : new Order.fromJson(PHItem));
     }
 
-    PT = jsonRes['PT'] == null ? null : [];
+    pt = jsonRes['PT'] == null ? null : [];
 
-    for (var PTItem in PT == null ? [] : jsonRes['PT']){
-            PT.add(PTItem == null ? null : new Order.fromJson(PTItem));
+    for (var PTItem in pt == null ? [] : jsonRes['PT']){
+            pt.add(PTItem == null ? null : new Order.fromJson(PTItem));
     }
 
-    RU = jsonRes['RU'] == null ? null : [];
+    ru = jsonRes['RU'] == null ? null : [];
 
-    for (var RUItem in RU == null ? [] : jsonRes['RU']){
-            RU.add(RUItem == null ? null : new Order.fromJson(RUItem));
+    for (var RUItem in ru == null ? [] : jsonRes['RU']){
+            ru.add(RUItem == null ? null : new Order.fromJson(RUItem));
     }
 
-    SE = jsonRes['SE'] == null ? null : [];
+    se = jsonRes['SE'] == null ? null : [];
 
-    for (var SEItem in SE == null ? [] : jsonRes['SE']){
-            SE.add(SEItem == null ? null : new Order.fromJson(SEItem));
+    for (var SEItem in se == null ? [] : jsonRes['SE']){
+            se.add(SEItem == null ? null : new Order.fromJson(SEItem));
     }
 
-    US = jsonRes['US'] == null ? null : [];
+    us = jsonRes['US'] == null ? null : [];
 
-    for (var USItem in US == null ? [] : jsonRes['US']){
-            US.add(USItem == null ? null : new Order.fromJson(USItem));
+    for (var USItem in us == null ? [] : jsonRes['US']){
+            us.add(USItem == null ? null : new Order.fromJson(USItem));
     }
   }
 
   @override
   String toString() {
-    return '{"AU": $AU,"BG": $BG,"BR": $BR,"CA": $CA,"CA-QC": $CA-QC,"DE": $DE,"DK": $DK,"ES": $ES,"FI": $FI,"FR": $FR,"GB": $GB,"HU": $HU,"IN": $IN,"IT": $IT,"LT": $LT,"MY": $MY,"NL": $NL,"NO": $NO,"NZ": $NZ,"PH": $PH,"PT": $PT,"RU": $RU,"SE": $SE,"US": $US}';
+    return '{"AU": $au,"BG": $bg,"BR": $br,"CA": $ca,"CA-QC": $ca-QC,"DE": $de,"DK": $dk,"ES": $es,"FI": $fi,"FR": $fr,"GB": $gb,"HU": $hu,"IN": $inn,"IT": $it,"LT": $lt,"MY": $my,"NL": $nl,"NO": $no,"NZ": $nz,"PH": $ph,"PT": $pt,"RU": $ru,"SE": $se,"US": $us}';
   }
 }
 

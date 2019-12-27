@@ -1,12 +1,10 @@
 import 'package:dart_chromecast/casting/cast_device.dart';
 import 'package:dart_chromecast/casting/cast_media.dart';
-import 'package:dart_chromecast/casting/cast_media_status.dart';
 import 'package:dart_chromecast/casting/cast_sender.dart';
-import 'package:dart_chromecast/casting/cast_session.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mdns_plugin/flutter_mdns_plugin.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/customwidgets/service_discovery.dart';
 import 'package:observable/observable.dart';
 import 'package:video_player/video_player.dart';
@@ -27,7 +25,6 @@ class _DevicePickerState extends State<DevicePicker> {
   bool connected = false;
   bool _isPlaying = false;
   CastSender _castSender;
-  double _position = 0.0;
   @override
   void initState() {
     super.initState();

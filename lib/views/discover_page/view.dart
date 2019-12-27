@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gzx_dropdown_menu/gzx_dropdown_menu.dart';
 import 'package:intl/intl.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/actions/votecolorhelper.dart';
 import 'package:movie/customwidgets/sliverappbar_delegate.dart';
@@ -140,7 +140,7 @@ Widget buildView(
                       image: DecorationImage(
                           fit: BoxFit.cover,
                           image: CachedNetworkImageProvider(
-                              ImageUrl.getUrl(d.poster_path, ImageSize.w300)))),
+                              ImageUrl.getUrl(d.posterPath, ImageSize.w300)))),
                 ),
                 Container(
                   padding: EdgeInsets.all(Adapt.px(20)),
@@ -173,9 +173,9 @@ Widget buildView(
                                         valueColor:
                                             new AlwaysStoppedAnimation<Color>(
                                                 VoteColorHelper.getColor(
-                                                    d.vote_average)),
+                                                    d.voteAverage)),
                                         backgroundColor: Colors.grey,
-                                        value: d.vote_average / 10.0,
+                                        value: d.voteAverage / 10.0,
                                       )),
                                 ),
                                 Center(
@@ -184,7 +184,7 @@ Widget buildView(
                                       height: Adapt.px(60),
                                       child: Center(
                                         child: Text(
-                                          (d.vote_average * 10.0)
+                                          (d.voteAverage * 10.0)
                                                   .floor()
                                                   .toString() +
                                               '%',
@@ -219,8 +219,8 @@ Widget buildView(
                               Text(
                                 DateFormat.yMMMd().format(DateTime.tryParse(
                                     (ismovie
-                                        ? _changDatetime(d.release_date)
-                                        : _changDatetime(d.first_air_date)))),
+                                        ? _changDatetime(d.releaseDate)
+                                        : _changDatetime(d.firstAirDate)))),
                                 style: TextStyle(
                                     color: Colors.grey[800],
                                     fontSize: Adapt.px(20)),
@@ -249,7 +249,7 @@ Widget buildView(
           ),
         ),
         onTap: () => dispatch(
-            DiscoverPageActionCreator.onVideoCellTapped(d.id, d.poster_path)),
+            DiscoverPageActionCreator.onVideoCellTapped(d.id, d.posterPath)),
       );
     }
 

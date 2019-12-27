@@ -3,7 +3,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/generated/i18n.dart';
@@ -11,7 +11,6 @@ import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/releasedatetype.dart';
 import 'package:movie/models/moviedetail.dart';
 import 'package:movie/models/releasedatemodel.dart';
-import 'package:shimmer/shimmer.dart';
 
 import 'dart:ui' as ui;
 
@@ -72,7 +71,7 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
   }
 
   Widget _buildProductionCompanieCell(ProductionCompanie d) {
-    if (d.logo_path != null)
+    if (d.logoPath != null)
       return Container(
         margin: EdgeInsets.only(bottom: Adapt.px(20)),
         width: Adapt.px(120),
@@ -81,7 +80,7 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
             image: DecorationImage(
                 fit: BoxFit.scaleDown,
                 image: CachedNetworkImageProvider(
-                    ImageUrl.getUrl(d.logo_path, ImageSize.w300)))),
+                    ImageUrl.getUrl(d.logoPath, ImageSize.w300)))),
       );
     else
       return Container();
@@ -171,7 +170,7 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
   }
 
   Widget _getExternal() {
-    var d = state.movieDetailModel.externalids;
+    var d = state.movieDetailModel.externalIds;
     if (d != null)
       return Row(
         children: <Widget>[
@@ -266,8 +265,8 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
               SizedBox(height: Adapt.px(10)),
               Wrap(
                 spacing: Adapt.px(40),
-                children: state.movieDetailModel?.production_companies != null
-                    ? state.movieDetailModel.production_companies
+                children: state.movieDetailModel?.productionCompanies != null
+                    ? state.movieDetailModel.productionCompanies
                         .map(_buildProductionCompanieCell)
                         .toList()
                     : <Widget>[
@@ -306,7 +305,7 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
           Row(
             children: <Widget>[
               _buildInfoCell(I18n.of(viewService.context).originalLanguage,
-                  state.movieDetailModel?.original_language),
+                  state.movieDetailModel?.originalLanguage),
               _buildInfoCell(
                   I18n.of(viewService.context).runtime,
                   state.movieDetailModel.runtime == null

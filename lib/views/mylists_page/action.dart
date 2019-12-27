@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/user_list.dart';
 import 'package:movie/models/mylistmodel.dart';
 
-//TODO replace with your own action
 enum MyListsPageAction {
   action,
   setAccount,

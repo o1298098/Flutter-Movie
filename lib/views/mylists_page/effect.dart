@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/apihelper.dart';
 import 'package:movie/actions/base_api.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/models/base_api_model/user_list.dart';
@@ -18,8 +16,6 @@ Effect<MyListsPageState> buildEffect() {
     MyListsPageAction.deleteList: _deleteList,
   });
 }
-
-void _onAction(Action action, Context<MyListsPageState> ctx) {}
 
 Future _onInit(Action action, Context<MyListsPageState> ctx) async {
   final ticker = ctx.stfState as CustomstfState;

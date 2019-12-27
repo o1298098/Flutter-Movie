@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/enums/imagesize.dart';
@@ -13,7 +13,7 @@ Widget buildView(CastState state, Dispatch dispatch, ViewService viewService) {
   Widget _buildGuestStars(CastData d) {
     return GestureDetector(
         onTap: () => dispatch(CastActionCreator.onCellTapped(
-            d.id, d.profile_path, d.name, d.character)),
+            d.id, d.profilePath, d.name, d.character)),
         child: SizedBox(
             width: Adapt.px(320),
             child: Row(
@@ -28,7 +28,7 @@ Widget buildView(CastState state, Dispatch dispatch, ViewService viewService) {
                       image: DecorationImage(
                           fit: BoxFit.cover,
                           image: CachedNetworkImageProvider(ImageUrl.getUrl(
-                              d.profile_path, ImageSize.w300)))),
+                              d.profilePath, ImageSize.w300)))),
                 ),
                 SizedBox(width: Adapt.px(20)),
                 SizedBox(

@@ -4,19 +4,19 @@ class ReviewModel {
 
   int id;
   int page;
-  int total_pages;
-  int total_results;
+  int totalPages;
+  int totalResults;
   List<ReviewResult> results;
 
-  ReviewModel.fromParams({this.id, this.page, this.total_pages, this.total_results, this.results});
+  ReviewModel.fromParams({this.id, this.page, this.totalPages, this.totalResults, this.results});
 
   factory ReviewModel(jsonStr) => jsonStr == null ? null : jsonStr is String ? new ReviewModel.fromJson(json.decode(jsonStr)) : new ReviewModel.fromJson(jsonStr);
   
   ReviewModel.fromJson(jsonRes) {
     id = jsonRes['id'];
     page = jsonRes['page'];
-    total_pages = jsonRes['total_pages'];
-    total_results = jsonRes['total_results'];
+    totalPages = jsonRes['total_pages'];
+    totalResults = jsonRes['total_results'];
     results = jsonRes['results'] == null ? null : [];
 
     for (var resultsItem in results == null ? [] : jsonRes['results']){
@@ -26,7 +26,7 @@ class ReviewModel {
 
   @override
   String toString() {
-    return '{"id": $id,"page": $page,"total_pages": $total_pages,"total_results": $total_results,"results": $results}';
+    return '{"id": $id,"page": $page,"total_pages": $totalPages,"total_results": $totalResults,"results": $results}';
   }
 }
 

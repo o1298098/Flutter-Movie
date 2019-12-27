@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:movie/actions/apihelper.dart';
 import 'package:movie/actions/base_api.dart';
 import 'package:movie/globalbasestate/action.dart';
 import 'package:movie/globalbasestate/store.dart';
@@ -82,6 +83,7 @@ void _adultCellTapped(Action action, Context<SettingPageState> ctx) async {
   ctx.dispatch(SettingPageActionCreator.adultValueUpadte(!_b));
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool('adultItems', !_b);
+  ApiHelper.includeAdult = !_b;
 }
 
 void _getCachedSize(Context<SettingPageState> ctx) async {

@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/models/base_api_model/user_media.dart';
-import 'package:movie/models/videolist.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 import 'action.dart';

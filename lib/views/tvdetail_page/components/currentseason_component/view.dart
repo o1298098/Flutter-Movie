@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
@@ -83,24 +83,24 @@ Widget buildView(
       return GestureDetector(
         onTap: () => dispatch(CurrentSeasonActionCreator.onCellTapped(
             state.tvid,
-            state.nowseason.season_number,
+            state.nowseason.seasonNumber,
             state.nowseason.name,
-            state.nowseason.poster_path)),
+            state.nowseason.posterPath)),
         child: Container(
           padding: EdgeInsets.only(left: Adapt.px(20), right: Adapt.px(20)),
           child: Card(
             child: Row(
               children: <Widget>[
                 Hero(
-                  tag: 'seasonpic${state.nowseason.season_number}',
+                  tag: 'seasonpic${state.nowseason.seasonNumber}',
                   child: CachedNetworkImage(
                     width: Adapt.px(250),
                     height: Adapt.px(375),
                     fit: BoxFit.cover,
-                    imageUrl: state.nowseason.poster_path == null
+                    imageUrl: state.nowseason.posterPath == null
                         ? ImageUrl.emptyimage
                         : ImageUrl.getUrl(
-                            state.nowseason.poster_path, ImageSize.w300),
+                            state.nowseason.posterPath, ImageSize.w300),
                   ),
                 ),
                 SizedBox(
@@ -110,7 +110,7 @@ Widget buildView(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Hero(
-                        tag: 'seasonname${state.nowseason.season_number}',
+                        tag: 'seasonname${state.nowseason.seasonNumber}',
                         child: Material(
                           color: Colors.transparent,
                           child: Container(
@@ -130,7 +130,7 @@ Widget buildView(
                                   fontSize: Adapt.px(24),
                                   fontWeight: FontWeight.bold),
                               children: [
-                                TextSpan(text: airdata?.air_date ?? ''),
+                                TextSpan(text: airdata?.airDate ?? ''),
                                 TextSpan(text: ' | '),
                                 TextSpan(text: airdata?.name ?? '')
                               ]),
@@ -143,7 +143,7 @@ Widget buildView(
                       child: Text(
                         state.nowseason.overview?.isNotEmpty == true
                             ? state.nowseason.overview
-                            : '${state.nowseason.name} of ${state.name} premiered on ${DateFormat.yMMMd().format(DateTime.tryParse(state.nowseason.air_date ?? '1900-01-01'))}',
+                            : '${state.nowseason.name} of ${state.name} premiered on ${DateFormat.yMMMd().format(DateTime.tryParse(state.nowseason.airDate ?? '1900-01-01'))}',
                         maxLines: 8,
                         overflow: TextOverflow.ellipsis,
                       ),

@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 

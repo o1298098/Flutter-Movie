@@ -39,122 +39,122 @@ class CombinedCreditsModel {
 class CrewData {
 
   int id;
-  double vote_average;
-  int vote_count;
+  double voteAverage;
+  int voteCount;
   double popularity;
   bool adult;
   bool video;
-  String backdrop_path;
-  String credit_id;
+  String backdropPath;
+  String creditId;
   String department;
   String job;
-  String media_type;
-  String original_language;
-  String original_title;
+  String mediaType;
+  String originalLanguage;
+  String originalTitle;
   String overview;
-  String poster_path;
-  String release_date;
+  String posterPath;
+  String releaseDate;
   String title;
-  List<int> genre_ids;
-  int episode_count;
+  List<int> genreIds;
+  int episodeCount;
   String name;
-  String original_name;
-  String first_air_date;
+  String originalName;
+  String firstAirDate;
 
-  CrewData.fromParams({this.id,this.episode_count,this.name,this.original_name,this.first_air_date, this.vote_average, this.vote_count, this.popularity, this.adult, this.video, this.backdrop_path, this.credit_id, this.department, this.job, this.media_type, this.original_language, this.original_title, this.overview, this.poster_path, this.release_date, this.title, this.genre_ids});
+  CrewData.fromParams({this.id,this.episodeCount,this.name,this.originalName,this.firstAirDate, this.voteAverage, this.voteCount, this.popularity, this.adult, this.video, this.backdropPath, this.creditId, this.department, this.job, this.mediaType, this.originalLanguage, this.originalTitle, this.overview, this.posterPath, this.releaseDate, this.title, this.genreIds});
   
   CrewData.fromJson(jsonRes) {
     id = jsonRes['id'];
-    vote_average = double.parse( jsonRes['vote_average']?.toString()??'0');
-    vote_count = jsonRes['vote_count'];
+    voteAverage = double.parse( jsonRes['vote_average']?.toString()??'0');
+    voteCount = jsonRes['vote_count'];
     popularity = jsonRes['popularity'];
     adult = jsonRes['adult'];
     video = jsonRes['video'];
-    backdrop_path = jsonRes['backdrop_path'];
-    credit_id = jsonRes['credit_id'];
+    backdropPath = jsonRes['backdrop_path'];
+    creditId = jsonRes['credit_id'];
     department = jsonRes['department'];
     job = jsonRes['job'];
-    media_type = jsonRes['media_type'];
-    original_language = jsonRes['original_language'];
-    original_title = jsonRes['original_title'];
+    mediaType = jsonRes['media_type'];
+    originalLanguage = jsonRes['original_language'];
+    originalTitle = jsonRes['original_title'];
     overview = jsonRes['overview'];
-    poster_path = jsonRes['poster_path'];
-    release_date = jsonRes['release_date'];
+    posterPath = jsonRes['poster_path'];
+    releaseDate = jsonRes['release_date'];
     title = jsonRes['title'];
-    genre_ids = jsonRes['genre_ids'] == null ? null : [];
-    episode_count= jsonRes['episode_count'];
+    genreIds = jsonRes['genre_ids'] == null ? null : [];
+    episodeCount= jsonRes['episode_count'];
     name= jsonRes['name'];
-    original_name= jsonRes['original_name'];
-    first_air_date= jsonRes['first_air_date'];
+    originalName= jsonRes['original_name'];
+    firstAirDate= jsonRes['first_air_date'];
 
-    for (var genre_idsItem in genre_ids == null ? [] : jsonRes['genre_ids']){
-            genre_ids.add(genre_idsItem);
+    for (var genre_idsItem in genreIds == null ? [] : jsonRes['genre_ids']){
+            genreIds.add(genre_idsItem);
     }
   }
   
   @override
   String toString() {
-    return '{"id": $id,"first_air_date": $first_air_date,"original_name": $original_name,"name": $name,"episode_count": $episode_count,"vote_average": $vote_average,"vote_count": $vote_count,"popularity": $popularity,"adult": $adult,"video": $video,"backdrop_path": ${backdrop_path != null?'${json.encode(backdrop_path)}':'null'},"credit_id": ${credit_id != null?'${json.encode(credit_id)}':'null'},"department": ${department != null?'${json.encode(department)}':'null'},"job": ${job != null?'${json.encode(job)}':'null'},"media_type": ${media_type != null?'${json.encode(media_type)}':'null'},"original_language": ${original_language != null?'${json.encode(original_language)}':'null'},"original_title": ${original_title != null?'${json.encode(original_title)}':'null'},"overview": ${overview != null?'${json.encode(overview)}':'null'},"poster_path": ${poster_path != null?'${json.encode(poster_path)}':'null'},"release_date": ${release_date != null?'${json.encode(release_date)}':'null'},"title": ${title != null?'${json.encode(title)}':'null'},"genre_ids": $genre_ids}';
+    return '{"id": $id,"first_air_date": $firstAirDate,"original_name": $originalName,"name": $name,"episode_count": $episodeCount,"vote_average": $voteAverage,"vote_count": $voteCount,"popularity": $popularity,"adult": $adult,"video": $video,"backdrop_path": ${backdropPath != null?'${json.encode(backdropPath)}':'null'},"credit_id": ${creditId != null?'${json.encode(creditId)}':'null'},"department": ${department != null?'${json.encode(department)}':'null'},"job": ${job != null?'${json.encode(job)}':'null'},"media_type": ${mediaType != null?'${json.encode(mediaType)}':'null'},"original_language": ${originalLanguage != null?'${json.encode(originalLanguage)}':'null'},"original_title": ${originalTitle != null?'${json.encode(originalTitle)}':'null'},"overview": ${overview != null?'${json.encode(overview)}':'null'},"poster_path": ${posterPath != null?'${json.encode(posterPath)}':'null'},"release_date": ${releaseDate != null?'${json.encode(releaseDate)}':'null'},"title": ${title != null?'${json.encode(title)}':'null'},"genre_ids": $genreIds}';
   }
 }
 
 class CastData {
 
   int id;
-  int vote_count;
+  int voteCount;
   double popularity;
-  double vote_average;
+  double voteAverage;
   bool adult;
   bool video;
-  int episode_count;
-  String backdrop_path;
+  int episodeCount;
+  String backdropPath;
   String character;
-  String credit_id;
-  String media_type;
-  String original_language;
-  String original_title;
+  String creditId;
+  String mediaType;
+  String originalLanguage;
+  String originalTitle;
   String overview;
-  String poster_path;
-  String release_date;
+  String posterPath;
+  String releaseDate;
   String title;
   String name;
-  String original_name;
-  String first_air_date;
-  List<int> genre_ids;
+  String originalName;
+  String firstAirDate;
+  List<int> genreIds;
 
-  CastData.fromParams({this.id,this.episode_count,this.name,this.original_name,this.first_air_date, this.vote_count, this.popularity, this.vote_average, this.adult, this.video, this.backdrop_path, this.character, this.credit_id, this.media_type, this.original_language, this.original_title, this.overview, this.poster_path, this.release_date, this.title, this.genre_ids});
+  CastData.fromParams({this.id,this.episodeCount,this.name,this.originalName,this.firstAirDate, this.voteCount, this.popularity, this.voteAverage, this.adult, this.video, this.backdropPath, this.character, this.creditId, this.mediaType, this.originalLanguage, this.originalTitle, this.overview, this.posterPath, this.releaseDate, this.title, this.genreIds});
   
   CastData.fromJson(jsonRes) {
     id = jsonRes['id'];
-    vote_count = jsonRes['vote_count'];
+    voteCount = jsonRes['vote_count'];
     popularity = double.parse( jsonRes['popularity']?.toString()??'0');
-    vote_average =double.parse( jsonRes['vote_average']?.toString()??'0');
+    voteAverage =double.parse( jsonRes['vote_average']?.toString()??'0');
     adult = jsonRes['adult'];
     video = jsonRes['video'];
-    backdrop_path = jsonRes['backdrop_path'];
+    backdropPath = jsonRes['backdrop_path'];
     character = jsonRes['character'];
-    credit_id = jsonRes['credit_id'];
-    media_type = jsonRes['media_type'];
-    original_language = jsonRes['original_language'];
-    original_title = jsonRes['original_title'];
+    creditId = jsonRes['credit_id'];
+    mediaType = jsonRes['media_type'];
+    originalLanguage = jsonRes['original_language'];
+    originalTitle = jsonRes['original_title'];
     overview = jsonRes['overview'];
-    poster_path = jsonRes['poster_path'];
-    release_date = jsonRes['release_date'];
+    posterPath = jsonRes['poster_path'];
+    releaseDate = jsonRes['release_date'];
     title = jsonRes['title'];
-    genre_ids = jsonRes['genre_ids'] == null ? null : [];
-    episode_count= jsonRes['episode_count'];
+    genreIds = jsonRes['genre_ids'] == null ? null : [];
+    episodeCount= jsonRes['episode_count'];
     name= jsonRes['name'];
-    original_name= jsonRes['original_name'];
-    first_air_date= jsonRes['first_air_date'];
+    originalName= jsonRes['original_name'];
+    firstAirDate= jsonRes['first_air_date'];
 
-    for (var genre_idsItem in genre_ids == null ? [] : jsonRes['genre_ids']){
-            genre_ids.add(genre_idsItem);
+    for (var genre_idsItem in genreIds == null ? [] : jsonRes['genre_ids']){
+            genreIds.add(genre_idsItem);
     }
   }
 
   @override
   String toString() {
-    return '{"id": $id,"first_air_date": $first_air_date,"original_name": $original_name,"name": $name,"episode_count": $episode_count,,"vote_count": $vote_count,"popularity": $popularity,"vote_average": $vote_average,"adult": $adult,"video": $video,"backdrop_path": ${backdrop_path != null?'${json.encode(backdrop_path)}':'null'},"character": ${character != null?'${json.encode(character)}':'null'},"credit_id": ${credit_id != null?'${json.encode(credit_id)}':'null'},"media_type": ${media_type != null?'${json.encode(media_type)}':'null'},"original_language": ${original_language != null?'${json.encode(original_language)}':'null'},"original_title": ${original_title != null?'${json.encode(original_title)}':'null'},"overview": ${overview != null?'${json.encode(overview)}':'null'},"poster_path": ${poster_path != null?'${json.encode(poster_path)}':'null'},"release_date": ${release_date != null?'${json.encode(release_date)}':'null'},"title": ${title != null?'${json.encode(title)}':'null'},"genre_ids": $genre_ids}';
+    return '{"id": $id,"first_air_date": $firstAirDate,"original_name": $originalName,"name": $name,"episode_count": $episodeCount,,"vote_count": $voteCount,"popularity": $popularity,"vote_average": $voteAverage,"adult": $adult,"video": $video,"backdrop_path": ${backdropPath != null?'${json.encode(backdropPath)}':'null'},"character": ${character != null?'${json.encode(character)}':'null'},"credit_id": ${creditId != null?'${json.encode(creditId)}':'null'},"media_type": ${mediaType != null?'${json.encode(mediaType)}':'null'},"original_language": ${originalLanguage != null?'${json.encode(originalLanguage)}':'null'},"original_title": ${originalTitle != null?'${json.encode(originalTitle)}':'null'},"overview": ${overview != null?'${json.encode(overview)}':'null'},"poster_path": ${posterPath != null?'${json.encode(posterPath)}':'null'},"release_date": ${releaseDate != null?'${json.encode(releaseDate)}':'null'},"title": ${title != null?'${json.encode(title)}':'null'},"genre_ids": $genreIds}';
   }
 }
 

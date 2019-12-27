@@ -21,9 +21,9 @@ TVListState _onUpdateSeason(TVListState state, Action action) {
   final int i=action.payload[0]??0;
   final TVDetailModel d=action.payload[1];
   final TVListState newState = state.clone();
-  newState.tvcoming.results[i].nextAirDate=d.next_episode_to_air.air_date??'-';
-  newState.tvcoming.results[i].nextEpisodeName=d.next_episode_to_air.name??'-';
-  newState.tvcoming.results[i].nextEpisodeNumber=d.next_episode_to_air.episode_number.toString();
-  newState.tvcoming.results[i].season=d.number_of_seasons.toString();
+  newState.tvcoming.results[i].nextAirDate=d.nextEpisodeToAir.airDate??'-';
+  newState.tvcoming.results[i].nextEpisodeName=d.nextEpisodeToAir.name??'-';
+  newState.tvcoming.results[i].nextEpisodeNumber=d.nextEpisodeToAir.episodeNumber.toString();
+  newState.tvcoming.results[i].season=d.numberOfSeasons.toString();
   return newState;
 }

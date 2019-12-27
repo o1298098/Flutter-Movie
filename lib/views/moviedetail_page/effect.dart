@@ -1,12 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter/widgets.dart' hide Action;
 import 'package:movie/actions/apihelper.dart';
-import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
-import 'package:movie/models/enums/imagesize.dart';
-import 'package:palette_generator/palette_generator.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -49,7 +45,7 @@ Future _onInit(Action action, Context<MovieDetailPageState> ctx) async {
     if (k != null) ctx.dispatch(MovieDetailPageActionCreator.onSetImages(k));
     var f = await ApiHelper.getMovieVideo(ctx.state.movieid);
     if (f != null) ctx.dispatch(MovieDetailPageActionCreator.onSetVideos(f));
-  } on Exception catch (e) {}
+  } on Exception catch (_) {}
 }
 
 Future _onRecommendationTapped(

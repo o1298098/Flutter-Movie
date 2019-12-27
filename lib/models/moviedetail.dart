@@ -16,33 +16,33 @@ class MovieDetailModel {
   int id;
   int revenue;
   int runtime;
-  int vote_count;
+  int voteCount;
   double popularity;
-  double vote_average;
+  double voteAverage;
   bool adult;
   bool video;
-  String backdrop_path;
-  String imdb_id;
-  String original_language;
-  String original_title;
+  String backdropPath;
+  String imdbId;
+  String originalLanguage;
+  String originalTitle;
   String overview;
-  String poster_path;
-  String release_date;
+  String posterPath;
+  String releaseDate;
   String status;
-  String tagline;
+  String tagLine;
   String title;
   List<Genre> genres;
-  List<ProductionCompanie> production_companies;
-  List<ProductionCountrie> production_countries;
-  List<SpokenLanguage> spoken_languages;
-  BelongsToCollection belongs_to_collection;
+  List<ProductionCompanie> productionCompanies;
+  List<ProductionCountrie> productionCountries;
+  List<SpokenLanguage> spokenLanguages;
+  BelongsToCollection belongsToCollection;
   CreditsModel credits;
   ImageModel images;
   VideoModel videos;
   KeyWordModel keywords;
   VideoListModel recommendations;
   ReviewModel reviews;
-  ExternalIdsModel externalids;
+  ExternalIdsModel externalIds;
   ReleaseDateModel releaseDates;
 
   MovieDetailModel.fromParams(
@@ -51,32 +51,32 @@ class MovieDetailModel {
       this.id,
       this.revenue,
       this.runtime,
-      this.vote_count,
+      this.voteCount,
       this.popularity,
-      this.vote_average,
+      this.voteAverage,
       this.adult,
       this.video,
-      this.backdrop_path,
-      this.imdb_id,
-      this.original_language,
-      this.original_title,
+      this.backdropPath,
+      this.imdbId,
+      this.originalLanguage,
+      this.originalTitle,
       this.overview,
-      this.poster_path,
-      this.release_date,
+      this.posterPath,
+      this.releaseDate,
       this.status,
-      this.tagline,
+      this.tagLine,
       this.title,
       this.genres,
-      this.production_companies,
-      this.production_countries,
-      this.spoken_languages,
-      this.belongs_to_collection,
+      this.productionCompanies,
+      this.productionCountries,
+      this.spokenLanguages,
+      this.belongsToCollection,
       this.credits,
       this.images,
       this.keywords,
       this.recommendations,
       this.reviews,
-      this.externalids,
+      this.externalIds,
       this.releaseDates,
       this.videos});
 
@@ -92,20 +92,20 @@ class MovieDetailModel {
     id = jsonRes['id'];
     revenue = jsonRes['revenue'];
     runtime = jsonRes['runtime'];
-    vote_count = jsonRes['vote_count'];
+    voteCount = jsonRes['vote_count'];
     popularity = jsonRes['popularity'];
-    vote_average = jsonRes['vote_average'];
+    voteAverage = jsonRes['vote_average'];
     adult = jsonRes['adult'];
     video = jsonRes['video'];
-    backdrop_path = jsonRes['backdrop_path'];
-    imdb_id = jsonRes['imdb_id'];
-    original_language = jsonRes['original_language'];
-    original_title = jsonRes['original_title'];
+    backdropPath = jsonRes['backdrop_path'];
+    imdbId = jsonRes['imdb_id'];
+    originalLanguage = jsonRes['original_language'];
+    originalTitle = jsonRes['original_title'];
     overview = jsonRes['overview'];
-    poster_path = jsonRes['poster_path'];
-    release_date = jsonRes['release_date'];
+    posterPath = jsonRes['poster_path'];
+    releaseDate = jsonRes['release_date'];
     status = jsonRes['status'];
-    tagline = jsonRes['tagline'];
+    tagLine = jsonRes['tagline'];
     title = jsonRes['title'];
     genres = jsonRes['genres'] == null ? null : [];
 
@@ -113,36 +113,36 @@ class MovieDetailModel {
       genres.add(genresItem == null ? null : new Genre.fromJson(genresItem));
     }
 
-    production_companies = jsonRes['production_companies'] == null ? null : [];
+    productionCompanies = jsonRes['production_companies'] == null ? null : [];
 
-    for (var production_companiesItem in production_companies == null
+    for (var production_companiesItem in productionCompanies == null
         ? []
         : jsonRes['production_companies']) {
-      production_companies.add(production_companiesItem == null
+      productionCompanies.add(production_companiesItem == null
           ? null
           : new ProductionCompanie.fromJson(production_companiesItem));
     }
 
-    production_countries = jsonRes['production_countries'] == null ? null : [];
+    productionCountries = jsonRes['production_countries'] == null ? null : [];
 
-    for (var production_countriesItem in production_countries == null
+    for (var production_countriesItem in productionCountries == null
         ? []
         : jsonRes['production_countries']) {
-      production_countries.add(production_countriesItem == null
+      productionCountries.add(production_countriesItem == null
           ? null
           : new ProductionCountrie.fromJson(production_countriesItem));
     }
 
-    spoken_languages = jsonRes['spoken_languages'] == null ? null : [];
+    spokenLanguages = jsonRes['spoken_languages'] == null ? null : [];
 
     for (var spoken_languagesItem
-        in spoken_languages == null ? [] : jsonRes['spoken_languages']) {
-      spoken_languages.add(spoken_languagesItem == null
+        in spokenLanguages == null ? [] : jsonRes['spoken_languages']) {
+      spokenLanguages.add(spoken_languagesItem == null
           ? null
           : new SpokenLanguage.fromJson(spoken_languagesItem));
     }
 
-    belongs_to_collection = jsonRes['belongs_to_collection'] == null
+    belongsToCollection = jsonRes['belongs_to_collection'] == null
         ? null
         : new BelongsToCollection.fromJson(jsonRes['belongs_to_collection']);
     credits = jsonRes['credits'] == null
@@ -163,7 +163,7 @@ class MovieDetailModel {
     reviews = jsonRes['reviews'] == null
         ? null
         : new ReviewModel.fromJson(jsonRes['reviews']);
-    externalids = jsonRes['external_ids'] == null
+    externalIds = jsonRes['external_ids'] == null
         ? null
         : new ExternalIdsModel.fromJson(jsonRes['external_ids']);
     releaseDates = jsonRes['release_dates'] == null
@@ -173,29 +173,29 @@ class MovieDetailModel {
 
   @override
   String toString() {
-    return '{"homepage": $homepage,"budget": $budget,"id": $id,"revenue": $revenue,"runtime": $runtime,"vote_count": $vote_count,"popularity": $popularity,"vote_average": $vote_average,"adult": $adult,"video": $video,"backdrop_path": ${backdrop_path != null ? '${json.encode(backdrop_path)}' : 'null'},"imdb_id": ${imdb_id != null ? '${json.encode(imdb_id)}' : 'null'},"original_language": ${original_language != null ? '${json.encode(original_language)}' : 'null'},"original_title": ${original_title != null ? '${json.encode(original_title)}' : 'null'},"overview": ${overview != null ? '${json.encode(overview)}' : 'null'},"poster_path": ${poster_path != null ? '${json.encode(poster_path)}' : 'null'},"release_date": ${release_date != null ? '${json.encode(release_date)}' : 'null'},"status": ${status != null ? '${json.encode(status)}' : 'null'},"tagline": ${tagline != null ? '${json.encode(tagline)}' : 'null'},"title": ${title != null ? '${json.encode(title)}' : 'null'},"genres": $genres,"production_companies": $production_companies,"production_countries": $production_countries,"spoken_languages": $spoken_languages,"belongs_to_collection": $belongs_to_collection,"credits": $credits,"images": $images,"keywords": $keywords,"recommendations": $recommendations,"reviews": $reviews,"externalids":$externalids,"releaseDates":$releaseDates,"videos":$videos}';
+    return '{"homepage": $homepage,"budget": $budget,"id": $id,"revenue": $revenue,"runtime": $runtime,"vote_count": $voteCount,"popularity": $popularity,"vote_average": $voteAverage,"adult": $adult,"video": $video,"backdrop_path": ${backdropPath != null ? '${json.encode(backdropPath)}' : 'null'},"imdb_id": ${imdbId != null ? '${json.encode(imdbId)}' : 'null'},"original_language": ${originalLanguage != null ? '${json.encode(originalLanguage)}' : 'null'},"original_title": ${originalTitle != null ? '${json.encode(originalTitle)}' : 'null'},"overview": ${overview != null ? '${json.encode(overview)}' : 'null'},"poster_path": ${posterPath != null ? '${json.encode(posterPath)}' : 'null'},"release_date": ${releaseDate != null ? '${json.encode(releaseDate)}' : 'null'},"status": ${status != null ? '${json.encode(status)}' : 'null'},"tagline": ${tagLine != null ? '${json.encode(tagLine)}' : 'null'},"title": ${title != null ? '${json.encode(title)}' : 'null'},"genres": $genres,"production_companies": $productionCompanies,"production_countries": $productionCountries,"spoken_languages": $spokenLanguages,"belongs_to_collection": $belongsToCollection,"credits": $credits,"images": $images,"keywords": $keywords,"recommendations": $recommendations,"reviews": $reviews,"externalids":$externalIds,"releaseDates":$releaseDates,"videos":$videos}';
   }
 }
 
 class BelongsToCollection {
   int id;
-  String backdrop_path;
+  String backdropPath;
   String name;
-  String poster_path;
+  String posterPath;
 
   BelongsToCollection.fromParams(
-      {this.id, this.backdrop_path, this.name, this.poster_path});
+      {this.id, this.backdropPath, this.name, this.posterPath});
 
   BelongsToCollection.fromJson(jsonRes) {
     id = jsonRes['id'];
-    backdrop_path = jsonRes['backdrop_path'];
+    backdropPath = jsonRes['backdrop_path'];
     name = jsonRes['name'];
-    poster_path = jsonRes['poster_path'];
+    posterPath = jsonRes['poster_path'];
   }
 
   @override
   String toString() {
-    return '{"id": $id,"backdrop_path": ${backdrop_path != null ? '${json.encode(backdrop_path)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"poster_path": ${poster_path != null ? '${json.encode(poster_path)}' : 'null'}}';
+    return '{"id": $id,"backdrop_path": ${backdropPath != null ? '${json.encode(backdropPath)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"poster_path": ${posterPath != null ? '${json.encode(posterPath)}' : 'null'}}';
   }
 }
 
@@ -235,23 +235,23 @@ class ProductionCountrie {
 
 class ProductionCompanie {
   int id;
-  String logo_path;
+  String logoPath;
   String name;
-  String origin_country;
+  String originCountry;
 
   ProductionCompanie.fromParams(
-      {this.id, this.logo_path, this.name, this.origin_country});
+      {this.id, this.logoPath, this.name, this.originCountry});
 
   ProductionCompanie.fromJson(jsonRes) {
     id = jsonRes['id'];
-    logo_path = jsonRes['logo_path'];
+    logoPath = jsonRes['logo_path'];
     name = jsonRes['name'];
-    origin_country = jsonRes['origin_country'];
+    originCountry = jsonRes['origin_country'];
   }
 
   @override
   String toString() {
-    return '{"id": $id,"logo_path": ${logo_path != null ? '${json.encode(logo_path)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"origin_country": ${origin_country != null ? '${json.encode(origin_country)}' : 'null'}}';
+    return '{"id": $id,"logo_path": ${logoPath != null ? '${json.encode(logoPath)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"origin_country": ${originCountry != null ? '${json.encode(originCountry)}' : 'null'}}';
   }
 }
 

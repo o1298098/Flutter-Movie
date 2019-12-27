@@ -1,9 +1,7 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/creditsmodel.dart';
@@ -25,7 +23,7 @@ Widget buildView(
     double w = (Adapt.screenW() - Adapt.px(60)) / 2;
     return GestureDetector(
       onTap: () => dispatch(CreditsActionCreator.onCastTapped(
-          d.id, d.profile_path, d.name, d.character)),
+          d.id, d.profilePath, d.name, d.character)),
       child: Container(
         padding: EdgeInsets.only(bottom: Adapt.px(30)),
         width: w,
@@ -42,9 +40,9 @@ Widget buildView(
                     image: DecorationImage(
                       //alignment: Alignment.topCenter,
                       fit: BoxFit.cover,
-                      image: CachedNetworkImageProvider(d.profile_path == null
+                      image: CachedNetworkImageProvider(d.profilePath == null
                           ? ImageUrl.emptyimage
-                          : ImageUrl.getUrl(d.profile_path, ImageSize.w300)),
+                          : ImageUrl.getUrl(d.profilePath, ImageSize.w300)),
                     )),
               ),
             ),
@@ -125,7 +123,7 @@ Widget buildView(
     double w = (Adapt.screenW() - Adapt.px(60)) / 2;
     return GestureDetector(
       onTap: () => dispatch(CreditsActionCreator.onCastTapped(
-          d.id, d.profile_path, d.name, d.job)),
+          d.id, d.profilePath, d.name, d.job)),
       child: Container(
         padding: EdgeInsets.only(bottom: Adapt.px(30)),
         width: w,
@@ -143,7 +141,7 @@ Widget buildView(
                       //alignment: Alignment.topCenter,
                       fit: BoxFit.cover,
                       image: CachedNetworkImageProvider(
-                          ImageUrl.getUrl(d.profile_path, ImageSize.w300)),
+                          ImageUrl.getUrl(d.profilePath, ImageSize.w300)),
                     )),
               ),
             ),

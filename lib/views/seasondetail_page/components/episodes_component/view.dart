@@ -1,16 +1,13 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/episodemodel.dart';
-import 'package:movie/models/seasondetail.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -33,7 +30,7 @@ Widget buildView(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Hero(
-                  tag: 'pic' + d.episode_number.toString(),
+                  tag: 'pic' + d.episodeNumber.toString(),
                   child: Container(
                     width: Adapt.screenW() - Adapt.px(40),
                     height: (Adapt.screenW() - Adapt.px(40)) * 9 / 16,
@@ -42,14 +39,14 @@ Widget buildView(
                         image: DecorationImage(
                             fit: BoxFit.cover,
                             image: CachedNetworkImageProvider(
-                                d.still_path == null
+                                d.stillPath == null
                                     ? ImageUrl.emptyimage
                                     : ImageUrl.getUrl(
-                                        d.still_path, ImageSize.w300)))),
+                                        d.stillPath, ImageSize.w300)))),
                   ),
                 ),
                 Hero(
-                  tag: 'episodeDate' + d.episode_number.toString(),
+                  tag: 'episodeDate' + d.episodeNumber.toString(),
                   child: Material(
                     color: Colors.transparent,
                     child: Container(
@@ -59,13 +56,13 @@ Widget buildView(
                             Adapt.px(20), Adapt.px(10)),
                         child: Text(
                           DateFormat.yMMMd().format(
-                              DateTime.parse(d.air_date ?? '1990-01-01')),
+                              DateTime.parse(d.airDate ?? '1990-01-01')),
                           style: TextStyle(fontSize: Adapt.px(24)),
                         )),
                   ),
                 ),
                 Hero(
-                  tag: 'episodetitle' + d.episode_number.toString(),
+                  tag: 'episodetitle' + d.episodeNumber.toString(),
                   child: Material(
                     color: Colors.transparent,
                     child: Row(
@@ -92,7 +89,7 @@ Widget buildView(
                                 width: Adapt.px(5),
                               ),
                               Text(
-                                d.vote_average.toStringAsFixed(1),
+                                d.voteAverage.toStringAsFixed(1),
                                 style: TextStyle(color: Colors.white),
                               )
                             ],
@@ -104,7 +101,7 @@ Widget buildView(
                         Container(
                           width: Adapt.screenW() - Adapt.px(230),
                           child: Text(
-                            '${d.episode_number}  ${d.name}',
+                            '${d.episodeNumber}  ${d.name}',
                             maxLines: 2,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -116,7 +113,7 @@ Widget buildView(
                   ),
                 ),
                 Hero(
-                  tag: 'episodeoverWatch' + d.episode_number.toString(),
+                  tag: 'episodeoverWatch' + d.episodeNumber.toString(),
                   child: Material(
                     color: Colors.transparent,
                     child: Container(

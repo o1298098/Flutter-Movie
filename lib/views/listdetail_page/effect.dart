@@ -1,16 +1,8 @@
-import 'dart:io';
-import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart' hide Action;
-import 'package:movie/actions/apihelper.dart';
 import 'package:movie/actions/base_api.dart';
 import 'package:movie/models/base_api_model/user_list_detail.dart';
-import 'package:movie/models/enums/screenshot_type.dart';
 import 'package:movie/models/sortcondition.dart';
-import 'package:movie/models/videolist.dart';
-import 'package:screenshot/screenshot.dart';
-import 'package:share_extend/share_extend.dart';
 import 'action.dart';
 import 'state.dart';
 

@@ -1,12 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/apihelper.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/globalbasestate/action.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/views/setting_page/page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -66,7 +64,7 @@ Future _onLogout(Action action, Context<AccountPageState> ctx) async {
     try {
       _auth.signOut();
       GlobalStore.store.dispatch(GlobalActionCreator.setUser(null));
-    } on Exception catch (e) {}
+    } on Exception catch (_) {}
     await _onInit(action, ctx);
   }
 }

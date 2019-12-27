@@ -16,7 +16,7 @@ class FeatureCrewConnector extends ConnOp<TVDetailPageState,FeatureCrewState>{
   @override
   FeatureCrewState get(TVDetailPageState state) {
     FeatureCrewState substate=new FeatureCrewState();
-    substate.createdBy=state.tvDetailModel.created_by??List<CreatedBy>();
+    substate.createdBy=state.tvDetailModel.createdBy??List<CreatedBy>();
     return substate;
   }
 }

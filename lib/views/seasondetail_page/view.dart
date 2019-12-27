@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/style/themestyle.dart';
 
-import 'action.dart';
 import 'state.dart';
 
 Widget buildView(

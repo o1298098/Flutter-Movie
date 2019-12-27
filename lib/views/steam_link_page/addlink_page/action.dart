@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/enums/streamlink_type.dart';
 
-//TODO replace with your own action
 enum AddLinkPageAction {
   action,
   submit,

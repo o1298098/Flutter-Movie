@@ -1,19 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter/widgets.dart' hide Action;
-import 'package:movie/actions/Adapt.dart';
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/actions/base_api.dart';
-import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/customwidgets/gallery_photoview_wrapper.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/media_type.dart';
-import 'package:movie/models/firebase/firebase_accountstate.dart';
 import 'package:movie/models/imagemodel.dart';
-import 'package:palette_generator/palette_generator.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -65,7 +60,7 @@ Future _onInit(Action action, Context<TVDetailPageState> ctx) async {
               TVDetailPageActionCreator.onSetAccountState(accountstate));
       }
     });
-  } on Exception catch (e) {}
+  } on Exception catch (_) {}
 }
 
 void _onPlayTapped(Action action, Context<TVDetailPageState> ctx) async {

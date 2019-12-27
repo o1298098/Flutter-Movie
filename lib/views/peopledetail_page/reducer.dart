@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/actions/Adapt.dart';
+import 'package:movie/actions/adapt.dart';
 import 'package:movie/models/combinedcredits.dart';
 import 'package:movie/models/peopledetail.dart';
 
@@ -24,7 +24,7 @@ PeopleDetailPageState _onAction(PeopleDetailPageState state, Action action) {
 
 PeopleDetailPageState _onInit(PeopleDetailPageState state, Action action) {
   final PeopleDetailModel m = action.payload ??
-      PeopleDetailModel.fromParams(also_known_as: List<String>());
+      PeopleDetailModel.fromParams(alsoKnownAs: List<String>());
   final PeopleDetailPageState newState = state.clone();
   newState.peopleDetailModel = m;
   double s = (m.biography.length *

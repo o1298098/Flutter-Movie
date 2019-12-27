@@ -50,7 +50,7 @@ class SeasonDetailPageState extends MutableSource
         return HeaderState(
             name: name,
             posterurl: seasonpic,
-            airDate: seasonDetailModel.air_date,
+            airDate: seasonDetailModel.airDate,
             overwatch: seasonDetailModel.overview,
             seasonNumber: seasonNumber);
       case 1:
