@@ -9,6 +9,7 @@ Effect<DiscoverPageState> buildEffect() {
   return combineEffects(<Object, Effect<DiscoverPageState>>{
     DiscoverPageAction.action: _onAction,
     Lifecycle.initState: _onInit,
+    Lifecycle.dispose: _onDispose,
     DiscoverPageAction.videoCellTapped: _onVideoCellTapped,
     DiscoverPageAction.refreshData: _onLoadData,
   });
@@ -17,7 +18,8 @@ Effect<DiscoverPageState> buildEffect() {
 void _onAction(Action action, Context<DiscoverPageState> ctx) {}
 
 Future _onInit(Action action, Context<DiscoverPageState> ctx) async {
-  ctx.state.scrollController = new ScrollController();
+  ctx.state.scrollController = ScrollController();
+  ctx.state.filterState.keyWordController = TextEditingController();
   ctx.state.scrollController.addListener(() async {
     bool isBottom = ctx.state.scrollController.position.pixels ==
         ctx.state.scrollController.position.maxScrollExtent;
@@ -26,6 +28,12 @@ Future _onInit(Action action, Context<DiscoverPageState> ctx) async {
     }
   });
   await _onLoadData(action, ctx);
+}
+
+void _onDispose(Action action, Context<DiscoverPageState> ctx) {
+  ctx.state.scrollController.dispose();
+  ctx.state.filterState.keyWordController.dispose();
+  ctx.state.dropdownMenuController.dispose();
 }
 
 Future _onLoadData(Action action, Context<DiscoverPageState> ctx) async {
@@ -37,10 +45,12 @@ Future _onLoadData(Action action, Context<DiscoverPageState> ctx) async {
   VideoListModel r;
   if (ctx.state.filterState.isMovie)
     r = await ApiHelper.getMovieDiscover(
+        withKeywords: ctx.state.filterState.keyWordController.text,
         sortBy: ctx.state.selectedSort,
         withGenres: genresIds.length > 0 ? genresIds.join(',') : null);
   else
     r = await ApiHelper.getTVDiscover(
+        withKeywords: ctx.state.filterState.keyWordController.text,
         sortBy: ctx.state.selectedSort,
         withGenres: genresIds.length > 0 ? genresIds.join(',') : null);
   if (r != null) ctx.dispatch(DiscoverPageActionCreator.onLoadData(r));

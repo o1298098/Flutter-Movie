@@ -160,7 +160,7 @@ Widget buildView(
       }
 
       Widget _buildEpisodeCell(Episode d) {
-        return GestureDetector(
+        return InkWell(
           onTap: () =>
               dispatch(SeasonLinkPageActionCreator.onEpisodeCellTapped(d)),
           child: Container(

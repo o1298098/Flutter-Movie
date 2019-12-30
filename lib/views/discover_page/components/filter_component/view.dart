@@ -51,10 +51,10 @@ Widget buildView(
                 color: _theme.primaryColorDark,
               ),
               child: TextField(
+                  controller: state.keyWordController,
                   keyboardAppearance: Brightness.light,
                   cursorColor: Colors.grey,
                   onSubmitted: (v) {
-                    dispatch(FilterActionCreator.onKeyWordsChanged(v));
                     viewService
                         .broadcast(DiscoverPageActionCreator.onRefreshData());
                   },

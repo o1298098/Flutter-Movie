@@ -10,9 +10,10 @@ Widget buildView(
 
   return keepAliveWrapper(AnimatedSwitcher(
       duration: Duration(milliseconds: 600),
-      child: ListView.builder(
+      child: ListView.separated(
         key: ValueKey(state.tvcoming),
         controller: state.tvController,
+        separatorBuilder: (_, index) => Divider(),
         itemBuilder: adapter.itemBuilder,
         itemCount: adapter.itemCount,
       )));

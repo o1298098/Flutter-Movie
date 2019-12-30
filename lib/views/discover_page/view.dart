@@ -23,7 +23,7 @@ Widget buildView(
     DiscoverPageState state, Dispatch dispatch, ViewService viewService) {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light
       .copyWith(statusBarBrightness: Brightness.light));
-  String _changDatetime(String s1) {
+  String _changeDatetime(String s1) {
     return s1 == null || s1?.isEmpty == true ? '1900-01-01' : s1;
   }
 
@@ -123,8 +123,9 @@ Widget buildView(
 
     Widget _buildListCell(VideoListResult d) {
       bool ismovie = state.filterState.isMovie;
+      if (d == null) return SizedBox();
       return GestureDetector(
-        key: ValueKey<int>(d.id),
+        key: ValueKey(d.name),
         child: Container(
           padding:
               EdgeInsets.fromLTRB(Adapt.px(20), 0, Adapt.px(20), Adapt.px(30)),
@@ -190,7 +191,7 @@ Widget buildView(
                                               '%',
                                           style: TextStyle(
                                               fontWeight: FontWeight.w700,
-                                              fontSize: Adapt.px(22),
+                                              fontSize: Adapt.px(20),
                                               color: Colors.white),
                                         ),
                                       )),
@@ -219,10 +220,10 @@ Widget buildView(
                               Text(
                                 DateFormat.yMMMd().format(DateTime.tryParse(
                                     (ismovie
-                                        ? _changDatetime(d.releaseDate)
-                                        : _changDatetime(d.firstAirDate)))),
+                                        ? _changeDatetime(d.releaseDate)
+                                        : _changeDatetime(d.firstAirDate)))),
                                 style: TextStyle(
-                                    color: Colors.grey[800],
+                                    color: _theme.textTheme.subtitle.color,
                                     fontSize: Adapt.px(20)),
                               )
                             ],
@@ -346,7 +347,6 @@ Widget buildView(
                         onItemTap: (index) {
                           if (index == 1) {
                             state.scaffoldKey.currentState.openEndDrawer();
-                            state.dropdownMenuController.hide();
                           }
                         },
                       )),
@@ -391,17 +391,14 @@ Widget buildView(
                   dropDownHeight: 40 * state.sortType.length.toDouble(),
                   dropDownWidget:
                       _buildConditionListWidget(state.sortType, (value) {
-                    state.dropdownMenuController.hide();
                     int e = state.sortType.indexOf(value);
                     state.filterTabNames[0] = state.sortType[e].name;
                     dispatch(DiscoverPageActionCreator.onSortChanged(
                         state.sortType[e].value));
                     dispatch(DiscoverPageActionCreator.onRefreshData());
+
+                    state.dropdownMenuController.hide();
                   }),
-                ),
-                GZXDropdownMenuBuilder(
-                  dropDownHeight: 0,
-                  dropDownWidget: Container(),
                 ),
               ],
             )
