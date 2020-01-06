@@ -437,7 +437,7 @@ Widget buildView(
                     height: Adapt.px(40),
                     color: Colors.grey[400],
                   ),
-                  GestureDetector(
+                  InkWell(
                     onTap: () =>
                         dispatch(TVDetailPageActionCreator.onPlayTapped()),
                     child: Container(

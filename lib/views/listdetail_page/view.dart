@@ -41,11 +41,11 @@ Widget buildView(
         {Widget valueChild,
         Color labelColor = Colors.black,
         Color titleColor = Colors.black}) {
-      var titleStyle = TextStyle(
+      final titleStyle = TextStyle(
           fontSize: Adapt.px(26),
           color: titleColor,
           fontWeight: FontWeight.bold);
-      var valueStyle = TextStyle(
+      final valueStyle = TextStyle(
           color: labelColor,
           fontWeight: FontWeight.bold,
           fontSize: Adapt.px(28));
@@ -72,7 +72,7 @@ Widget buildView(
     }
 
     Widget _buildInfoGroup() {
-      var d = state.listDetailModel;
+      final d = state.listDetailModel;
       int _itemcout = d.itemCount;
       double _totalRated = d.totalRated;
       return Container(
@@ -344,7 +344,7 @@ Widget buildView(
     }
 
     Widget _buildHeader() {
-      var d = state.listDetailModel;
+      final d = state.listDetailModel;
       if (d != null)
         return Container(
           decoration: BoxDecoration(
@@ -423,8 +423,9 @@ Widget buildView(
                             ListDetailPageActionCreator.sortChanged(selected)),
                         itemBuilder: (ctx) {
                           return state.sortBy.map((s) {
-                            var unSelectedStyle = TextStyle(color: Colors.grey);
-                            var selectedStyle =
+                            final unSelectedStyle =
+                                TextStyle(color: Colors.grey);
+                            final selectedStyle =
                                 TextStyle(fontWeight: FontWeight.bold);
                             return PopupMenuItem<SortCondition>(
                               value: s,
@@ -545,7 +546,7 @@ Widget buildView(
     }
 
     Widget _buildBody() {
-      var width = Adapt.screenW() / 3;
+      final width = Adapt.screenW() / 3;
       return state.listItems == null
           ? _buildShimmerBody()
           : SliverGrid.extent(

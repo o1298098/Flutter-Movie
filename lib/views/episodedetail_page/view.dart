@@ -7,8 +7,8 @@ import 'state.dart';
 
 Widget buildView(
     EpisodeDetailPageState state, Dispatch dispatch, ViewService viewService) {
-  var adapter = viewService.buildAdapter();
-  var d = state.episode;
+  final adapter = viewService.buildAdapter();
+  final d = state.episode;
   return Builder(builder: (context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
     return Scaffold(

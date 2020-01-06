@@ -11,11 +11,16 @@ enum LiveStreamPageAction {
   addComment,
   insertComment,
   videoPlayerUpdate,
+  streamLinkReport
 }
 
 class LiveStreamPageActionCreator {
   static Action onAction() {
     return const Action(LiveStreamPageAction.action);
+  }
+
+  static Action streamLinkReport() {
+    return const Action(LiveStreamPageAction.streamLinkReport);
   }
 
   static Action videoPlayerUpdate() {

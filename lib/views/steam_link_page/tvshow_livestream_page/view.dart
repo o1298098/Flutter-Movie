@@ -197,14 +197,19 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
                 ],
               ),
               AnimatedCrossFade(
-                alignment: Alignment.center,
                 crossFadeState: state.isExpanded,
                 duration: Duration(milliseconds: 300),
+                firstCurve: Curves.ease,
+                secondCurve: Curves.ease,
+                sizeCurve: Curves.ease,
                 firstChild: SizedBox(),
                 secondChild: Padding(
                     padding: EdgeInsets.only(top: Adapt.px(10)),
                     child: Material(
-                        child: Text(state.selectedEpisode?.overview ?? ''))),
+                        color: Colors.transparent,
+                        child: Text(
+                          state.selectedEpisode?.overview ?? '',
+                        ))),
               ),
             ],
           ),
@@ -308,12 +313,37 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
         );
       }
 
+      Widget _buildPopupMenuButton(IconData icon, String title) {
+        return PopupMenuItem(
+          value: title,
+          child: Row(
+            children: <Widget>[
+              Icon(icon),
+              SizedBox(width: Adapt.px(20)),
+              Text(title)
+            ],
+          ),
+        );
+      }
+
+      _popItemSelected(String title) {
+        switch (title) {
+          case 'more':
+            dispatch(TvShowLiveStreamPageActionCreator.episodesMoreTapped(
+                _buildEpisodesMore()));
+            break;
+          case 'report':
+            dispatch(TvShowLiveStreamPageActionCreator.streamLinkReport());
+            break;
+        }
+      }
+
       Widget _buildStreamLinkList() {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+              padding: EdgeInsets.only(left: Adapt.px(30)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -329,16 +359,25 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
                           TextStyle(fontSize: Adapt.px(28), color: Colors.grey),
                     )
                   ])),
-                  InkWell(
-                    onTap: () => dispatch(
-                        TvShowLiveStreamPageActionCreator.episodesMoreTapped(
-                            _buildEpisodesMore())),
-                    child: Text(
-                      'More',
-                      style:
-                          TextStyle(fontSize: Adapt.px(30), color: Colors.grey),
+                  PopupMenuButton<String>(
+                    icon: Icon(
+                      Icons.more_vert,
+                      color: Colors.grey,
                     ),
-                  )
+                    onSelected: _popItemSelected,
+                    itemBuilder: (_) {
+                      return <PopupMenuEntry<String>>[
+                        _buildPopupMenuButton(
+                          Icons.more,
+                          'more',
+                        ),
+                        _buildPopupMenuButton(
+                          Icons.bug_report,
+                          'report',
+                        )
+                      ];
+                    },
+                  ),
                 ],
               ),
             ),
@@ -419,7 +458,6 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
         key: state.scaffold,
         backgroundColor: _theme.backgroundColor,
         resizeToAvoidBottomInset: true,
-        //bottomNavigationBar: state.showBottom ? _buildCommentInputCell() : null,
         body: Stack(
           children: <Widget>[
             NestedScrollView(

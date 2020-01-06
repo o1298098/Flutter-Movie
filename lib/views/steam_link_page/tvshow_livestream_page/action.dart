@@ -15,11 +15,16 @@ enum TvShowLiveStreamPageAction {
   addComment,
   insertComment,
   episodesMoreTapped,
+  streamLinkReport,
 }
 
 class TvShowLiveStreamPageActionCreator {
   static Action onAction() {
     return const Action(TvShowLiveStreamPageAction.action);
+  }
+
+  static Action streamLinkReport() {
+    return const Action(TvShowLiveStreamPageAction.streamLinkReport);
   }
 
   static Action headerExpanded() {

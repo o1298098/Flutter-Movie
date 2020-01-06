@@ -3,6 +3,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/base_api.dart';
 import 'package:movie/customwidgets/custom_video_controls.dart';
+import 'package:movie/customwidgets/stream_link_report_dialog.dart';
 import 'package:movie/models/base_api_model/base_user.dart';
 import 'package:movie/models/base_api_model/movie_comment.dart';
 import 'package:movie/models/base_api_model/movie_stream_link.dart';
@@ -16,12 +17,20 @@ Effect<LiveStreamPageState> buildEffect() {
     LiveStreamPageAction.action: _onAction,
     LiveStreamPageAction.chipSelected: _chipSelected,
     LiveStreamPageAction.addComment: _addComment,
+    LiveStreamPageAction.streamLinkReport: _streamLinkReport,
     Lifecycle.initState: _onInit,
     Lifecycle.dispose: _onDispose,
   });
 }
 
 void _onAction(Action action, Context<LiveStreamPageState> ctx) {}
+void _streamLinkReport(Action action, Context<LiveStreamPageState> ctx) {
+  showDialog(
+      context: ctx.context,
+      builder: (_) {
+        return StreamLinkReportDialog();
+      });
+}
 
 void _chipSelected(Action action, Context<LiveStreamPageState> ctx) {
   final MovieStreamLink d = action.payload;

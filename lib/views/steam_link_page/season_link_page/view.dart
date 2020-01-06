@@ -10,7 +10,6 @@ import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
-import '../../../actions/adapt.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -60,7 +59,7 @@ Widget buildView(
                               child: Icon(Icons.play_arrow),
                             ),
                             SizedBox(width: Adapt.px(20)),
-                            Text(
+                            const Text(
                               'Play Latest',
                               style: TextStyle(color: Colors.white),
                             )

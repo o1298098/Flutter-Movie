@@ -215,14 +215,42 @@ Widget buildView(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.fromLTRB(
-                  Adapt.px(30), Adapt.px(30), Adapt.px(30), 0),
-              child: Text(
-                'Stream Links',
-                style: TextStyle(
-                    fontSize: Adapt.px(40), fontWeight: FontWeight.w500),
-              ),
-            ),
+                padding: EdgeInsets.fromLTRB(Adapt.px(30), Adapt.px(30), 0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      'Stream Links',
+                      style: TextStyle(
+                          fontSize: Adapt.px(40), fontWeight: FontWeight.w500),
+                    ),
+                    PopupMenuButton(
+                      icon: Icon(
+                        Icons.more_vert,
+                        color: Colors.grey,
+                      ),
+                      onSelected: (d) {
+                        if (d == 'report')
+                          dispatch(
+                              LiveStreamPageActionCreator.streamLinkReport());
+                      },
+                      itemBuilder: (_) {
+                        return <PopupMenuEntry>[
+                          PopupMenuItem(
+                            value: 'report',
+                            child: Row(
+                              children: <Widget>[
+                                Icon(Icons.flag),
+                                SizedBox(width: Adapt.px(20)),
+                                Text('report')
+                              ],
+                            ),
+                          )
+                        ];
+                      },
+                    ),
+                  ],
+                )),
             SizedBox(height: Adapt.px(30)),
             SizedBox(
                 height: Adapt.px(130),

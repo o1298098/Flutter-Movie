@@ -1,0 +1,113 @@
+import 'package:flutter/material.dart';
+import 'package:movie/actions/adapt.dart';
+import 'package:movie/models/enums/streamlink_type.dart';
+
+class StreamLinkReportDialog extends StatefulWidget {
+  final String videoName;
+  final String linkName;
+  final StreamLinkType type;
+  final int id;
+  StreamLinkReportDialog(
+      {Key key, this.videoName, this.linkName, this.type, this.id})
+      : super(key: key);
+  @override
+  _StreamLinkReportDialogState createState() => _StreamLinkReportDialogState();
+}
+
+class _StreamLinkReportDialogState extends State<StreamLinkReportDialog> {
+  String _radioGroup;
+  TextEditingController _textEditingController;
+  FocusNode _textFoucsNode;
+  final List<String> _radioValues = [
+    'this video can\'t play',
+    'content doesn\'t match',
+    'too slow to play',
+    'sexual content',
+    'other'
+  ];
+  @override
+  initState() {
+    _textEditingController = TextEditingController();
+    _textFoucsNode = FocusNode();
+    super.initState();
+  }
+
+  @override
+  dispose() {
+    _textEditingController.dispose();
+    _textFoucsNode.dispose();
+    super.dispose();
+  }
+
+  _onRadioChanged(String d) {
+    setState(() {
+      _radioGroup = d;
+    });
+
+    if (_radioGroup == 'other')
+      Future.delayed(
+          Duration(milliseconds: 100), () => _textFoucsNode.requestFocus());
+    else if (_textEditingController.text.isNotEmpty)
+      _textEditingController.text = '';
+  }
+
+  Widget _buildRadioCell(String d) {
+    return ListTile(
+      onTap: () => _onRadioChanged(d),
+      leading: Radio(
+        groupValue: _radioGroup,
+        value: d,
+        onChanged: _onRadioChanged,
+      ),
+      title: Text(d),
+    );
+  }
+
+  Widget _buildOtherTextField() {
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: Adapt.px(50)),
+        child: TextField(
+          focusNode: _textFoucsNode,
+          autofocus: true,
+          controller: _textEditingController,
+          enabled: _radioGroup == 'other',
+        ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Adapt.px(20))),
+      contentPadding: EdgeInsets.zero,
+      title: Text('Report a problem'),
+      children: <Widget>[
+        Divider(),
+        Material(
+          color: Colors.transparent,
+          child: Container(
+            width: Adapt.px(600),
+            height: Adapt.screenH() / 2,
+            child: ListView(
+              children: _radioValues.map(_buildRadioCell).toList()
+                ..add(_buildOtherTextField()),
+            ),
+          ),
+        ),
+        Divider(),
+        Padding(
+            padding: EdgeInsets.symmetric(vertical: Adapt.px(20)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Text(
+                  'OK',
+                  style: TextStyle(fontSize: Adapt.px(35)),
+                ),
+                SizedBox(width: Adapt.px(60)),
+              ],
+            ))
+      ],
+    );
+  }
+}
