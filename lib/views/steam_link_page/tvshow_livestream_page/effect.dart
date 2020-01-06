@@ -4,6 +4,7 @@ import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/base_api.dart';
 import 'package:movie/customwidgets/custom_video_controls.dart';
+import 'package:movie/customwidgets/stream_link_report_dialog.dart';
 import 'package:movie/models/base_api_model/base_user.dart';
 import 'package:movie/models/base_api_model/tvshow_comment.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
@@ -19,6 +20,7 @@ Effect<TvShowLiveStreamPageState> buildEffect() {
     TvShowLiveStreamPageAction.episodeCellTapped: _episodeCellTapped,
     TvShowLiveStreamPageAction.addComment: _addComment,
     TvShowLiveStreamPageAction.episodesMoreTapped: _episodesMoreTapped,
+    TvShowLiveStreamPageAction.streamLinkReport: _streamLinkReport,
     Lifecycle.initState: _onInit,
     Lifecycle.dispose: _onDispose,
   });
@@ -101,6 +103,14 @@ void _episodeCellTapped(
     if (comment != null)
       ctx.dispatch(TvShowLiveStreamPageActionCreator.setComments(comment));
   }
+}
+
+void _streamLinkReport(Action action, Context<TvShowLiveStreamPageState> ctx) {
+  showDialog(
+      context: ctx.context,
+      builder: (_) {
+        return StreamLinkReportDialog();
+      });
 }
 
 void _episodesMoreTapped(

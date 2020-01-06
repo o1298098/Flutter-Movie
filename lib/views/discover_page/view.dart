@@ -24,7 +24,7 @@ Widget buildView(
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light
       .copyWith(statusBarBrightness: Brightness.light));
   String _changeDatetime(String s1) {
-    return s1 == null || s1?.isEmpty == true ? '1900-01-01' : s1;
+    return s1 == null || s1 == '' ? '1900-01-01' : s1;
   }
 
   return Builder(builder: (context) {
