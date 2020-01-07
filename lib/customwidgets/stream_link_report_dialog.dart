@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
+import 'package:movie/actions/base_api.dart';
+import 'package:movie/models/base_api_model/stream_link_report.dart';
 import 'package:movie/models/enums/streamlink_type.dart';
 
 class StreamLinkReportDialog extends StatefulWidget {
-  final String videoName;
-  final String linkName;
-  final StreamLinkType type;
-  final int id;
-  StreamLinkReportDialog(
-      {Key key, this.videoName, this.linkName, this.type, this.id})
-      : super(key: key);
+  final StreamLinkReport report;
+  StreamLinkReportDialog({Key key, @required this.report}) : super(key: key);
   @override
   _StreamLinkReportDialogState createState() => _StreamLinkReportDialogState();
 }
@@ -49,6 +46,15 @@ class _StreamLinkReportDialogState extends State<StreamLinkReportDialog> {
           Duration(milliseconds: 100), () => _textFoucsNode.requestFocus());
     else if (_textEditingController.text.isNotEmpty)
       _textEditingController.text = '';
+  }
+
+  _submit() {
+    if (_radioGroup == 'other')
+      widget.report.content = _textEditingController.text;
+    else
+      widget.report.content = _radioGroup;
+    BaseApi.sendStreamLinkReport(widget.report);
+    Navigator.of(context).pop();
   }
 
   Widget _buildRadioCell(String d) {
@@ -100,10 +106,12 @@ class _StreamLinkReportDialogState extends State<StreamLinkReportDialog> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Text(
-                  'OK',
-                  style: TextStyle(fontSize: Adapt.px(35)),
-                ),
+                InkWell(
+                    onTap: () => _submit(),
+                    child: Text(
+                      'OK',
+                      style: TextStyle(fontSize: Adapt.px(35)),
+                    )),
                 SizedBox(width: Adapt.px(60)),
               ],
             ))

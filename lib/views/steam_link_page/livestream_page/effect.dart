@@ -7,6 +7,7 @@ import 'package:movie/customwidgets/stream_link_report_dialog.dart';
 import 'package:movie/models/base_api_model/base_user.dart';
 import 'package:movie/models/base_api_model/movie_comment.dart';
 import 'package:movie/models/base_api_model/movie_stream_link.dart';
+import 'package:movie/models/base_api_model/stream_link_report.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'action.dart';
@@ -25,10 +26,20 @@ Effect<LiveStreamPageState> buildEffect() {
 
 void _onAction(Action action, Context<LiveStreamPageState> ctx) {}
 void _streamLinkReport(Action action, Context<LiveStreamPageState> ctx) {
+  final MovieStreamLink e = ctx.state.streamLinks
+      .singleWhere((d) => d.streamLink == ctx.state.streamAddress);
   showDialog(
       context: ctx.context,
       builder: (_) {
-        return StreamLinkReportDialog();
+        return StreamLinkReportDialog(
+            report: StreamLinkReport(
+          mediaId: ctx.state.id,
+          mediaName: ctx.state.name,
+          linkName: e.linkName,
+          streamLink: ctx.state.streamAddress,
+          type: "movie",
+          streamLinkId: e.sid,
+        ));
       });
 }
 

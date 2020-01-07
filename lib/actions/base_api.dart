@@ -4,6 +4,7 @@ import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/base_api_model/base_tvshow.dart';
 import 'package:movie/models/base_api_model/movie_comment.dart';
 import 'package:movie/models/base_api_model/movie_stream_link.dart';
+import 'package:movie/models/base_api_model/stream_link_report.dart';
 import 'package:movie/models/base_api_model/tvshow_comment.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/models/base_api_model/user_list.dart';
@@ -335,6 +336,24 @@ class BaseApi {
     MovieComments model;
     String _url = '/MovieComments/$movieid';
     var r = await _http.request(_url);
+    if (r != null) model = MovieComments(r);
+    return model;
+  }
+
+  static Future<MovieComments> sendStreamLinkReport(
+      StreamLinkReport report) async {
+    MovieComments model;
+    String _url = '/Email';
+    var _data = {
+      'mediaName': report.mediaName,
+      'linkName': report.linkName,
+      'content': report.content,
+      'mediaId': report.mediaId,
+      'streamLinkId': report.streamLinkId,
+      'type': report.type,
+      'streamLink': report.streamLink
+    };
+    var r = await _http.request(_url, method: "POST", data: _data);
     if (r != null) model = MovieComments(r);
     return model;
   }

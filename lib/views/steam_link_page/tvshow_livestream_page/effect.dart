@@ -6,6 +6,7 @@ import 'package:movie/actions/base_api.dart';
 import 'package:movie/customwidgets/custom_video_controls.dart';
 import 'package:movie/customwidgets/stream_link_report_dialog.dart';
 import 'package:movie/models/base_api_model/base_user.dart';
+import 'package:movie/models/base_api_model/stream_link_report.dart';
 import 'package:movie/models/base_api_model/tvshow_comment.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/models/episodemodel.dart';
@@ -106,10 +107,21 @@ void _episodeCellTapped(
 }
 
 void _streamLinkReport(Action action, Context<TvShowLiveStreamPageState> ctx) {
+  final TvShowStreamLink e = ctx.state.streamLinks.list
+      .singleWhere((d) => d.episode == ctx.state.episodeNumber);
   showDialog(
       context: ctx.context,
       builder: (_) {
-        return StreamLinkReportDialog();
+        return StreamLinkReportDialog(
+          report: StreamLinkReport(
+            mediaId: ctx.state.tvid,
+            mediaName: ctx.state.mediaName,
+            linkName: ctx.state.season.name + "  " + e?.linkName,
+            streamLink: e.streamLink,
+            type: "tv",
+            streamLinkId: e.sid,
+          ),
+        );
       });
 }
 

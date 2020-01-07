@@ -76,6 +76,7 @@ void _onEpisodeCellTapped(
   final _episode = action.payload as Episode;
   await Navigator.of(ctx.context).pushNamed('tvShowLiveStreamPage', arguments: {
     'tvid': ctx.state.detial.id,
+    'name': ctx.state.detial.name,
     'season': ctx.state.detial.seasons
         .singleWhere((d) => d.seasonNumber == _episode.seasonNumber),
     'episode': _episode,

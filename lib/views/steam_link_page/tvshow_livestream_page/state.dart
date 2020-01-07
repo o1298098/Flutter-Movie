@@ -17,6 +17,7 @@ class TvShowLiveStreamPageState
     implements GlobalBaseState, Cloneable<TvShowLiveStreamPageState> {
   GlobalKey<ScaffoldState> scaffold;
   int tvid;
+  String mediaName;
   Season season;
   CrossFadeState isExpanded;
   int episodeNumber;
@@ -37,6 +38,7 @@ class TvShowLiveStreamPageState
   TvShowLiveStreamPageState clone() {
     return TvShowLiveStreamPageState()
       ..scaffold = scaffold
+      ..mediaName = mediaName
       ..tvid = tvid
       ..season = season
       ..episodeNumber = episodeNumber
@@ -69,6 +71,7 @@ class TvShowLiveStreamPageState
 TvShowLiveStreamPageState initState(Map<String, dynamic> args) {
   TvShowLiveStreamPageState state = TvShowLiveStreamPageState();
   Episode _episode = args['episode'];
+  state.mediaName = args['name'];
   state.tvid = args['tvid'];
   state.season = args['season'];
   if (_episode != null) {
