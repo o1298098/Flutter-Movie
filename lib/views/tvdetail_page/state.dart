@@ -71,7 +71,8 @@ class TVDetailPageState
 TVDetailPageState initState(Map<String, dynamic> args) {
   Random random = new Random(DateTime.now().millisecondsSinceEpoch);
   var state = TVDetailPageState();
-  state.scaffoldkey = GlobalKey<ScaffoldState>();
+  state.scaffoldkey =
+      GlobalKey<ScaffoldState>(debugLabel: '_TvShowDetailPagekey');
   state.tvid = args['tvid'];
   if (args['bgpic'] != null) state.backdropPic = args['bgpic'];
   if (args['posterpic'] != null) state.posterPic = args['posterpic'];

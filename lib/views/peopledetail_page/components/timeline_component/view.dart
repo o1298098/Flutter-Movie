@@ -4,7 +4,9 @@ import 'package:flutter/rendering.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/combinedcredits.dart';
+import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/style/themestyle.dart';
+import 'package:movie/views/peopledetail_page/action.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'action.dart';
@@ -70,16 +72,21 @@ Widget buildView(
     );
   }
 
-  Widget _buildActingCell(CastData d, bool hasline) {
+  Widget _buildActingCell(CastData d) {
     double _leftwidth = (Adapt.screenW() - Adapt.px(120)) * 0.8;
     String date = d.mediaType == 'movie' ? d.releaseDate : d.firstAirDate;
     date = date == null || date?.isEmpty == true
         ? '-'
         : DateTime.parse(date).year.toString();
-    return Column(
-      key: ValueKey('timelineCell${d.creditId}'),
-      children: <Widget>[
-        Row(
+    return GestureDetector(
+        key: ValueKey('timelineCell${d.creditId}'),
+        onTap: () => dispatch(PeopleDetailPageActionCreator.onCellTapped(
+            d.id,
+            d.backdropPath,
+            d.title ?? d.name,
+            d.posterPath,
+            d.mediaType == 'movie' ? MediaType.movie : MediaType.person)),
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Column(
@@ -101,10 +108,7 @@ Widget buildView(
             ),
             Text(date)
           ],
-        ),
-        hasline ? SizedBox() : Divider()
-      ],
-    );
+        ));
   }
 
   Widget _buildActingBody() {
@@ -115,27 +119,17 @@ Widget buildView(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(Adapt.px(30))),
         child: Container(
-          padding: EdgeInsets.all(Adapt.px(30)),
-          child: ListView(
+            padding: EdgeInsets.all(Adapt.px(30)),
+            child: ListView.separated(
               physics: PageScrollPhysics(),
+              separatorBuilder: (_, __) => Divider(),
               shrinkWrap: true,
-              children: _data.length > 0
-                  ? _data
-                      .map((f) => _buildActingCell(
-                          f, _data.indexOf(f) == _data.length - 1))
-                      .toList()
-                  : <Widget>[
-                      _buildShimmerCell(),
-                      Divider(),
-                      _buildShimmerCell(),
-                      Divider(),
-                      _buildShimmerCell(),
-                      Divider(),
-                      _buildShimmerCell(),
-                      Divider(),
-                      _buildShimmerCell(),
-                    ]),
-        ));
+              itemCount: _data.length > 0 ? _data.length : 5,
+              itemBuilder: (_, i) {
+                if (_data.length > 0) return _buildActingCell(_data[i]);
+                return _buildShimmerCell();
+              },
+            )));
   }
 
   final _selectTextStyle = TextStyle(fontWeight: FontWeight.w500);

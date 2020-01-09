@@ -22,6 +22,7 @@ Effect<TVDetailPageState> buildEffect() {
     TVDetailPageAction.onImageCellTapped: _onImageCellTapped,
     TVDetailPageAction.plyaTapped: _onPlayTapped,
     Lifecycle.initState: _onInit,
+    Lifecycle.dispose: _onDispose,
   });
 }
 
@@ -61,6 +62,10 @@ Future _onInit(Action action, Context<TVDetailPageState> ctx) async {
       }
     });
   } on Exception catch (_) {}
+}
+
+void _onDispose(Action action, Context<TVDetailPageState> ctx) {
+  ctx.state.animationController?.dispose();
 }
 
 void _onPlayTapped(Action action, Context<TVDetailPageState> ctx) async {

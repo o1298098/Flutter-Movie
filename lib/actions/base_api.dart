@@ -274,7 +274,8 @@ class BaseApi {
       int tvid, int season) async {
     TvShowStreamLinks model;
     String _url = '/TvShowStreamLinks/$tvid/$season';
-    var r = await _http.request(_url);
+    var r = await _http.request(_url,
+        cached: true, cacheDuration: Duration(minutes: 10));
     if (r != null) model = TvShowStreamLinks(r);
     return model;
   }

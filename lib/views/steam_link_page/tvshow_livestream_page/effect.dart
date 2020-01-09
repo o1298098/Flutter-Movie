@@ -10,6 +10,7 @@ import 'package:movie/models/base_api_model/stream_link_report.dart';
 import 'package:movie/models/base_api_model/tvshow_comment.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/models/episodemodel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'action.dart';
@@ -40,6 +41,7 @@ void _onInit(Action action, Context<TvShowLiveStreamPageState> ctx) async {
       else
         ctx.dispatch(TvShowLiveStreamPageActionCreator.onShowBottom(false));
     });
+  ctx.state.preferences = await SharedPreferences.getInstance();
   final _streamLinks = await BaseApi.getTvSeasonStreamLinks(
       ctx.state.tvid, ctx.state.season.seasonNumber);
   if (_streamLinks != null) {
@@ -93,14 +95,25 @@ void _episodeCellTapped(
   if (e != null) {
     final Episode episode = ctx.state.season.episodes
         .singleWhere((d) => d.episodeNumber == e.episode);
+    if (!episode.playState) {
+      final index = ctx.state.season.episodes.indexOf(episode);
+      episode.playState = true;
+      ctx.state.season.playStates[index] = '1';
+      ctx.state.preferences.setStringList(
+          'TvSeason${ctx.state.season.id}', ctx.state.season.playStates);
+    }
     ctx.dispatch(TvShowLiveStreamPageActionCreator.episodeChanged(episode));
+
     await ctx.state.episodelistController.animateTo(
         Adapt.px(330) * (e.episode - 1),
         curve: Curves.ease,
         duration: Duration(milliseconds: 300));
+
     videoSourceChange(ctx, e);
+
     final comment = await BaseApi.getTvShowComments(
         ctx.state.tvid, ctx.state.season.seasonNumber, e.episode);
+
     if (comment != null)
       ctx.dispatch(TvShowLiveStreamPageActionCreator.setComments(comment));
   }

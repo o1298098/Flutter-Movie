@@ -306,8 +306,8 @@ Widget buildView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _buildImage(ImageUrl.getUrl(d.posterPath, ImageSize.w500),
-                  _width, Adapt.px(320), Adapt.px(20)),
+              _buildImage(ImageUrl.getUrl(d.posterPath, ImageSize.w500), _width,
+                  Adapt.px(320), Adapt.px(20)),
               SizedBox(
                 height: Adapt.px(15),
               ),
@@ -417,7 +417,9 @@ Widget buildView(
                   height: Adapt.px(10),
                 ),
                 Text(DateFormat.yMMMd().format(DateTime.parse(
-                    state.detail?.releaseDate ?? '1990-01-01'))),
+                    state.detail?.releaseDate?.isEmpty == true
+                        ? '1990-01-01'
+                        : state.detail?.releaseDate))),
                 SizedBox(
                   height: Adapt.px(10),
                 ),

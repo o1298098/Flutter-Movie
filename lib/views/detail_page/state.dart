@@ -34,7 +34,8 @@ class MovieDetailPageState implements Cloneable<MovieDetailPageState> {
 
 MovieDetailPageState initState(Map<String, dynamic> args) {
   MovieDetailPageState state = MovieDetailPageState();
-  state.scaffoldkey = GlobalKey<ScaffoldState>();
+  state.scaffoldkey =
+      GlobalKey<ScaffoldState>(debugLabel: '_MovieDetialPagekey');
   state.mediaId = args['id'];
   state.bgPic = args['bgpic'];
   state.detail = MovieDetailModel.fromParams();

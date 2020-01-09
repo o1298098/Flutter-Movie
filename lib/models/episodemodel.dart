@@ -2,11 +2,11 @@ import 'dart:convert' show json;
 
 import 'package:movie/models/creditsmodel.dart';
 
+import 'base_api_model/tvshow_stream_link.dart';
 import 'imagemodel.dart';
 import 'videomodel.dart';
 
 class Episode {
-
   int episodeNumber;
   int id;
   int seasonNumber;
@@ -22,11 +22,31 @@ class Episode {
   CreditsModel credits;
   EpisodeImageModel images;
   VideoModel videos;
+  TvShowStreamLink streamLink;
+  bool playState;
+  Episode.fromParams(
+      {this.episodeNumber,
+      this.id,
+      this.seasonNumber,
+      this.voteAverage,
+      this.voteCount,
+      this.airDate,
+      this.name,
+      this.overview,
+      this.productionCode,
+      this.stillPath,
+      this.crew,
+      this.guestStars,
+      this.credits,
+      this.images,
+      this.videos});
 
-  Episode.fromParams({this.episodeNumber, this.id, this.seasonNumber, this.voteAverage, this.voteCount, this.airDate, this.name, this.overview, this.productionCode, this.stillPath, this.crew, this.guestStars, this.credits, this.images, this.videos});
+  factory Episode(jsonStr) => jsonStr == null
+      ? null
+      : jsonStr is String
+          ? new Episode.fromJson(json.decode(jsonStr))
+          : new Episode.fromJson(jsonStr);
 
-  factory Episode(jsonStr) => jsonStr == null ? null : jsonStr is String ? new Episode.fromJson(json.decode(jsonStr)) : new Episode.fromJson(jsonStr);
-  
   Episode.fromJson(jsonRes) {
     episodeNumber = jsonRes['episode_number'];
     id = jsonRes['id'];
@@ -41,38 +61,47 @@ class Episode {
     crew = jsonRes['crew'] == null ? null : [];
     guestStars = jsonRes['guest_stars'] == null ? null : [];
 
-    for (var crewItem in crew == null ? [] : jsonRes['crew']){
-            crew.add(crewItem == null ? null : new CrewData.fromJson(crewItem));
+    for (var crewItem in crew == null ? [] : jsonRes['crew']) {
+      crew.add(crewItem == null ? null : new CrewData.fromJson(crewItem));
     }
 
     guestStars = jsonRes['guest_stars'] == null ? null : [];
 
-    for (var guest_starsItem in guestStars == null ? [] : jsonRes['guest_stars']){
-            guestStars.add(guest_starsItem==null?null:new CastData.fromJson(guest_starsItem));
+    for (var guest_starsItem
+        in guestStars == null ? [] : jsonRes['guest_stars']) {
+      guestStars.add(guest_starsItem == null
+          ? null
+          : new CastData.fromJson(guest_starsItem));
     }
 
-    credits = jsonRes['credits'] == null ? null : new CreditsModel.fromJson(jsonRes['credits']);
-    images = jsonRes['images'] == null ? null : new EpisodeImageModel.fromJson(jsonRes['images']);
-    videos = jsonRes['videos'] == null ? null : new VideoModel.fromJson(jsonRes['videos']);
+    credits = jsonRes['credits'] == null
+        ? null
+        : new CreditsModel.fromJson(jsonRes['credits']);
+    images = jsonRes['images'] == null
+        ? null
+        : new EpisodeImageModel.fromJson(jsonRes['images']);
+    videos = jsonRes['videos'] == null
+        ? null
+        : new VideoModel.fromJson(jsonRes['videos']);
   }
 
   @override
   String toString() {
-    return '{"episode_number": $episodeNumber,"id": $id,"season_number": $seasonNumber,"vote_average": $voteAverage,"vote_count": $voteCount,"air_date": ${airDate != null?'${json.encode(airDate)}':'null'},"name": ${name != null?'${json.encode(name)}':'null'},"overview": ${overview != null?'${json.encode(overview)}':'null'},"production_code": ${productionCode != null?'${json.encode(productionCode)}':'null'},"still_path": ${stillPath != null?'${json.encode(stillPath)}':'null'},"crew": $crew,"guest_stars": $guestStars,"credits": $credits,"images": $images,"videos": $videos}';
+    return '{"episode_number": $episodeNumber,"id": $id,"season_number": $seasonNumber,"vote_average": $voteAverage,"vote_count": $voteCount,"air_date": ${airDate != null ? '${json.encode(airDate)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"overview": ${overview != null ? '${json.encode(overview)}' : 'null'},"production_code": ${productionCode != null ? '${json.encode(productionCode)}' : 'null'},"still_path": ${stillPath != null ? '${json.encode(stillPath)}' : 'null'},"crew": $crew,"guest_stars": $guestStars,"credits": $credits,"images": $images,"videos": $videos}';
   }
 }
 
 class EpisodeImageModel {
-
   List<ImageData> stills;
 
   EpisodeImageModel.fromParams({this.stills});
-  
+
   EpisodeImageModel.fromJson(jsonRes) {
     stills = jsonRes['stills'] == null ? null : [];
 
-    for (var stillsItem in stills == null ? [] : jsonRes['stills']){
-            stills.add(stillsItem == null ? null : new ImageData.fromJson(stillsItem));
+    for (var stillsItem in stills == null ? [] : jsonRes['stills']) {
+      stills
+          .add(stillsItem == null ? null : new ImageData.fromJson(stillsItem));
     }
   }
 

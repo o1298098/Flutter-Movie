@@ -63,8 +63,8 @@ Future _onInit(Action action, Context<MovieDetailPageState> ctx) async {
 }
 
 void _onDispose(Action action, Context<MovieDetailPageState> ctx) {
-  ctx.state.animationController.dispose();
-  ctx.state.scrollController.dispose();
+  ctx.state.animationController?.dispose();
+  ctx.state.scrollController?.dispose();
 }
 
 Future _playTrailer(Action action, Context<MovieDetailPageState> ctx) async {

@@ -27,10 +27,10 @@ import 'state.dart';
 
 Widget buildView(
     TVDetailPageState state, Dispatch dispatch, ViewService viewService) {
-  Random random = new Random(DateTime.now().millisecondsSinceEpoch);
-  var s = state.tvDetailModel;
+  final Random random = new Random(DateTime.now().millisecondsSinceEpoch);
+  final s = state.tvDetailModel;
   //var dominantColor = state.palette?.dominantColor?.color ?? Colors.black38;
-  var dominantColor = state.mainColor;
+  final dominantColor = state.mainColor;
   double evote = 0.0;
   List<ImageData> _allimage;
 

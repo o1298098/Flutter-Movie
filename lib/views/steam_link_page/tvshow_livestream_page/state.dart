@@ -10,6 +10,7 @@ import 'package:movie/models/base_api_model/tvshow_comment.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/tvdetail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -33,6 +34,7 @@ class TvShowLiveStreamPageState
   TabController tabController;
   bool showBottom;
   List<VideoPlayerController> videoControllers;
+  SharedPreferences preferences;
 
   @override
   TvShowLiveStreamPageState clone() {
@@ -55,7 +57,8 @@ class TvShowLiveStreamPageState
       ..tabController = tabController
       ..isExpanded = isExpanded
       ..showBottom = showBottom
-      ..user = user;
+      ..user = user
+      ..preferences = preferences;
   }
 
   @override
@@ -79,7 +82,7 @@ TvShowLiveStreamPageState initState(Map<String, dynamic> args) {
     state.selectedEpisode = _episode;
   }
   state.isExpanded = CrossFadeState.showFirst;
-  state.scaffold = GlobalKey<ScaffoldState>();
+  state.scaffold = GlobalKey<ScaffoldState>(debugLabel: '_SeasonLinkPagekey');
   state.showBottom = false;
   return state;
 }

@@ -1,12 +1,17 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/models/combinedcredits.dart';
+import 'package:movie/models/enums/media_type.dart';
+import 'package:movie/views/detail_page/page.dart';
+import 'package:movie/views/tvdetail_page/page.dart';
 import 'action.dart';
 import 'state.dart';
 
 Effect<PeopleDetailPageState> buildEffect() {
   return combineEffects(<Object, Effect<PeopleDetailPageState>>{
     PeopleDetailPageAction.action: _onAction,
+    PeopleDetailPageAction.cellTapped: _cellTapped,
     Lifecycle.initState: _onInit,
   });
 }
@@ -37,4 +42,22 @@ Future _onInit(Action action, Context<PeopleDetailPageState> ctx) async {
       ctx.dispatch(PeopleDetailPageActionCreator.onSetCreditModel(r2, cast));
     }
   });
+}
+
+void _cellTapped(Action action, Context<PeopleDetailPageState> ctx) async {
+  final MediaType type = action.payload[4];
+  final int id = action.payload[0];
+  final String bgpic = action.payload[1];
+  final String title = action.payload[2];
+  final String posterpic = action.payload[3];
+  final String pagename =
+      type == MediaType.movie ? 'detailpage' : 'tvdetailpage';
+  var data = {
+    type == MediaType.movie ? 'id' : 'tvid': id,
+    'bgpic': type == MediaType.movie ? posterpic : bgpic,
+    type == MediaType.movie ? 'title' : 'name': title,
+    'posterpic': posterpic
+  };
+  //Page page = type == MediaType.movie ? MovieDetailPage() : TVDetailPage();
+  await Navigator.of(ctx.context).pushNamed(pagename, arguments: data);
 }

@@ -160,56 +160,78 @@ Widget buildView(
 
       Widget _buildEpisodeCell(Episode d) {
         return InkWell(
-          onTap: () =>
-              dispatch(SeasonLinkPageActionCreator.onEpisodeCellTapped(d)),
-          child: Container(
-            padding: EdgeInsets.only(bottom: Adapt.px(30)),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  width: Adapt.px(220),
-                  height: Adapt.px(130),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(Adapt.px(10)),
-                      color: _theme.primaryColorDark,
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: CachedNetworkImageProvider(
-                              ImageUrl.getUrl(d.stillPath, ImageSize.w300)))),
-                ),
-                SizedBox(width: Adapt.px(20)),
-                Container(
-                    width: Adapt.screenW() - Adapt.px(300),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text.rich(
-                          TextSpan(children: <TextSpan>[
-                            TextSpan(
-                                text: '${d.episodeNumber}. ',
-                                style: TextStyle(fontSize: Adapt.px(28))),
-                            TextSpan(
-                                text: '${d.name}',
-                                style: TextStyle(
-                                    fontSize: Adapt.px(28),
-                                    fontWeight: FontWeight.w800)),
-                          ]),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        SizedBox(height: Adapt.px(5)),
-                        Text(
-                          '${d.overview}',
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                        )
-                      ],
-                    ))
-              ],
-            ),
-          ),
-        );
+            key: ValueKey('Episode${d.id}'),
+            onTap: () =>
+                dispatch(SeasonLinkPageActionCreator.onEpisodeCellTapped(d)),
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: Adapt.px(8)),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Stack(
+                    children: <Widget>[
+                      Container(
+                        width: Adapt.px(220),
+                        height: Adapt.px(130),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(Adapt.px(10)),
+                            color: _theme.primaryColorDark,
+                            image: DecorationImage(
+                                colorFilter: d.streamLink == null
+                                    ? ColorFilter.mode(
+                                        Colors.grey, BlendMode.color)
+                                    : null,
+                                fit: BoxFit.cover,
+                                image: CachedNetworkImageProvider(
+                                    ImageUrl.getUrl(
+                                        d.stillPath, ImageSize.w300)))),
+                      ),
+                      d.streamLink != null && !d.playState
+                          ? Container(
+                              width: Adapt.px(25),
+                              height: Adapt.px(25),
+                              transform: Matrix4.translationValues(
+                                  Adapt.px(204), -Adapt.px(8), 0),
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border:
+                                      Border.all(color: Colors.white, width: 2),
+                                  color: Colors.orangeAccent),
+                            )
+                          : SizedBox()
+                    ],
+                  ),
+                  SizedBox(width: Adapt.px(20)),
+                  Container(
+                      width: Adapt.screenW() - Adapt.px(300),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text.rich(
+                            TextSpan(children: <TextSpan>[
+                              TextSpan(
+                                  text: '${d.episodeNumber}. ',
+                                  style: TextStyle(fontSize: Adapt.px(28))),
+                              TextSpan(
+                                  text: '${d.name}',
+                                  style: TextStyle(
+                                      fontSize: Adapt.px(28),
+                                      fontWeight: FontWeight.w800)),
+                            ]),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(height: Adapt.px(5)),
+                          Text(
+                            '${d.overview}',
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          )
+                        ],
+                      ))
+                ],
+              ),
+            ));
       }
 
       Widget _buildShimmerCell() {
@@ -285,10 +307,15 @@ Widget buildView(
                 ? MediaQuery.removePadding(
                     context: viewService.context,
                     removeTop: true,
-                    child: ListView(
+                    child: ListView.separated(
                       padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-                      children:
-                          f.episodes?.map(_buildEpisodeCell)?.toList() ?? [],
+                      itemCount: f.episodes?.length ?? 0,
+                      separatorBuilder: (_, __) => SizedBox(
+                        height: Adapt.px(14),
+                      ),
+                      itemBuilder: (_, i) {
+                        return _buildEpisodeCell(f.episodes[i]);
+                      },
                     ))
                 : _buildShimmerTabview();
           }).toList(),

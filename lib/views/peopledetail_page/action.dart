@@ -1,8 +1,15 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/combinedcredits.dart';
+import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/peopledetail.dart';
 
-enum PeopleDetailPageAction { action, init, setCreditModel, showBiography }
+enum PeopleDetailPageAction {
+  action,
+  init,
+  setCreditModel,
+  showBiography,
+  cellTapped
+}
 
 class PeopleDetailPageActionCreator {
   static Action onAction() {
@@ -19,5 +26,11 @@ class PeopleDetailPageActionCreator {
 
   static Action onShowBiography() {
     return Action(PeopleDetailPageAction.showBiography);
+  }
+
+  static Action onCellTapped(
+      int id, String bgpic, String name, String poster, MediaType type) {
+    return Action(PeopleDetailPageAction.cellTapped,
+        payload: [id, bgpic, name, poster, type]);
   }
 }

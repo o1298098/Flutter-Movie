@@ -110,8 +110,7 @@ class TVDetailModel {
     type = jsonRes['type'];
     createdBy = jsonRes['created_by'] == null ? null : [];
 
-    for (var created_byItem
-        in createdBy == null ? [] : jsonRes['created_by']) {
+    for (var created_byItem in createdBy == null ? [] : jsonRes['created_by']) {
       createdBy.add(created_byItem == null
           ? null
           : new CreatedBy.fromJson(created_byItem));
@@ -152,9 +151,8 @@ class TVDetailModel {
 
     productionCompanies = jsonRes['production_companies'] == null ? null : [];
 
-    for (var production_companiesItem in productionCompanies == null
-        ? []
-        : jsonRes['production_companies']) {
+    for (var production_companiesItem
+        in productionCompanies == null ? [] : jsonRes['production_companies']) {
       productionCompanies.add(production_companiesItem == null
           ? null
           : new ProductionCompanie.fromJson(production_companiesItem));
@@ -257,6 +255,7 @@ class Season {
   String overview;
   String posterPath;
   List<Episode> episodes;
+  List<String> playStates;
   CreditsModel credits;
 
   Season.fromParams(

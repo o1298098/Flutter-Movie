@@ -7,7 +7,9 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/combinedcredits.dart';
 import 'package:movie/models/enums/imagesize.dart';
+import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/style/themestyle.dart';
+import 'package:movie/views/peopledetail_page/action.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../style/themestyle.dart';
@@ -16,42 +18,51 @@ import 'state.dart';
 Widget buildView(
     KnownForState state, Dispatch dispatch, ViewService viewService) {
   final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
-  Widget _buildCastCell(CastData d) {
-    return Container(
-      key: ValueKey('knowforCell${d.id}'),
-      margin: EdgeInsets.only(left: Adapt.px(20)),
-      width: Adapt.px(240),
-      height: Adapt.px(400),
-      child: Card(
-        elevation: 1.0,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              width: Adapt.px(240),
-              height: Adapt.px(342),
-              decoration: BoxDecoration(
-                  color: _theme.primaryColorLight,
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: CachedNetworkImageProvider(
-                        ImageUrl.getUrl(d.posterPath, ImageSize.w300)),
-                  )),
+  Widget _buildknowforCell(CastData d) {
+    return GestureDetector(
+        key: ValueKey('knowforCell${d.id}'),
+        onTap: () => dispatch(PeopleDetailPageActionCreator.onCellTapped(
+            d.id,
+            d.backdropPath,
+            d.title ?? d.name,
+            d.posterPath,
+            d.mediaType == 'movie' ? MediaType.movie : MediaType.person)),
+        child: Container(
+          margin: EdgeInsets.only(left: Adapt.px(20)),
+          width: Adapt.px(240),
+          height: Adapt.px(400),
+          child: Card(
+            elevation: 1.0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  width: Adapt.px(240),
+                  height: Adapt.px(342),
+                  decoration: BoxDecoration(
+                      color: _theme.primaryColorLight,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: CachedNetworkImageProvider(
+                            ImageUrl.getUrl(d.posterPath, ImageSize.w300)),
+                      )),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: Adapt.px(15),
+                      left: Adapt.px(20),
+                      right: Adapt.px(20)),
+                  child: Text(
+                    d.title ?? d.name,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: Adapt.px(26)),
+                  ),
+                )
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: Adapt.px(15), left: Adapt.px(20), right: Adapt.px(20)),
-              child: Text(
-                d.title ?? d.name,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: Adapt.px(26)),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 
   Widget _buildShimmerCell() {
@@ -91,7 +102,7 @@ Widget buildView(
         height: Adapt.px(480),
         child: ListView(
           scrollDirection: Axis.horizontal,
-          children: state.cast.take(8).map(_buildCastCell).toList(),
+          children: state.cast.take(8).map(_buildknowforCell).toList(),
         ),
       );
     else

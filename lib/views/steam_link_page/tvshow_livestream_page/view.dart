@@ -385,6 +385,7 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
             SizedBox(
               height: Adapt.px(130),
               child: ListView(
+                  physics: ClampingScrollPhysics(),
                   controller: state.episodelistController,
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,

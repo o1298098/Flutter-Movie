@@ -49,11 +49,13 @@ class _StreamLinkReportDialogState extends State<StreamLinkReportDialog> {
   }
 
   _submit() {
-    if (_radioGroup == 'other')
-      widget.report.content = _textEditingController.text;
-    else
-      widget.report.content = _radioGroup;
-    BaseApi.sendStreamLinkReport(widget.report);
+    if (_radioGroup != null) {
+      if (_radioGroup == 'other')
+        widget.report.content = _textEditingController.text;
+      else
+        widget.report.content = _radioGroup;
+      BaseApi.sendStreamLinkReport(widget.report);
+    }
     Navigator.of(context).pop();
   }
 
