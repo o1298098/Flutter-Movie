@@ -8,6 +8,7 @@ import 'shimmercell_component/state.dart';
 
 class TVListState extends MutableSource implements Cloneable<TVListState> {
   VideoListModel tvcoming;
+  int page;
   ScrollController tvController;
   @override
   TVListState clone() {
@@ -47,6 +48,7 @@ class TVListConnector extends ConnOp<ComingPageState, TVListState> {
     TVListState substate = new TVListState();
     substate.tvcoming = state.tvcoming;
     substate.tvController = state.tvController;
+    substate.page = state.tvPage;
     return substate;
   }
 

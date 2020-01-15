@@ -158,7 +158,8 @@ Widget buildView(
     }
   }
 
-  return Column(
+  return SliverToBoxAdapter(
+      child: Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       Padding(
@@ -183,5 +184,5 @@ Widget buildView(
           )),
       _buildCell()
     ],
-  );
+  ));
 }

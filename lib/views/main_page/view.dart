@@ -59,7 +59,10 @@ Widget buildView(
                 Icons.account_circle,
                 size: Adapt.px(44),
               ),
-              title: Text(I18n.of(context).account),
+              title: Text(
+                I18n.of(context).account,
+                key: ValueKey(I18n.of(context).account),
+              ),
             ),
           ],
           currentIndex: state.selectedIndex,

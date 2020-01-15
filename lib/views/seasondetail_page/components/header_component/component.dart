@@ -6,10 +6,15 @@ import 'view.dart';
 class HeaderComponent extends Component<HeaderState> {
   HeaderComponent()
       : super(
-            view: buildView,
-            dependencies: Dependencies<HeaderState>(
-                adapter: null,
-                slots: <String, Dependent<HeaderState>>{
-                }),);
-
+          shouldUpdate: (oldState, newState) {
+            return oldState.airDate != newState.airDate ||
+                oldState.name != newState.name ||
+                oldState.overwatch != newState.overwatch ||
+                oldState.posterurl != newState.posterurl ||
+                oldState.seasonNumber != newState.seasonNumber;
+          },
+          view: buildView,
+          dependencies: Dependencies<HeaderState>(
+              adapter: null, slots: <String, Dependent<HeaderState>>{}),
+        );
 }

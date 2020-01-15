@@ -8,12 +8,13 @@ import 'view.dart';
 class KnownForComponent extends Component<KnownForState> {
   KnownForComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<KnownForState>(
-                adapter: null,
-                slots: <String, Dependent<KnownForState>>{
-                }),);
-
+          shouldUpdate: (olditem, newitem) {
+            return newitem.cast != olditem.cast;
+          },
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<KnownForState>(
+              adapter: null, slots: <String, Dependent<KnownForState>>{}),
+        );
 }

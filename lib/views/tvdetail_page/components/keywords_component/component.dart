@@ -8,12 +8,13 @@ import 'view.dart';
 class KeyWordsComponent extends Component<KeyWordsState> {
   KeyWordsComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<KeyWordsState>(
-                adapter: null,
-                slots: <String, Dependent<KeyWordsState>>{
-                }),);
-
+          shouldUpdate: (oldState, newState) {
+            return oldState.keywords != newState.keywords;
+          },
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<KeyWordsState>(
+              adapter: null, slots: <String, Dependent<KeyWordsState>>{}),
+        );
 }

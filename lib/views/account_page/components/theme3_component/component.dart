@@ -8,12 +8,11 @@ import 'view.dart';
 class Theme3Component extends Component<Theme3State> {
   Theme3Component()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<Theme3State>(
-                adapter: null,
-                slots: <String, Dependent<Theme3State>>{
-                }),);
-
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          clearOnDependenciesChanged: true,
+          dependencies: Dependencies<Theme3State>(
+              adapter: null, slots: <String, Dependent<Theme3State>>{}),
+        );
 }

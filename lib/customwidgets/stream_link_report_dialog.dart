@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/base_api.dart';
 import 'package:movie/models/base_api_model/stream_link_report.dart';
-import 'package:movie/models/enums/streamlink_type.dart';
 
 class StreamLinkReportDialog extends StatefulWidget {
   final StreamLinkReport report;

@@ -8,12 +8,15 @@ import 'view.dart';
 class TimeLineComponent extends Component<TimeLineState> {
   TimeLineComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<TimeLineState>(
-                adapter: null,
-                slots: <String, Dependent<TimeLineState>>{
-                }),);
-
+          shouldUpdate: (olditem, newitem) {
+            return newitem.creditsModel != olditem.creditsModel ||
+                newitem.department != olditem.department ||
+                olditem.showmovie != newitem.showmovie;
+          },
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<TimeLineState>(
+              adapter: null, slots: <String, Dependent<TimeLineState>>{}),
+        );
 }

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/models/combinedcredits.dart';
 import 'package:movie/models/enums/media_type.dart';
-import 'package:movie/views/detail_page/page.dart';
-import 'package:movie/views/tvdetail_page/page.dart';
 import 'action.dart';
 import 'state.dart';
 

@@ -169,6 +169,7 @@ Widget buildView(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Stack(
+                    overflow: Overflow.visible,
                     children: <Widget>[
                       Container(
                         width: Adapt.px(220),
@@ -187,18 +188,20 @@ Widget buildView(
                                         d.stillPath, ImageSize.w300)))),
                       ),
                       d.streamLink != null && !d.playState
-                          ? Container(
-                              width: Adapt.px(25),
-                              height: Adapt.px(25),
-                              transform: Matrix4.translationValues(
-                                  Adapt.px(204), -Adapt.px(8), 0),
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border:
-                                      Border.all(color: Colors.white, width: 2),
-                                  color: Colors.orangeAccent),
-                            )
-                          : SizedBox()
+                          ? Positioned(
+                              top: -5,
+                              right: -5,
+                              child: Container(
+                                width: Adapt.px(25),
+                                height: Adapt.px(25),
+                                //transform: Matrix4.translationValues(Adapt.px(204), -Adapt.px(8), 0),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: Colors.white, width: 2),
+                                    color: Colors.orangeAccent),
+                              ))
+                          : const SizedBox()
                     ],
                   ),
                   SizedBox(width: Adapt.px(20)),

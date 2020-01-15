@@ -9,6 +9,10 @@ import 'view.dart';
 class TVListComponent extends Component<TVListState> {
   TVListComponent()
       : super(
+          shouldUpdate: (oldState, newState) {
+            return oldState.page != newState.page;
+          },
+          clearOnDependenciesChanged: true,
           effect: buildEffect(),
           reducer: buildReducer(),
           view: buildView,

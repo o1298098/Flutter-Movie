@@ -13,26 +13,18 @@ import 'package:movie/customwidgets/videoplayeritem.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/enums/imagesize.dart';
-import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/videolist.dart';
-import 'package:movie/models/videomodel.dart';
 import 'package:movie/style/themestyle.dart';
-import 'package:parallax_image/parallax_image.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:video_player/video_player.dart';
 
 import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
     TVDetailPageState state, Dispatch dispatch, ViewService viewService) {
-  final Random random = new Random(DateTime.now().millisecondsSinceEpoch);
   final s = state.tvDetailModel;
   //var dominantColor = state.palette?.dominantColor?.color ?? Colors.black38;
   final dominantColor = state.mainColor;
-  double evote = 0.0;
-  List<ImageData> _allimage;
 
   Widget _buildRecommendationCell(VideoListResult d) {
     return GestureDetector(
@@ -104,434 +96,8 @@ Widget buildView(
     );
   }
 
-  Widget _buildVideoCell(VideoResult d) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(Adapt.px(30), 0, Adapt.px(30), Adapt.px(30)),
-      child: Card(
-        elevation: 2.0,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            VideoPlayerItem(
-              vc: VideoPlayerController.network(VideoUrl.getUrl(d.key, d.site)),
-              coverurl: 'https://i.ytimg.com/vi/${d.key}/hqdefault.jpg',
-              showplayer: true,
-            ),
-            Padding(
-              padding: EdgeInsets.all(Adapt.px(20)),
-              child: Text(
-                d.name,
-                style: TextStyle(
-                    fontSize: Adapt.px(35), fontWeight: FontWeight.w500),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildShimmerVideoCell() {
-    return Container(
-      padding: EdgeInsets.fromLTRB(Adapt.px(30), 0, Adapt.px(30), Adapt.px(30)),
-      child: Shimmer.fromColors(
-        highlightColor: Colors.grey[100],
-        baseColor: Colors.grey[200],
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              height: Adapt.px(10),
-            ),
-            Container(
-              height: (Adapt.screenW() - Adapt.px(60)) * 9 / 16,
-              color: Colors.grey[200],
-            ),
-            SizedBox(
-              height: Adapt.px(20),
-            ),
-            Container(
-              height: Adapt.px(35),
-              color: Colors.grey[200],
-            ),
-            SizedBox(
-              height: Adapt.px(8),
-            ),
-            Container(
-              margin: EdgeInsets.only(right: Adapt.px(200)),
-              height: Adapt.px(35),
-              color: Colors.grey[200],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildShimmerImageCell(double h) {
-    double w = (Adapt.screenW() - Adapt.px(100)) / 2;
-    return Shimmer.fromColors(
-      baseColor: Colors.grey[200],
-      highlightColor: Colors.grey[100],
-      child: Container(
-        width: w,
-        height: h,
-        color: Colors.grey[200],
-      ),
-    );
-  }
-
-  Widget _buildImageCell(int index) {
-    var d = _allimage[index];
-    double w = (Adapt.screenW() - Adapt.px(100)) / 2;
-    double h = w / d.aspectRatio;
-    return GestureDetector(
-      key: ValueKey(d.filePath),
-      onTap: () => dispatch(
-          TVDetailPageActionCreator.onImageCellTapped(index, _allimage)),
-      child: Container(
-        width: w,
-        height: h,
-        decoration: BoxDecoration(
-          color: Color.fromRGBO(random.nextInt(255), random.nextInt(255),
-              random.nextInt(255), random.nextDouble()),
-        ),
-        child: ParallaxImage(
-            extent: h,
-            image: CachedNetworkImageProvider(
-                ImageUrl.getUrl(d.filePath, ImageSize.w400))),
-      ),
-    );
-  }
-
-  Widget _getVideoBody() {
-    if (state.videomodel.results.length > 0)
-      return SliverList(
-          delegate:
-              SliverChildBuilderDelegate((BuildContext contxt, int index) {
-        return _buildVideoCell(state.videomodel.results[index]);
-      }, childCount: state.videomodel.results.length));
-    else
-      return SliverList(
-          delegate:
-              SliverChildBuilderDelegate((BuildContext contxt, int index) {
-        return _buildShimmerVideoCell();
-      }, childCount: 3));
-  }
-
-  Widget _getImageBody() {
-    var hset = new HashSet<ImageData>()
-      ..addAll(state.imagesmodel.backdrops)
-      ..addAll(state.imagesmodel.posters);
-    _allimage = hset.toList();
-    if (_allimage.length > 0)
-      return SliverStaggeredGrid.countBuilder(
-        crossAxisCount: 4,
-        staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
-        mainAxisSpacing: Adapt.px(20),
-        crossAxisSpacing: Adapt.px(20),
-        itemCount: _allimage.length,
-        itemBuilder: (BuildContext contxt, int index) {
-          return _buildImageCell(index);
-        },
-      );
-    else
-      return SliverStaggeredGrid.countBuilder(
-        crossAxisCount: 4,
-        staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
-        mainAxisSpacing: Adapt.px(20),
-        crossAxisSpacing: Adapt.px(20),
-        itemCount: 6,
-        itemBuilder: (BuildContext contxt, int index) {
-          return _buildShimmerImageCell(80.0 * index);
-        },
-      );
-  }
-
   return Builder(builder: (context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
-    Widget _getTitle() {
-      if (state.name == null)
-        return SizedBox(
-            child: Shimmer.fromColors(
-          baseColor: _theme.primaryColorDark,
-          highlightColor: _theme.primaryColorLight,
-          child: Container(
-            height: Adapt.px(50),
-            width: Adapt.px(200),
-            color: Colors.grey[200],
-          ),
-        ));
-      else
-        return RichText(
-          text: TextSpan(children: <TextSpan>[
-            TextSpan(
-                text: state.name,
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: Adapt.px(50),
-                    color: Colors.white,
-                    shadows: <Shadow>[
-                      Shadow(
-                        offset: Offset(2.0, 2.0),
-                        blurRadius: 2.0,
-                        color: Colors.black,
-                      ),
-                    ])),
-            TextSpan(
-                text: s.name == null
-                    ? ' (-)'
-                    : ' (${DateTime.tryParse(s.firstAirDate)?.year.toString()})',
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: Adapt.px(30),
-                    color: Colors.grey[400],
-                    shadows: <Shadow>[
-                      Shadow(
-                        offset: Offset(2.0, 2.0),
-                        blurRadius: 2.0,
-                        color: Colors.black,
-                      ),
-                    ])),
-          ]),
-        );
-    }
-
-    Widget _getPosterPic() {
-      if (state.posterPic == null)
-        return SizedBox(
-            child: Shimmer.fromColors(
-          baseColor: _theme.primaryColorDark,
-          highlightColor: _theme.primaryColorLight,
-          child: Container(
-            height: Adapt.px(300),
-            width: Adapt.px(200),
-            color: Colors.grey[400],
-          ),
-        ));
-      else
-        return Card(
-          elevation: 20.0,
-          child: CachedNetworkImage(
-            height: Adapt.px(300),
-            width: Adapt.px(200),
-            fit: BoxFit.cover,
-            imageUrl: ImageUrl.getUrl(state.posterPic, ImageSize.w300),
-            placeholder: (c, s) {
-              return Container(
-                height: Adapt.px(300),
-                width: Adapt.px(200),
-                color: Colors.grey,
-              );
-            },
-          ),
-        );
-    }
-
-    Widget _buildHeader() {
-      return Container(
-        child: Stack(
-          children: <Widget>[
-            Container(
-              width: Adapt.screenW(),
-              height: Adapt.px(400),
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      colorFilter:
-                          ColorFilter.mode(dominantColor, BlendMode.color),
-                      image: CachedNetworkImageProvider(state.backdropPic ==
-                              null
-                          ? ImageUrl.emptyimage
-                          : ImageUrl.getUrl(state.backdropPic, ImageSize.w500)),
-                      fit: BoxFit.cover)),
-            ),
-            Container(
-              width: Adapt.screenW(),
-              height: Adapt.px(401),
-              color: dominantColor.withOpacity(.8),
-            ),
-            Container(
-              alignment: Alignment.bottomLeft,
-              padding: EdgeInsets.fromLTRB(
-                  Adapt.px(30), Adapt.px(180), Adapt.px(30), Adapt.px(220)),
-              child: Row(
-                children: <Widget>[
-                  _getPosterPic(),
-                  SizedBox(
-                    width: Adapt.px(20),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(top: Adapt.px(150)),
-                    width: Adapt.screenW() * 0.6,
-                    child: _getTitle(),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              alignment: Alignment.bottomLeft,
-              padding: EdgeInsets.only(bottom: Adapt.px(120)),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Container(
-                    child: Row(
-                      children: <Widget>[
-                        AnimatedBuilder(
-                          animation: state.animationController,
-                          builder: (ctx, widget) {
-                            var animate = Tween<double>(
-                                    begin: 0.0, end: s.voteAverage ?? evote)
-                                .animate(CurvedAnimation(
-                                  parent: state.animationController,
-                                  curve: Curves.ease,
-                                ))
-                                .value;
-                            return Stack(
-                              children: <Widget>[
-                                Container(
-                                    width: Adapt.px(80),
-                                    height: Adapt.px(80),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            Adapt.px(40))),
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 6.0,
-                                      valueColor:
-                                          new AlwaysStoppedAnimation<Color>(
-                                              VoteColorHelper.getColor(
-                                                  animate)),
-                                      backgroundColor: Colors.grey,
-                                      value: animate / 10,
-                                    )),
-                                Container(
-                                    width: Adapt.px(80),
-                                    height: Adapt.px(80),
-                                    child: Center(
-                                      child: Text(
-                                        (animate * 10).floor().toString() + '%',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: Adapt.px(28),
-                                            color: Colors.white),
-                                      ),
-                                    ))
-                              ],
-                            );
-                          },
-                        ),
-                        SizedBox(
-                          width: Adapt.px(30),
-                        ),
-                        Text(I18n.of(viewService.context).userScore,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: Adapt.px(30),
-                                color: Colors.white))
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: 1,
-                    height: Adapt.px(40),
-                    color: Colors.grey[400],
-                  ),
-                  InkWell(
-                    onTap: () =>
-                        dispatch(TVDetailPageActionCreator.onPlayTapped()),
-                    child: Container(
-                      width: Adapt.px(180),
-                      child: Row(
-                        children: <Widget>[
-                          Icon(Icons.play_arrow, color: Colors.white),
-                          SizedBox(
-                            width: Adapt.px(10),
-                          ),
-                          Text(I18n.of(viewService.context).play,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: Adapt.px(30),
-                                  color: Colors.white))
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-      );
-    }
-
-    Widget _getOverWatch() {
-      if (state.tvDetailModel.overview == null)
-        return SizedBox(
-            child: Shimmer.fromColors(
-          baseColor: _theme.primaryColorDark,
-          highlightColor: _theme.primaryColorLight,
-          child: Container(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(left: Adapt.px(60)),
-                  color: Colors.grey[200],
-                  height: Adapt.px(30),
-                ),
-                SizedBox(
-                  height: Adapt.px(10),
-                ),
-                Container(
-                  color: Colors.grey[200],
-                  height: Adapt.px(30),
-                ),
-                SizedBox(
-                  height: Adapt.px(10),
-                ),
-                Container(
-                  color: Colors.grey[200],
-                  height: Adapt.px(30),
-                ),
-                SizedBox(
-                  height: Adapt.px(10),
-                ),
-                Container(
-                  color: Colors.grey[200],
-                  height: Adapt.px(30),
-                ),
-                SizedBox(
-                  height: Adapt.px(10),
-                ),
-                Container(
-                  color: Colors.grey[200],
-                  height: Adapt.px(30),
-                ),
-                SizedBox(
-                  height: Adapt.px(10),
-                ),
-                Container(
-                  color: Colors.grey[200],
-                  height: Adapt.px(30),
-                ),
-                SizedBox(
-                  height: Adapt.px(10),
-                ),
-                Container(
-                  color: Colors.grey[200],
-                  height: Adapt.px(30),
-                ),
-              ],
-            ),
-          ),
-        ));
-      else
-        return Text(s.overview,
-            style: TextStyle(
-                height: 1.2,
-                fontSize: Adapt.px(30),
-                fontWeight: FontWeight.w400));
-    }
 
     Widget _buildCreditsShimmerCell() {
       return SizedBox(
@@ -728,9 +294,6 @@ Widget buildView(
                                 color: _theme.backgroundColor,
                                 child: TabBar(
                                   labelColor: _theme.tabBarTheme.labelColor,
-                                  /*indicatorColor:
-                                      state.palette.lightVibrantColor?.color ??
-                                          Colors.black,*/
                                   indicatorColor: state.tabTintColor,
                                   indicatorSize: TabBarIndicatorSize.label,
                                   isScrollable: true,
@@ -755,7 +318,7 @@ Widget buildView(
                           ),
                           flexibleSpace: FlexibleSpaceBar(
                             centerTitle: false,
-                            background: _buildHeader(),
+                            background: viewService.buildComponent('header'),
                           )),
                     )
                   ];
@@ -769,28 +332,7 @@ Widget buildView(
                               NestedScrollView.sliverOverlapAbsorberHandleFor(
                                   context),
                         ),
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(
-                                Adapt.px(30), Adapt.px(30), Adapt.px(30), 0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(I18n.of(viewService.context).overView,
-                                    style: TextStyle(
-                                        fontSize: Adapt.px(40),
-                                        fontWeight: FontWeight.w800)),
-                                SizedBox(
-                                  height: Adapt.px(30),
-                                ),
-                                _getOverWatch(),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SliverToBoxAdapter(
-                          child: viewService.buildComponent('featuredCrew'),
-                        ),
+                        viewService.buildComponent('tvInfo'),
                         SliverToBoxAdapter(
                             child: AnimatedSwitcher(
                           switchInCurve: Curves.easeIn,
@@ -815,12 +357,8 @@ Widget buildView(
                             ],
                           ),
                         )),
-                        SliverToBoxAdapter(
-                          child: viewService.buildComponent('currentSeason'),
-                        ),
-                        SliverToBoxAdapter(
-                          child: viewService.buildComponent('keywords'),
-                        ),
+                        viewService.buildComponent('currentSeason'),
+                        viewService.buildComponent('keywords'),
                         SliverToBoxAdapter(
                             child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -843,96 +381,12 @@ Widget buildView(
                             ),
                           ],
                         )),
-                        SliverToBoxAdapter(
-                          child: viewService.buildComponent('info'),
-                        ),
+                        viewService.buildComponent('info'),
                       ]);
                     })),
-                    Container(child: Builder(builder: (BuildContext context) {
-                      return CustomScrollView(slivers: <Widget>[
-                        SliverOverlapInjector(
-                          handle:
-                              NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                  context),
-                        ),
-                        _getVideoBody()
-                      ]);
-                    })),
-                    Container(child: Builder(builder: (BuildContext context) {
-                      return CustomScrollView(slivers: <Widget>[
-                        SliverOverlapInjector(
-                          handle:
-                              NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                  context),
-                        ),
-                        _getImageBody()
-                      ]);
-                    })),
-                    Container(child: Builder(builder: (BuildContext context) {
-                      return CustomScrollView(slivers: <Widget>[
-                        SliverOverlapInjector(
-                          handle:
-                              NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                  context),
-                        ),
-                        SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                              (BuildContext contxt, int index) {
-                            return GestureDetector(
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(Adapt.px(30), 0,
-                                    Adapt.px(30), Adapt.px(30)),
-                                child: Card(
-                                  child: Container(
-                                    padding: EdgeInsets.all(Adapt.px(30)),
-                                    height: 300,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          'A Review by ${state.reviewModel.results[index].author}',
-                                          style: TextStyle(
-                                              fontSize: Adapt.px(30),
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                        SizedBox(
-                                          height: Adapt.px(20),
-                                        ),
-                                        new Expanded(
-                                          child: new LayoutBuilder(builder:
-                                              (BuildContext context,
-                                                  BoxConstraints constraints) {
-                                            print(constraints);
-                                            return new Text(
-                                              state.reviewModel.results[index]
-                                                  .content,
-                                              overflow: TextOverflow.fade,
-                                              maxLines: (constraints.maxHeight /
-                                                      Theme.of(context)
-                                                          .textTheme
-                                                          .body1
-                                                          .fontSize)
-                                                  .floor(),
-                                            );
-                                          }),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              onTap: () async {
-                                var url = state.reviewModel.results[index].url;
-                                if (await canLaunch(url)) {
-                                  await launch(url);
-                                }
-                              },
-                            );
-                          }, childCount: state.reviewModel.results.length),
-                        ),
-                      ]);
-                    })),
+                    viewService.buildComponent('videos'),
+                    viewService.buildComponent('images'),
+                    viewService.buildComponent('reviews'),
                   ],
                 ))));
   });

@@ -1,22 +1,26 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/tvdetail.dart';
 import 'package:movie/views/tvdetail_page/state.dart';
 
-class FeatureCrewState implements Cloneable<FeatureCrewState> {
- 
-List<CreatedBy> createdBy;
+class TvInfoState implements Cloneable<TvInfoState> {
+  String overView;
+  List<CreatedBy> createdBy;
+  List<CastData> cast;
 
   @override
-  FeatureCrewState clone() {
-    return FeatureCrewState();
+  TvInfoState clone() {
+    return TvInfoState();
   }
 }
 
-class FeatureCrewConnector extends ConnOp<TVDetailPageState,FeatureCrewState>{
+class TvInfoConnector extends ConnOp<TVDetailPageState, TvInfoState> {
   @override
-  FeatureCrewState get(TVDetailPageState state) {
-    FeatureCrewState substate=new FeatureCrewState();
-    substate.createdBy=state.tvDetailModel.createdBy??List<CreatedBy>();
+  TvInfoState get(TVDetailPageState state) {
+    TvInfoState substate = new TvInfoState();
+    substate.createdBy = state.tvDetailModel.createdBy ?? List<CreatedBy>();
+    substate.overView = state.tvDetailModel?.overview;
+    substate.cast = state.tvDetailModel?.credits?.cast;
     return substate;
   }
 }

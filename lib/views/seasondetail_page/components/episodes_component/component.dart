@@ -8,12 +8,13 @@ import 'view.dart';
 class EpisodesComponent extends Component<EpisodesState> {
   EpisodesComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<EpisodesState>(
-                adapter: null,
-                slots: <String, Dependent<EpisodesState>>{
-                }),);
-
+          shouldUpdate: (oldState, newState) {
+            return oldState.episodes != newState.episodes;
+          },
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<EpisodesState>(
+              adapter: null, slots: <String, Dependent<EpisodesState>>{}),
+        );
 }

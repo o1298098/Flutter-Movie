@@ -8,12 +8,15 @@ import 'view.dart';
 class MenuComponent extends Component<MenuState> {
   MenuComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<MenuState>(
-                adapter: null,
-                slots: <String, Dependent<MenuState>>{
-                }),);
-
+          shouldUpdate: (oldState, newState) {
+            return oldState.accountState != newState.accountState ||
+                oldState.backdropPic != newState.backdropPic ||
+                oldState.detail != newState.detail;
+          },
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<MenuState>(
+              adapter: null, slots: <String, Dependent<MenuState>>{}),
+        );
 }

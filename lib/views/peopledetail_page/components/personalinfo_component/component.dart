@@ -8,12 +8,13 @@ import 'view.dart';
 class PersonalInfoComponent extends Component<PersonalInfoState> {
   PersonalInfoComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<PersonalInfoState>(
-                adapter: null,
-                slots: <String, Dependent<PersonalInfoState>>{
-                }),);
-
+          shouldUpdate: (olditem, newitem) {
+            return newitem.peopleDetailModel != olditem.peopleDetailModel;
+          },
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<PersonalInfoState>(
+              adapter: null, slots: <String, Dependent<PersonalInfoState>>{}),
+        );
 }

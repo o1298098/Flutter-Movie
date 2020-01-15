@@ -143,7 +143,10 @@ Widget buildView(
                     arguments: {'accountid': state.acountIdV3}))),
             _buildGirdCell('images/chewbacca.png', 'Stream Links',
                 ontap: () {}),
-            _buildGirdCell('images/c3po.png', 'MyRated', ontap: () {}),
+            _buildGirdCell('images/c3po.png', 'MyRated',
+                ontap: () => dispatch(AccountPageActionCreator.navigatorPush(
+                    'testPage',
+                    arguments: {'accountid': state.acountIdV3}))),
             _buildGirdCell('images/r2d2.png', 'Settings',
                 ontap: () =>
                     dispatch(AccountPageActionCreator.settingCellTapped())),

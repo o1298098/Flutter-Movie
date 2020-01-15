@@ -8,12 +8,19 @@ import 'view.dart';
 class HeaderComponent extends Component<HeaderState> {
   HeaderComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<HeaderState>(
-                adapter: null,
-                slots: <String, Dependent<HeaderState>>{
-                }),);
-
+          shouldUpdate: (olditem, newitem) {
+            return newitem.biography != olditem.biography ||
+                newitem.birthday != olditem.birthday ||
+                newitem.character != olditem.character ||
+                newitem.deathday != newitem.deathday ||
+                newitem.peopleid != olditem.peopleid ||
+                newitem.profileName != olditem.profileName ||
+                newitem.profilePath != olditem.profilePath;
+          },
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<HeaderState>(
+              adapter: null, slots: <String, Dependent<HeaderState>>{}),
+        );
 }

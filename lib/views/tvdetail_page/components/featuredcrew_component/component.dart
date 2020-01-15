@@ -3,13 +3,14 @@ import 'package:fish_redux/fish_redux.dart';
 import 'state.dart';
 import 'view.dart';
 
-class FeatureCrewComponent extends Component<FeatureCrewState> {
-  FeatureCrewComponent()
+class TvInfoComponent extends Component<TvInfoState> {
+  TvInfoComponent()
       : super(
-            view: buildView,
-            dependencies: Dependencies<FeatureCrewState>(
-                adapter: null,
-                slots: <String, Dependent<FeatureCrewState>>{
-                }),);
-
+          shouldUpdate: (oldState, newState) {
+            return oldState.createdBy != newState.createdBy;
+          },
+          view: buildView,
+          dependencies: Dependencies<TvInfoState>(
+              adapter: null, slots: <String, Dependent<TvInfoState>>{}),
+        );
 }

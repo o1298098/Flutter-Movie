@@ -7,11 +7,17 @@ import 'view.dart';
 class CurrentSeasonComponent extends Component<CurrentSeasonState> {
   CurrentSeasonComponent()
       : super(
-            effect: buildEffect(),
-            view: buildView,
-            dependencies: Dependencies<CurrentSeasonState>(
-                adapter: null,
-                slots: <String, Dependent<CurrentSeasonState>>{
-                }),);
-
+          shouldUpdate: (oldState, newState) {
+            return oldState.lastToAirData != newState.lastToAirData ||
+                oldState.name != newState.name ||
+                oldState.nextToAirData != newState.nextToAirData ||
+                oldState.nowseason != newState.nowseason ||
+                oldState.seasons != newState.seasons ||
+                oldState.tvid != newState.tvid;
+          },
+          effect: buildEffect(),
+          view: buildView,
+          dependencies: Dependencies<CurrentSeasonState>(
+              adapter: null, slots: <String, Dependent<CurrentSeasonState>>{}),
+        );
 }

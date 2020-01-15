@@ -8,15 +8,12 @@ import 'view.dart';
 class MainPage extends Page<MainPageState, Map<String, dynamic>> {
   MainPage()
       : super(
-            initState: initState,
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<MainPageState>(
-                adapter: null,
-                slots: <String, Dependent<MainPageState>>{
-                }),
-            middleware: <Middleware<MainPageState>>[
-            ],);
-
+          initState: initState,
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<MainPageState>(
+              adapter: null, slots: <String, Dependent<MainPageState>>{}),
+          middleware: <Middleware<MainPageState>>[],
+        );
 }

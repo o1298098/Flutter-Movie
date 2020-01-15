@@ -295,8 +295,7 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
                   state.tvDetailModel.episodeRunTime == null ||
                           state.tvDetailModel.episodeRunTime?.length == 0
                       ? 'none'
-                      : state.tvDetailModel.episodeRunTime[0].toString() +
-                          'M'),
+                      : state.tvDetailModel.episodeRunTime[0].toString() + 'M'),
             ],
           ),
           SizedBox(
@@ -345,7 +344,8 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
     );
   }
 
-  return Container(
+  return SliverToBoxAdapter(
+      child: Container(
     padding: EdgeInsets.only(
         left: Adapt.px(30), right: Adapt.px(30), bottom: Adapt.px(70)),
     child: Column(
@@ -355,5 +355,5 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
         _getFacts(),
       ],
     ),
-  );
+  ));
 }

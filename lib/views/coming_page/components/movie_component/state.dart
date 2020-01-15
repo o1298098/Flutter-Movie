@@ -6,20 +6,20 @@ import 'package:movie/views/coming_page/state.dart';
 class MovieListState implements Cloneable<MovieListState> {
   VideoListModel moviecoming;
   ScrollController movieController;
+  int page;
   @override
   MovieListState clone() {
-    return MovieListState()
-    ..moviecoming
-    ..movieController;
+    return MovieListState();
   }
 }
 
-class MovieListConnector extends ConnOp<ComingPageState,MovieListState>{
+class MovieListConnector extends ConnOp<ComingPageState, MovieListState> {
   @override
   MovieListState get(ComingPageState state) {
-    MovieListState substate=new MovieListState();
-    substate.moviecoming=state.moviecoming;
-    substate.movieController=state.movieController;
+    MovieListState substate = new MovieListState();
+    substate.moviecoming = state.moviecoming;
+    substate.movieController = state.movieController;
+    substate.page = state.moviePage;
     return substate;
   }
 }

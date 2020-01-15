@@ -74,5 +74,5 @@ Widget buildView(
     );
   }
 
-  return _getKeyWordCell();
+  return SliverToBoxAdapter(child: _getKeyWordCell());
 }

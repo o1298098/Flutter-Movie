@@ -49,6 +49,7 @@ Widget buildView(
   }
 
   return Scaffold(
+      backgroundColor: Color(0xFFF0F0F0),
       appBar: AppBar(
         backgroundColor: state.themeColor,
         title: Text('${state?.locale?.languageCode}'),
@@ -78,6 +79,24 @@ Widget buildView(
               padding: EdgeInsets.all(Adapt.px(30)),
               color: Colors.amber,
               child: Text('input'),
+            ),
+          ),
+          SizedBox(height: Adapt.px(30)),
+          Container(
+            width: Adapt.px(100),
+            height: Adapt.px(100),
+            decoration: BoxDecoration(
+              color: Color(0xFFF0F0F0),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.white,
+                    offset: Offset(-Adapt.px(8), -Adapt.px(8)),
+                    blurRadius: Adapt.px(10)),
+                BoxShadow(
+                    color: Colors.grey[300],
+                    offset: Offset(Adapt.px(10), Adapt.px(10)),
+                    blurRadius: Adapt.px(10))
+              ],
             ),
           )
         ],

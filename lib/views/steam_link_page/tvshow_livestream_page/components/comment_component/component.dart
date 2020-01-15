@@ -8,6 +8,9 @@ import 'view.dart';
 class CommentComponent extends Component<CommentState> {
   CommentComponent()
       : super(
+          shouldUpdate: (oldState, newState) {
+            return oldState.comments != newState.comments;
+          },
           effect: buildEffect(),
           reducer: buildReducer(),
           view: buildView,

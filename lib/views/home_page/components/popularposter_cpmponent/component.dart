@@ -8,6 +8,11 @@ import 'view.dart';
 class PopularPosterComponent extends Component<PopularPosterState> {
   PopularPosterComponent()
       : super(
+          shouldUpdate: (oldState, newState) {
+            return oldState.popularMoives != newState.popularMoives ||
+                oldState.popularTVShows != newState.popularTVShows ||
+                oldState.showmovie != newState.showmovie;
+          },
           effect: buildEffect(),
           reducer: buildReducer(),
           view: buildView,

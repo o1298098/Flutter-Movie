@@ -8,12 +8,13 @@ import 'view.dart';
 class SeasonCastComponent extends Component<SeasonCastState> {
   SeasonCastComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<SeasonCastState>(
-                adapter: null,
-                slots: <String, Dependent<SeasonCastState>>{
-                }),);
-
+          shouldUpdate: (oldState, newState) {
+            return oldState.castData != newState.castData;
+          },
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<SeasonCastState>(
+              adapter: null, slots: <String, Dependent<SeasonCastState>>{}),
+        );
 }

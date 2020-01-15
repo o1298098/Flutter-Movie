@@ -11,7 +11,7 @@ Reducer<ComingPageState> buildReducer() {
       ComingPageAction.initMoviesComing: _onInitMoviesComing,
       ComingPageAction.initTVComing: _onInitTVComing,
       ComingPageAction.loadMore: _onLoadMore,
-      ComingPageAction.filterChanged:_onFilterChanged
+      ComingPageAction.filterChanged: _onFilterChanged
     },
   );
 }
@@ -26,6 +26,7 @@ ComingPageState _onInitMoviesComing(ComingPageState state, Action action) {
       VideoListModel.fromParams(results: List<VideoListResult>());
   final ComingPageState newState = state.clone();
   newState.moviecoming = q;
+  newState.moviePage = q.page;
   return newState;
 }
 
@@ -34,11 +35,12 @@ ComingPageState _onLoadMore(ComingPageState state, Action action) {
       VideoListModel.fromParams(results: List<VideoListResult>());
   final ComingPageState newState = state.clone();
   if (newState.showmovie) {
+    newState.moviePage = q.page;
     newState.moviecoming.page = q.page;
     newState.moviecoming.results.addAll(q.results);
-  }
-  else{
-     newState.tvcoming.page = q.page;
+  } else {
+    newState.tvPage = q.page;
+    newState.tvcoming.page = q.page;
     newState.tvcoming.results.addAll(q.results);
   }
   return newState;
@@ -49,12 +51,13 @@ ComingPageState _onInitTVComing(ComingPageState state, Action action) {
       VideoListModel.fromParams(results: List<VideoListResult>());
   final ComingPageState newState = state.clone();
   newState.tvcoming = q;
+  newState.tvPage = q.page;
   return newState;
 }
 
 ComingPageState _onFilterChanged(ComingPageState state, Action action) {
-  final bool b=action.payload??true;
+  final bool b = action.payload ?? true;
   final ComingPageState newState = state.clone();
-  newState.showmovie=b;
+  newState.showmovie = b;
   return newState;
 }

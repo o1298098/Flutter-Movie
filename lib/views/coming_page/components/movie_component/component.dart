@@ -8,12 +8,13 @@ import 'view.dart';
 class MovieListComponent extends Component<MovieListState> {
   MovieListComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<MovieListState>(
-                adapter: null,
-                slots: <String, Dependent<MovieListState>>{
-                }),);
-
+          shouldUpdate: (oldState, newState) {
+            return oldState.page != newState.page;
+          },
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<MovieListState>(
+              adapter: null, slots: <String, Dependent<MovieListState>>{}),
+        );
 }

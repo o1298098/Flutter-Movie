@@ -7,11 +7,12 @@ import 'view.dart';
 class InfoComponent extends Component<InfoState> {
   InfoComponent()
       : super(
-            view: buildView,
-            effect: buildEffect(),
-            dependencies: Dependencies<InfoState>(
-                adapter: null,
-                slots: <String, Dependent<InfoState>>{
-                }),);
-
+          shouldUpdate: (oldState, newState) {
+            return oldState.tvDetailModel != newState.tvDetailModel;
+          },
+          view: buildView,
+          effect: buildEffect(),
+          dependencies: Dependencies<InfoState>(
+              adapter: null, slots: <String, Dependent<InfoState>>{}),
+        );
 }

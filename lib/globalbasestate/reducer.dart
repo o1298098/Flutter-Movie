@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
+import 'package:movie/generated/i18n.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -32,6 +33,7 @@ GlobalState _onchangeThemeColor(GlobalState state, Action action) {
 
 GlobalState _onChangeLocale(GlobalState state, Action action) {
   final Locale l = action.payload;
+  I18n.locale = l;
   return state.clone()..locale = l;
 }
 
