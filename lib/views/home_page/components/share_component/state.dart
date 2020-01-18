@@ -9,7 +9,10 @@ class ShareState implements Cloneable<ShareState> {
   bool showShareMovie;
   @override
   ShareState clone() {
-    return ShareState();
+    return ShareState()
+      ..shareMovies = shareMovies
+      ..shareTvshows = shareTvshows
+      ..showShareMovie = showShareMovie;
   }
 }
 
@@ -21,5 +24,9 @@ class ShareConnector extends ConnOp<HomePageState, ShareState> {
     mstate.shareTvshows = state.shareTvshows;
     mstate.showShareMovie = state.showShareMovie;
     return mstate;
+  }
+
+  void set(HomePageState state, ShareState subState) {
+    state.showShareMovie = subState.showShareMovie;
   }
 }

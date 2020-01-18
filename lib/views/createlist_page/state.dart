@@ -1,14 +1,12 @@
-import 'dart:ui';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/state.dart';
+import 'package:movie/models/base_api_model/user_list.dart';
 
 class CreateListPageState
     implements GlobalBaseState, Cloneable<CreateListPageState> {
-  DocumentSnapshot listData;
+  UserList listData;
   String name;
   String backGroundUrl;
   String description;
@@ -40,10 +38,10 @@ class CreateListPageState
 
 CreateListPageState initState(Map<String, dynamic> args) {
   CreateListPageState state = CreateListPageState();
-  DocumentSnapshot _listData = args != null ? args['list'] : null;
+  UserList _listData = args != null ? args['list'] : null;
   state.listData = _listData;
-  state.name = _listData != null ? _listData.documentID : '';
-  state.backGroundUrl = _listData != null ? _listData['backGroundUrl'] : '';
-  state.description = _listData != null ? _listData['description'] : '';
+  state.name = _listData != null ? _listData.listName : '';
+  state.backGroundUrl = _listData != null ? _listData.backGroundUrl : '';
+  state.description = _listData != null ? _listData.description : '';
   return state;
 }

@@ -7,12 +7,13 @@ import 'view.dart';
 class EpisodeHeaderComponent extends Component<EpisodeHeaderState> {
   EpisodeHeaderComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<EpisodeHeaderState>(
-                adapter: null,
-                slots: <String, Dependent<EpisodeHeaderState>>{
-                }),);
-
+          shouldUpdate: (oldState, newState) {
+            return oldState.episode != newState.episode;
+          },
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<EpisodeHeaderState>(
+              adapter: null, slots: <String, Dependent<EpisodeHeaderState>>{}),
+        );
 }

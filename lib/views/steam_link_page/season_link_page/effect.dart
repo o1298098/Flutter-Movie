@@ -21,12 +21,12 @@ Effect<SeasonLinkPageState> buildEffect() {
 void _onAction(Action action, Context<SeasonLinkPageState> ctx) {}
 
 void _onInit(Action action, Context<SeasonLinkPageState> ctx) async {
-  final _seasons = ctx.state.detial.seasons.reversed.toList();
+  final _seasons = ctx.state.detail.seasons.reversed.toList();
   final Object ticker = ctx.stfState;
   ctx.state.tabController = TabController(
       vsync: ticker,
       initialIndex: 0,
-      length: ctx.state.detial?.seasons?.length ?? 0)
+      length: ctx.state.detail?.seasons?.length ?? 0)
     ..addListener(() {
       if (!ctx.state.tabController.indexIsChanging) {
         ctx.dispatch(SeasonLinkPageActionCreator.getSeasonDetial(
@@ -63,7 +63,7 @@ void _getSeasonDetail(Action action, Context<SeasonLinkPageState> ctx) async {
   final Season season = action.payload;
   if (season != null && season?.episodes == null) {
     final _episode = await ApiHelper.getTVSeasonDetail(
-        ctx.state.detial.id, season.seasonNumber,
+        ctx.state.detail.id, season.seasonNumber,
         appendToResponse: 'credits');
     if (_episode != null) {
       List<String> _playState =
@@ -73,7 +73,7 @@ void _getSeasonDetail(Action action, Context<SeasonLinkPageState> ctx) async {
       season.episodes = _episode.episodes;
       season.credits = _episode.credits;
       final _streamLinks = await BaseApi.getTvSeasonStreamLinks(
-          ctx.state.detial.id, season.seasonNumber);
+          ctx.state.detail.id, season.seasonNumber);
       season.episodes.forEach((f) {
         final index = season.episodes.indexOf(f);
         f.streamLink = _streamLinks.list.singleWhere((d) {
@@ -81,7 +81,7 @@ void _getSeasonDetail(Action action, Context<SeasonLinkPageState> ctx) async {
         }, orElse: () => null);
         f.playState = season.playStates[index] == '0' ? false : true;
       });
-      ctx.dispatch(SeasonLinkPageActionCreator.updateSeason(ctx.state.detial));
+      ctx.dispatch(SeasonLinkPageActionCreator.updateSeason(ctx.state.detail));
     }
   }
 }
@@ -90,7 +90,7 @@ void _onEpisodeCellTapped(
     Action action, Context<SeasonLinkPageState> ctx) async {
   final _episode = action.payload as Episode;
   if (_episode.streamLink != null) {
-    Season _season = ctx.state.detial.seasons.singleWhere(
+    Season _season = ctx.state.detail.seasons.singleWhere(
         (s) => s.seasonNumber == _episode.seasonNumber,
         orElse: () => null);
     if (_season == null) return;
@@ -103,15 +103,14 @@ void _onEpisodeCellTapped(
           .then((d) {
         if (d)
           ctx.dispatch(
-              SeasonLinkPageActionCreator.updateSeason(ctx.state.detial));
+              SeasonLinkPageActionCreator.updateSeason(ctx.state.detail));
       });
     }
     await Navigator.of(ctx.context)
         .pushNamed('tvShowLiveStreamPage', arguments: {
-      'tvid': ctx.state.detial.id,
-      'name': ctx.state.detial.name,
-      'season': ctx.state.detial.seasons
-          .singleWhere((d) => d.seasonNumber == _episode.seasonNumber),
+      'tvid': ctx.state.detail.id,
+      'name': ctx.state.detail.name,
+      'season': _season,
       'episode': _episode,
     });
   }

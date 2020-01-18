@@ -13,6 +13,7 @@ class PopularPosterComponent extends Component<PopularPosterState> {
                 oldState.popularTVShows != newState.popularTVShows ||
                 oldState.showmovie != newState.showmovie;
           },
+          clearOnDependenciesChanged: true,
           effect: buildEffect(),
           reducer: buildReducer(),
           view: buildView,

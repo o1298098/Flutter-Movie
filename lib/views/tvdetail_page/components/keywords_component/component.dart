@@ -11,6 +11,7 @@ class KeyWordsComponent extends Component<KeyWordsState> {
           shouldUpdate: (oldState, newState) {
             return oldState.keywords != newState.keywords;
           },
+          clearOnDependenciesChanged: true,
           effect: buildEffect(),
           reducer: buildReducer(),
           view: buildView,

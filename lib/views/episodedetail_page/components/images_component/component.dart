@@ -8,12 +8,13 @@ import 'view.dart';
 class ImagesComponent extends Component<ImagesState> {
   ImagesComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<ImagesState>(
-                adapter: null,
-                slots: <String, Dependent<ImagesState>>{
-                }),);
-
+          shouldUpdate: (oldState, newState) {
+            return oldState.images != newState.images;
+          },
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<ImagesState>(
+              adapter: null, slots: <String, Dependent<ImagesState>>{}),
+        );
 }

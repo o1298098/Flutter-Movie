@@ -4,7 +4,6 @@ import 'package:movie/models/base_api_model/user_media.dart';
 enum WatchlistPageAction {
   action,
   setTVShow,
-  widthChanged,
   swiperChanged,
   swiperCellTapped,
   setMovie,
@@ -17,10 +16,6 @@ class WatchlistPageActionCreator {
 
   static Action setTVShow(UserMediaModel d) {
     return Action(WatchlistPageAction.setTVShow, payload: d);
-  }
-
-  static Action widthChanged(bool d) {
-    return Action(WatchlistPageAction.widthChanged, payload: d);
   }
 
   static Action swiperChanged(UserMedia d) {

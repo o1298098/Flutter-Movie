@@ -1,7 +1,7 @@
-class SortCondition {
+class SortCondition<T> {
   String name;
   bool isSelected;
-  dynamic value;
+  T value;
 
-  SortCondition({this.name, this.isSelected,this.value});
+  SortCondition({this.name, this.isSelected, this.value});
 }

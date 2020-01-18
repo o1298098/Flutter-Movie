@@ -21,6 +21,6 @@ SeasonLinkPageState _onAction(SeasonLinkPageState state, Action action) {
 SeasonLinkPageState _updateSeason(SeasonLinkPageState state, Action action) {
   final TVDetailModel detail = action.payload;
   final SeasonLinkPageState newState = state.clone();
-  newState.detial = detail;
+  newState.detail = detail;
   return newState;
 }

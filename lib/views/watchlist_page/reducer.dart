@@ -9,7 +9,6 @@ Reducer<WatchlistPageState> buildReducer() {
     <Object, Reducer<WatchlistPageState>>{
       WatchlistPageAction.action: _onAction,
       WatchlistPageAction.setTVShow: _setTVShow,
-      WatchlistPageAction.widthChanged: _widthChanged,
       WatchlistPageAction.swiperChanged: _swiperChanged,
       WatchlistPageAction.setMovie: _setMovie,
     },
@@ -25,19 +24,6 @@ WatchlistPageState _setTVShow(WatchlistPageState state, Action action) {
   final UserMediaModel model = action.payload;
   final WatchlistPageState newState = state.clone();
   newState.tvshows = model;
-  return newState;
-}
-
-WatchlistPageState _widthChanged(WatchlistPageState state, Action action) {
-  final bool isMovie = action.payload ?? false;
-  final WatchlistPageState newState = state.clone();
-  newState.isMovie = isMovie;
-  if (isMovie && newState.movies?.data != null)
-    newState.selectMdeia = newState.movies.data[0];
-  else if (!isMovie && newState.tvshows?.data != null)
-    newState.selectMdeia = newState.tvshows.data[0];
-  else
-    newState.selectMdeia = null;
   return newState;
 }
 

@@ -7,7 +7,9 @@ class TvInfoComponent extends Component<TvInfoState> {
   TvInfoComponent()
       : super(
           shouldUpdate: (oldState, newState) {
-            return oldState.createdBy != newState.createdBy;
+            return oldState.createdBy != newState.createdBy ||
+                oldState.overView != newState.overView ||
+                oldState.cast != newState.cast;
           },
           view: buildView,
           dependencies: Dependencies<TvInfoState>(

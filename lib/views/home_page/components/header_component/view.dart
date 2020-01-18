@@ -11,6 +11,7 @@ import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/home_page/action.dart';
 import 'package:shimmer/shimmer.dart';
 
+import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
@@ -30,7 +31,7 @@ Widget buildView(
           children: <Widget>[
             InkWell(
               onTap: () =>
-                  dispatch(HomePageActionCreator.onHeaderFilterChanged(true)),
+                  dispatch(HeaderActionCreator.onHeaderFilterChanged(true)),
               child: Text(I18n.of(viewService.context).inTheaters,
                   style: state.showHeaderMovie
                       ? _selectTextStyle
@@ -41,7 +42,7 @@ Widget buildView(
             ),
             InkWell(
               onTap: () =>
-                  dispatch(HomePageActionCreator.onHeaderFilterChanged(false)),
+                  dispatch(HeaderActionCreator.onHeaderFilterChanged(false)),
               child: Text(
                 I18n.of(viewService.context).onTV,
                 style: state.showHeaderMovie

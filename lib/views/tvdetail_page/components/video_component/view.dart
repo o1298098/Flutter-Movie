@@ -7,7 +7,6 @@ import 'package:movie/models/videomodel.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:video_player/video_player.dart';
 
-import 'action.dart';
 import 'state.dart';
 
 Widget buildView(VideoState state, Dispatch dispatch, ViewService viewService) {

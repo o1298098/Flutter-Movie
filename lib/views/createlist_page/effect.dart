@@ -1,6 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
+import 'package:movie/actions/base_api.dart';
+import 'package:movie/models/base_api_model/user_list.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -24,28 +25,26 @@ void _onInit(Action action, Context<CreateListPageState> ctx) {
 void _submit(Action action, Context<CreateListPageState> ctx) {
   if (ctx.state.user != null) {
     if (ctx.state.listData != null)
-      ctx.state.listData.reference.updateData({
-        'description': ctx.state.description,
-        'backGroundUrl': ctx.state.backGroundUrl,
-        'updateDateTime': DateTime.now(),
-      });
-    else
-      Firestore.instance
-          .collection("MyList")
-          .document(ctx.state.user.uid)
-          .collection('List')
-          .document(ctx.state.name)
-          .setData({
-        'description': ctx.state.description,
-        'backGroundUrl': ctx.state.backGroundUrl,
-        'selected': false,
-        'createDateTime': DateTime.now(),
-        'updateDateTime': DateTime.now(),
-        'itemCount': 0,
-        'totalRated': 0.0,
-        'runTime': 0,
-        'revenue': 0
-      });
-    Navigator.of(ctx.context).pop();
+      BaseApi.updateUserList(ctx.state.listData
+        ..backGroundUrl = ctx.state.backGroundTextController.text
+        ..description = ctx.state.descriptionTextController.text);
+    else {
+      final _date = DateTime.now().toString();
+      ctx.state.listData = UserList.fromParams(
+        uid: ctx.state.user.uid,
+        listName: ctx.state.nameTextController.text,
+        backGroundUrl: ctx.state.backGroundTextController.text,
+        description: ctx.state.descriptionTextController.text,
+        createTime: _date,
+        updateTime: _date,
+        revenue: 0,
+        runTime: 0,
+        itemCount: 0,
+        totalRated: 0,
+      );
+      BaseApi.createUserList(ctx.state.listData);
+    }
+
+    Navigator.of(ctx.context).pop(ctx.state.listData);
   }
 }

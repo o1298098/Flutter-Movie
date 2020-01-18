@@ -5,7 +5,6 @@ import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/models/keyword.dart';
 import 'package:movie/style/themestyle.dart';
 
-import 'action.dart';
 import 'state.dart';
 
 Widget buildView(

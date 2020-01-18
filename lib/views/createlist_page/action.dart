@@ -3,9 +3,6 @@ import 'package:fish_redux/fish_redux.dart';
 enum CreateListPageAction {
   action,
   submit,
-  setName,
-  setBackGround,
-  setDescription
 }
 
 class CreateListPageActionCreator {
@@ -15,17 +12,5 @@ class CreateListPageActionCreator {
 
   static Action onSubmit() {
     return const Action(CreateListPageAction.submit);
-  }
-
-  static Action setBackGround(String t) {
-    return Action(CreateListPageAction.setBackGround, payload: t);
-  }
-
-  static Action setName(String t) {
-    return Action(CreateListPageAction.setName, payload: t);
-  }
-
-  static Action setDescription(String t) {
-    return Action(CreateListPageAction.setDescription, payload: t);
   }
 }

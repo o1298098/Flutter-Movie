@@ -8,7 +8,10 @@ class HeaderState implements Cloneable<HeaderState> {
   bool showHeaderMovie;
   @override
   HeaderState clone() {
-    return HeaderState();
+    return HeaderState()
+      ..movie = movie
+      ..tv = tv
+      ..showHeaderMovie = showHeaderMovie;
   }
 }
 
@@ -20,5 +23,10 @@ class HeaderConnector extends ConnOp<HomePageState, HeaderState> {
     mstate.tv = state.tv;
     mstate.showHeaderMovie = state.showHeaderMovie;
     return mstate;
+  }
+
+  @override
+  void set(HomePageState state, HeaderState subState) {
+    state.showHeaderMovie = subState.showHeaderMovie;
   }
 }

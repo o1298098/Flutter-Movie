@@ -25,4 +25,9 @@ class PopularPosterConnector extends ConnOp<HomePageState, PopularPosterState> {
     mstate.showmovie = state.showPopMovie;
     return mstate;
   }
+
+  @override
+  void set(HomePageState state, PopularPosterState subState) {
+    state.showPopMovie = subState.showmovie;
+  }
 }

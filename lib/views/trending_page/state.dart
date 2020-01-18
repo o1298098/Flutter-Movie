@@ -4,7 +4,10 @@ import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/searchresult.dart';
 import 'package:movie/models/sortcondition.dart';
 
-class TrendingPageState implements Cloneable<TrendingPageState> {
+import 'components/trendingcell_component/state.dart';
+
+class TrendingPageState extends MutableSource
+    implements Cloneable<TrendingPageState> {
   SearchResultModel trending;
   ScrollController controller;
   AnimationController animationController;
@@ -24,6 +27,19 @@ class TrendingPageState implements Cloneable<TrendingPageState> {
       ..selectMediaType = selectMediaType
       ..isToday = isToday;
   }
+
+  @override
+  Object getItemData(int index) =>
+      TrendingCellState(cellData: trending.results[index], index: index);
+
+  @override
+  String getItemType(int index) => 'trendingCell';
+
+  @override
+  int get itemCount => trending?.results?.length ?? 0;
+
+  @override
+  void setItemData(int index, Object data) {}
 }
 
 TrendingPageState initState(Map<String, dynamic> args) {

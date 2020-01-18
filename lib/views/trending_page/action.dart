@@ -1,14 +1,11 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/searchresult.dart';
-import 'package:movie/models/sortcondition.dart';
 
 enum TrendingPageAction {
   action,
   showFilter,
   setMediaType,
-  dateChanged,
-  mediaTypeChanged,
   updateList,
   loadMore,
   cellTapped
@@ -23,16 +20,8 @@ class TrendingPageActionCreator {
     return const Action(TrendingPageAction.showFilter);
   }
 
-  static Action dateChanged(bool b) {
-    return Action(TrendingPageAction.dateChanged, payload: b);
-  }
-
   static Action setMediaType(MediaType mediaType) {
     return Action(TrendingPageAction.setMediaType, payload: mediaType);
-  }
-
-  static Action mediaTypeChanged(SortCondition sortCondition) {
-    return Action(TrendingPageAction.mediaTypeChanged, payload: sortCondition);
   }
 
   static Action updateList(SearchResultModel d) {

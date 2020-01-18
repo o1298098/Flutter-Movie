@@ -7,10 +7,8 @@ enum MyListsPageAction {
   setAccount,
   setList,
   loadMore,
-  cellTapped,
   createList,
   onEdit,
-  deleteList,
 }
 
 class MyListsPageActionCreator {
@@ -22,16 +20,12 @@ class MyListsPageActionCreator {
     return Action(MyListsPageAction.setAccount, payload: accountid);
   }
 
-  static Action setList(Future<UserListModel> list) {
+  static Action setList(UserListModel list) {
     return Action(MyListsPageAction.setList, payload: list);
   }
 
   static Action loadMore(MyListModel list) {
     return Action(MyListsPageAction.loadMore, payload: list);
-  }
-
-  static Action cellTapped(UserList d) {
-    return Action(MyListsPageAction.cellTapped, payload: d);
   }
 
   static Action createList({Object d}) {
@@ -40,9 +34,5 @@ class MyListsPageActionCreator {
 
   static Action onEdit(bool isEdit) {
     return Action(MyListsPageAction.onEdit, payload: isEdit);
-  }
-
-  static Action deleteList(UserList d) {
-    return Action(MyListsPageAction.deleteList, payload: d);
   }
 }

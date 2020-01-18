@@ -8,12 +8,10 @@ import 'view.dart';
 class FilterComponent extends Component<FilterState> {
   FilterComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<FilterState>(
-                adapter: null,
-                slots: <String, Dependent<FilterState>>{
-                }),);
-
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<FilterState>(
+              adapter: null, slots: <String, Dependent<FilterState>>{}),
+        );
 }

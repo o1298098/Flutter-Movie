@@ -1,8 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
 
-import 'components/theme3_component/component.dart';
-import 'components/theme3_component/state.dart';
 import 'effect.dart';
 import 'reducer.dart';
 import 'state.dart';
@@ -20,10 +18,7 @@ class AccountPage extends Page<AccountPageState, Map<String, dynamic>> {
           reducer: buildReducer(),
           view: buildView,
           dependencies: Dependencies<AccountPageState>(
-              adapter: null,
-              slots: <String, Dependent<AccountPageState>>{
-                'theme3': Theme3Connector() + Theme3Component(),
-              }),
+              adapter: null, slots: <String, Dependent<AccountPageState>>{}),
           middleware: <Middleware<AccountPageState>>[],
         );
 }

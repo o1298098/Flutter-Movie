@@ -11,12 +11,17 @@ enum ListDetailPageAction {
   loadMore,
   sortChanged,
   setSort,
-  screenShot
+  screenShot,
+  showShareCard,
 }
 
 class ListDetailPageActionCreator {
   static Action onAction() {
     return const Action(ListDetailPageAction.action);
+  }
+
+  static Action showShareCard() {
+    return const Action(ListDetailPageAction.showShareCard);
   }
 
   static Action setListDetail(UserListDetailModel d) {

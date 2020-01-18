@@ -12,7 +12,6 @@ import 'package:movie/models/videolist.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/home_page/action.dart';
 
-import 'action.dart';
 import 'state.dart';
 
 Widget buildView(

@@ -1,5 +1,4 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:flutter/material.dart' hide Action;
 import 'package:movie/models/base_api_model/user_media.dart';
 import 'package:palette_generator/palette_generator.dart';
 
@@ -12,7 +11,6 @@ Reducer<FavoritesPageState> buildReducer() {
       FavoritesPageAction.action: _onAction,
       FavoritesPageAction.setBackground: _setBackground,
       FavoritesPageAction.updateColor: _updateColor,
-      FavoritesPageAction.mediaTpyeChanged: _mediaTpyeChanged,
       FavoritesPageAction.setMovie: _setMovie,
       FavoritesPageAction.setTVShow: _setTVShow
     },
@@ -24,22 +22,10 @@ FavoritesPageState _onAction(FavoritesPageState state, Action action) {
   return newState;
 }
 
-FavoritesPageState _mediaTpyeChanged(FavoritesPageState state, Action action) {
-  final bool r = action.payload;
-  final FavoritesPageState newState = state.clone();
-  newState.isMovie = r;
-  newState.selectedMedia = r ? state.movies?.data[0] : state.tvshows?.data[0];
-  return newState;
-}
-
 FavoritesPageState _setBackground(FavoritesPageState state, Action action) {
-  final UserMedia result = action.payload[0];
-  final Color color = action.payload[01];
+  final UserMedia result = action.payload;
   final FavoritesPageState newState = state.clone();
-  if (state.selectedMedia != null)
-    newState.secbackgroundUrl = state.selectedMedia.photoUrl;
-  newState.selectedMedia = result;
-  newState.backgroundColor = color;
+  if (state.selectedMedia != null) newState.selectedMedia = result;
   return newState;
 }
 
@@ -53,11 +39,9 @@ FavoritesPageState _updateColor(FavoritesPageState state, Action action) {
 FavoritesPageState _setMovie(FavoritesPageState state, Action action) {
   final UserMediaModel movie = action.payload;
   final FavoritesPageState newState = state.clone();
-  newState.backgroundColor = Colors.cyan.withAlpha(80);
   newState.movies = movie;
   if (movie.data.length > 0) {
     newState.selectedMedia = movie.data[0];
-    newState.secbackgroundUrl = newState.selectedMedia.photoUrl;
   }
   return newState;
 }

@@ -9,9 +9,6 @@ import 'package:palette_generator/palette_generator.dart';
 class FavoritesPageState
     implements GlobalBaseState, Cloneable<FavoritesPageState> {
   UserMedia selectedMedia;
-  Color backgroundColor;
-  String backgroundUrl;
-  String secbackgroundUrl;
   AnimationController animationController;
   PaletteGenerator paletteGenerator;
   UserMediaModel movies;
@@ -21,9 +18,6 @@ class FavoritesPageState
   @override
   FavoritesPageState clone() {
     return FavoritesPageState()
-      ..backgroundColor = backgroundColor
-      ..secbackgroundUrl = secbackgroundUrl
-      ..backgroundUrl = backgroundUrl
       ..selectedMedia = selectedMedia
       ..animationController = animationController
       ..paletteGenerator = paletteGenerator
@@ -46,7 +40,6 @@ class FavoritesPageState
 FavoritesPageState initState(Map<String, dynamic> args) {
   FavoritesPageState state = FavoritesPageState();
   state.isMovie = true;
-  state.backgroundColor = Colors.black;
   state.paletteGenerator = PaletteGenerator.fromColors([]);
   return state;
 }

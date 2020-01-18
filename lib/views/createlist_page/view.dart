@@ -25,7 +25,6 @@ Widget buildView(
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey)),
             ),
-            onChanged: (s) => dispatch(CreateListPageActionCreator.setName(s)),
           ),
           SizedBox(
             height: Adapt.px(30),
@@ -39,8 +38,6 @@ Widget buildView(
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey)),
             ),
-            onChanged: (s) =>
-                dispatch(CreateListPageActionCreator.setBackGround(s)),
           ),
           SizedBox(
             height: Adapt.px(30),
@@ -54,8 +51,6 @@ Widget buildView(
                 hintText: 'description',
                 focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey))),
-            onChanged: (s) =>
-                dispatch(CreateListPageActionCreator.setDescription(s)),
           ),
           SizedBox(
             height: Adapt.px(30),

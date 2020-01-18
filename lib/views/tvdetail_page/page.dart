@@ -15,6 +15,8 @@ import 'components/info_component/state.dart';
 import 'components/keywords_component/component.dart';
 import 'components/keywords_component/state.dart';
 import 'components/menu_component/state.dart';
+import 'components/recommendation_component/component.dart';
+import 'components/recommendation_component/state.dart';
 import 'components/review_component/component.dart';
 import 'components/review_component/state.dart';
 import 'components/video_component/component.dart';
@@ -42,6 +44,8 @@ class TVDetailPage extends Page<TVDetailPageState, Map<String, dynamic>> {
                 'tvInfo': TvInfoConnector() + TvInfoComponent(),
                 'currentSeason':
                     CurrentSeasonConnector() + CurrentSeasonComponent(),
+                'recommendations':
+                    RecommendationConnector() + RecommendationComponent(),
                 'info': InfoConnector() + InfoComponent(),
                 'menu': MenuConnector() + MenuComponent(),
                 'videos': VideoConnector() + VideoComponent(),

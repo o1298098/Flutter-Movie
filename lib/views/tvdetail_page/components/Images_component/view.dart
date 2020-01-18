@@ -13,7 +13,6 @@ import 'package:movie/views/tvdetail_page/action.dart';
 import 'package:parallax_image/parallax_image.dart';
 import 'package:shimmer/shimmer.dart';
 
-import 'action.dart';
 import 'state.dart';
 
 Widget buildView(

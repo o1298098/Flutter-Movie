@@ -10,6 +10,7 @@ class InfoComponent extends Component<InfoState> {
           shouldUpdate: (oldState, newState) {
             return oldState.tvDetailModel != newState.tvDetailModel;
           },
+          clearOnDependenciesChanged: true,
           view: buildView,
           effect: buildEffect(),
           dependencies: Dependencies<InfoState>(

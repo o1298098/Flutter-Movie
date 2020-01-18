@@ -11,9 +11,6 @@ enum HomePageAction {
   initTV,
   initPopularMovies,
   initPopularTVShows,
-  popularFilterChanged,
-  headerFilterChanged,
-  shareFilterChanged,
   moreTapped,
   initTrending,
   searchBarTapped,
@@ -43,18 +40,6 @@ class HomePageActionCreator {
 
   static Action onInitPopularTV(VideoListModel pop) {
     return Action(HomePageAction.initPopularTVShows, payload: pop);
-  }
-
-  static Action onPopularFilterChanged(bool e) {
-    return Action(HomePageAction.popularFilterChanged, payload: e);
-  }
-
-  static Action onHeaderFilterChanged(bool e) {
-    return Action(HomePageAction.headerFilterChanged, payload: e);
-  }
-
-  static Action onShareFilterChanged(bool e) {
-    return Action(HomePageAction.shareFilterChanged, payload: e);
   }
 
   static Action onMoreTapped(VideoListModel model, MediaType t) {

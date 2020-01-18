@@ -9,7 +9,6 @@ import 'package:movie/models/imagemodel.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/detail_page/action.dart';
 
-import 'action.dart';
 import 'state.dart';
 
 Widget buildView(StillState state, Dispatch dispatch, ViewService viewService) {

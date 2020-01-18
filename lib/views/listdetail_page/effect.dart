@@ -1,6 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:flutter/widgets.dart' hide Action;
+import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/base_api.dart';
+import 'package:movie/customwidgets/share_card.dart';
 import 'package:movie/models/base_api_model/user_list_detail.dart';
 import 'package:movie/models/sortcondition.dart';
 import 'action.dart';
@@ -12,10 +13,22 @@ Effect<ListDetailPageState> buildEffect() {
     ListDetailPageAction.action: _onAction,
     ListDetailPageAction.cellTapped: _cellTapped,
     ListDetailPageAction.sortChanged: _sortChanged,
+    ListDetailPageAction.showShareCard: _showShareCard,
   });
 }
 
 void _onAction(Action action, Context<ListDetailPageState> ctx) {}
+void _showShareCard(Action action, Context<ListDetailPageState> ctx) {
+  showDialog(
+      context: ctx.context,
+      builder: (context) {
+        return ShareCard(
+          backgroundImage: ctx.state.listDetailModel?.backGroundUrl ?? '',
+          qrValue: "https://www.themoviedb.org/list/${ctx.state.listId}",
+          header: ctx.buildComponent('shareCard'),
+        );
+      });
+}
 
 Future _onInit(Action action, Context<ListDetailPageState> ctx) async {
   if (ctx.state.listDetailModel?.id != null) {

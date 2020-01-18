@@ -5,7 +5,6 @@ import 'package:movie/generated/i18n.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
-import 'action.dart';
 import 'state.dart';
 
 Widget buildView(

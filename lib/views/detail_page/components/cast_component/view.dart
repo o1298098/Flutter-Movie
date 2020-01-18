@@ -10,7 +10,6 @@ import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/detail_page/action.dart';
 import 'package:shimmer/shimmer.dart';
 
-import 'action.dart';
 import 'state.dart';
 
 Widget buildView(CastState state, Dispatch dispatch, ViewService viewService) {

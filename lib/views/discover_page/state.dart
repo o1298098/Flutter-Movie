@@ -48,8 +48,9 @@ class DiscoverPageState extends MutableSource
   FirebaseUser user;
 
   @override
-  Object getItemData(int index) =>
-      VideoCellState()..videodata = videoListModel?.results[index];
+  Object getItemData(int index) => VideoCellState()
+    ..videodata = videoListModel?.results[index]
+    ..isMovie = filterState?.isMovie ?? true;
 
   @override
   String getItemType(int index) => 'moviecell';

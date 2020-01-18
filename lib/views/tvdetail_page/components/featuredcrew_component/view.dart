@@ -264,25 +264,23 @@ Widget buildView(
               _buildCreditsShimmerCell(),
             ],
           );
-    return Container(
-        height: Adapt.px(450),
-        child: AnimatedSwitcher(
-          switchInCurve: Curves.easeIn,
-          switchOutCurve: Curves.easeOut,
-          duration: Duration(milliseconds: 600),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(Adapt.px(30)),
-                child: Text(I18n.of(viewService.context).topBilledCast,
-                    style: TextStyle(
-                        fontSize: Adapt.px(40), fontWeight: FontWeight.w800)),
-              ),
-              _child
-            ],
+    return AnimatedSwitcher(
+      switchInCurve: Curves.easeIn,
+      switchOutCurve: Curves.easeOut,
+      duration: Duration(milliseconds: 600),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(Adapt.px(30)),
+            child: Text(I18n.of(viewService.context).topBilledCast,
+                style: TextStyle(
+                    fontSize: Adapt.px(40), fontWeight: FontWeight.w800)),
           ),
-        ));
+          Container(height: Adapt.px(450), child: _child)
+        ],
+      ),
+    );
   }
 
   return SliverToBoxAdapter(
@@ -291,6 +289,6 @@ Widget buildView(
           children: <Widget>[
         _getOverWatch(),
         _buildBody(),
-        //_getCreditsCells(),
+        _getCreditsCells(),
       ]));
 }

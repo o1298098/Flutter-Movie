@@ -2,7 +2,6 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/style/test_inherited_widget.dart';
-import 'package:movie/views/test_page/action.dart';
 
 import 'action.dart';
 import 'state.dart';

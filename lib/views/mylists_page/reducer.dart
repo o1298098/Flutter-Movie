@@ -28,7 +28,7 @@ MyListsPageState _setAccount(MyListsPageState state, Action action) {
 }
 
 MyListsPageState _setList(MyListsPageState state, Action action) {
-  final Future<UserListModel> model = action.payload;
+  final UserListModel model = action.payload;
   final MyListsPageState newState = state.clone();
   newState.listData = model;
   return newState;

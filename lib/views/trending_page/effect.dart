@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart' hide Action;
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/models/enums/time_window.dart';
 import 'package:movie/models/searchresult.dart';
-import 'package:movie/models/sortcondition.dart';
 import 'package:movie/views/detail_page/page.dart';
 import 'package:movie/views/peopledetail_page/page.dart';
 import 'package:movie/views/tvdetail_page/page.dart';
@@ -14,8 +13,6 @@ Effect<TrendingPageState> buildEffect() {
   return combineEffects(<Object, Effect<TrendingPageState>>{
     TrendingPageAction.action: _onAction,
     TrendingPageAction.showFilter: _showFilter,
-    TrendingPageAction.mediaTypeChanged: _mediaTypeChanged,
-    TrendingPageAction.dateChanged: _dateChanged,
     TrendingPageAction.cellTapped: _cellTapped,
     Lifecycle.initState: _onInit,
     Lifecycle.dispose: _onDispose,
@@ -56,41 +53,6 @@ Future _showFilter(Action action, Context<TrendingPageState> ctx) async {
     else
       ctx.state.animationController.reverse();
   }
-}
-
-Future _mediaTypeChanged(Action action, Context<TrendingPageState> ctx) async {
-  await ctx.state.animationController.reverse();
-  final SortCondition model = action.payload;
-  var _mt = ctx.state.mediaTypes;
-  if (model.value != ctx.state.selectMediaType) {
-    if (!ctx.state.refreshController.isAnimating)
-      await ctx.state.refreshController.forward();
-    ctx.state.selectMediaType = model.value;
-    int index = _mt.indexOf(model);
-    _mt.forEach((f) {
-      f.isSelected = false;
-    });
-    _mt[index].isSelected = true;
-    _loadData(ctx);
-  }
-}
-
-Future _dateChanged(Action action, Context<TrendingPageState> ctx) async {
-  await ctx.state.animationController.reverse();
-  final bool _b = action.payload ?? true;
-  if (_b != ctx.state.isToday) {
-    if (!ctx.state.refreshController.isAnimating)
-      await ctx.state.refreshController.forward();
-    ctx.state.isToday = _b;
-    _loadData(ctx);
-  }
-}
-
-Future _loadData(Context<TrendingPageState> ctx) async {
-  var r = await ApiHelper.getTrending(ctx.state.selectMediaType,
-      ctx.state.isToday ? TimeWindow.day : TimeWindow.week);
-  if (r != null) ctx.dispatch(TrendingPageActionCreator.updateList(r));
-  ctx.state.refreshController.reset();
 }
 
 Future _loadMore(Context<TrendingPageState> ctx) async {

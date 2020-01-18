@@ -8,12 +8,14 @@ import 'view.dart';
 class MovieCellComponent extends Component<VideoCellState> {
   MovieCellComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<VideoCellState>(
-                adapter: null,
-                slots: <String, Dependent<VideoCellState>>{
-                }),);
-
+          shouldUpdate: (oldState, newState) {
+            return oldState.isMovie != newState.isMovie ||
+                oldState.videodata != newState.videodata;
+          },
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<VideoCellState>(
+              adapter: null, slots: <String, Dependent<VideoCellState>>{}),
+        );
 }

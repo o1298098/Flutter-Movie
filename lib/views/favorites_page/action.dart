@@ -1,12 +1,10 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:flutter/painting.dart';
 import 'package:movie/models/base_api_model/user_media.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 enum FavoritesPageAction {
   action,
-  mediaTpyeChanged,
   setFavoriteMovies,
   setFavoriteTV,
   setBackground,
@@ -21,10 +19,6 @@ class FavoritesPageActionCreator {
     return const Action(FavoritesPageAction.action);
   }
 
-  static Action mediaTpyeChanged(bool ismovie) {
-    return Action(FavoritesPageAction.mediaTpyeChanged, payload: ismovie);
-  }
-
   static Action setFavoriteMovies(VideoListModel d) {
     return Action(FavoritesPageAction.setFavoriteMovies, payload: d);
   }
@@ -33,8 +27,8 @@ class FavoritesPageActionCreator {
     return Action(FavoritesPageAction.setFavoriteTV, payload: d);
   }
 
-  static Action setBackground(UserMedia result, Color color) {
-    return Action(FavoritesPageAction.setBackground, payload: [result, color]);
+  static Action setBackground(UserMedia result) {
+    return Action(FavoritesPageAction.setBackground, payload: result);
   }
 
   static Action setColor(String url) {
