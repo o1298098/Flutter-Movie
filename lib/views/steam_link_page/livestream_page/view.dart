@@ -7,6 +7,7 @@ import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/customwidgets/sliverappbar_delegate.dart';
+import 'package:movie/customwidgets/web_torrent_player.dart';
 import 'package:movie/models/base_api_model/movie_comment.dart';
 import 'package:movie/models/base_api_model/movie_stream_link.dart';
 import 'package:movie/style/themestyle.dart';
@@ -70,6 +71,11 @@ Widget buildView(
                     ),
                   ),
                 ),
+        );
+      case 'Torrent':
+        return WebTorrentPlayer(
+          key: ValueKey(state.streamAddress),
+          url: state.streamAddress,
         );
       default:
         return Container(

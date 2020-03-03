@@ -122,7 +122,8 @@ void _changedVideoSource(
     ctx.state.chewieController.dispose();
     ctx.state.chewieController = null;
   }
-  if (d.streamLinkType.name == 'WebView') {
+  if (d.streamLinkType.name == 'WebView' ||
+      d.streamLinkType.name == 'Torrent') {
     ctx.state.streamAddress = d.streamLink;
   } else if (d.streamLinkType.name == 'YouTube') {
     ctx.state.streamAddress = YoutubePlayer.convertUrlToId(d.streamLink);

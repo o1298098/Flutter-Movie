@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
 import 'package:movie/actions/adapt.dart';
+import 'package:movie/customwidgets/web_torrent_player.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/globalbasestate/action.dart';
 import 'package:movie/globalbasestate/store.dart';
@@ -56,7 +60,7 @@ Widget buildView(
       ),
       body: Column(
         children: <Widget>[
-          _buildBody(viewService.context),
+          /* _buildBody(viewService.context),
           InkWell(
             onTap: () {
               GlobalStore.store
@@ -98,7 +102,11 @@ Widget buildView(
                     blurRadius: Adapt.px(10))
               ],
             ),
-          )
+          ),*/
+          WebTorrentPlayer(
+            url: 'https://webtorrent.io/torrents/sintel.torrent',
+          ),
+          Text(Adapt.screenW().toString()),
         ],
       ));
 }

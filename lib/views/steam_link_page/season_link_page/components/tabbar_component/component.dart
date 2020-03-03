@@ -11,6 +11,7 @@ class TabbarComponent extends Component<TabbarState> {
             return oldState.tabController != newState.tabController ||
                 oldState.seasons != newState.seasons;
           },
+          clearOnDependenciesChanged: true,
           effect: buildEffect(),
           view: buildView,
           dependencies: Dependencies<TabbarState>(

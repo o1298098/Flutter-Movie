@@ -16,6 +16,7 @@ class HeaderComponent extends Component<HeaderState> {
                 oldState.posterPic != newState.posterPic ||
                 oldState.tvDetailModel != newState.tvDetailModel;
           },
+          clearOnDependenciesChanged: true,
           effect: buildEffect(),
           view: buildView,
           dependencies: Dependencies<HeaderState>(

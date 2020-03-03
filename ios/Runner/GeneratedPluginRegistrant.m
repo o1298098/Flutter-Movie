@@ -4,14 +4,14 @@
 
 #import "GeneratedPluginRegistrant.h"
 
-#if __has_include(<cloud_firestore/CloudFirestorePlugin.h>)
-#import <cloud_firestore/CloudFirestorePlugin.h>
+#if __has_include(<cloud_firestore/FLTCloudFirestorePlugin.h>)
+#import <cloud_firestore/FLTCloudFirestorePlugin.h>
 #else
 @import cloud_firestore;
 #endif
 
-#if __has_include(<firebase_auth/FirebaseAuthPlugin.h>)
-#import <firebase_auth/FirebaseAuthPlugin.h>
+#if __has_include(<firebase_auth/FLTFirebaseAuthPlugin.h>)
+#import <firebase_auth/FLTFirebaseAuthPlugin.h>
 #else
 @import firebase_auth;
 #endif
@@ -40,8 +40,8 @@
 @import flutter_mdns_plugin;
 #endif
 
-#if __has_include(<google_sign_in/GoogleSignInPlugin.h>)
-#import <google_sign_in/GoogleSignInPlugin.h>
+#if __has_include(<google_sign_in/FLTGoogleSignInPlugin.h>)
+#import <google_sign_in/FLTGoogleSignInPlugin.h>
 #else
 @import google_sign_in;
 #endif
@@ -94,8 +94,8 @@
 @import url_launcher;
 #endif
 
-#if __has_include(<video_player/VideoPlayerPlugin.h>)
-#import <video_player/VideoPlayerPlugin.h>
+#if __has_include(<video_player/FLTVideoPlayerPlugin.h>)
+#import <video_player/FLTVideoPlayerPlugin.h>
 #else
 @import video_player;
 #endif

@@ -6,8 +6,8 @@ import 'themestyle.dart';
 class ThemeStyleWidget extends StatefulWidget {
   ThemeStyleWidget({@required this.child, Key key}) : super(key: key);
   final Widget child;
-  static _ThemeStyleData of(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<_ThemeStyleData>();
+  static ThemeStyleData of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<ThemeStyleData>();
   @override
   _ThemeStyleState createState() => _ThemeStyleState();
 }
@@ -36,22 +36,22 @@ class _ThemeStyleState extends State<ThemeStyleWidget> {
                 _mediaQuery.platformBrightness == Brightness.light
                     ? ThemeStyle.lightTheme
                     : ThemeStyle.darkTheme;
-            return _ThemeStyleData(theme: _theme, child: widget.child);
+            return ThemeStyleData(theme: _theme, child: widget.child);
           },
         ));
   }
 }
 
-class _ThemeStyleData extends InheritedWidget {
-  _ThemeStyleData({@required this.theme, Widget child}) : super(child: child);
+class ThemeStyleData extends InheritedWidget {
+  ThemeStyleData({@required this.theme, Widget child}) : super(child: child);
   final ThemeData theme;
 
-  static _ThemeStyleData of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<_ThemeStyleData>();
+  static ThemeStyleData of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<ThemeStyleData>();
   }
 
   @override
-  bool updateShouldNotify(_ThemeStyleData oldWidget) {
+  bool updateShouldNotify(ThemeStyleData oldWidget) {
     return oldWidget.theme != theme;
   }
 }

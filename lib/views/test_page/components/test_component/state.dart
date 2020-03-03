@@ -5,7 +5,7 @@ class TestState implements Cloneable<TestState> {
   int value;
   @override
   TestState clone() {
-    return TestState();
+    return TestState()..value = value;
   }
 }
 

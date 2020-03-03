@@ -62,7 +62,7 @@ void _deleteList(Action action, Context<ListCellState> ctx) {
 
 void _onEdit(Action action, Context<ListCellState> ctx) async {
   ctx.state.animationController.value = 0;
-  ctx.broadcast(MyListsPageActionCreator.onEdit(false));
+  ctx.dispatch(MyListsPageActionCreator.onEdit(false));
   await Navigator.of(ctx.context)
       .pushNamed('createListPage', arguments: action.payload);
 }

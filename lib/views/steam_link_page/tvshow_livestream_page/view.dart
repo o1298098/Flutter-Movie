@@ -6,6 +6,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/customwidgets/keepalive_widget.dart';
 import 'package:movie/customwidgets/sliverappbar_delegate.dart';
+import 'package:movie/customwidgets/web_torrent_player.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -66,6 +67,11 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
                     ),
                   ),
                 ),
+        );
+        case 'Torrent':
+        return WebTorrentPlayer(
+          key: ValueKey(state.streamAddress),
+          url: state.streamAddress,
         );
       default:
         return Container(
