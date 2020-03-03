@@ -12,6 +12,13 @@ class WebTorrentPlayer extends StatefulWidget {
 }
 
 class WebTorrentPlayerState extends State<WebTorrentPlayer> {
+  String _url;
+  @override
+  void initState() {
+    _url = widget.url;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
@@ -81,13 +88,12 @@ class WebTorrentPlayerState extends State<WebTorrentPlayer> {
     '.ogv', '.webm', '.wmv'],
   image: ['.gif', '.jpg', '.jpeg', '.png']
 }
-      var torrentId = '${widget.url}'
+      var torrentId = '$_url'
 
       var client = new WebTorrent()
 
       // HTML elements
-      var \$body = document.body
-      var \$progressBar = document.querySelector('#progressBar')
+      var \$body = document.body 
 
       // Download the torrent
       client.add(torrentId, function (torrent) {
@@ -109,7 +115,6 @@ class WebTorrentPlayerState extends State<WebTorrentPlayer> {
         function onProgress () {
           // Progress
           var percent = Math.round(torrent.progress * 100 * 100) / 100
-          \$progressBar.style.width = percent + '%'
 
           // Remaining time
           var remaining
@@ -147,15 +152,22 @@ class WebTorrentPlayerState extends State<WebTorrentPlayer> {
 </html>"""),
           initialHeaders: {},
           initialOptions: InAppWebViewWidgetOptions(
-              androidInAppWebViewOptions:
-                  AndroidInAppWebViewOptions(supportZoom: false),
-              inAppWebViewOptions: InAppWebViewOptions(
-                disableVerticalScroll: true,
-                disableHorizontalScroll: true,
-                horizontalScrollBarEnabled: false,
-                verticalScrollBarEnabled: false,
-                debuggingEnabled: true,
-              ))),
+              inAppWebViewOptions: InAppWebViewOptions(cacheEnabled: false
+                  //disableVerticalScroll: true,
+                  //disableHorizontalScroll: true,
+                  //horizontalScrollBarEnabled: false,
+                  //verticalScrollBarEnabled: false,
+                  //debuggingEnabled: true,
+                  ))),
     );
+  }
+
+  @override
+  void didUpdateWidget(WebTorrentPlayer oldWidget) {
+    if (oldWidget.url != widget.url)
+      setState(() {
+        _url = widget.url;
+      });
+    super.didUpdateWidget(oldWidget);
   }
 }
