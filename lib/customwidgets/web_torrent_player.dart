@@ -66,6 +66,7 @@ class WebTorrentPlayerState extends State<WebTorrentPlayer> {
   <body>
     <div id="hero">
       <div id="output">
+        <video class="video-js" id="video-container" preload="auto" autoplay data-setup='{"nativeControlsForTouch": true}'></video>
         <!-- The video player will be added here -->
       </div>
       <!-- Statistics -->
@@ -76,7 +77,8 @@ class WebTorrentPlayerState extends State<WebTorrentPlayer> {
 
     <!-- Moment is used to show a human-readable remaining time -->
     <script src="http://momentjs.com/downloads/moment.min.js"></script>
-    
+    <link href="https://unpkg.com/video.js/dist/video-js.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/video.js/dist/video.min.js"></script>
     <script>
     const mediaExtensions = {
   audio: [
@@ -89,23 +91,27 @@ class WebTorrentPlayerState extends State<WebTorrentPlayer> {
   image: ['.gif', '.jpg', '.jpeg', '.png']
 }
       var torrentId = '$_url'
-
+      var player = videojs("video-container",{},function onPlayerReady() {
+        this.play();
+      });
+      player.fluid(true);
       var client = new WebTorrent()
-
+   
       // HTML elements
       var \$body = document.body 
 
       // Download the torrent
       client.add(torrentId, function (torrent) {
 
-        // Torrents can contain many files. Let's use the .mp4 file
         var file = torrent.files.find(function (file) {
           return mediaExtensions.video.includes(getFileExtension(file))
         })
 
         // Stream the file in the browser
-        file.appendTo('#output')
-
+        //file.appendTo('#output')
+        file.renderTo('video#video-container_html5_api', {}, function callback() {
+      console.log("ready to play!");
+    });
         // Trigger statistics refresh
         torrent.on('done', onDone)
         setInterval(onProgress, 500)
@@ -152,7 +158,7 @@ class WebTorrentPlayerState extends State<WebTorrentPlayer> {
 </html>"""),
           initialHeaders: {},
           initialOptions: InAppWebViewWidgetOptions(
-              inAppWebViewOptions: InAppWebViewOptions(cacheEnabled: false
+              inAppWebViewOptions: InAppWebViewOptions(
                   //disableVerticalScroll: true,
                   //disableHorizontalScroll: true,
                   //horizontalScrollBarEnabled: false,

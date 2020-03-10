@@ -19,8 +19,6 @@ Widget buildView(
 
   return Builder(builder: (context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light
-        .copyWith(statusBarBrightness: _theme.brightness));
     Widget _buildShimmerCell() {
       return SizedBox(
           height: Adapt.px(400),

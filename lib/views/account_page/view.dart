@@ -10,8 +10,6 @@ import 'state.dart';
 
 Widget buildView(
     AccountPageState state, Dispatch dispatch, ViewService viewService) {
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light
-      .copyWith(statusBarBrightness: Brightness.light));
   return Builder(builder: (context) {
     final _lightTheme = ThemeData.light()
         .copyWith(cardColor: Colors.white, canvasColor: Colors.grey[300]);

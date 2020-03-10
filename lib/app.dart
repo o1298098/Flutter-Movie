@@ -44,7 +44,7 @@ import 'package:movie/views/detail_page/page.dart' as detail;
 
 Future _init() async {
   if (Platform.isAndroid)
-    await PermissionHandler().requestPermissions([PermissionGroup.contacts]);
+    await PermissionHandler().requestPermissions([PermissionGroup.storage]);
   setLocaleInfo('zh', TimelineInfoCN());
   setLocaleInfo('en', TimelineInfoEN());
   setLocaleInfo('Ja', TimelineInfoJA());
@@ -146,12 +146,12 @@ Future<Widget> createApp() async {
     localeResolutionCallback:
         I18n.delegate.resolution(fallback: new Locale("en", "US")),
     home: routes.buildPage('mainpage', {
-      'pages': [
+      'pages': List<Widget>.unmodifiable([
         routes.buildPage('homePage', null),
         routes.buildPage('discoverPage', null),
         routes.buildPage('comingPage', null),
         routes.buildPage('accountPage', null)
-      ]
+      ])
     }),
     onGenerateRoute: (RouteSettings settings) {
       return MaterialPageRoute<Object>(builder: (BuildContext context) {
