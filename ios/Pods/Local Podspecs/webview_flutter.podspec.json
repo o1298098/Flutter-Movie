@@ -26,5 +26,17 @@
   "pod_target_xcconfig": {
     "DEFINES_MODULE": "YES",
     "VALID_ARCHS[sdk=iphonesimulator*]": "x86_64"
-  }
+  },
+  "testspecs": [
+    {
+      "name": "Tests",
+      "test_type": "unit",
+      "source_files": "Tests/**/*",
+      "dependencies": {
+        "OCMock": [
+          "3.5"
+        ]
+      }
+    }
+  ]
 }

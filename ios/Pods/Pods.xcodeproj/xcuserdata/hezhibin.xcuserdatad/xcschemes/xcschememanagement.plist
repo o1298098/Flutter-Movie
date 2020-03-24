@@ -134,6 +134,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>cloud_firestore_web.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>firebase_analytics.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>firebase_auth.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -149,12 +159,17 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>firebase_core_web.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>firebase_storage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>flutter_inappbrowser.xcscheme</key>
+		<key>flutter_inappwebview.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -214,12 +229,12 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>permission_handler.xcscheme</key>
+		<key>path_provider_macos.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>screen.xcscheme</key>
+		<key>permission_handler.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -234,12 +249,32 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>shared_preferences_macos.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>shared_preferences_web.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>sqflite.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>url_launcher.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>url_launcher_macos.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>url_launcher_web.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -254,7 +289,12 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>webview_flutter.xcscheme</key>
+		<key>wakelock.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>webview_media.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

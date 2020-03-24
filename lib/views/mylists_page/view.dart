@@ -48,7 +48,7 @@ Widget buildView(
           backgroundColor: _theme.backgroundColor,
           title: Text(
             'My Lists',
-            style: _theme.textTheme.body1,
+            style: _theme.textTheme.bodyText1,
           ),
           brightness: _theme.brightness,
           iconTheme: _theme.iconTheme,

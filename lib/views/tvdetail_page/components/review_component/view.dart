@@ -42,7 +42,7 @@ Widget buildView(
                             state.reviewResults[index].content,
                             overflow: TextOverflow.fade,
                             maxLines: (constraints.maxHeight /
-                                    Theme.of(context).textTheme.body1.fontSize)
+                                    Theme.of(context).textTheme.bodyText1.fontSize)
                                 .floor(),
                           );
                         }),

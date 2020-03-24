@@ -117,7 +117,7 @@ Widget buildView(
         iconTheme: _theme.iconTheme,
         title: Text(
           'All Seasons',
-          style: _theme.textTheme.body1,
+          style: _theme.textTheme.bodyText1,
         ),
       ),
       body: Padding(

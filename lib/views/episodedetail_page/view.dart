@@ -18,7 +18,7 @@ Widget buildView(
         backgroundColor: _theme.backgroundColor,
         brightness: _theme.brightness,
         iconTheme: _theme.iconTheme,
-        title: Text(d.name, style: _theme.textTheme.body1),
+        title: Text(d.name, style: _theme.textTheme.bodyText1),
       ),
       body: Container(
           alignment: Alignment.topLeft,

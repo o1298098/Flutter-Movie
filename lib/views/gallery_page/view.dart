@@ -41,7 +41,7 @@ Widget buildView(
         iconTheme: _theme.iconTheme,
         title: Text(
           'Gallery',
-          style: _theme.textTheme.body1,
+          style: _theme.textTheme.bodyText1,
         ),
       ),
       body: StaggeredGridView.countBuilder(

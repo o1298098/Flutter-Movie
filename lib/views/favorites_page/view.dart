@@ -41,7 +41,7 @@ Widget buildView(
               centerTitle: true,
               title: Text(
                 'My Favorites',
-                style: _theme.textTheme.body1,
+                style: _theme.textTheme.bodyText1,
               ),
               actions: <Widget>[
                 IconButton(

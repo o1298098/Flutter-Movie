@@ -1,5 +1,5 @@
 class Genres {
-  static Map<int,String> genres = {
+  static Map<int, String> genres = {
     10759: "Action & Adventure",
     16: "Animation",
     35: "Comedy",
@@ -18,11 +18,6 @@ class Genres {
     37: "Western",
     28: "Action",
     12: "Adventure",
-    16: "Animation",
-    35: "Comedy",
-    80: "Crime",
-    99: "Documentary",
-    18: "Drama",
     14: "Fantasy",
     36: "History",
     27: "Horror",

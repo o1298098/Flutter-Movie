@@ -144,7 +144,7 @@ Widget buildView(
         iconTheme: _theme.iconTheme,
         title: Text(
           '${state.mediaType == MediaType.movie ? 'Movie' : 'TvShows'} Share',
-          style: _theme.textTheme.body1,
+          style: _theme.textTheme.bodyText1,
         ),
         actions: <Widget>[
           IconButton(

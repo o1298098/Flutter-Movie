@@ -83,7 +83,7 @@ Widget buildView(
         curve: Curves.ease,
       ),
     );
-    return new AnimatedBuilder(
+    return AnimatedBuilder(
       animation: state.submitAnimationController,
       builder: (ctx, w) {
         double buttonWidth = Adapt.screenW() * 0.8;
@@ -194,7 +194,7 @@ Widget buildView(
                           decoration: InputDecoration(
                               fillColor: Colors.transparent,
                               hintText: 'Account',
-                              hasFloatingPlaceholder: true,
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               filled: true,
                               prefixStyle: TextStyle(
                                   color: Colors.black, fontSize: Adapt.px(35)),
@@ -226,7 +226,8 @@ Widget buildView(
                             decoration: InputDecoration(
                                 fillColor: Colors.transparent,
                                 hintText: 'PassWord',
-                                hasFloatingPlaceholder: true,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.auto,
                                 filled: true,
                                 prefixStyle: TextStyle(
                                     color: Colors.black,

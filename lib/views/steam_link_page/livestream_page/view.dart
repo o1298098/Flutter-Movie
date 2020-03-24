@@ -3,7 +3,7 @@ import 'package:chewie/chewie.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/customwidgets/sliverappbar_delegate.dart';

@@ -1,6 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gzx_dropdown_menu/gzx_dropdown_menu.dart';
 import 'package:movie/actions/adapt.dart';
@@ -141,7 +140,7 @@ Widget buildView(
                       goodsSortCondition.name,
                       style: TextStyle(
                         color: goodsSortCondition.isSelected
-                            ? _theme.textTheme.body1.color
+                            ? _theme.textTheme.bodyText1.color
                             : Colors.grey,
                       ),
                     ),

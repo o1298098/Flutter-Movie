@@ -118,7 +118,7 @@ Widget buildView(
                                       ? _changeDatetime(d.releaseDate)
                                       : _changeDatetime(d.firstAirDate)))),
                               style: TextStyle(
-                                  color: _theme.textTheme.subtitle.color,
+                                  color: _theme.textTheme.subtitle1.color,
                                   fontSize: Adapt.px(20)),
                             )
                           ],

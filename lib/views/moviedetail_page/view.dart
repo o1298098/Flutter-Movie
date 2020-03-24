@@ -869,7 +869,7 @@ Widget buildView(
                                           maxLines: (constraints.maxHeight /
                                                   Theme.of(context)
                                                       .textTheme
-                                                      .body1
+                                                      .bodyText1
                                                       .fontSize)
                                               .floor(),
                                         );

@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:common_utils/common_utils.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart' hide Action;
 
 import 'package:fish_redux/fish_redux.dart';
@@ -129,6 +131,7 @@ Future<Widget> createApp() async {
   );
   final ThemeData _lightTheme = ThemeData.light();
   final ThemeData _darkTheme = ThemeData.dark();
+  final FirebaseAnalytics analytics = FirebaseAnalytics();
   await _init();
 
   return MaterialApp(
@@ -145,6 +148,9 @@ Future<Widget> createApp() async {
     supportedLocales: I18n.delegate.supportedLocales,
     localeResolutionCallback:
         I18n.delegate.resolution(fallback: new Locale("en", "US")),
+    navigatorObservers: [
+      FirebaseAnalyticsObserver(analytics: analytics),
+    ],
     home: routes.buildPage('mainpage', {
       'pages': List<Widget>.unmodifiable([
         routes.buildPage('homePage', null),

@@ -4,6 +4,7 @@ FLUTTER_APPLICATION_PATH=/Users/hezhibin/Projects/o1298098/flutter_movie
 FLUTTER_TARGET=/Users/hezhibin/Projects/o1298098/flutter_movie/lib/main.dart
 FLUTTER_BUILD_DIR=build
 SYMROOT=${SOURCE_ROOT}/../build/ios
+OTHER_LDFLAGS=$(inherited) -framework Flutter
 FLUTTER_FRAMEWORK_DIR=/Users/hezhibin/flutter/bin/cache/artifacts/engine/ios
 FLUTTER_BUILD_NAME=1.0.0
 FLUTTER_BUILD_NUMBER=1

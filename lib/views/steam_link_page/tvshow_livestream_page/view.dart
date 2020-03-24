@@ -1,7 +1,7 @@
 import 'package:chewie/chewie.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/customwidgets/keepalive_widget.dart';
@@ -68,7 +68,7 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
                   ),
                 ),
         );
-        case 'Torrent':
+      case 'Torrent':
         return WebTorrentPlayer(
           key: ValueKey(state.streamAddress),
           url: state.streamAddress,

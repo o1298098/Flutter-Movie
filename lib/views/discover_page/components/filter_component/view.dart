@@ -20,12 +20,12 @@ Widget buildView(
         selectedColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         labelStyle: TextStyle(
-            color: d.isSelected ? _theme.textTheme.body1.color : Colors.grey),
+            color: d.isSelected ? _theme.textTheme.bodyText1.color : Colors.grey),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(Adapt.px(10)),
             side: BorderSide(
                 color:
-                    d.isSelected ? _theme.textTheme.body1.color : Colors.grey)),
+                    d.isSelected ? _theme.textTheme.bodyText1.color : Colors.grey)),
         onSelected: (s) {
           d.isSelected = s;
           //Navigator.pop(viewService.context);
@@ -93,13 +93,13 @@ Widget buildView(
                           borderRadius: BorderRadius.circular(Adapt.px(10)),
                           border: Border.all(
                               color: state.isMovie
-                                  ? _theme.textTheme.body1.color
+                                  ? _theme.textTheme.bodyText1.color
                                   : Colors.grey)),
                       child: Text(
                         'Movie',
                         style: TextStyle(
                             color: state.isMovie
-                                ? _theme.textTheme.body1.color
+                                ? _theme.textTheme.bodyText1.color
                                 : Colors.grey),
                       )),
                   onTap: () {
@@ -122,12 +122,12 @@ Widget buildView(
                         border: Border.all(
                             color: state.isMovie
                                 ? Colors.grey
-                                : _theme.textTheme.body1.color)),
+                                : _theme.textTheme.bodyText1.color)),
                     child: Text('TV',
                         style: TextStyle(
                             color: state.isMovie
                                 ? Colors.grey
-                                : _theme.textTheme.body1.color)),
+                                : _theme.textTheme.bodyText1.color)),
                   ),
                   onTap: () {
                     // Navigator.pop(viewService.context);

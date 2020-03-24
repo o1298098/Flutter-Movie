@@ -19,7 +19,7 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
   Widget _buildListTitel(IconData icon, String title, void onTap(),
       {Color iconColor = const Color.fromRGBO(50, 50, 50, 1)}) {
     TextStyle titleStyle =
-        TextStyle(color: _theme.textTheme.body1.color, fontSize: Adapt.px(35));
+        TextStyle(color: _theme.textTheme.bodyText1.color, fontSize: Adapt.px(35));
     return ListTile(
       leading: Icon(
         icon,

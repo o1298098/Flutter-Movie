@@ -20,7 +20,7 @@ Widget buildView(
         centerTitle: false,
         title: Text(
           I18n.of(viewService.context).seasonDetail,
-          style: _theme.textTheme.body1,
+          style: _theme.textTheme.bodyText1,
         ),
       ),
       body: ListView.builder(
