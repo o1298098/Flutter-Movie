@@ -52,7 +52,7 @@ Widget buildView(
             width: Adapt.px(40),
           ),
           Text(
-            'Hi , ${state.user?.displayName ?? 'Guest'}',
+            'Hi, ${state.user?.displayName ?? 'Guest'}',
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
