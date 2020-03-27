@@ -38,8 +38,10 @@ void _onDispose(Action action, Context<DiscoverPageState> ctx) {
 
 Future _onLoadData(Action action, Context<DiscoverPageState> ctx) async {
   ctx.dispatch(DiscoverPageActionCreator.onBusyChanged(true));
-  var genresIds =
-      ctx.state.filterState.genres.where((e) => e.isSelected).map<int>((e) {
+  final _genres = ctx.state.filterState.isMovie
+      ? ctx.state.filterState.movieGenres
+      : ctx.state.filterState.tvGenres;
+  var genresIds = _genres.where((e) => e.isSelected).map<int>((e) {
     return e.value;
   }).toList();
   VideoListModel r;
@@ -67,8 +69,10 @@ Future _onVideoCellTapped(Action action, Context<DiscoverPageState> ctx) async {
 
 Future _onLoadMore(Action action, Context<DiscoverPageState> ctx) async {
   ctx.dispatch(DiscoverPageActionCreator.onBusyChanged(true));
-  var genresIds =
-      ctx.state.filterState.genres.where((e) => e.isSelected).map<int>((e) {
+  final _genres = ctx.state.filterState.isMovie
+      ? ctx.state.filterState.movieGenres
+      : ctx.state.filterState.tvGenres;
+  var genresIds = _genres.where((e) => e.isSelected).map<int>((e) {
     return e.value;
   }).toList();
   VideoListModel r;

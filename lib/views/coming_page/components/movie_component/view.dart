@@ -24,7 +24,7 @@ Widget buildView(
       margin: EdgeInsets.only(right: Adapt.px(10)),
       padding: EdgeInsets.all(Adapt.px(8)),
       child: Text(
-        Genres.genres[id],
+        Genres.movieList[id],
         style: TextStyle(fontSize: Adapt.px(24)),
       ),
       decoration: BoxDecoration(

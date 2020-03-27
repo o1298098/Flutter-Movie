@@ -7,16 +7,22 @@ import '../../state.dart';
 class FilterState implements Cloneable<FilterState> {
   bool isMovie = true;
   TextEditingController keyWordController;
-  List<SortCondition> genres = new List<SortCondition>()
-    ..addAll(Genres.genres.keys.map((i) {
-      return SortCondition(name: Genres.genres[i], isSelected: false, value: i);
+  List<SortCondition> movieGenres = new List<SortCondition>()
+    ..addAll(Genres.movieList.keys.map((i) {
+      return SortCondition(
+          name: Genres.movieList[i], isSelected: false, value: i);
+    }).toList());
+  List<SortCondition> tvGenres = new List<SortCondition>()
+    ..addAll(Genres.tvList.keys.map((i) {
+      return SortCondition(name: Genres.tvList[i], isSelected: false, value: i);
     }).toList());
   String keywords;
   @override
   FilterState clone() {
     return FilterState()
       ..isMovie = isMovie
-      ..genres = genres
+      ..movieGenres = movieGenres
+      ..tvGenres = tvGenres
       ..keywords = keywords
       ..keyWordController = keyWordController;
   }

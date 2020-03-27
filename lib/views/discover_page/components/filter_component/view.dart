@@ -20,12 +20,14 @@ Widget buildView(
         selectedColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         labelStyle: TextStyle(
-            color: d.isSelected ? _theme.textTheme.bodyText1.color : Colors.grey),
+            color:
+                d.isSelected ? _theme.textTheme.bodyText1.color : Colors.grey),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(Adapt.px(10)),
             side: BorderSide(
-                color:
-                    d.isSelected ? _theme.textTheme.bodyText1.color : Colors.grey)),
+                color: d.isSelected
+                    ? _theme.textTheme.bodyText1.color
+                    : Colors.grey)),
         onSelected: (s) {
           d.isSelected = s;
           //Navigator.pop(viewService.context);
@@ -148,7 +150,9 @@ Widget buildView(
             ),
             Wrap(
               spacing: Adapt.px(10),
-              children: state.genres.map(_buildGernesCell).toList(),
+              children: state.isMovie
+                  ? state.movieGenres.map(_buildGernesCell).toList()
+                  : state.tvGenres.map(_buildGernesCell).toList(),
             )
           ],
         ),

@@ -88,7 +88,9 @@ Widget buildView(
                       (d.genreIds ?? [])
                           .take(3)
                           .map((f) {
-                            return Genres.genres[f];
+                            return d.mediaType == 'movie'
+                                ? Genres.movieList[f]
+                                : Genres.tvList;
                           })
                           .toList()
                           .join(' / '),

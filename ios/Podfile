@@ -34,7 +34,6 @@ end
 
 target 'Runner' do
   use_frameworks!
-  pod 'Firebase/Core'
   use_modular_headers!
   
   # Flutter Pod
