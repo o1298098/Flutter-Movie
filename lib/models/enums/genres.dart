@@ -20,14 +20,14 @@ class Genres {
     27: "Horror",
     10402: "Music",
     10749: "Romance",
-    878: "Science Fiction",
-    10770: "TV Movie",
+    878: "Science_Fiction",
+    10770: "TV_Movie",
     53: "Thriller",
     10752: "War",
   };
 
   static Map<int, String> tvList = {
-    10759: "Action & Adventure",
+    10759: "Action_Adventure",
     16: "Animation",
     35: "Comedy",
     80: "Crime",
@@ -38,10 +38,10 @@ class Genres {
     9648: "Mystery",
     10763: "News",
     10764: "Reality",
-    10765: "Sci-Fi & Fantasy",
+    10765: "Sci-Fi_Fantasy",
     10766: "Soap",
     10767: "Talk",
-    10768: "War & Politics",
+    10768: "War_Politics",
     37: "Western"
   };
 }

@@ -20,8 +20,10 @@ void _onInit(Action action, Context<StartPageState> ctx) async {
   ctx.state.pageController = PageController();
   SharedPreferences.getInstance().then((_p) async {
     final _isFirst = _p.getBool('isFirstTime') ?? true;
-    ctx.dispatch(StartPageActionCreator.setIsFirst(_isFirst));
-    if (!_isFirst) await _pushToMainPage(ctx.context);
+    if (!_isFirst)
+      await _pushToMainPage(ctx.context);
+    else
+      ctx.dispatch(StartPageActionCreator.setIsFirst(_isFirst));
   });
 }
 
