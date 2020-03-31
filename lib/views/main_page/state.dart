@@ -6,11 +6,13 @@ import 'package:movie/globalbasestate/state.dart';
 class MainPageState implements GlobalBaseState, Cloneable<MainPageState> {
   int selectedIndex = 0;
   List<Widget> pages;
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   MainPageState clone() {
     return MainPageState()
       ..pages = pages
-      ..selectedIndex = selectedIndex;
+      ..selectedIndex = selectedIndex
+      ..scaffoldKey = scaffoldKey;
   }
 
   @override

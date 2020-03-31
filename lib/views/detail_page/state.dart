@@ -47,6 +47,5 @@ MovieDetailPageState initState(Map<String, dynamic> args) {
       favorite: false,
       watchlist: false,
       mediaType: 'movie');
-  state.hasStreamLink = false;
   return state;
 }

@@ -36,9 +36,7 @@ Widget buildView(
                         fontWeight: FontWeight.bold, fontSize: Adapt.px(35)),
                   ),
                 ),
-                SizedBox(
-                  height: Adapt.px(10),
-                ),
+                SizedBox(height: Adapt.px(10)),
                 Container(
                   padding: EdgeInsets.fromLTRB(
                       Adapt.px(40), 0, Adapt.px(40), Adapt.px(30)),
@@ -65,7 +63,8 @@ Widget buildView(
                           ]
                         : state.keyWords.map(_buildKeyWordCell).toList(),
                   ),
-                )
+                ),
+                SizedBox(height: Adapt.px(30)),
               ],
             ),
           ),

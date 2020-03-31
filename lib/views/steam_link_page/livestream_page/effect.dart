@@ -126,11 +126,12 @@ void _changedVideoSource(
       d.streamLinkType.name == 'Torrent') {
     ctx.state.streamAddress = d.streamLink;
   } else if (d.streamLinkType.name == 'YouTube') {
-    ctx.state.streamAddress = YoutubePlayer.convertUrlToId(d.streamLink);
+    ctx.state.streamAddress =
+        YoutubePlayer.convertUrlToId(d.streamLink) ?? d.streamLink;
     ctx.state.chewieController = null;
     if (ctx.state.youtubePlayerController == null)
       ctx.state.youtubePlayerController = new YoutubePlayerController(
-        initialVideoId: ctx.state.streamAddress,
+        initialVideoId: ctx.state.streamAddress ?? '',
         flags: YoutubePlayerFlags(
           autoPlay: true,
         ),

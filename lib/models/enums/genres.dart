@@ -29,10 +29,13 @@ class Genres {
   static Map<int, String> tvList = {
     10759: "Action_Adventure",
     16: "Animation",
+    27: "Horror",
     35: "Comedy",
     80: "Crime",
     99: "Documentary",
     18: "Drama",
+    14: "Fantasy",
+    10402: "Music",
     10751: "Family",
     10762: "Kids",
     9648: "Mystery",

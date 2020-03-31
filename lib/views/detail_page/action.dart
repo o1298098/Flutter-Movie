@@ -7,7 +7,7 @@ enum MovieDetailPageAction {
   action,
   updateDetail,
   setImages,
-  playTrailer,
+  playStreamLink,
   externalTapped,
   stillImageTapped,
   movieCellTapped,
@@ -32,7 +32,7 @@ class MovieDetailPageActionCreator {
   }
 
   static Action playTrailer() {
-    return const Action(MovieDetailPageAction.playTrailer);
+    return const Action(MovieDetailPageAction.playStreamLink);
   }
 
   static Action onExternalTapped(String url) {

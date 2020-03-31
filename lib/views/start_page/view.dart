@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +36,7 @@ Widget buildView(
               duration: Duration(milliseconds: 400), curve: Curves.ease);
         }),
     _SubscribeTopicPage(
-        title: '1.What kind of tv show do you like?',
+        title: '2.What kind of tv show do you like?',
         buttonTitle: 'Start >',
         tag: 'tvshow_',
         genres: _tvShowList,
@@ -162,6 +160,7 @@ class _SubscribeTopicPage extends StatefulWidget {
 
 class _SubscribeTopicPageState extends State<_SubscribeTopicPage> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
   @override
   void initState() {
     _firebaseMessaging.requestNotificationPermissions();
@@ -197,11 +196,10 @@ class _SubscribeTopicPageState extends State<_SubscribeTopicPage> {
                         key: ValueKey(d.name),
                         onTap: () {
                           d.value = !d.value;
+                          final _topic = '${widget.tag}${d.name}';
                           d.value
-                              ? _firebaseMessaging
-                                  .subscribeToTopic(widget.tag + d.name)
-                              : _firebaseMessaging
-                                  .unsubscribeFromTopic(widget.tag + d.name);
+                              ? _firebaseMessaging.subscribeToTopic(_topic)
+                              : _firebaseMessaging.unsubscribeFromTopic(_topic);
                           setState(() {});
                         },
                         child: Container(

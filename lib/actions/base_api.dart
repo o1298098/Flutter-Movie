@@ -341,10 +341,8 @@ class BaseApi {
     return model;
   }
 
-  static Future<MovieComments> sendStreamLinkReport(
-      StreamLinkReport report) async {
-    MovieComments model;
-    String _url = '/Email';
+  static Future<String> sendStreamLinkReport(StreamLinkReport report) async {
+    String _url = '/Email/ReportEmail';
     var _data = {
       'mediaName': report.mediaName,
       'linkName': report.linkName,
@@ -355,7 +353,18 @@ class BaseApi {
       'streamLink': report.streamLink
     };
     var r = await _http.request(_url, method: "POST", data: _data);
-    if (r != null) model = MovieComments(r);
-    return model;
+    return r;
+  }
+
+  static Future<String> sendRequestStreamLink(StreamLinkReport report) async {
+    String _url = '/Email/RequestLinkEmail';
+    var _data = {
+      'mediaName': report.mediaName,
+      'mediaId': report.mediaId,
+      'type': report.type,
+      'season': report.season
+    };
+    var r = await _http.request(_url, method: "POST", data: _data);
+    return r;
   }
 }

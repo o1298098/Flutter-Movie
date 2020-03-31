@@ -18,8 +18,8 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
   final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
   Widget _buildListTitel(IconData icon, String title, void onTap(),
       {Color iconColor = const Color.fromRGBO(50, 50, 50, 1)}) {
-    TextStyle titleStyle =
-        TextStyle(color: _theme.textTheme.bodyText1.color, fontSize: Adapt.px(35));
+    TextStyle titleStyle = TextStyle(
+        color: _theme.textTheme.bodyText1.color, fontSize: Adapt.px(35));
     return ListTile(
       leading: Icon(
         icon,
@@ -219,11 +219,8 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
         Divider(
           height: Adapt.px(10),
         ),
-        _buildListTitel(
-            Icons.edit,
-            'Add Stream Link',
-            () => dispatch(MenuActionCreator.addStreamLink(
-                state.id, state.name, state.posterPic, MediaType.movie)),
+        _buildListTitel(Icons.add_alarm, 'Request Stream Link',
+            () => dispatch(MenuActionCreator.requestStreamLink()),
             iconColor: _theme.iconTheme.color),
         Divider(
           height: Adapt.px(10),

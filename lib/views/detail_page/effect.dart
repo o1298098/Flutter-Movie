@@ -19,7 +19,7 @@ import 'state.dart';
 Effect<MovieDetailPageState> buildEffect() {
   return combineEffects(<Object, Effect<MovieDetailPageState>>{
     MovieDetailPageAction.action: _onAction,
-    MovieDetailPageAction.playTrailer: _playTrailer,
+    MovieDetailPageAction.playStreamLink: _playStreamLink,
     MovieDetailPageAction.externalTapped: _onExternalTapped,
     MovieDetailPageAction.stillImageTapped: _stillImageTapped,
     MovieDetailPageAction.movieCellTapped: _movieCellTapped,
@@ -41,7 +41,7 @@ Future _onInit(Action action, Context<MovieDetailPageState> ctx) async {
   ctx.state.scrollController = ScrollController();
   Future.delayed(Duration(milliseconds: 300), () async {
     BaseApi.hasMovieStreamLinks(ctx.state.mediaId).then((d) {
-      if (d) ctx.dispatch(MovieDetailPageActionCreator.setHasStreamLink(true));
+      ctx.dispatch(MovieDetailPageActionCreator.setHasStreamLink(d));
     });
     if (_id == null) return;
     var r = await ApiHelper.getMovieDetail(_id,
@@ -67,7 +67,7 @@ void _onDispose(Action action, Context<MovieDetailPageState> ctx) {
   ctx.state.scrollController?.dispose();
 }
 
-Future _playTrailer(Action action, Context<MovieDetailPageState> ctx) async {
+Future _playStreamLink(Action action, Context<MovieDetailPageState> ctx) async {
   if (ctx.state.hasStreamLink)
     await Navigator.of(ctx.context).pushNamed('liveStreamPage', arguments: {
       'id': ctx.state.mediaId,
@@ -76,7 +76,7 @@ Future _playTrailer(Action action, Context<MovieDetailPageState> ctx) async {
       'rateCount': ctx.state.detail.voteCount,
       'releaseDate': ctx.state.detail.releaseDate
     });
-  else {
+  /*else {
     var _model = ctx.state?.detail?.videos?.results ?? [];
     if (_model.length > 0)
       await showGeneralDialog(
@@ -112,7 +112,7 @@ Future _playTrailer(Action action, Context<MovieDetailPageState> ctx) async {
           });
     else
       Toast.show('no video', ctx.context);
-  }
+  }*/
 }
 
 Future _onExternalTapped(

@@ -10,7 +10,7 @@ enum MenuAction {
   setWatchlist,
   updateWatchlist,
   setFirebaseFavorite,
-  addStreamLink,
+  requestStreamLink,
 }
 
 class MenuActionCreator {
@@ -46,8 +46,7 @@ class MenuActionCreator {
     return Action(MenuAction.setFirebaseFavorite);
   }
 
-  static Action addStreamLink(
-      int id, String name, String poster, MediaType type) {
-    return Action(MenuAction.addStreamLink, payload: [id, name, poster, type]);
+  static Action requestStreamLink() {
+    return Action(MenuAction.requestStreamLink);
   }
 }

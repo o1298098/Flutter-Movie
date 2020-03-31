@@ -123,6 +123,7 @@ Widget buildView(CastState state, Dispatch dispatch, ViewService viewService) {
             Container(
               height: Adapt.px(300),
               child: ListView(
+                  physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
                   children: _model.length == 0
                       ? <Widget>[

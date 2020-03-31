@@ -272,13 +272,13 @@ Widget buildView(
                   child: FlatButton(
                     padding: EdgeInsets.zero,
                     color:
-                        state.hasStreamLink ? Colors.orange[600] : Colors.red,
+                        state.hasStreamLink == true ? Colors.red : Colors.grey,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(Adapt.px(50))),
                     highlightColor: Colors.red,
                     child: Icon(
                       Icons.play_arrow,
-                      color: Colors.white,
+                      color: const Color(0xFFFFFFFF),
                       size: Adapt.px(45),
                     ),
                     onPressed: () =>

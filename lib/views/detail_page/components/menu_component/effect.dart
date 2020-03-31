@@ -1,8 +1,10 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/actions/base_api.dart';
 import 'package:movie/globalbasestate/store.dart';
+import 'package:movie/models/base_api_model/stream_link_report.dart';
 import 'package:movie/models/base_api_model/user_media.dart';
 import 'package:movie/models/enums/media_type.dart';
 import '../../action.dart';
@@ -16,18 +18,21 @@ Effect<MenuState> buildEffect() {
     MenuAction.setFavorite: _setFavorite,
     MenuAction.setWatchlist: _setWatchlist,
     MenuAction.setFirebaseFavorite: _setFirebaseFavorite,
-    MenuAction.addStreamLink: _addStreamLink,
+    MenuAction.requestStreamLink: _requestStreamLink,
   });
 }
 
 void _onAction(Action action, Context<MenuState> ctx) {}
-void _addStreamLink(Action action, Context<MenuState> ctx) async {
-  await Navigator.of(ctx.context).pushNamed('addLinkPage', arguments: {
-    'id': action.payload[0],
-    'name': action.payload[1],
-    'photourl': action.payload[2],
-    'type': action.payload[3]
-  });
+void _requestStreamLink(Action action, Context<MenuState> ctx) async {
+  FirebaseMessaging().subscribeToTopic('movie_${ctx.state.id}');
+  Navigator.of(ctx.context).pop();
+  BaseApi.sendRequestStreamLink(StreamLinkReport()
+    ..mediaId = ctx.state.id
+    ..mediaName = ctx.state.name
+    ..type = 'movie'
+    ..season = 0);
+  ctx.broadcast(MovieDetailPageActionCreator.showSnackBar(
+      'You will be notified when the stream link has been added'));
 }
 
 void _setFirebaseFavorite(Action action, Context<MenuState> ctx) async {

@@ -6,6 +6,7 @@ class StreamLinkReport {
   String type;
   int mediaId;
   int streamLinkId;
+  int season;
   StreamLinkReport(
       {this.mediaName,
       this.content,
@@ -13,5 +14,6 @@ class StreamLinkReport {
       this.mediaId,
       this.streamLink,
       this.streamLinkId,
+      this.season,
       this.type});
 }
