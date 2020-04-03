@@ -27,6 +27,7 @@ class LiveStreamPageState
   List<MovieStreamLink> streamLinks;
   StreamLinkType streamLinkType;
   YoutubePlayerController youtubePlayerController;
+  bool loading;
 
   @override
   LiveStreamPageState clone() {
@@ -46,7 +47,8 @@ class LiveStreamPageState
       ..commentFocusNode = commentFocusNode
       ..videoControllers = videoControllers
       ..chewieController = chewieController
-      ..youtubePlayerController = youtubePlayerController;
+      ..youtubePlayerController = youtubePlayerController
+      ..loading = loading;
   }
 
   @override
@@ -65,5 +67,6 @@ LiveStreamPageState initState(Map<String, dynamic> args) {
     ..name = args['name']
     ..rateCount = args['rateCount']
     ..rated = args['rated']
-    ..releaseDate = args['releaseDate'];
+    ..releaseDate = args['releaseDate']
+    ..loading = false;
 }

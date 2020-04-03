@@ -37,6 +37,7 @@ class TvShowStreamLink {
   String updateTime;
   Language language;
   Quality quality;
+  bool needAd;
   StreamLinkType streamLinkType;
 
   TvShowStreamLink.fromParams(
@@ -50,6 +51,7 @@ class TvShowStreamLink {
       this.linkName,
       this.streamLink,
       this.uid,
+      this.needAd,
       this.updateTime});
 
   TvShowStreamLink.fromJson(jsonRes) {
@@ -61,6 +63,7 @@ class TvShowStreamLink {
     streamLink = jsonRes['streamLink'];
     uid = jsonRes['uid'];
     updateTime = jsonRes['updateTime'];
+    needAd = jsonRes['needAd'] == 1 ? true : false;
     language = jsonRes['languageNavigation'] == null
         ? null
         : new Language.fromJson(jsonRes['languageNavigation']);
@@ -74,7 +77,7 @@ class TvShowStreamLink {
 
   @override
   String toString() {
-    return '{"episode": $episode,"language": $language,"quality": $quality,"season": $season,"sid": $sid,"streamLinkType": ${streamLink != null ? '${json.encode(streamLink)}' : 'null'}Type,"tvId": $tvId,"linkName": ${linkName != null ? '${json.encode(linkName)}' : 'null'},"streamLink": ${streamLink != null ? '${json.encode(streamLink)}' : 'null'},"uid": ${uid != null ? '${json.encode(uid)}' : 'null'},"updateTime": ${updateTime != null ? '${json.encode(updateTime)}' : 'null'},"languageNavigation": $language,"qualityNavigation": $quality,"streamLinkTypeNavigation": $streamLinkType}';
+    return '{"episode": $episode,"language": $language,"quality": $quality,"season": $season,"sid": $sid,"streamLinkType": ${streamLink != null ? '${json.encode(streamLink)}' : 'null'}Type,"tvId": $tvId,"linkName": ${linkName != null ? '${json.encode(linkName)}' : 'null'},"streamLink": ${streamLink != null ? '${json.encode(streamLink)}' : 'null'},"uid": ${uid != null ? '${json.encode(uid)}' : 'null'},"updateTime": ${updateTime != null ? '${json.encode(updateTime)}' : 'null'},"languageNavigation": $language,"qualityNavigation": $quality,"streamLinkTypeNavigation": $streamLinkType,"needAd":$needAd}';
   }
 }
 

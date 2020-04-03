@@ -89,8 +89,8 @@ Widget buildView(
                           .take(3)
                           .map((f) {
                             return d.mediaType == 'movie'
-                                ? Genres.movieList[f]
-                                : Genres.tvList;
+                                ? Genres.movieList[f]?.replaceAll('_', ' & ')
+                                : Genres.tvList[f]?.replaceAll('_', ' & ');
                           })
                           .toList()
                           .join(' / '),

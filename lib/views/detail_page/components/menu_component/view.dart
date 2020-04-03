@@ -18,8 +18,8 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
   final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
   Widget _buildListTitel(IconData icon, String title, void onTap(),
       {Color iconColor = const Color.fromRGBO(50, 50, 50, 1)}) {
-    TextStyle titleStyle = TextStyle(
-        color: _theme.textTheme.bodyText1.color, fontSize: Adapt.px(35));
+    TextStyle titleStyle =
+        TextStyle(color: _theme.textTheme.bodyText1.color, fontSize: 18);
     return ListTile(
       leading: Icon(
         icon,
@@ -171,14 +171,10 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
             ],
           ),
         ),
-        Divider(
-          height: 1,
-        ),
+        Divider(height: 1),
         _buildListTitel(Icons.format_list_bulleted, 'Add to List', _addToList,
             iconColor: _theme.iconTheme.color),
-        Divider(
-          height: Adapt.px(10),
-        ),
+        Divider(height: Adapt.px(5)),
         _buildListTitel(
             state.accountState.favorite
                 ? Icons.favorite
@@ -191,9 +187,7 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
             iconColor: state.accountState.favorite
                 ? Colors.pink[400]
                 : _theme.iconTheme.color),
-        Divider(
-          height: Adapt.px(10),
-        ),
+        Divider(height: Adapt.px(5)),
         _buildListTitel(
           Icons.flag,
           'Add to your Watchlist',
@@ -206,9 +200,7 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
               ? Colors.red
               : _theme.iconTheme.color,
         ),
-        Divider(
-          height: Adapt.px(10),
-        ),
+        Divider(height: Adapt.px(5)),
         _buildListTitel(
             state.accountState.rated != null ? Icons.star : Icons.star_border,
             'Rate It',
@@ -216,20 +208,14 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
             iconColor: state.accountState.rated != null
                 ? Colors.amber
                 : _theme.iconTheme.color),
-        Divider(
-          height: Adapt.px(10),
-        ),
+        Divider(height: Adapt.px(5)),
         _buildListTitel(Icons.add_alarm, 'Request Stream Link',
             () => dispatch(MenuActionCreator.requestStreamLink()),
             iconColor: _theme.iconTheme.color),
-        Divider(
-          height: Adapt.px(10),
-        ),
+        Divider(height: Adapt.px(5)),
         _buildListTitel(Icons.share, 'Share', _share,
             iconColor: _theme.iconTheme.color),
-        Divider(
-          height: Adapt.px(10),
-        ),
+        Divider(height: Adapt.px(5)),
       ],
     ),
   );

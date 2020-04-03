@@ -1,5 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
+import 'package:movie/views/detail_page/components/trailer_component/component.dart';
+import 'package:movie/views/detail_page/components/trailer_component/state.dart';
 
 import 'components/cast_component/component.dart';
 import 'components/cast_component/state.dart';
@@ -39,6 +41,7 @@ class MovieDetailPage extends Page<MovieDetailPageState, Map<String, dynamic>> {
                 'cast': CastConnector() + CastComponent(),
                 'still': StillConnector() + StillComponent(),
                 'keyWords': KeyWordConnector() + KeyWordComponent(),
+                'trailer': TrailerConnector() + TrailerComponent(),
                 'recommendations':
                     RecommendationsConnector() + RecommendationsComponent(),
               }),

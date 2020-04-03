@@ -37,6 +37,7 @@ class MovieStreamLink {
   Quality quality;
   StreamLinkType streamLinkType;
   bool selected;
+  bool needAd;
 
   MovieStreamLink.fromParams(
       {this.language,
@@ -47,7 +48,8 @@ class MovieStreamLink {
       this.linkName,
       this.streamLink,
       this.uid,
-      this.updateTime});
+      this.updateTime,
+      this.needAd});
 
   MovieStreamLink.fromJson(jsonRes) {
     movieId = jsonRes['movieId'];
@@ -56,6 +58,7 @@ class MovieStreamLink {
     streamLink = jsonRes['streamLink'];
     uid = jsonRes['uid'];
     updateTime = jsonRes['updateTime'];
+    needAd = jsonRes['needAd'] == 1 ? true : false;
     selected = false;
     language = jsonRes['languageNavigation'] == null
         ? null
@@ -70,7 +73,7 @@ class MovieStreamLink {
 
   @override
   String toString() {
-    return '{"language": $language,"movieId": $movieId,"quality": $quality,"sid": $sid,"streamLinkType": ${streamLink != null ? '${json.encode(streamLink)}' : 'null'}Type,"linkName": ${linkName != null ? '${json.encode(linkName)}' : 'null'},"streamLink": ${streamLink != null ? '${json.encode(streamLink)}' : 'null'},"uid": ${uid != null ? '${json.encode(uid)}' : 'null'},"updateTime": ${updateTime != null ? '${json.encode(updateTime)}' : 'null'},"languageNavigation": $language,"qualityNavigation": $quality,"streamLinkTypeNavigation": $streamLinkType}';
+    return '{"language": $language,"movieId": $movieId,"quality": $quality,"sid": $sid,"streamLinkType": ${streamLink != null ? '${json.encode(streamLink)}' : 'null'}Type,"linkName": ${linkName != null ? '${json.encode(linkName)}' : 'null'},"streamLink": ${streamLink != null ? '${json.encode(streamLink)}' : 'null'},"uid": ${uid != null ? '${json.encode(uid)}' : 'null'},"updateTime": ${updateTime != null ? '${json.encode(updateTime)}' : 'null'},"languageNavigation": $language,"qualityNavigation": $quality,"streamLinkTypeNavigation": $streamLinkType,"needAd": $needAd}';
   }
 }
 

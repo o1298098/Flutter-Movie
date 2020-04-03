@@ -25,6 +25,7 @@ Future<Widget> createApp() async {
   final ThemeData _lightTheme = ThemeData.light();
   final ThemeData _darkTheme = ThemeData.dark();
   final FirebaseAnalytics analytics = FirebaseAnalytics();
+
   await _init();
 
   return MaterialApp(

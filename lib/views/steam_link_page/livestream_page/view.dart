@@ -157,51 +157,75 @@ Widget buildView(
               dispatch(LiveStreamPageActionCreator.chipSelected(d));
           },
           child: Container(
-            margin: EdgeInsets.only(left: Adapt.px(30)),
-            padding: EdgeInsets.all(Adapt.px(20)),
-            width: Adapt.px(300),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(Adapt.px(20)),
-              border: Border.all(
-                  color: d.selected
-                      ? _mediaQuery.platformBrightness == Brightness.light
-                          ? Colors.black
-                          : Colors.white
-                      : Colors.grey),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text('${d.linkName}'),
-                    SizedBox(height: Adapt.px(15)),
-                    Text(
-                      '${d.language.name}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style:
-                          TextStyle(color: Colors.grey, fontSize: Adapt.px(30)),
-                    ),
-                  ],
-                ),
-                Container(
-                  height: Adapt.px(45),
-                  padding: EdgeInsets.all(Adapt.px(10)),
-                  decoration: BoxDecoration(
-                      color: Color(0xFF505050),
-                      borderRadius: BorderRadius.circular(Adapt.px(25))),
-                  child: Text(
-                    d.quality.name,
-                    style:
-                        TextStyle(color: Colors.white, fontSize: Adapt.px(20)),
+              margin: EdgeInsets.only(left: Adapt.px(30)),
+              width: Adapt.px(300),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Adapt.px(20)),
+                border: Border.all(
+                    color: d.selected
+                        ? _mediaQuery.platformBrightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white
+                        : Colors.grey),
+              ),
+              child: Stack(children: [
+                Padding(
+                  padding: EdgeInsets.all(Adapt.px(20)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text('${d.linkName}'),
+                          SizedBox(height: Adapt.px(15)),
+                          Text(
+                            '${d.language.name}',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                color: Colors.grey, fontSize: Adapt.px(30)),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        height: Adapt.px(45),
+                        padding: EdgeInsets.all(Adapt.px(10)),
+                        decoration: BoxDecoration(
+                            color: Color(0xFF505050),
+                            borderRadius: BorderRadius.circular(Adapt.px(25))),
+                        child: Text(
+                          d.quality.name,
+                          style: TextStyle(
+                              color: Colors.white, fontSize: Adapt.px(20)),
+                        ),
+                      )
+                    ],
                   ),
-                )
-              ],
-            ),
-          ));
+                ),
+                d.needAd
+                    ? Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: const Color(0xAA60ABBA),
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(Adapt.px(19)),
+                                  bottomRight: Radius.circular(Adapt.px(19)))),
+                          width: Adapt.px(60),
+                          height: Adapt.px(40),
+                          child: Center(
+                              child: Text(
+                            'Ad',
+                            style: TextStyle(
+                                color: const Color(0xFFFFFFFF),
+                                fontSize: Adapt.px(18)),
+                          )),
+                        ))
+                    : SizedBox(),
+              ])));
     }
 
     Widget _buildShimmerLinkCell() {

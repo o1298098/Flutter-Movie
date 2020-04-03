@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "472468283055-qu9kup7qd1e5sgv87edugjb5mo7nj3a0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.o1298098.movie",
+            "certificate_hash": "d661150a7f674c98b9f5ed3f8cc511e34388dff4"
+          }
+        },
+        {
           "client_id": "472468283055-qpggv4a9kbv3rpt1g43q0mi14lg7f5so.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -32,15 +40,16 @@
               "client_type": 3
             },
             {
-              "client_id": "472468283055-4qjn08fpkfnqbhkji92u1059j51tgsqd.apps.googleusercontent.com",
+              "client_id": "472468283055-5vepq9actfcm7p0vgm7it41ed3plkbfn.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.o1298098.movie"
+                "bundle_id": "com.o1298098.movies"
               }
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-8117211796129035~2073774357"
     }
   ],
   "configuration_version": "1"

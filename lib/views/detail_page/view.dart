@@ -20,6 +20,7 @@ Widget buildView(
           viewService.buildComponent('cast'),
           viewService.buildComponent('still'),
           viewService.buildComponent('keyWords'),
+          viewService.buildComponent('trailer'),
           viewService.buildComponent('recommendations'),
         ],
       ),

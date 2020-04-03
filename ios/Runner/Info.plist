@@ -75,5 +75,9 @@
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+    <false/>
+	<key>GADApplicationIdentifier</key>
+    <string>ca-app-pub-8117211796129035~9625154831</string>
 </dict>
 </plist>

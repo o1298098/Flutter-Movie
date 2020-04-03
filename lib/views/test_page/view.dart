@@ -1,3 +1,4 @@
+//import 'package:firebase_admob/firebase_admob.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'state.dart';
 Widget buildView(
     TestPageState state, Dispatch dispatch, ViewService viewService) {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
   return Scaffold(
       backgroundColor: Color(0xFFF0F0F0),
       appBar: AppBar(
@@ -30,7 +32,7 @@ Widget buildView(
                 _firebaseMessaging.subscribeToTopic('test');
                 _firebaseMessaging.getToken().then((value) => print(value));
               },
-              child: Text('test'))
+              child: Text('test')),
         ],
       ));
 }

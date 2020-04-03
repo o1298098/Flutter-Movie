@@ -1,7 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/actions/base_api.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
@@ -10,9 +9,7 @@ import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/views/peopledetail_page/page.dart';
-import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -76,43 +73,6 @@ Future _playStreamLink(Action action, Context<MovieDetailPageState> ctx) async {
       'rateCount': ctx.state.detail.voteCount,
       'releaseDate': ctx.state.detail.releaseDate
     });
-  /*else {
-    var _model = ctx.state?.detail?.videos?.results ?? [];
-    if (_model.length > 0)
-      await showGeneralDialog(
-          barrierLabel: 'Trailer',
-          barrierDismissible: true,
-          barrierColor: Colors.black87,
-          transitionDuration: Duration(milliseconds: 300),
-          context: ctx.context,
-          pageBuilder: (_, __, ___) {
-            return Center(
-              child: Material(
-                child: Container(
-                  width: Adapt.screenW(),
-                  height: Adapt.screenW() * 9 / 16,
-                  child: YoutubePlayer(
-                    controller: YoutubePlayerController(
-                        initialVideoId: _model[0].key,
-                        flags: YoutubePlayerFlags(
-                          mute: false,
-                          autoPlay: true,
-                          forceHideAnnotation: true,
-                        )),
-                    showVideoProgressIndicator: true,
-                    progressIndicatorColor: Colors.red,
-                    progressColors: ProgressBarColors(
-                      playedColor: Colors.red,
-                      handleColor: Colors.redAccent,
-                    ),
-                  ),
-                ),
-              ),
-            );
-          });
-    else
-      Toast.show('no video', ctx.context);
-  }*/
 }
 
 Future _onExternalTapped(

@@ -1,9 +1,11 @@
 import 'package:chewie/chewie.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/base_api.dart';
 import 'package:movie/customwidgets/custom_video_controls.dart';
 import 'package:movie/customwidgets/stream_link_report_dialog.dart';
+import 'package:movie/models/ad_target_info.dart';
 import 'package:movie/models/base_api_model/base_user.dart';
 import 'package:movie/models/base_api_model/movie_comment.dart';
 import 'package:movie/models/base_api_model/movie_stream_link.dart';
@@ -26,8 +28,8 @@ Effect<LiveStreamPageState> buildEffect() {
 
 void _onAction(Action action, Context<LiveStreamPageState> ctx) {}
 void _streamLinkReport(Action action, Context<LiveStreamPageState> ctx) {
-  final MovieStreamLink e = ctx.state.streamLinks
-      .singleWhere((d) => d.streamLink == ctx.state.streamAddress);
+  final MovieStreamLink e =
+      ctx.state.streamLinks.singleWhere((d) => d.selected);
   showDialog(
       context: ctx.context,
       builder: (_) {
@@ -43,13 +45,12 @@ void _streamLinkReport(Action action, Context<LiveStreamPageState> ctx) {
       });
 }
 
-void _chipSelected(Action action, Context<LiveStreamPageState> ctx) {
+void _chipSelected(Action action, Context<LiveStreamPageState> ctx) async {
   final MovieStreamLink d = action.payload;
   if (d != null) {
     assert(!d.selected);
     ctx.state.streamLinks.forEach((f) => f.selected = false);
     d.selected = true;
-
     ctx.state.streamLinkType = d.streamLinkType;
     ctx.dispatch(
         LiveStreamPageActionCreator.setStreamLinks(ctx.state.streamLinks));
@@ -85,6 +86,26 @@ void _addComment(Action action, Context<LiveStreamPageState> ctx) {
 void _onInit(Action action, Context<LiveStreamPageState> ctx) {
   ctx.state.commentFocusNode = FocusNode();
   ctx.state.commentController = TextEditingController();
+  /*_rewardedVideoAd.listener =
+      (RewardedVideoAdEvent event, {String rewardType, int rewardAmount}) {
+    switch (event) {
+      case RewardedVideoAdEvent.loaded:
+        print('loaded');
+        _rewardedVideoAd.show();
+        break;
+      case RewardedVideoAdEvent.failedToLoad:
+        print('failedToLoad');
+        break;
+      case RewardedVideoAdEvent.closed:
+        print('closed');
+        break;
+      case RewardedVideoAdEvent.rewarded:
+        print('rewarded');
+        break;
+      default:
+        break;
+    }
+  };*/
   BaseApi.getMovieStreamLinks(ctx.state.id).then((d) {
     if (d != null) {
       final _list = d.list;
