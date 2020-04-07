@@ -18,150 +18,6 @@ Widget buildView(
 
   return Builder(builder: (context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
-    Widget _buildShimmerCell() {
-      return SizedBox(
-          height: Adapt.px(400),
-          child: Shimmer.fromColors(
-            baseColor: _theme.primaryColorDark,
-            highlightColor: _theme.primaryColorLight,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  width: Adapt.px(260),
-                  height: Adapt.px(400),
-                  color: Colors.grey[200],
-                ),
-                Container(
-                  padding: EdgeInsets.all(Adapt.px(20)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Container(
-                            width: Adapt.px(80),
-                            height: Adapt.px(80),
-                            decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                borderRadius:
-                                    BorderRadius.circular(Adapt.px(40))),
-                          ),
-                          SizedBox(
-                            width: Adapt.px(10),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                width: Adapt.screenW() - Adapt.px(450),
-                                height: Adapt.px(25),
-                                color: Colors.grey[200],
-                              ),
-                              SizedBox(
-                                height: Adapt.px(10),
-                              ),
-                              Container(
-                                width: Adapt.px(120),
-                                height: Adapt.px(20),
-                                color: Colors.grey[200],
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: Adapt.px(20),
-                      ),
-                      Container(
-                        width: Adapt.screenW() - Adapt.px(360),
-                        height: Adapt.px(20),
-                        color: Colors.grey[200],
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: Adapt.px(10)),
-                        width: Adapt.screenW() - Adapt.px(360),
-                        height: Adapt.px(20),
-                        color: Colors.grey[200],
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: Adapt.px(10)),
-                        width: Adapt.screenW() - Adapt.px(360),
-                        height: Adapt.px(20),
-                        color: Colors.grey[200],
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: Adapt.px(10)),
-                        width: Adapt.screenW() - Adapt.px(360),
-                        height: Adapt.px(20),
-                        color: Colors.grey[200],
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: Adapt.px(10)),
-                        width: Adapt.screenW() - Adapt.px(360),
-                        height: Adapt.px(20),
-                        color: Colors.grey[200],
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ));
-    }
-
-    Widget _buildConditionListWidget(items, void itemOnTap(sortCondition)) {
-      return ListView.separated(
-        shrinkWrap: true,
-        scrollDirection: Axis.vertical,
-        itemCount: items.length,
-        separatorBuilder: (BuildContext context, int index) =>
-            Divider(height: 1.0),
-        itemBuilder: (BuildContext context, int index) {
-          SortCondition goodsSortCondition = items[index];
-          return GestureDetector(
-            onTap: () {
-              for (var value in items) {
-                value.isSelected = false;
-              }
-              goodsSortCondition.isSelected = true;
-              itemOnTap(goodsSortCondition);
-            },
-            child: Container(
-              color: _theme.backgroundColor,
-              height: 40,
-              child: Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Expanded(
-                    child: Text(
-                      goodsSortCondition.name,
-                      style: TextStyle(
-                        color: goodsSortCondition.isSelected
-                            ? _theme.textTheme.bodyText1.color
-                            : Colors.grey,
-                      ),
-                    ),
-                  ),
-                  goodsSortCondition.isSelected
-                      ? Icon(
-                          Icons.check,
-                          color: _theme.iconTheme.color,
-                          size: 16,
-                        )
-                      : SizedBox(),
-                  SizedBox(
-                    width: 16,
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    }
 
     return Scaffold(
       key: state.scaffoldKey,
@@ -216,26 +72,25 @@ Widget buildView(
                 SliverToBoxAdapter(
                     child: Offstage(
                   offstage: state.isbusy,
-                  child: Container(
-                    margin: EdgeInsets.only(
-                        top: Adapt.px(10),
-                        bottom: Adapt.px(30),
-                        left: Adapt.px(30),
-                        right: Adapt.px(30)),
-                    child: Column(
-                      children: <Widget>[
-                        _buildShimmerCell(),
-                        SizedBox(
-                          height: Adapt.px(30),
+                  child: Shimmer.fromColors(
+                      baseColor: _theme.primaryColorDark,
+                      highlightColor: _theme.primaryColorLight,
+                      child: Container(
+                        margin: EdgeInsets.only(
+                            top: Adapt.px(10),
+                            bottom: Adapt.px(30),
+                            left: Adapt.px(30),
+                            right: Adapt.px(30)),
+                        child: Column(
+                          children: <Widget>[
+                            _ShimmerCell(),
+                            SizedBox(height: Adapt.px(30)),
+                            _ShimmerCell(),
+                            SizedBox(height: Adapt.px(30)),
+                            _ShimmerCell(),
+                          ],
                         ),
-                        _buildShimmerCell(),
-                        SizedBox(
-                          height: Adapt.px(30),
-                        ),
-                        _buildShimmerCell(),
-                      ],
-                    ),
-                  ),
+                      )),
                 ))
               ],
             ),
@@ -245,16 +100,17 @@ Widget buildView(
               menus: [
                 GZXDropdownMenuBuilder(
                   dropDownHeight: 40 * state.sortType.length.toDouble(),
-                  dropDownWidget:
-                      _buildConditionListWidget(state.sortType, (value) {
-                    int e = state.sortType.indexOf(value);
-                    state.filterTabNames[0] = state.sortType[e].name;
-                    dispatch(DiscoverPageActionCreator.onSortChanged(
-                        state.sortType[e].value));
-                    dispatch(DiscoverPageActionCreator.onRefreshData());
+                  dropDownWidget: _ConditionList(
+                      items: state.sortType,
+                      onTap: (value) {
+                        int e = state.sortType.indexOf(value);
+                        state.filterTabNames[0] = state.sortType[e].name;
+                        dispatch(DiscoverPageActionCreator.onSortChanged(
+                            state.sortType[e].value));
+                        dispatch(DiscoverPageActionCreator.onRefreshData());
 
-                    state.dropdownMenuController.hide();
-                  }),
+                        state.dropdownMenuController.hide();
+                      }),
                 ),
               ],
             )
@@ -263,4 +119,154 @@ Widget buildView(
       ),
     );
   });
+}
+
+class _ShimmerCell extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        height: Adapt.px(400),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: Adapt.px(260),
+              height: Adapt.px(400),
+              color: Colors.grey[200],
+            ),
+            Container(
+              padding: EdgeInsets.all(Adapt.px(20)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        width: Adapt.px(80),
+                        height: Adapt.px(80),
+                        decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(Adapt.px(40))),
+                      ),
+                      SizedBox(
+                        width: Adapt.px(10),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            width: Adapt.screenW() - Adapt.px(450),
+                            height: Adapt.px(25),
+                            color: Colors.grey[200],
+                          ),
+                          SizedBox(
+                            height: Adapt.px(10),
+                          ),
+                          Container(
+                            width: Adapt.px(120),
+                            height: Adapt.px(20),
+                            color: Colors.grey[200],
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: Adapt.px(20),
+                  ),
+                  Container(
+                    width: Adapt.screenW() - Adapt.px(360),
+                    height: Adapt.px(20),
+                    color: Colors.grey[200],
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: Adapt.px(10)),
+                    width: Adapt.screenW() - Adapt.px(360),
+                    height: Adapt.px(20),
+                    color: Colors.grey[200],
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: Adapt.px(10)),
+                    width: Adapt.screenW() - Adapt.px(360),
+                    height: Adapt.px(20),
+                    color: Colors.grey[200],
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: Adapt.px(10)),
+                    width: Adapt.screenW() - Adapt.px(360),
+                    height: Adapt.px(20),
+                    color: Colors.grey[200],
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: Adapt.px(10)),
+                    width: Adapt.screenW() - Adapt.px(360),
+                    height: Adapt.px(20),
+                    color: Colors.grey[200],
+                  ),
+                ],
+              ),
+            )
+          ],
+        ));
+  }
+}
+
+class _ConditionList extends StatelessWidget {
+  final dynamic items;
+  final Function(dynamic) onTap;
+  const _ConditionList({@required this.items, this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return ListView.separated(
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      itemCount: items.length,
+      separatorBuilder: (BuildContext context, int index) =>
+          Divider(height: 1.0),
+      itemBuilder: (BuildContext context, int index) {
+        SortCondition goodsSortCondition = items[index];
+        return GestureDetector(
+          onTap: () {
+            for (var value in items) {
+              value.isSelected = false;
+            }
+            goodsSortCondition.isSelected = true;
+            onTap(goodsSortCondition);
+          },
+          child: Container(
+            color: _theme.backgroundColor,
+            height: 40,
+            child: Row(
+              children: <Widget>[
+                SizedBox(
+                  width: 16,
+                ),
+                Expanded(
+                  child: Text(
+                    goodsSortCondition.name,
+                    style: TextStyle(
+                      color: goodsSortCondition.isSelected
+                          ? _theme.textTheme.bodyText1.color
+                          : Colors.grey,
+                    ),
+                  ),
+                ),
+                goodsSortCondition.isSelected
+                    ? Icon(
+                        Icons.check,
+                        color: _theme.iconTheme.color,
+                        size: 16,
+                      )
+                    : SizedBox(),
+                SizedBox(
+                  width: 16,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 }

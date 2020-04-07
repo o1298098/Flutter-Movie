@@ -15,119 +15,6 @@ import 'state.dart';
 
 Widget buildView(
     RecommendationsState state, Dispatch dispatch, ViewService viewService) {
-  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
-
-  Widget _buildRecommendationShimmerCell() {
-    double _width = Adapt.px(220);
-    return SizedBox(
-      width: _width,
-      child: Shimmer.fromColors(
-        baseColor: _theme.primaryColorDark,
-        highlightColor: _theme.primaryColorLight,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              width: _width,
-              height: Adapt.px(320),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-              ),
-            ),
-            SizedBox(
-              height: Adapt.px(15),
-            ),
-            Container(
-              width: _width,
-              height: Adapt.px(30),
-              color: Colors.grey[200],
-            ),
-            SizedBox(
-              height: Adapt.px(8),
-            ),
-            Container(
-              width: _width - Adapt.px(50),
-              height: Adapt.px(30),
-              color: Colors.grey[200],
-            ),
-            SizedBox(
-              height: Adapt.px(8),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildImage(String url, double width, double height, double radius,
-      {EdgeInsetsGeometry margin = EdgeInsets.zero, ValueKey key}) {
-    return Container(
-      key: key,
-      width: width,
-      height: height,
-      margin: margin,
-      decoration: BoxDecoration(
-          color: _theme.primaryColorDark,
-          borderRadius: BorderRadius.circular(radius),
-          image: DecorationImage(
-              fit: BoxFit.cover, image: CachedNetworkImageProvider(url))),
-    );
-  }
-
-  Widget _buildRecommendationCell(VideoListResult d) {
-    double _width = Adapt.px(220);
-    return GestureDetector(
-      key: ValueKey('recommendation${d.id}'),
-      onTap: () => dispatch(
-          MovieDetailPageActionCreator.movieCellTapped(d.id, d.posterPath)),
-      child: Padding(
-        padding: EdgeInsets.only(right: Adapt.px(30)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _buildImage(ImageUrl.getUrl(d.posterPath, ImageSize.w500), _width,
-                Adapt.px(320), Adapt.px(20)),
-            SizedBox(
-              height: Adapt.px(15),
-            ),
-            Container(
-              width: _width,
-              child: Text(
-                d.title,
-                softWrap: true,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: Adapt.px(24)),
-              ),
-            ),
-            SizedBox(
-              height: Adapt.px(8),
-            ),
-            Text(
-                '${DateTime.parse(d.releaseDate == null || d.releaseDate == '' ? '2020-01-01' : d.releaseDate).year}',
-                style: TextStyle(fontSize: Adapt.px(24))),
-            SizedBox(
-              height: Adapt.px(8),
-            ),
-            Container(
-                width: _width,
-                child: RatingBarIndicator(
-                  itemPadding: EdgeInsets.only(right: Adapt.px(5)),
-                  itemSize: Adapt.px(25),
-                  itemBuilder: (context, _) => Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                  ),
-                  unratedColor: Colors.grey[300],
-                  rating: d.voteAverage / 2,
-                ))
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildRecommendations() {
     var _model = state.recommendations;
     return SliverToBoxAdapter(
@@ -147,32 +34,22 @@ Widget buildView(
           ),
           Container(
             height: Adapt.px(450),
-            child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: _model.length == 0
-                    ? <Widget>[
-                        SizedBox(
-                          width: Adapt.px(40),
-                        ),
-                        _buildRecommendationShimmerCell(),
-                        SizedBox(
-                          width: Adapt.px(30),
-                        ),
-                        _buildRecommendationShimmerCell(),
-                        SizedBox(
-                          width: Adapt.px(30),
-                        ),
-                        _buildRecommendationShimmerCell()
-                      ]
-                    : (state.recommendations
-                            ?.map(_buildRecommendationCell)
-                            ?.toList() ??
-                        []
-                      ..insert(
-                          0,
-                          SizedBox(
-                            width: Adapt.px(40),
-                          )))),
+            child: _model.length == 0
+                ? _ShimmmerList()
+                : ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
+                    separatorBuilder: (_, __) => SizedBox(width: Adapt.px(30)),
+                    itemCount: _model.length,
+                    itemBuilder: (_, index) {
+                      final d = _model[index];
+                      return _RecommendationCell(
+                        data: d,
+                        onTap: () => dispatch(
+                            MovieDetailPageActionCreator.movieCellTapped(
+                                d.id, d.posterPath)),
+                      );
+                    }),
           ),
           SizedBox(
             height: Adapt.px(30),
@@ -181,4 +58,122 @@ Widget buildView(
   }
 
   return _buildRecommendations();
+}
+
+class _ShimmerCell extends StatelessWidget {
+  final double _width = Adapt.px(220);
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: _width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            width: _width,
+            height: Adapt.px(320),
+            decoration: BoxDecoration(
+              color: const Color(0xFFEEEEEE),
+            ),
+          ),
+          SizedBox(height: Adapt.px(15)),
+          Container(
+            width: _width,
+            height: Adapt.px(30),
+            color: const Color(0xFFEEEEEE),
+          ),
+          SizedBox(height: Adapt.px(8)),
+          Container(
+            width: _width - Adapt.px(50),
+            height: Adapt.px(30),
+            color: const Color(0xFFEEEEEE),
+          ),
+          SizedBox(height: Adapt.px(8)),
+        ],
+      ),
+    );
+  }
+}
+
+class _ShimmmerList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return Shimmer.fromColors(
+        baseColor: _theme.primaryColorDark,
+        highlightColor: _theme.primaryColorLight,
+        child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
+          separatorBuilder: (_, __) => SizedBox(width: Adapt.px(30)),
+          itemCount: 4,
+          itemBuilder: (_, __) => _ShimmerCell(),
+        ));
+  }
+}
+
+class _RecommendationCell extends StatelessWidget {
+  final VideoListResult data;
+  final Function onTap;
+  const _RecommendationCell({@required this.data, this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    final double _width = Adapt.px(220);
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return GestureDetector(
+      key: ValueKey('recommendation${data.id}'),
+      onTap: onTap,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            width: _width,
+            height: Adapt.px(320),
+            decoration: BoxDecoration(
+                color: _theme.primaryColorDark,
+                borderRadius: BorderRadius.circular(Adapt.px(20)),
+                image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(
+                        ImageUrl.getUrl(data.posterPath, ImageSize.w500)))),
+          ),
+          SizedBox(
+            height: Adapt.px(15),
+          ),
+          Container(
+            width: _width,
+            child: Text(
+              data.title,
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: Adapt.px(24)),
+            ),
+          ),
+          SizedBox(
+            height: Adapt.px(8),
+          ),
+          Text(
+              '${DateTime.parse(data.releaseDate == null || data.releaseDate == '' ? '2020-01-01' : data.releaseDate).year}',
+              style: TextStyle(fontSize: Adapt.px(24))),
+          SizedBox(
+            height: Adapt.px(8),
+          ),
+          Container(
+              width: _width,
+              child: RatingBarIndicator(
+                itemPadding: EdgeInsets.only(right: Adapt.px(5)),
+                itemSize: Adapt.px(25),
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                unratedColor: Colors.grey[300],
+                rating: data.voteAverage / 2,
+              ))
+        ],
+      ),
+    );
+  }
 }

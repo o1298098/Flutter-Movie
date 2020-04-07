@@ -27,6 +27,7 @@ Effect<LiveStreamPageState> buildEffect() {
 }
 
 void _onAction(Action action, Context<LiveStreamPageState> ctx) {}
+
 void _streamLinkReport(Action action, Context<LiveStreamPageState> ctx) {
   final MovieStreamLink e =
       ctx.state.streamLinks.singleWhere((d) => d.selected);
@@ -49,13 +50,26 @@ void _chipSelected(Action action, Context<LiveStreamPageState> ctx) async {
   final MovieStreamLink d = action.payload;
   if (d != null) {
     assert(!d.selected);
-    ctx.state.streamLinks.forEach((f) => f.selected = false);
-    d.selected = true;
-    ctx.state.streamLinkType = d.streamLinkType;
-    ctx.dispatch(
-        LiveStreamPageActionCreator.setStreamLinks(ctx.state.streamLinks));
-    _changedVideoSource(ctx, d);
+    if (d.needAd) {
+      ctx.dispatch(LiveStreamPageActionCreator.loading(true));
+      _streamLink = d;
+      _rewardedVideoAd.load(
+          adUnitId: RewardedVideoAd.testAdUnitId,
+          targetingInfo: AdTargetInfo.targetingInfo);
+    } else
+      _startPlayer(d, ctx);
   }
+}
+
+void _startPlayer(MovieStreamLink d, Context<LiveStreamPageState> ctx) {
+  if (d == null) return;
+  ctx.state.streamLinks.forEach((f) => f.selected = false);
+  d.selected = true;
+  ctx.state.streamLinkType = d.streamLinkType;
+  ctx.dispatch(
+      LiveStreamPageActionCreator.setStreamLinks(ctx.state.streamLinks));
+  _changedVideoSource(ctx, d);
+  _isRewarded = false;
 }
 
 void _addComment(Action action, Context<LiveStreamPageState> ctx) {
@@ -83,10 +97,16 @@ void _addComment(Action action, Context<LiveStreamPageState> ctx) {
   }
 }
 
+final _rewardedVideoAd = RewardedVideoAd.instance;
+
+bool _isRewarded = false;
+
+MovieStreamLink _streamLink;
+
 void _onInit(Action action, Context<LiveStreamPageState> ctx) {
   ctx.state.commentFocusNode = FocusNode();
   ctx.state.commentController = TextEditingController();
-  /*_rewardedVideoAd.listener =
+  _rewardedVideoAd.listener =
       (RewardedVideoAdEvent event, {String rewardType, int rewardAmount}) {
     switch (event) {
       case RewardedVideoAdEvent.loaded:
@@ -94,18 +114,25 @@ void _onInit(Action action, Context<LiveStreamPageState> ctx) {
         _rewardedVideoAd.show();
         break;
       case RewardedVideoAdEvent.failedToLoad:
+        _startPlayer(_streamLink, ctx);
         print('failedToLoad');
         break;
       case RewardedVideoAdEvent.closed:
+        if (_isRewarded) {
+          _streamLink.needAd = false;
+          _startPlayer(_streamLink, ctx);
+        } else
+          ctx.dispatch(LiveStreamPageActionCreator.loading(false));
         print('closed');
         break;
       case RewardedVideoAdEvent.rewarded:
+        _isRewarded = true;
         print('rewarded');
         break;
       default:
         break;
     }
-  };*/
+  };
   BaseApi.getMovieStreamLinks(ctx.state.id).then((d) {
     if (d != null) {
       final _list = d.list;
@@ -113,11 +140,21 @@ void _onInit(Action action, Context<LiveStreamPageState> ctx) {
         ctx.state.videoControllers = _list
             .map((f) => VideoPlayerController.network(f.streamLink))
             .toList();
+
         _list[0].selected = true;
 
-        ctx.state.streamLinkType = _list[0].streamLinkType;
         ctx.dispatch(LiveStreamPageActionCreator.setStreamLinks(_list));
-        _changedVideoSource(ctx, _list[0]);
+
+        if (_list[0].needAd) {
+          ctx.dispatch(LiveStreamPageActionCreator.loading(true));
+          _streamLink = _list[0];
+          _rewardedVideoAd.load(
+              adUnitId: RewardedVideoAd.testAdUnitId,
+              targetingInfo: AdTargetInfo.targetingInfo);
+        } else {
+          ctx.state.streamLinkType = _list[0].streamLinkType;
+          _changedVideoSource(ctx, _list[0]);
+        }
       }
     }
   });
@@ -127,8 +164,9 @@ void _onInit(Action action, Context<LiveStreamPageState> ctx) {
 }
 
 void _onDispose(Action action, Context<LiveStreamPageState> ctx) {
-  ctx.state.videoControllers.forEach((f) => f.dispose());
+  ctx.state.videoControllers?.forEach((f) => f.dispose());
   ctx.state.chewieController?.dispose();
+  _rewardedVideoAd.listener = null;
   if (ctx.state.youtubePlayerController != null)
     ctx.state.youtubePlayerController.dispose();
 }

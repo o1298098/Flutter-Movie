@@ -11,7 +11,8 @@ enum LiveStreamPageAction {
   addComment,
   insertComment,
   videoPlayerUpdate,
-  streamLinkReport
+  streamLinkReport,
+  loading
 }
 
 class LiveStreamPageActionCreator {
@@ -49,5 +50,9 @@ class LiveStreamPageActionCreator {
 
   static Action insertComment(MovieComment comment) {
     return Action(LiveStreamPageAction.insertComment, payload: comment);
+  }
+
+  static Action loading(bool isLoading) {
+    return Action(LiveStreamPageAction.loading, payload: isLoading);
   }
 }

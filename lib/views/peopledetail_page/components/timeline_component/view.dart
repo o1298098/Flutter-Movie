@@ -43,74 +43,6 @@ Widget buildView(
       );
   }
 
-  Widget _buildShimmerCell() {
-    return Shimmer.fromColors(
-      baseColor: _theme.primaryColorDark,
-      highlightColor: _theme.primaryColorLight,
-      child: Row(
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                height: Adapt.px(24),
-                width: Adapt.px(500),
-                color: _theme.primaryColorDark,
-              ),
-              SizedBox(
-                height: Adapt.px(8),
-              ),
-              Container(
-                height: Adapt.px(24),
-                width: Adapt.px(150),
-                color: _theme.primaryColorDark,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildActingCell(CastData d) {
-    double _leftwidth = (Adapt.screenW() - Adapt.px(120)) * 0.8;
-    String date = d.mediaType == 'movie' ? d.releaseDate : d.firstAirDate;
-    date = date == null || date?.isEmpty == true
-        ? '-'
-        : DateTime.parse(date).year.toString();
-    return GestureDetector(
-        key: ValueKey('timelineCell${d.creditId}'),
-        onTap: () => dispatch(PeopleDetailPageActionCreator.onCellTapped(
-            d.id,
-            d.backdropPath,
-            d.title ?? d.name,
-            d.posterPath,
-            d.mediaType == 'movie' ? MediaType.movie : MediaType.person)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  width: _leftwidth,
-                  child: Text(d.title ?? d.name,
-                      style: TextStyle(fontWeight: FontWeight.w600)),
-                ),
-                SizedBox(
-                    width: _leftwidth,
-                    child: Text(
-                        d?.character?.isEmpty == true || d.character == null
-                            ? '-'
-                            : d.character,
-                        style: TextStyle(color: Colors.grey[400])))
-              ],
-            ),
-            Text(date)
-          ],
-        ));
-  }
-
   Widget _buildActingBody() {
     if (_movies == null || _tvshows == null) initList();
     var _data = state.showmovie ? _movies : _tvshows;
@@ -119,17 +51,30 @@ Widget buildView(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(Adapt.px(30))),
         child: Container(
-            padding: EdgeInsets.all(Adapt.px(30)),
-            child: ListView.separated(
-              physics: PageScrollPhysics(),
-              separatorBuilder: (_, __) => Divider(),
-              shrinkWrap: true,
-              itemCount: _data.length > 0 ? _data.length : 5,
-              itemBuilder: (_, i) {
-                if (_data.length > 0) return _buildActingCell(_data[i]);
-                return _buildShimmerCell();
-              },
-            )));
+          padding: EdgeInsets.all(Adapt.px(30)),
+          child: _data.length > 0
+              ? ListView.separated(
+                  physics: PageScrollPhysics(),
+                  separatorBuilder: (_, __) => Divider(),
+                  shrinkWrap: true,
+                  itemCount: _data.length,
+                  itemBuilder: (_, i) {
+                    final d = _data[i];
+                    return _Cell(
+                      data: d,
+                      onTap: () => dispatch(
+                          PeopleDetailPageActionCreator.onCellTapped(
+                              d.id,
+                              d.backdropPath,
+                              d.title ?? d.name,
+                              d.posterPath,
+                              d.mediaType == 'movie'
+                                  ? MediaType.movie
+                                  : MediaType.person)),
+                    );
+                  })
+              : _ShimmerList(),
+        ));
   }
 
   final _selectTextStyle = TextStyle(fontWeight: FontWeight.w500);
@@ -174,4 +119,91 @@ Widget buildView(
           child: _buildActingBody(),
         ),
       ]);
+}
+
+class _ShimmerCell extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              height: Adapt.px(24),
+              width: Adapt.px(500),
+              color: const Color(0xFFEEEEEE),
+            ),
+            SizedBox(
+              height: Adapt.px(8),
+            ),
+            Container(
+              height: Adapt.px(24),
+              width: Adapt.px(150),
+              color: const Color(0xFFEEEEEE),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _ShimmerList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return Shimmer.fromColors(
+        baseColor: _theme.primaryColorDark,
+        highlightColor: _theme.primaryColorLight,
+        child: ListView.separated(
+          physics: PageScrollPhysics(),
+          separatorBuilder: (_, __) => Divider(),
+          shrinkWrap: true,
+          itemCount: 5,
+          itemBuilder: (_, i) => _ShimmerCell(),
+        ));
+  }
+}
+
+class _Cell extends StatelessWidget {
+  final CastData data;
+  final Function onTap;
+  const _Cell({@required this.data, this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    final double _leftwidth = (Adapt.screenW() - Adapt.px(120)) * 0.8;
+    String date =
+        data.mediaType == 'movie' ? data.releaseDate : data.firstAirDate;
+    date = date == null || date?.isEmpty == true
+        ? '-'
+        : DateTime.parse(date).year.toString();
+    return GestureDetector(
+        key: ValueKey('timelineCell${data.creditId}'),
+        onTap: onTap,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  width: _leftwidth,
+                  child: Text(data.title ?? data.name,
+                      style: TextStyle(fontWeight: FontWeight.w600)),
+                ),
+                SizedBox(
+                    width: _leftwidth,
+                    child: Text(
+                        data?.character?.isEmpty == true ||
+                                data.character == null
+                            ? '-'
+                            : data.character,
+                        style: TextStyle(color: Colors.grey[400])))
+              ],
+            ),
+            Text(date)
+          ],
+        ));
+  }
 }

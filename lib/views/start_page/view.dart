@@ -77,9 +77,7 @@ Widget buildView(
               );
           }
 
-          return Container(
-            color: const Color(0xFFFFFFFF),
-          );
+          return Container();
         }),
   );
 }

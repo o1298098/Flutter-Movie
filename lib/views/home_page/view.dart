@@ -16,43 +16,15 @@ Widget buildView(
   return Builder(
     builder: (context) {
       final ThemeData _theme = ThemeStyle.getTheme(context);
-
-      Widget _buildSearchBar() {
-        return GestureDetector(
-          onTap: () => dispatch(HomePageActionCreator.onSearchBarTapped()),
-          child: Container(
-              padding: EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(30)),
-              height: Adapt.px(70),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Adapt.px(40)),
-                color: Color.fromRGBO(57, 57, 57, 1),
-              ),
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.search,
-                    color: Colors.grey,
-                  ),
-                  SizedBox(
-                    width: Adapt.px(20),
-                  ),
-                  Text(
-                    I18n.of(viewService.context).searchbartxt,
-                    style:
-                        TextStyle(color: Colors.grey, fontSize: Adapt.px(28)),
-                  )
-                ],
-              )),
-        );
-      }
-
       return Scaffold(
           appBar: AppBar(
             backgroundColor: _theme.bottomAppBarColor,
             brightness: Brightness.dark,
             elevation: 0.0,
             automaticallyImplyLeading: false,
-            title: _buildSearchBar(),
+            title: _SearchBar(
+                onTap: () =>
+                    dispatch(HomePageActionCreator.onSearchBarTapped())),
           ),
           //backgroundColor: Colors.white,
           body: BackDrop(
@@ -75,4 +47,37 @@ Widget buildView(
           ));
     },
   );
+}
+
+class _SearchBar extends StatelessWidget {
+  final Function onTap;
+  const _SearchBar({this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+          padding: EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(30)),
+          height: Adapt.px(70),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(Adapt.px(40)),
+            color: Color.fromRGBO(57, 57, 57, 1),
+          ),
+          child: Row(
+            children: <Widget>[
+              Icon(
+                Icons.search,
+                color: Colors.grey,
+              ),
+              SizedBox(
+                width: Adapt.px(20),
+              ),
+              Text(
+                I18n.of(context).searchbartxt,
+                style: TextStyle(color: Colors.grey, fontSize: Adapt.px(28)),
+              )
+            ],
+          )),
+    );
+  }
 }

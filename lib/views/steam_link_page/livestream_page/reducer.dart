@@ -13,7 +13,8 @@ Reducer<LiveStreamPageState> buildReducer() {
       LiveStreamPageAction.commentChanged: _commentChanged,
       LiveStreamPageAction.setComment: _setComment,
       LiveStreamPageAction.insertComment: _insertComment,
-      LiveStreamPageAction.videoPlayerUpdate: _videoPlayerUpdate
+      LiveStreamPageAction.videoPlayerUpdate: _videoPlayerUpdate,
+      LiveStreamPageAction.loading: _loading,
     },
   );
 }
@@ -41,7 +42,12 @@ LiveStreamPageState _setComment(LiveStreamPageState state, Action action) {
 LiveStreamPageState _insertComment(LiveStreamPageState state, Action action) {
   final MovieComment comment = action.payload;
   final LiveStreamPageState newState = state.clone();
-  if (newState.comments != null) newState.comments.data.insert(0, comment);
+  if (newState.comments != null) {
+    final MovieComments _newComments = MovieComments.fromParams(
+        page: newState.comments.page, data: newState.comments.data);
+    _newComments.data.insert(0, comment);
+    newState.comments = _newComments;
+  }
   return newState;
 }
 
@@ -56,5 +62,13 @@ LiveStreamPageState _setStreamLinks(LiveStreamPageState state, Action action) {
   final List<MovieStreamLink> streamLinks = action.payload ?? [];
   final LiveStreamPageState newState = state.clone();
   newState.streamLinks = streamLinks;
+  newState.loading = false;
+  return newState;
+}
+
+LiveStreamPageState _loading(LiveStreamPageState state, Action action) {
+  final bool _isLoading = action.payload ?? false;
+  final LiveStreamPageState newState = state.clone();
+  newState.loading = _isLoading;
   return newState;
 }
