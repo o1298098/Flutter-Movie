@@ -89,21 +89,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
   #  - images/a_dot_burr.jpeg
-  - images/CacheBG.jpg
-  - images/facebook_circle.png
-  - images/twitter_circle.png
-  - images/instagram_circle.png
-  - images/link_bold.png
-  - images/tmdb_blue.png
-  - images/yoda.png
-  - images/luke_skywalker.png
-  - images/darth_vader.png
-  - images/chewbacca.png
-  - images/c3po.png
-  - images/r2d2.png
-  - images/google.png
-  - images/empty_comment.png
-  - images/landscape.json
+  - images/
+  - lib/models/country_phone_codes.json
   
 
   # An image asset can refer to one or more resolution-specific "variants", see

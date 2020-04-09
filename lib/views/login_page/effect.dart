@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:ui' as ui;
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart' hide Action;
@@ -7,6 +10,7 @@ import 'package:movie/actions/pop_result.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/globalbasestate/action.dart';
 import 'package:movie/globalbasestate/store.dart';
+import 'package:movie/models/country_phone_code.dart';
 import 'package:movie/views/register_page/page.dart';
 import 'action.dart';
 import 'state.dart';
@@ -18,6 +22,7 @@ Effect<LoginPageState> buildEffect() {
     LoginPageAction.loginclicked: _onLoginClicked,
     LoginPageAction.signUp: _onSignUp,
     LoginPageAction.googleSignIn: _onGoogleSignIn,
+    LoginPageAction.sendVerificationCode: _onSendVerificationCode,
     Lifecycle.initState: _onInit,
     Lifecycle.build: _onBuild,
     Lifecycle.dispose: _onDispose
@@ -25,7 +30,8 @@ Effect<LoginPageState> buildEffect() {
 }
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
-void _onInit(Action action, Context<LoginPageState> ctx) {
+void _onInit(Action action, Context<LoginPageState> ctx) async {
+  ctx.state..emailLogin = true;
   ctx.state.accountFocusNode = FocusNode();
   ctx.state.pwdFocusNode = FocusNode();
   final ticker = ctx.stfState as CustomstfState;
@@ -33,6 +39,22 @@ void _onInit(Action action, Context<LoginPageState> ctx) {
       vsync: ticker, duration: Duration(milliseconds: 2000));
   ctx.state.submitAnimationController = AnimationController(
       vsync: ticker, duration: Duration(milliseconds: 1000));
+  ctx.state.accountTextController = TextEditingController();
+  ctx.state.passWordTextController = TextEditingController();
+  ctx.state.phoneTextController = TextEditingController();
+  ctx.state.codeTextContraller = TextEditingController();
+  ctx.state.countryCode = '+86';
+  final _jsonStr = await CountryPhoneCode.getCountryJson(ctx.context);
+  final countriesJson = json.decode(_jsonStr);
+  ctx.state.countryCodes = List<CountryPhoneCode>();
+  for (var country in countriesJson) {
+    ctx.state.countryCodes.add(CountryPhoneCode.fromJson(country));
+  }
+  ctx.state.countryCode = ctx.state.countryCodes
+          .singleWhere((e) => e.code == ui.window.locale.countryCode)
+          ?.dialCode ??
+      '';
+  print(ctx.state.countryCodes.toString());
 }
 
 void _onBuild(Action action, Context<LoginPageState> ctx) {
@@ -45,34 +67,63 @@ void _onDispose(Action action, Context<LoginPageState> ctx) {
   ctx.state.accountFocusNode.dispose();
   ctx.state.pwdFocusNode.dispose();
   ctx.state.submitAnimationController.dispose();
+  ctx.state.accountTextController.dispose();
+  ctx.state.passWordTextController.dispose();
+  ctx.state.phoneTextController.dispose();
+  ctx.state.codeTextContraller.dispose();
 }
 
 void _onAction(Action action, Context<LoginPageState> ctx) {}
 
 Future _onLoginClicked(Action action, Context<LoginPageState> ctx) async {
-  AuthResult result;
+  AuthResult _result;
   ctx.state.submitAnimationController.forward();
+  if (ctx.state.emailLogin)
+    _result = await _emailSignIn(action, ctx);
+  else
+    _result = await _phoneNumSignIn(action, ctx);
+  if (_result?.user == null) {
+    Toast.show("Account verification required", ctx.context,
+        duration: 3, gravity: Toast.BOTTOM);
+    ctx.state.submitAnimationController.reverse();
+  } else {
+    var user = _result?.user;
+    GlobalStore.store.dispatch(GlobalActionCreator.setUser(user));
+    BaseApi.updateUser(user.uid, user.email, user.photoUrl, user.displayName,
+        user.phoneNumber);
+    Navigator.of(ctx.context).pop({'s': true, 'name': user.displayName});
+  }
+}
+
+Future<AuthResult> _emailSignIn(
+    Action action, Context<LoginPageState> ctx) async {
   if (ctx.state.account != '' && ctx.state.pwd != '') {
-    //result = await ApiHelper.createSessionWithLogin(/ctx.state.account, ctx.state.pwd);
     try {
-      result = await _auth.signInWithEmailAndPassword(
+      await _auth.signInWithEmailAndPassword(
           email: ctx.state.account, password: ctx.state.pwd);
     } on Exception catch (e) {
       Toast.show(e.toString(), ctx.context, duration: 3, gravity: Toast.BOTTOM);
       ctx.state.submitAnimationController.reverse();
     }
   }
-  if (result?.user == null) {
-    Toast.show("Account verification required", ctx.context,
-        duration: 3, gravity: Toast.BOTTOM);
-    ctx.state.submitAnimationController.reverse();
-  } else {
-    var user = result?.user;
-    GlobalStore.store.dispatch(GlobalActionCreator.setUser(user));
-    BaseApi.updateUser(user.uid, user.email, user.photoUrl, user.displayName,
-        user.phoneNumber);
-    Navigator.of(ctx.context).pop({'s': true, 'name': user.displayName});
+  return null;
+}
+
+Future<AuthResult> _phoneNumSignIn(
+    Action action, Context<LoginPageState> ctx) async {
+  if (_verificationId != null && ctx.state.codeTextContraller.text.isNotEmpty) {
+    try {
+      final _credential = PhoneAuthProvider.getCredential(
+          verificationId: _verificationId,
+          smsCode: ctx.state.codeTextContraller.text);
+      return await _auth.signInWithCredential(_credential);
+    } on Exception catch (e) {
+      Toast.show(e.toString(), ctx.context, duration: 3, gravity: Toast.BOTTOM);
+      ctx.state.submitAnimationController.reverse();
+    }
   }
+
+  return null;
 }
 
 Future _onSignUp(Action action, Context<LoginPageState> ctx) async {
@@ -130,4 +181,21 @@ void _onGoogleSignIn(Action action, Context<LoginPageState> ctx) async {
     ctx.state.submitAnimationController.reverse();
     Toast.show(e.toString(), ctx.context, duration: 5, gravity: Toast.BOTTOM);
   }
+}
+
+String _verificationId;
+void _onSendVerificationCode(Action action, Context<LoginPageState> ctx) async {
+  if (ctx.state.phoneTextController.text.isEmpty ||
+      ctx.state.phoneTextController.text.length < 8)
+    return Toast.show('Invalid phone number', ctx.context);
+  _auth.verifyPhoneNumber(
+      phoneNumber: ctx.state.countryCode + ctx.state.phoneTextController.text,
+      timeout: Duration(seconds: 60),
+      verificationCompleted: null,
+      verificationFailed: null,
+      codeSent: (String verificationId, [int]) {
+        _verificationId = verificationId;
+        print(verificationId);
+      },
+      codeAutoRetrievalTimeout: null);
 }

@@ -26,6 +26,7 @@ void _onAction(Action action, Context<AccountPageState> ctx) {}
 
 Future _onLogin(Action action, Context<AccountPageState> ctx) async {
   var r = (await Navigator.of(ctx.context).pushNamed('loginpage')) as Map;
+  if (r == null) return;
   if (r['s'] == true) {
     String name = r['name'];
     String avatar = ctx.state.user?.photoUrl;

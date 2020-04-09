@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/customwidgets/customcliper_path.dart';
+import 'package:movie/models/country_phone_code.dart';
+import 'package:toast/toast.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -63,6 +67,159 @@ Widget buildView(
         elevation: 0.0,
         iconTheme: IconThemeData(color: Colors.white),
       ),
+    );
+  }
+
+  Widget _buildEmailEntry() {
+    final accountCurve = CurvedAnimation(
+      parent: state.animationController,
+      curve: Interval(
+        0.3,
+        0.5,
+        curve: Curves.ease,
+      ),
+    );
+    final passwordCurve = CurvedAnimation(
+      parent: state.animationController,
+      curve: Interval(
+        0.4,
+        0.6,
+        curve: Curves.ease,
+      ),
+    );
+    return Column(children: [
+      SlideTransition(
+        position:
+            Tween(begin: Offset(0, 1), end: Offset.zero).animate(accountCurve),
+        child: FadeTransition(
+            opacity: Tween(begin: 0.0, end: 1.0).animate(accountCurve),
+            child: Padding(
+              padding: EdgeInsets.all(Adapt.px(40)),
+              child: TextField(
+                focusNode: state.accountFocusNode,
+                controller: state.accountTextController,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                style: TextStyle(fontSize: Adapt.px(35)),
+                cursorColor: Colors.black,
+                decoration: InputDecoration(
+                    fillColor: Colors.transparent,
+                    hintText: 'Account',
+                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    filled: true,
+                    prefixStyle:
+                        TextStyle(color: Colors.black, fontSize: Adapt.px(35)),
+                    focusedBorder: new UnderlineInputBorder(
+                        borderSide: new BorderSide(color: Colors.black87))),
+                onChanged: (String t) =>
+                    dispatch(LoginPageActionCreator.onAccountChange(t)),
+                onSubmitted: (s) {
+                  state.accountFocusNode.nextFocus();
+                },
+              ),
+            )),
+      ),
+      SlideTransition(
+        position:
+            Tween(begin: Offset(0, 1), end: Offset.zero).animate(passwordCurve),
+        child: FadeTransition(
+          opacity: Tween(begin: 0.0, end: 1.0).animate(passwordCurve),
+          child: Padding(
+            padding: EdgeInsets.all(Adapt.px(40)),
+            child: TextField(
+              focusNode: state.pwdFocusNode,
+              controller: state.passWordTextController,
+              style: TextStyle(color: Colors.black, fontSize: Adapt.px(35)),
+              cursorColor: Colors.black,
+              obscureText: true,
+              decoration: InputDecoration(
+                  fillColor: Colors.transparent,
+                  hintText: 'PassWord',
+                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  filled: true,
+                  prefixStyle:
+                      TextStyle(color: Colors.black, fontSize: Adapt.px(35)),
+                  focusedBorder: new UnderlineInputBorder(
+                      borderSide: new BorderSide(color: Colors.black87))),
+              onChanged: (String t) =>
+                  dispatch(LoginPageActionCreator.onPwdChange(t)),
+              onSubmitted: (s) =>
+                  dispatch(LoginPageActionCreator.onLoginClicked()),
+            ),
+          ),
+        ),
+      ),
+    ]);
+  }
+
+  Widget _buildPhoneNumberEntry() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
+      height: Adapt.px(335),
+      child: Column(children: [
+        SizedBox(height: Adapt.px(40)),
+        TextField(
+          controller: state.phoneTextController,
+          keyboardType: TextInputType.number,
+          textInputAction: TextInputAction.next,
+          cursorColor: Colors.black,
+          decoration: InputDecoration(
+            fillColor: Colors.transparent,
+            hintText: 'Phone Number',
+            prefixIcon: InkWell(
+                onTap: () => showDialog(
+                    context: viewService.context,
+                    child: _CountryCodeDialog(
+                      countrys: state.countryCodes,
+                      onCellTap: (str) => dispatch(
+                          LoginPageActionCreator.countryCodeChange(str)),
+                    )),
+                child: SizedBox(
+                  width: Adapt.px(60),
+                  child: Center(
+                    child: Text(
+                      state.countryCode,
+                    ),
+                  ),
+                )),
+            floatingLabelBehavior: FloatingLabelBehavior.auto,
+            filled: true,
+            prefixStyle: TextStyle(color: Colors.black, fontSize: Adapt.px(35)),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black87),
+            ),
+          ),
+        ),
+        SizedBox(height: Adapt.px(80)),
+        Theme(
+          child: TextField(
+            controller: state.codeTextContraller,
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            cursorColor: Colors.black,
+            decoration: InputDecoration(
+              fillColor: Colors.transparent,
+              hintText: 'Verification Code',
+              prefixIcon: Icon(Icons.sms),
+              suffixIcon: _SmsSendCell(
+                phone: state.phoneTextController,
+                onPress: () =>
+                    dispatch(LoginPageActionCreator.sendVerificationCode()),
+              ),
+              floatingLabelBehavior: FloatingLabelBehavior.auto,
+              filled: true,
+              prefixStyle:
+                  TextStyle(color: Colors.black, fontSize: Adapt.px(35)),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.black87),
+              ),
+            ),
+          ),
+          data: Theme.of(viewService.context).copyWith(
+            primaryColor: Colors.black87,
+          ),
+        )
+      ]),
     );
   }
 
@@ -132,7 +289,7 @@ Widget buildView(
   }
 
   Widget _buildLoginBody() {
-    var cardCurve = CurvedAnimation(
+    final cardCurve = CurvedAnimation(
       parent: state.animationController,
       curve: Interval(
         0,
@@ -140,23 +297,7 @@ Widget buildView(
         curve: Curves.ease,
       ),
     );
-    var accountCurve = CurvedAnimation(
-      parent: state.animationController,
-      curve: Interval(
-        0.3,
-        0.5,
-        curve: Curves.ease,
-      ),
-    );
-    var passwordCurve = CurvedAnimation(
-      parent: state.animationController,
-      curve: Interval(
-        0.4,
-        0.6,
-        curve: Curves.ease,
-      ),
-    );
-    var submitCurve = CurvedAnimation(
+    final submitCurve = CurvedAnimation(
       parent: state.animationController,
       curve: Interval(
         0.5,
@@ -177,70 +318,12 @@ Widget buildView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SlideTransition(
-                  position: Tween(begin: Offset(0, 1), end: Offset.zero)
-                      .animate(accountCurve),
-                  child: FadeTransition(
-                      opacity:
-                          Tween(begin: 0.0, end: 1.0).animate(accountCurve),
-                      child: Padding(
-                        padding: EdgeInsets.all(Adapt.px(40)),
-                        child: TextField(
-                          focusNode: state.accountFocusNode,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          style: TextStyle(fontSize: Adapt.px(35)),
-                          cursorColor: Colors.black,
-                          decoration: InputDecoration(
-                              fillColor: Colors.transparent,
-                              hintText: 'Account',
-                              floatingLabelBehavior: FloatingLabelBehavior.auto,
-                              filled: true,
-                              prefixStyle: TextStyle(
-                                  color: Colors.black, fontSize: Adapt.px(35)),
-                              focusedBorder: new UnderlineInputBorder(
-                                  borderSide:
-                                      new BorderSide(color: Colors.black87))),
-                          onChanged: (String t) => dispatch(
-                              LoginPageActionCreator.onAccountChange(t)),
-                          onSubmitted: (s) {
-                            state.accountFocusNode.nextFocus();
-                          },
-                        ),
-                      )),
+                AnimatedSwitcher(
+                  duration: Duration(milliseconds: 300),
+                  child: state.emailLogin
+                      ? _buildEmailEntry()
+                      : _buildPhoneNumberEntry(),
                 ),
-                SlideTransition(
-                    position: Tween(begin: Offset(0, 1), end: Offset.zero)
-                        .animate(passwordCurve),
-                    child: FadeTransition(
-                        opacity:
-                            Tween(begin: 0.0, end: 1.0).animate(passwordCurve),
-                        child: Padding(
-                          padding: EdgeInsets.all(Adapt.px(40)),
-                          child: TextField(
-                            focusNode: state.pwdFocusNode,
-                            style: TextStyle(
-                                color: Colors.black, fontSize: Adapt.px(35)),
-                            cursorColor: Colors.black,
-                            obscureText: true,
-                            decoration: InputDecoration(
-                                fillColor: Colors.transparent,
-                                hintText: 'PassWord',
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.auto,
-                                filled: true,
-                                prefixStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: Adapt.px(35)),
-                                focusedBorder: new UnderlineInputBorder(
-                                    borderSide:
-                                        new BorderSide(color: Colors.black87))),
-                            onChanged: (String t) =>
-                                dispatch(LoginPageActionCreator.onPwdChange(t)),
-                            onSubmitted: (s) => dispatch(
-                                LoginPageActionCreator.onLoginClicked()),
-                          ),
-                        ))),
                 SlideTransition(
                     position: Tween(begin: Offset(0, 1), end: Offset.zero)
                         .animate(submitCurve),
@@ -287,6 +370,17 @@ Widget buildView(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
+                          InkWell(
+                            onTap: () => dispatch(
+                                LoginPageActionCreator.switchLoginMode()),
+                            child: Image.asset(
+                              state.emailLogin
+                                  ? 'images/phone_sms.png'
+                                  : 'images/email_login.png',
+                              width: Adapt.px(50),
+                            ),
+                          ),
+                          SizedBox(width: Adapt.px(20)),
                           InkWell(
                             onTap: () => dispatch(
                                 LoginPageActionCreator.onGoogleSignIn()),
@@ -339,4 +433,176 @@ Widget buildView(
       ],
     ),
   );
+}
+
+class _SmsSendCell extends StatefulWidget {
+  final Function onPress;
+  final TextEditingController phone;
+  const _SmsSendCell({this.phone, this.onPress});
+  @override
+  _SmsSendCellState createState() => _SmsSendCellState();
+}
+
+class _SmsSendCellState extends State<_SmsSendCell> {
+  bool _isWaiting = false;
+  int _counter = 0;
+  Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _isWaiting
+        ? Container(
+            width: Adapt.px(90),
+            alignment: Alignment.center,
+            margin: EdgeInsets.symmetric(vertical: Adapt.px(15)),
+            padding: EdgeInsets.all(Adapt.px(10)),
+            decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: BorderRadius.circular(Adapt.px(10))),
+            child: Text('$_counter s'),
+          )
+        : InkWell(
+            onTap: () {
+              if (widget.phone.text.length > 8) {
+                widget.onPress();
+                _isWaiting = true;
+                _counter = 60;
+                setState(() {});
+                _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+                  if (_counter > 1)
+                    setState(() {
+                      _counter--;
+                    });
+                  else {
+                    _isWaiting = false;
+                    setState(() {});
+                    timer.cancel();
+                  }
+                });
+              } else
+                Toast.show('Invalid phone number', context,
+                    gravity: Toast.CENTER);
+            },
+            child: Icon(Icons.send));
+  }
+}
+
+class _CountryCodeDialog extends StatefulWidget {
+  final List<CountryPhoneCode> countrys;
+  final Function(String) onCellTap;
+  const _CountryCodeDialog({@required this.countrys, this.onCellTap});
+  @override
+  _CountryCodeDialogState createState() => _CountryCodeDialogState();
+}
+
+class _CountryCodeDialogState extends State<_CountryCodeDialog> {
+  final _width = Adapt.screenW() - Adapt.px(80);
+  List<CountryPhoneCode> _countrys;
+  TextEditingController _controller;
+  @override
+  void initState() {
+    _countrys = widget.countrys;
+    _controller = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Adapt.px(30))),
+      contentPadding: EdgeInsets.zero,
+      title: Theme(
+        child: TextField(
+          controller: _controller,
+          cursorColor: Colors.black,
+          decoration: InputDecoration(
+            fillColor: Colors.transparent,
+            hintText: 'Search',
+            prefixIcon: Icon(Icons.search),
+            floatingLabelBehavior: FloatingLabelBehavior.auto,
+            filled: true,
+            prefixStyle: TextStyle(color: Colors.black, fontSize: Adapt.px(35)),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black87),
+            ),
+          ),
+          onChanged: (str) {
+            _countrys = widget.countrys
+                .where((e) => e.name.toUpperCase().contains(str.toUpperCase()))
+                .toList();
+            setState(() {});
+          },
+        ),
+        data: Theme.of(context).copyWith(
+          primaryColor: Colors.black87,
+        ),
+      ),
+      children: <Widget>[
+        Container(
+          height: Adapt.screenH() / 2,
+          width: _width,
+          child: ListView.separated(
+            padding: EdgeInsets.all(Adapt.px(40)),
+            separatorBuilder: (_, __) => Divider(),
+            itemCount: _countrys.length,
+            itemBuilder: (_, index) {
+              final d = _countrys[index];
+              return _CountryCell(
+                data: d,
+                onTap: widget.onCellTap,
+              );
+            },
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class _CountryCell extends StatelessWidget {
+  final CountryPhoneCode data;
+  final Function(String) onTap;
+  _CountryCell({this.data, this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    final _width = Adapt.screenW() - Adapt.px(80);
+    final _textStyle = TextStyle(fontSize: Adapt.px(28));
+    return InkWell(
+      onTap: () {
+        onTap(data.dialCode);
+        Navigator.of(context).pop();
+      },
+      child: Container(
+        child: Row(
+          children: <Widget>[
+            Text(data.flag, style: _textStyle),
+            SizedBox(width: Adapt.px(20)),
+            Container(
+              constraints: BoxConstraints(maxWidth: _width - Adapt.px(300)),
+              child: Text(data.name, style: _textStyle),
+            ),
+            Text(' (${data.dialCode})', style: _textStyle),
+          ],
+        ),
+      ),
+    );
+  }
 }

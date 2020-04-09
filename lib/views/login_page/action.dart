@@ -7,7 +7,10 @@ enum LoginPageAction {
   pwdChanged,
   signUp,
   googleSignIn,
-  facebookSignIn
+  switchLoginMode,
+  facebookSignIn,
+  sendVerificationCode,
+  countryCodeChange,
 }
 
 class LoginPageActionCreator {
@@ -28,10 +31,22 @@ class LoginPageActionCreator {
   }
 
   static Action onSignUp() {
-    return Action(LoginPageAction.signUp);
+    return const Action(LoginPageAction.signUp);
   }
 
   static Action onGoogleSignIn() {
-    return Action(LoginPageAction.googleSignIn);
+    return const Action(LoginPageAction.googleSignIn);
+  }
+
+  static Action switchLoginMode() {
+    return const Action(LoginPageAction.switchLoginMode);
+  }
+
+  static Action sendVerificationCode() {
+    return const Action(LoginPageAction.sendVerificationCode);
+  }
+
+  static Action countryCodeChange(String code) {
+    return Action(LoginPageAction.countryCodeChange, payload: code);
   }
 }
