@@ -153,9 +153,8 @@ Widget buildView(
   }
 
   Widget _buildPhoneNumberEntry() {
-    return Container(
+    return Padding(
       padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
-      height: Adapt.px(335),
       child: Column(children: [
         SizedBox(height: Adapt.px(40)),
         TextField(
@@ -218,7 +217,8 @@ Widget buildView(
           data: Theme.of(viewService.context).copyWith(
             primaryColor: Colors.black87,
           ),
-        )
+        ),
+        SizedBox(height: Adapt.px(40))
       ]),
     );
   }
@@ -596,7 +596,7 @@ class _CountryCell extends StatelessWidget {
             Text(data.flag, style: _textStyle),
             SizedBox(width: Adapt.px(20)),
             Container(
-              constraints: BoxConstraints(maxWidth: _width - Adapt.px(300)),
+              constraints: BoxConstraints(maxWidth: _width - Adapt.px(320)),
               child: Text(data.name, style: _textStyle),
             ),
             Text(' (${data.dialCode})', style: _textStyle),

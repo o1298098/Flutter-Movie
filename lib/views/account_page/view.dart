@@ -51,12 +51,17 @@ Widget buildView(
           SizedBox(
             width: Adapt.px(40),
           ),
-          Text(
-            'Hi, ${state.user?.displayName ?? 'Guest'}',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: Adapt.px(60),
+          SizedBox(
+            width: Adapt.screenW() - Adapt.px(200),
+            child: Text(
+              'Hi, ${state.user?.displayName ?? 'Guest'}',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: Adapt.px(60),
+              ),
             ),
           ),
           Expanded(

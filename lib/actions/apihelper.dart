@@ -457,7 +457,7 @@ class ApiHelper {
   static Future<VideoListModel> getPopularMovies({int page = 1}) async {
     VideoListModel model;
     String param =
-        "/movie/popular?api_key=$_apikey&language=$language&page=$page";
+        "/movie/popular?api_key=$_apikey&language=$language&page=$page&region=$region";
     var r = await _http.request(param);
     if (r != null) model = VideoListModel(r);
     return model;
@@ -465,7 +465,8 @@ class ApiHelper {
 
   static Future<VideoListModel> getPopularTVShows({int page = 1}) async {
     VideoListModel model;
-    String param = "/tv/popular?api_key=$_apikey&language=$language&page=$page";
+    String param =
+        "/tv/popular?api_key=$_apikey&language=$language&page=$page&region=$region";
     var r = await _http.request(param);
     if (r != null) model = VideoListModel(r);
     return model;
@@ -609,7 +610,7 @@ class ApiHelper {
   static Future<VideoListModel> getTVOnTheAir({int page = 1}) async {
     VideoListModel model;
     String param =
-        '/tv/on_the_air?api_key=$_apikey&language=$language&page=$page';
+        '/tv/on_the_air?api_key=$_apikey&language=$language&page=$page&region=$region';
     var r = await _http.request(param, cached: true);
     if (r != null) model = VideoListModel(r);
     return model;

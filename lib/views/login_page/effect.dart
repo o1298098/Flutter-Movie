@@ -88,10 +88,18 @@ Future _onLoginClicked(Action action, Context<LoginPageState> ctx) async {
     ctx.state.submitAnimationController.reverse();
   } else {
     var user = _result?.user;
+    var _nickName = user.displayName ??
+        user.phoneNumber.substring(user.phoneNumber.length - 4);
+
+    if (user.displayName == null)
+      user.updateProfile(UserUpdateInfo()..displayName = _nickName);
+
     GlobalStore.store.dispatch(GlobalActionCreator.setUser(user));
-    BaseApi.updateUser(user.uid, user.email, user.photoUrl, user.displayName,
-        user.phoneNumber);
-    Navigator.of(ctx.context).pop({'s': true, 'name': user.displayName});
+
+    BaseApi.updateUser(
+        user.uid, user.email, user.photoUrl, _nickName, user.phoneNumber);
+
+    Navigator.of(ctx.context).pop({'s': true, 'name': _nickName});
   }
 }
 
@@ -99,7 +107,7 @@ Future<AuthResult> _emailSignIn(
     Action action, Context<LoginPageState> ctx) async {
   if (ctx.state.account != '' && ctx.state.pwd != '') {
     try {
-      await _auth.signInWithEmailAndPassword(
+      return await _auth.signInWithEmailAndPassword(
           email: ctx.state.account, password: ctx.state.pwd);
     } on Exception catch (e) {
       Toast.show(e.toString(), ctx.context, duration: 3, gravity: Toast.BOTTOM);
@@ -192,7 +200,9 @@ void _onSendVerificationCode(Action action, Context<LoginPageState> ctx) async {
       phoneNumber: ctx.state.countryCode + ctx.state.phoneTextController.text,
       timeout: Duration(seconds: 60),
       verificationCompleted: null,
-      verificationFailed: null,
+      verificationFailed: (AuthException e) {
+        Toast.show(e.message, ctx.context, gravity: Toast.CENTER);
+      },
       codeSent: (String verificationId, [int]) {
         _verificationId = verificationId;
         print(verificationId);
