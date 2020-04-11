@@ -105,10 +105,12 @@ Future _onLoginClicked(Action action, Context<LoginPageState> ctx) async {
 
 Future<AuthResult> _emailSignIn(
     Action action, Context<LoginPageState> ctx) async {
-  if (ctx.state.account != '' && ctx.state.pwd != '') {
+  if (ctx.state.accountTextController.text != '' &&
+      ctx.state.passWordTextController.text != '') {
     try {
       return await _auth.signInWithEmailAndPassword(
-          email: ctx.state.account, password: ctx.state.pwd);
+          email: ctx.state.accountTextController.text,
+          password: ctx.state.passWordTextController.text);
     } on Exception catch (e) {
       Toast.show(e.toString(), ctx.context, duration: 3, gravity: Toast.BOTTOM);
       ctx.state.submitAnimationController.reverse();
@@ -201,7 +203,9 @@ void _onSendVerificationCode(Action action, Context<LoginPageState> ctx) async {
       timeout: Duration(seconds: 60),
       verificationCompleted: null,
       verificationFailed: (AuthException e) {
-        Toast.show(e.message, ctx.context, gravity: Toast.CENTER);
+        print('error code: ${e.code}, message: ${e.message}');
+        Toast.show(e.message, ctx.context,
+            gravity: Toast.TOP, duration: Toast.LENGTH_LONG);
       },
       codeSent: (String verificationId, [int]) {
         _verificationId = verificationId;

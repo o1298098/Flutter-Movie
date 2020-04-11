@@ -38,7 +38,7 @@ Widget buildView(
   }
 
   Widget _buildTrending() {
-    double _size = (Adapt.screenW() - Adapt.px(70)) / 2;
+    final double _size = (Adapt.screenW() - Adapt.px(70)) / 2;
     Widget _child = state.trending.results.length > 0
         ? StaggeredGridView.countBuilder(
             key: ValueKey('Trending'),
@@ -53,30 +53,34 @@ Widget buildView(
             itemBuilder: (BuildContext contxt, int index) {
               var d = state.trending.results[index];
               return GestureDetector(
-                  onTap: () => dispatch(HomePageActionCreator.onCellTapped(
-                      d.id,
-                      d.backdropPath,
-                      d.title ?? d.name,
-                      d.posterPath,
-                      d.title != null ? MediaType.movie : MediaType.tv)),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: Adapt.px(10)),
-                    alignment: Alignment.bottomLeft,
-                    decoration: BoxDecoration(
-                        color: _theme.primaryColorDark,
-                        image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: CachedNetworkImageProvider(ImageUrl.getUrl(
-                                d.backdropPath, ImageSize.w400)))),
-                    child: Text(
-                      d.title ?? d.name,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: Adapt.px(30) / _mediaQuery.textScaleFactor,
-                          fontWeight: FontWeight.bold,
-                          shadows: <Shadow>[Shadow(offset: Offset(1, 1))]),
+                onTap: () => dispatch(HomePageActionCreator.onCellTapped(
+                    d.id,
+                    d.backdropPath,
+                    d.title ?? d.name,
+                    d.posterPath,
+                    d.title != null ? MediaType.movie : MediaType.tv)),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: Adapt.px(10)),
+                  alignment: Alignment.bottomLeft,
+                  decoration: BoxDecoration(
+                    color: _theme.primaryColorDark,
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: CachedNetworkImageProvider(
+                        ImageUrl.getUrl(d.backdropPath, ImageSize.w400),
+                      ),
                     ),
-                  ));
+                  ),
+                  child: Text(
+                    d.title ?? d.name,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: Adapt.px(30) / _mediaQuery.textScaleFactor,
+                        fontWeight: FontWeight.bold,
+                        shadows: <Shadow>[Shadow(offset: Offset(1, 1))]),
+                  ),
+                ),
+              );
             },
           )
         : Shimmer.fromColors(
@@ -125,15 +129,18 @@ Widget buildView(
   return Column(
     children: <Widget>[
       _buildFrontTitel(
-          'Trending',
-          GestureDetector(
-            onTap: () => dispatch(HomePageActionCreator.onTrendingMore()),
-            child: Text(
-              I18n.of(viewService.context).more,
-              style: TextStyle(color: Colors.grey[600]),
-            ),
+        'Trending',
+        GestureDetector(
+          onTap: () => dispatch(HomePageActionCreator.onTrendingMore()),
+          child: Text(
+            I18n.of(viewService.context).more,
+            style: TextStyle(color: Colors.grey[600]),
           ),
-          padding: EdgeInsets.symmetric(horizontal: Adapt.px(30))),
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: Adapt.px(30),
+        ),
+      ),
       SizedBox(height: Adapt.px(30)),
       _buildTrending(),
       SizedBox(height: Adapt.px(50)),

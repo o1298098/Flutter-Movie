@@ -37,15 +37,18 @@ Widget buildView(
                 itemBuilder: (_, index) {
                   final _d = _model.results[index];
                   return _HeaderListCell(
-                      data: _model.results[index],
-                      onTap: () => dispatch(HomePageActionCreator.onCellTapped(
+                    data: _model.results[index],
+                    onTap: () => dispatch(
+                      HomePageActionCreator.onCellTapped(
                           _d.id,
                           _d.backdropPath,
                           _d.title ?? _d.name,
                           _d.posterPath,
                           state.showHeaderMovie
                               ? MediaType.movie
-                              : MediaType.tv)));
+                              : MediaType.tv),
+                    ),
+                  );
                 })
             : _ShimmerHeaderList(),
       ),
@@ -149,16 +152,17 @@ class _ShimmerHeaderList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-        baseColor: _baseColor,
-        highlightColor: _highLightColor,
-        child: ListView.separated(
-          padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-          physics: BouncingScrollPhysics(),
-          scrollDirection: Axis.horizontal,
-          itemCount: 4,
-          itemBuilder: (context, index) => _ShimmerHeaderCell(),
-          separatorBuilder: (context, index) => SizedBox(width: Adapt.px(30)),
-        ));
+      baseColor: _baseColor,
+      highlightColor: _highLightColor,
+      child: ListView.separated(
+        padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+        physics: BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        itemCount: 4,
+        itemBuilder: (context, index) => _ShimmerHeaderCell(),
+        separatorBuilder: (context, index) => SizedBox(width: Adapt.px(30)),
+      ),
+    );
   }
 }
 
@@ -178,11 +182,14 @@ class _HeaderListCell extends StatelessWidget {
             width: Adapt.px(200),
             height: Adapt.px(280),
             decoration: BoxDecoration(
-                color: Color.fromRGBO(57, 57, 57, 1),
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: CachedNetworkImageProvider(
-                        ImageUrl.getUrl(data.posterPath, ImageSize.w300)))),
+              color: Color.fromRGBO(57, 57, 57, 1),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: CachedNetworkImageProvider(
+                  ImageUrl.getUrl(data.posterPath, ImageSize.w300),
+                ),
+              ),
+            ),
           ),
         ),
         SizedBox(
@@ -192,10 +199,15 @@ class _HeaderListCell extends StatelessWidget {
           alignment: Alignment.center,
           width: Adapt.px(200),
           height: Adapt.px(70),
-          child: Text(name,
-              maxLines: 2,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey, fontSize: Adapt.px(26))),
+          child: Text(
+            name,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.grey,
+              fontSize: Adapt.px(26),
+            ),
+          ),
         ),
       ],
     );

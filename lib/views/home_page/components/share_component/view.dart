@@ -201,15 +201,19 @@ class _Cell extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-              width: Adapt.px(250),
-              height: Adapt.px(350),
-              decoration: BoxDecoration(
-                  color: _theme.primaryColorDark,
-                  borderRadius: BorderRadius.circular(Adapt.px(15)),
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: CachedNetworkImageProvider(
-                          ImageUrl.getUrl(data.photourl, ImageSize.w400))))),
+            width: Adapt.px(250),
+            height: Adapt.px(350),
+            decoration: BoxDecoration(
+              color: _theme.primaryColorDark,
+              borderRadius: BorderRadius.circular(Adapt.px(15)),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: CachedNetworkImageProvider(
+                  ImageUrl.getUrl(data.photourl, ImageSize.w400),
+                ),
+              ),
+            ),
+          ),
           Container(
               //alignment: Alignment.bottomCenter,
               width: Adapt.px(250),

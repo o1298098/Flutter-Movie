@@ -23,8 +23,8 @@ Widget buildView(
             elevation: 0.0,
             automaticallyImplyLeading: false,
             title: _SearchBar(
-                onTap: () =>
-                    dispatch(HomePageActionCreator.onSearchBarTapped())),
+              onTap: () => dispatch(HomePageActionCreator.onSearchBarTapped()),
+            ),
           ),
           //backgroundColor: Colors.white,
           body: BackDrop(

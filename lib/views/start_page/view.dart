@@ -161,9 +161,6 @@ class _SubscribeTopicPageState extends State<_SubscribeTopicPage> {
 
   @override
   void initState() {
-    _firebaseMessaging.requestNotificationPermissions();
-    _firebaseMessaging.configure();
-    _firebaseMessaging.autoInitEnabled();
     super.initState();
   }
 

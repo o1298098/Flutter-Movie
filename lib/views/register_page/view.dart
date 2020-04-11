@@ -120,7 +120,11 @@ Widget buildView(
                 Padding(
                     padding: EdgeInsets.all(Adapt.px(40)),
                     child: TextFormField(
+                      controller: state.nameTextController,
                       focusNode: state.nameFocusNode,
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.next,
+                      cursorColor: Colors.black,
                       style: TextStyle(fontSize: Adapt.px(35)),
                       decoration: InputDecoration(
                           fillColor: Colors.transparent,
@@ -138,13 +142,15 @@ Widget buildView(
                         }
                         return null;
                       },
-                      onChanged: (t) => dispatch(
-                          RegisterPageActionCreator.onNameTextChanged(t)),
+                      onFieldSubmitted: (_) => state.nameFocusNode.nextFocus(),
                     )),
                 Padding(
                     padding: EdgeInsets.all(Adapt.px(40)),
                     child: TextFormField(
+                      controller: state.emailTextController,
                       focusNode: state.emailFocusNode,
+                      textInputAction: TextInputAction.next,
+                      cursorColor: Colors.black,
                       style: TextStyle(fontSize: Adapt.px(35)),
                       decoration: InputDecoration(
                           fillColor: Colors.transparent,
@@ -162,14 +168,16 @@ Widget buildView(
                         }
                         return null;
                       },
-                      onChanged: (t) => dispatch(
-                          RegisterPageActionCreator.onEmailTextChanged(t)),
+                      onFieldSubmitted: (_) => state.emailFocusNode.nextFocus(),
                     )),
                 Padding(
                     padding: EdgeInsets.all(Adapt.px(40)),
                     child: TextFormField(
                       obscureText: true,
+                      controller: state.passWordTextController,
                       focusNode: state.pwdFocusNode,
+                      textInputAction: TextInputAction.done,
+                      cursorColor: Colors.black,
                       style: TextStyle(fontSize: Adapt.px(35)),
                       decoration: InputDecoration(
                           fillColor: Colors.transparent,
@@ -187,8 +195,6 @@ Widget buildView(
                         }
                         return null;
                       },
-                      onChanged: (t) => dispatch(
-                          RegisterPageActionCreator.onPwdTextChanged(t)),
                     )),
                 _buildSubmit(),
               ],
@@ -214,8 +220,13 @@ Widget buildView(
   }
 
   return Scaffold(
+    resizeToAvoidBottomPadding: false,
     body: Stack(
-      children: <Widget>[_buildHeader(), _buildRegisterForm(), _buildAppBar()],
+      children: <Widget>[
+        _buildHeader(),
+        _buildRegisterForm(),
+        _buildAppBar(),
+      ],
     ),
   );
 }

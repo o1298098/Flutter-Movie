@@ -3,8 +3,6 @@ import 'package:fish_redux/fish_redux.dart';
 enum LoginPageAction {
   action,
   loginclicked,
-  accoutChanged,
-  pwdChanged,
   signUp,
   googleSignIn,
   switchLoginMode,
@@ -20,14 +18,6 @@ class LoginPageActionCreator {
 
   static Action onLoginClicked() {
     return const Action(LoginPageAction.loginclicked);
-  }
-
-  static Action onAccountChange(String account) {
-    return Action(LoginPageAction.accoutChanged, payload: account);
-  }
-
-  static Action onPwdChange(String pwd) {
-    return Action(LoginPageAction.pwdChanged, payload: pwd);
   }
 
   static Action onSignUp() {

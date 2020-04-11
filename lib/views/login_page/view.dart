@@ -16,44 +16,67 @@ import 'state.dart';
 Widget buildView(
     LoginPageState state, Dispatch dispatch, ViewService viewService) {
   double headerHeight = Adapt.screenH() / 3;
-  Widget _buildHeader() {
-    return ClipPath(
-      clipper: CustomCliperPath(
-          height: headerHeight, width: Adapt.screenW(), radius: Adapt.px(1000)),
-      child: Container(
-          height: headerHeight,
-          width: Adapt.screenW(),
-          decoration: BoxDecoration(
-              color: Colors.black87,
-              image: DecorationImage(
-                  colorFilter: ColorFilter.mode(Colors.black, BlendMode.color),
-                  fit: BoxFit.cover,
-                  image: CachedNetworkImageProvider(
-                      'https://image.tmdb.org/t/p/original/mAkPFEWkwKz9nmKyCiuETfTdpgX.jpg'))),
-          alignment: Alignment.center,
-          child: Container(
-            color: Color.fromRGBO(20, 20, 20, 0.8),
-            alignment: Alignment.center,
+  Widget _buildBackGround() {
+    return Column(children: [
+      ClipPath(
+        clipper: CustomCliperPath(
             height: headerHeight,
             width: Adapt.screenW(),
-            child: SlideTransition(
-                position: Tween(begin: Offset(0, -1), end: Offset.zero)
-                    .animate(CurvedAnimation(
+            radius: Adapt.px(1000)),
+        child: Container(
+            height: headerHeight,
+            width: Adapt.screenW(),
+            decoration: BoxDecoration(
+                color: Colors.black87,
+                image: DecorationImage(
+                    colorFilter:
+                        ColorFilter.mode(Colors.black, BlendMode.color),
+                    fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(
+                        'https://image.tmdb.org/t/p/original/mAkPFEWkwKz9nmKyCiuETfTdpgX.jpg'))),
+            alignment: Alignment.center,
+            child: Container(
+              color: Color.fromRGBO(20, 20, 20, 0.8),
+              alignment: Alignment.center,
+              height: headerHeight,
+              width: Adapt.screenW(),
+              child: SlideTransition(
+                  position: Tween(begin: Offset(0, -1), end: Offset.zero)
+                      .animate(CurvedAnimation(
+                    parent: state.animationController,
+                    curve: Interval(
+                      0.0,
+                      0.4,
+                      curve: Curves.ease,
+                    ),
+                  )),
+                  child: Image.asset(
+                    'images/tmdb_blue.png',
+                    width: Adapt.px(150),
+                    height: Adapt.px(150),
+                    color: Colors.white,
+                  )),
+            )),
+      ),
+      Expanded(child: SizedBox()),
+      Container(
+          height: Adapt.px(200),
+          width: Adapt.screenW(),
+          padding: EdgeInsets.only(bottom: Adapt.px(20)),
+          alignment: Alignment.bottomCenter,
+          child: SafeArea(
+            child: FadeTransition(
+                opacity: Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
                   parent: state.animationController,
                   curve: Interval(
-                    0.0,
-                    0.4,
+                    0.7,
+                    1.0,
                     curve: Curves.ease,
                   ),
                 )),
-                child: Image.asset(
-                  'images/tmdb_blue.png',
-                  width: Adapt.px(150),
-                  height: Adapt.px(150),
-                  color: Colors.white,
-                )),
+                child: Text('Powered by The Movie DB')),
           )),
-    );
+    ]);
   }
 
   Widget _buildAppbar() {
@@ -111,8 +134,6 @@ Widget buildView(
                         TextStyle(color: Colors.black, fontSize: Adapt.px(35)),
                     focusedBorder: new UnderlineInputBorder(
                         borderSide: new BorderSide(color: Colors.black87))),
-                onChanged: (String t) =>
-                    dispatch(LoginPageActionCreator.onAccountChange(t)),
                 onSubmitted: (s) {
                   state.accountFocusNode.nextFocus();
                 },
@@ -141,8 +162,6 @@ Widget buildView(
                       TextStyle(color: Colors.black, fontSize: Adapt.px(35)),
                   focusedBorder: new UnderlineInputBorder(
                       borderSide: new BorderSide(color: Colors.black87))),
-              onChanged: (String t) =>
-                  dispatch(LoginPageActionCreator.onPwdChange(t)),
               onSubmitted: (s) =>
                   dispatch(LoginPageActionCreator.onLoginClicked()),
             ),
@@ -193,7 +212,7 @@ Widget buildView(
         Theme(
           child: TextField(
             controller: state.codeTextContraller,
-            keyboardType: TextInputType.text,
+            keyboardType: TextInputType.number,
             textInputAction: TextInputAction.done,
             cursorColor: Colors.black,
             decoration: InputDecoration(
@@ -318,6 +337,13 @@ Widget buildView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                /*IndexedStack(
+                  index: state.emailLogin ? 0 : 1,
+                  children: <Widget>[
+                    _buildEmailEntry(),
+                    _buildPhoneNumberEntry(),
+                  ],
+                ),*/
                 AnimatedSwitcher(
                   duration: Duration(milliseconds: 300),
                   child: state.emailLogin
@@ -408,28 +434,12 @@ Widget buildView(
   }
 
   return Scaffold(
+    resizeToAvoidBottomPadding: false,
     body: Stack(
       children: <Widget>[
-        _buildHeader(),
+        _buildBackGround(),
         _buildLoginBody(),
-        Container(
-            height: Adapt.screenH(),
-            width: Adapt.screenW(),
-            padding: EdgeInsets.only(bottom: Adapt.px(20)),
-            alignment: Alignment.bottomCenter,
-            child: SafeArea(
-              child: FadeTransition(
-                  opacity: Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-                    parent: state.animationController,
-                    curve: Interval(
-                      0.7,
-                      1.0,
-                      curve: Curves.ease,
-                    ),
-                  )),
-                  child: Text('Powered by The Movie DB')),
-            )),
-        _buildAppbar()
+        _buildAppbar(),
       ],
     ),
   );
@@ -561,7 +571,9 @@ class _CountryCodeDialogState extends State<_CountryCodeDialog> {
           width: _width,
           child: ListView.separated(
             padding: EdgeInsets.all(Adapt.px(40)),
-            separatorBuilder: (_, __) => Divider(),
+            separatorBuilder: (_, __) => Divider(
+              height: 25,
+            ),
             itemCount: _countrys.length,
             itemBuilder: (_, index) {
               final d = _countrys[index];
@@ -586,6 +598,7 @@ class _CountryCell extends StatelessWidget {
     final _width = Adapt.screenW() - Adapt.px(80);
     final _textStyle = TextStyle(fontSize: Adapt.px(28));
     return InkWell(
+      key: ValueKey(data.name),
       onTap: () {
         onTap(data.dialCode);
         Navigator.of(context).pop();
@@ -596,7 +609,7 @@ class _CountryCell extends StatelessWidget {
             Text(data.flag, style: _textStyle),
             SizedBox(width: Adapt.px(20)),
             Container(
-              constraints: BoxConstraints(maxWidth: _width - Adapt.px(320)),
+              constraints: BoxConstraints(maxWidth: _width - Adapt.px(340)),
               child: Text(data.name, style: _textStyle),
             ),
             Text(' (${data.dialCode})', style: _textStyle),

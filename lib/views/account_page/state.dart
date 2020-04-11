@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/state.dart';
 
 class AccountPageState implements GlobalBaseState, Cloneable<AccountPageState> {
+  GlobalKey<ScaffoldState> scafoldState =
+      GlobalKey<ScaffoldState>(debugLabel: 'accountPageScafold');
   String name;
   String avatar;
   bool islogin;
@@ -25,6 +27,7 @@ class AccountPageState implements GlobalBaseState, Cloneable<AccountPageState> {
       ..themeIndex = themeIndex
       ..locale = locale
       ..themeColor = themeColor
+      ..scafoldState = scafoldState
       ..user = user;
   }
 

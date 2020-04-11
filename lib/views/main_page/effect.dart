@@ -13,6 +13,7 @@ import 'state.dart';
 Effect<MainPageState> buildEffect() {
   return combineEffects(<Object, Effect<MainPageState>>{
     MainPageAction.action: _onAction,
+    MainPageAction.openDrawer: _onOpenDrawer,
     Lifecycle.initState: _onInit
   });
 }
@@ -55,4 +56,8 @@ Future _push(Map<String, dynamic> message, Context<MainPageState> ctx) async {
       );
     }));
   }
+}
+
+void _onOpenDrawer(Action action, Context<MainPageState> ctx) {
+  ctx.state.scaffoldKey.currentState.openEndDrawer();
 }

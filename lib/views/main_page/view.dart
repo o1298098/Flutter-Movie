@@ -33,6 +33,7 @@ Widget buildView(
 
       return Scaffold(
         key: state.scaffoldKey,
+        endDrawer: Drawer(),
         body: PageView(
           physics: ClampingScrollPhysics(),
           children: state.pages.map(_buildPage).toList(),

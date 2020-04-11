@@ -3,9 +3,6 @@ import 'package:fish_redux/fish_redux.dart';
 enum RegisterPageAction {
   action,
   registerWithEmail,
-  nameTextChanged,
-  emailTextChanged,
-  pwdTextChanged
 }
 
 class RegisterPageActionCreator {
@@ -15,17 +12,5 @@ class RegisterPageActionCreator {
 
   static Action onRegisterWithEmail() {
     return const Action(RegisterPageAction.registerWithEmail);
-  }
-
-  static Action onNameTextChanged(String t) {
-    return Action(RegisterPageAction.nameTextChanged, payload: t);
-  }
-
-  static Action onEmailTextChanged(String t) {
-    return Action(RegisterPageAction.emailTextChanged, payload: t);
-  }
-
-  static Action onPwdTextChanged(String t) {
-    return Action(RegisterPageAction.pwdTextChanged, payload: t);
   }
 }

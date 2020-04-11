@@ -5,6 +5,9 @@ class RegisterPageState implements Cloneable<RegisterPageState> {
   String emailAddress;
   String password;
   String name;
+  TextEditingController nameTextController;
+  TextEditingController passWordTextController;
+  TextEditingController emailTextController;
   FocusNode nameFocusNode;
   FocusNode emailFocusNode;
   FocusNode pwdFocusNode;
@@ -19,7 +22,10 @@ class RegisterPageState implements Cloneable<RegisterPageState> {
       ..nameFocusNode = nameFocusNode
       ..emailFocusNode = emailFocusNode
       ..pwdFocusNode = pwdFocusNode
-      ..submitAnimationController = submitAnimationController;
+      ..submitAnimationController = submitAnimationController
+      ..emailTextController = emailTextController
+      ..passWordTextController = passWordTextController
+      ..nameTextController = nameTextController;
   }
 }
 

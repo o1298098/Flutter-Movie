@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/customwidgets/customcliper_path.dart';
+import 'package:movie/views/main_page/action.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -52,7 +53,7 @@ Widget buildView(
             width: Adapt.px(40),
           ),
           SizedBox(
-            width: Adapt.screenW() - Adapt.px(200),
+            width: Adapt.screenW() - Adapt.px(225),
             child: Text(
               'Hi, ${state.user?.displayName ?? 'Guest'}',
               maxLines: 1,
@@ -67,19 +68,61 @@ Widget buildView(
           Expanded(
             child: SizedBox(),
           ),
-          IconButton(
-            iconSize: Adapt.px(50),
-            onPressed: () {
-              if (state.islogin)
-                dispatch(AccountPageActionCreator.onLogout());
-              else
-                dispatch(AccountPageActionCreator.onLogin());
-            },
-            icon: Icon(
-              state.islogin ? Icons.exit_to_app : Icons.person_outline,
-              color: Colors.white,
-            ),
-          ),
+          state.user == null
+              ? InkWell(
+                  onTap: () => dispatch(AccountPageActionCreator.onLogin()),
+                  child: Container(
+                      height: Adapt.px(60),
+                      margin: EdgeInsets.only(
+                          right: Adapt.px(30),
+                          top: Adapt.px(13),
+                          bottom: Adapt.px(13)),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: Adapt.px(20), vertical: Adapt.px(10)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(Adapt.px(30)),
+                          border: Border.all(
+                              color: const Color(0xFFFFFFFF), width: 2)),
+                      child: Text(
+                        'Sign In',
+                        style: TextStyle(
+                            color: const Color(0xFFFFFFFF),
+                            fontSize: Adapt.px(26)),
+                      )))
+              : PopupMenuButton<String>(
+                  padding: EdgeInsets.zero,
+                  offset: Offset(0, Adapt.px(100)),
+                  icon: Icon(
+                    Icons.more_vert,
+                    color: const Color(0xFFFFFFFF),
+                    size: Adapt.px(50),
+                  ),
+                  onSelected: (selected) {
+                    switch (selected) {
+                      case 'Sign Out':
+                        dispatch(AccountPageActionCreator.onLogout());
+                        break;
+                    }
+                  },
+                  itemBuilder: (ctx) {
+                    return [
+                      PopupMenuItem<String>(
+                        value: 'Notifications',
+                        child: const _DropDownItem(
+                          title: 'Notifications',
+                          icon: Icons.notifications_none,
+                        ),
+                      ),
+                      PopupMenuItem<String>(
+                        value: 'Sign Out',
+                        child: const _DropDownItem(
+                          title: 'Sign Out',
+                          icon: Icons.exit_to_app,
+                        ),
+                      ),
+                    ];
+                  },
+                ),
           SizedBox(
             width: Adapt.px(10),
           )
@@ -162,29 +205,43 @@ Widget buildView(
     }
 
     return Scaffold(
+        key: state.scafoldState,
+        endDrawer: Drawer(),
         body: SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
-      child: Stack(
-        children: <Widget>[
-          _buildBackGround(),
-          Container(
-            child: SafeArea(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: Adapt.px(60),
+          physics: BouncingScrollPhysics(),
+          child: Stack(
+            children: <Widget>[
+              _buildBackGround(),
+              Container(
+                child: SafeArea(
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: Adapt.px(60),
+                      ),
+                      _buildHeader(),
+                      SizedBox(
+                        height: Adapt.px(50),
+                      ),
+                      _buildBody(),
+                    ],
                   ),
-                  _buildHeader(),
-                  SizedBox(
-                    height: Adapt.px(50),
-                  ),
-                  _buildBody(),
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
-    ));
+                ),
+              )
+            ],
+          ),
+        ));
   });
+}
+
+class _DropDownItem extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  const _DropDownItem({@required this.title, this.icon});
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[Icon(icon), SizedBox(width: 10), Text(title)],
+    );
+  }
 }

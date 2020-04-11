@@ -209,28 +209,33 @@ class _Cell extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-              width: Adapt.px(250),
-              height: Adapt.px(350),
-              decoration: BoxDecoration(
-                  color: _theme.primaryColorDark,
-                  borderRadius: BorderRadius.circular(Adapt.px(15)),
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: CachedNetworkImageProvider(
-                          ImageUrl.getUrl(data.posterPath, ImageSize.w400))))),
-          Container(
-              //alignment: Alignment.bottomCenter,
-              width: Adapt.px(250),
-              padding: EdgeInsets.all(Adapt.px(10)),
-              child: Text(
-                data.title ?? data.name,
-                maxLines: 2,
-                //textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: Adapt.px(28),
-                  fontWeight: FontWeight.bold,
+            width: Adapt.px(250),
+            height: Adapt.px(350),
+            decoration: BoxDecoration(
+              color: _theme.primaryColorDark,
+              borderRadius: BorderRadius.circular(Adapt.px(15)),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: CachedNetworkImageProvider(
+                  ImageUrl.getUrl(data.posterPath, ImageSize.w400),
                 ),
-              ))
+              ),
+            ),
+          ),
+          Container(
+            //alignment: Alignment.bottomCenter,
+            width: Adapt.px(250),
+            padding: EdgeInsets.all(Adapt.px(10)),
+            child: Text(
+              data.title ?? data.name,
+              maxLines: 2,
+              //textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: Adapt.px(28),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          )
         ],
       ),
     );

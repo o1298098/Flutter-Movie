@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/routes/routes.dart';
@@ -17,6 +18,10 @@ Effect<StartPageState> buildEffect() {
 
 void _onAction(Action action, Context<StartPageState> ctx) {}
 void _onInit(Action action, Context<StartPageState> ctx) async {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  _firebaseMessaging.requestNotificationPermissions();
+  _firebaseMessaging.configure();
+  _firebaseMessaging.autoInitEnabled();
   ctx.state.pageController = PageController();
   SharedPreferences.getInstance().then((_p) async {
     final _isFirst = _p.getBool('isFirstTime') ?? true;
