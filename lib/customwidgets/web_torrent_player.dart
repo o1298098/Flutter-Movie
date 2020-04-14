@@ -24,7 +24,8 @@ class WebTorrentPlayerState extends State<WebTorrentPlayer> {
     return AspectRatio(
       aspectRatio: 16 / 9,
       child: InAppWebView(
-          initialData: InAppWebViewInitialData(data: """<!DOCTYPE html>
+        initialOptions: InAppWebViewWidgetOptions(),
+        initialData: InAppWebViewInitialData(data: """<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8">
@@ -156,15 +157,8 @@ class WebTorrentPlayerState extends State<WebTorrentPlayer> {
     </script>
   </body>
 </html>"""),
-          initialHeaders: {},
-          initialOptions: InAppWebViewWidgetOptions(
-              inAppWebViewOptions: InAppWebViewOptions(
-                  //disableVerticalScroll: true,
-                  //disableHorizontalScroll: true,
-                  //horizontalScrollBarEnabled: false,
-                  //verticalScrollBarEnabled: false,
-                  //debuggingEnabled: true,
-                  ))),
+        initialHeaders: {},
+      ),
     );
   }
 

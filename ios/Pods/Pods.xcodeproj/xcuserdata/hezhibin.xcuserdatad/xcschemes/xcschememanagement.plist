@@ -199,6 +199,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>flutter_downloader-FlutterDownloaderDatabase.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>flutter_downloader.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>flutter_inappwebview.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -250,6 +260,11 @@
 			<false/>
 		</dict>
 		<key>nanopb.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>package_info.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

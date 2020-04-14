@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/customwidgets/customcliper_path.dart';
-import 'package:movie/views/main_page/action.dart';
 
 import 'action.dart';
 import 'state.dart';

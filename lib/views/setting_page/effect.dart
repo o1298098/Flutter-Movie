@@ -7,8 +7,12 @@ import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/actions/base_api.dart';
+import 'package:movie/actions/github_api.dart';
+import 'package:movie/actions/version_comparison.dart';
+import 'package:movie/customwidgets/update_info_dialog.dart';
 import 'package:movie/globalbasestate/action.dart';
 import 'package:movie/globalbasestate/store.dart';
+import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as Path;
@@ -22,6 +26,7 @@ Effect<SettingPageState> buildEffect() {
     SettingPageAction.cleanCached: _cleanCached,
     SettingPageAction.profileEdit: _profileEdit,
     SettingPageAction.openPhotoPicker: _openPhotoPicker,
+    SettingPageAction.checkUpdate: _checkUpdate,
     Lifecycle.initState: _onInit,
     Lifecycle.build: _onBuild,
     Lifecycle.dispose: _onDispose,
@@ -53,6 +58,9 @@ Future<void> _onInit(Action action, Context<SettingPageState> ctx) async {
         ..addListener(() {
           ctx.state.photoUrl = ctx.state.photoController.text;
         });
+
+  final _packageInfo = await PackageInfo.fromPlatform();
+  ctx.state.version = _packageInfo?.version ?? '-';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   final _adultItem = prefs.getBool('adultItems');
   if (_adultItem != null) if (_adultItem != ctx.state.adultSwitchValue)
@@ -138,5 +146,31 @@ Future _openPhotoPicker(Action action, Context<SettingPageState> ctx) async {
       }
       ctx.dispatch(SettingPageActionCreator.onUploading(false));
     });
+  }
+}
+
+Future _checkUpdate(Action action, Context<SettingPageState> ctx) async {
+  if (!Platform.isAndroid) return;
+
+  ctx.dispatch(SettingPageActionCreator.onLoading(true));
+  final _github = GithubApi();
+  final _result = await _github.checkUpdate();
+  if (_result != null) {
+    final _shouldUpdate =
+        VersionComparison().compare(ctx.state.version, _result.tagName);
+    final _apk = _result.assets.singleWhere(
+        (e) => e.contentType == 'application/vnd.android.package-archive');
+
+    if (_apk != null && _shouldUpdate) {
+      await showDialog(
+          context: ctx.context,
+          child: UpdateInfoDialog(
+            version: _result.tagName,
+            describe: _result.body,
+            packageSize: (_apk.size / 1048576),
+            downloadUrl: _apk.browserDownloadUrl,
+          ));
+    }
+    ctx.dispatch(SettingPageActionCreator.onLoading(false));
   }
 }

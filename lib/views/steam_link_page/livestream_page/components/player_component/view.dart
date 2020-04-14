@@ -43,7 +43,7 @@ Widget buildView(
               initialUrl: state.streamAddress,
               initialHeaders: {},
               initialOptions: InAppWebViewWidgetOptions(
-                  inAppWebViewOptions: InAppWebViewOptions(
+                  crossPlatform: InAppWebViewOptions(
                 debuggingEnabled: true,
               ))),
         );

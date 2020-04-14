@@ -13,6 +13,7 @@ Reducer<SettingPageState> buildReducer() {
       SettingPageAction.userUpdate: _userUpdate,
       SettingPageAction.userPanelPhotoUrlUpdate: _userPanelPhotoUrlUpdate,
       SettingPageAction.uploading: _onUploading,
+      SettingPageAction.loading: _onLoading
     },
   );
 }
@@ -26,6 +27,13 @@ SettingPageState _onUploading(SettingPageState state, Action action) {
   final bool _isUploading = action.payload ?? false;
   final SettingPageState newState = state.clone();
   newState.uploading = _isUploading;
+  return newState;
+}
+
+SettingPageState _onLoading(SettingPageState state, Action action) {
+  final bool _isLoading = action.payload ?? false;
+  final SettingPageState newState = state.clone();
+  newState.loading = _isLoading;
   return newState;
 }
 

@@ -47,7 +47,7 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
               initialUrl: state.streamAddress,
               initialHeaders: {},
               initialOptions: InAppWebViewWidgetOptions(
-                  inAppWebViewOptions: InAppWebViewOptions(
+                  crossPlatform: InAppWebViewOptions(
                 debuggingEnabled: true,
               ))),
         );

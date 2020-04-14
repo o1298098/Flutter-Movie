@@ -242,15 +242,25 @@ Widget buildView(
                   fontSize: Adapt.px(35)),
             ),
             subtitle: Text(
-              '1.0',
+              state.version ?? '-',
               style: TextStyle(
                   color: Colors.grey,
                   fontWeight: FontWeight.bold,
                   fontSize: Adapt.px(35)),
             ),
             trailing: IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.refresh),
+              onPressed: () =>
+                  dispatch(SettingPageActionCreator.onCheckUpdate()),
+              icon: state.loading
+                  ? SizedBox(
+                      width: Adapt.px(40),
+                      height: Adapt.px(40),
+                      child: CircularProgressIndicator(
+                        strokeWidth: Adapt.px(5),
+                        valueColor:
+                            AlwaysStoppedAnimation(const Color(0xFFFFFFFF)),
+                      ))
+                  : Icon(Icons.refresh),
               color: Colors.white,
               iconSize: Adapt.px(60),
             ),

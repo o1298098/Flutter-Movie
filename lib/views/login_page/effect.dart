@@ -43,7 +43,7 @@ void _onInit(Action action, Context<LoginPageState> ctx) async {
   ctx.state.passWordTextController = TextEditingController();
   ctx.state.phoneTextController = TextEditingController();
   ctx.state.codeTextContraller = TextEditingController();
-  ctx.state.countryCode = '+86';
+  ctx.state.countryCode = '+1';
   final _jsonStr = await CountryPhoneCode.getCountryJson(ctx.context);
   final countriesJson = json.decode(_jsonStr);
   ctx.state.countryCodes = List<CountryPhoneCode>();
@@ -53,8 +53,7 @@ void _onInit(Action action, Context<LoginPageState> ctx) async {
   ctx.state.countryCode = ctx.state.countryCodes
           .singleWhere((e) => e.code == ui.window.locale.countryCode)
           ?.dialCode ??
-      '';
-  print(ctx.state.countryCodes.toString());
+      '+1';
 }
 
 void _onBuild(Action action, Context<LoginPageState> ctx) {
@@ -92,7 +91,8 @@ Future _onLoginClicked(Action action, Context<LoginPageState> ctx) async {
         user.phoneNumber.substring(user.phoneNumber.length - 4);
 
     if (user.displayName == null)
-      user.updateProfile(UserUpdateInfo()..displayName = _nickName);
+      user.updateProfile(UserUpdateInfo()..displayName = _nickName).then(
+          (v) => GlobalStore.store.dispatch(GlobalActionCreator.setUser(user)));
 
     GlobalStore.store.dispatch(GlobalActionCreator.setUser(user));
 

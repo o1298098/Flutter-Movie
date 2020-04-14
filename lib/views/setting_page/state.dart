@@ -11,12 +11,14 @@ class SettingPageState implements Cloneable<SettingPageState> {
   String photoUrl;
   String userPanelPhotoUrl;
   String phone;
+  String version;
   TextEditingController userNameController;
   TextEditingController photoController;
   TextEditingController phoneController;
   bool adultSwitchValue;
   bool isEditProfile;
   bool uploading;
+  bool loading;
   double cachedSize;
   @override
   SettingPageState clone() {
@@ -34,7 +36,9 @@ class SettingPageState implements Cloneable<SettingPageState> {
       ..userNameController = userNameController
       ..phoneController = phoneController
       ..photoController = photoController
-      ..uploading = uploading;
+      ..uploading = uploading
+      ..loading = loading
+      ..version = version;
   }
 }
 
@@ -51,6 +55,7 @@ SettingPageState initState(Map<String, dynamic> args) {
   state.adultSwitchValue = false;
   state.isEditProfile = false;
   state.uploading = false;
+  state.loading = false;
   state.cachedSize = 0;
   return state;
 }

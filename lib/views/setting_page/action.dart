@@ -12,6 +12,8 @@ enum SettingPageAction {
   openPhotoPicker,
   userPanelPhotoUrlUpdate,
   uploading,
+  loading,
+  checkUpdate,
 }
 
 class SettingPageActionCreator {
@@ -53,5 +55,13 @@ class SettingPageActionCreator {
 
   static Action onUploading(bool isUploading) {
     return Action(SettingPageAction.uploading, payload: isUploading);
+  }
+
+  static Action onLoading(bool isLoading) {
+    return Action(SettingPageAction.loading, payload: isLoading);
+  }
+
+  static Action onCheckUpdate() {
+    return const Action(SettingPageAction.checkUpdate);
   }
 }

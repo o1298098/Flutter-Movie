@@ -31,7 +31,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   dio: ^3.0.9
   dio_http_cache: ^0.2.5
-  fish_redux: ^0.3.1
+  fish_redux: ^0.3.2
   common_utils: ^1.1.1
   path_provider: ^1.3.0
   shared_preferences: ^0.5.3+4
@@ -56,7 +56,10 @@ dependencies:
   flutter_rating_bar: ^3.0.0
   flutter_swiper: ^1.1.6
   font_awesome_flutter: ^8.5.0
-  flutter_inappwebview: ^2.1.0+1
+  flutter_inappwebview: 
+    git:
+     url: https://github.com/pichillilorenzo/flutter_inappwebview.git
+     ref: master
   flutter_cache_manager: ^1.1.3
   image_picker: ^0.6.3+1
   cloud_firestore: ^0.13.4+2
@@ -67,6 +70,8 @@ dependencies:
   firebase_messaging: ^6.0.13
   firebase_admob: ^0.9.3+1
   lottie: ^0.3.2
+  package_info: ^0.4.0+16
+  flutter_downloader: ^1.4.3
   
 
 dev_dependencies:
