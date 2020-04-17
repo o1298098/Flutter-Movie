@@ -17,117 +17,6 @@ import 'state.dart';
 
 Widget buildView(
     KnownForState state, Dispatch dispatch, ViewService viewService) {
-  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
-  Widget _buildknowforCell(CastData d) {
-    return GestureDetector(
-        key: ValueKey('knowforCell${d.id}'),
-        onTap: () => dispatch(PeopleDetailPageActionCreator.onCellTapped(
-            d.id,
-            d.backdropPath,
-            d.title ?? d.name,
-            d.posterPath,
-            d.mediaType == 'movie' ? MediaType.movie : MediaType.person)),
-        child: Container(
-          margin: EdgeInsets.only(left: Adapt.px(20)),
-          width: Adapt.px(240),
-          height: Adapt.px(400),
-          child: Card(
-            elevation: 1.0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  width: Adapt.px(240),
-                  height: Adapt.px(342),
-                  decoration: BoxDecoration(
-                      color: _theme.primaryColorLight,
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: CachedNetworkImageProvider(
-                            ImageUrl.getUrl(d.posterPath, ImageSize.w300)),
-                      )),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: Adapt.px(15),
-                      left: Adapt.px(20),
-                      right: Adapt.px(20)),
-                  child: Text(
-                    d.title ?? d.name,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: Adapt.px(26)),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ));
-  }
-
-  Widget _buildShimmerCell() {
-    return SizedBox(
-      width: Adapt.px(240),
-      height: Adapt.px(480),
-      child: Shimmer.fromColors(
-        baseColor: _theme.primaryColorDark,
-        highlightColor: _theme.primaryColorLight,
-        child: Column(
-          children: <Widget>[
-            Container(
-              color: Colors.grey[200],
-              width: Adapt.px(240),
-              height: Adapt.px(342),
-            ),
-            Container(
-              height: Adapt.px(24),
-              margin: EdgeInsets.fromLTRB(0, Adapt.px(15), Adapt.px(20), 0),
-              color: Colors.grey[200],
-            ),
-            Container(
-              height: Adapt.px(24),
-              margin: EdgeInsets.fromLTRB(
-                  0, Adapt.px(5), Adapt.px(50), Adapt.px(20)),
-              color: Colors.grey[200],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildKnownForCell() {
-    if (state.cast.length > 0)
-      return Container(
-        height: Adapt.px(480),
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: state.cast.take(8).map(_buildknowforCell).toList(),
-        ),
-      );
-    else
-      return Container(
-        height: Adapt.px(480),
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: <Widget>[
-            SizedBox(
-              width: Adapt.px(30),
-            ),
-            _buildShimmerCell(),
-            SizedBox(
-              width: Adapt.px(20),
-            ),
-            _buildShimmerCell(),
-            SizedBox(
-              width: Adapt.px(20),
-            ),
-            _buildShimmerCell(),
-          ],
-        ),
-      );
-  }
-
   return AnimatedSwitcher(
       key: ValueKey('knownfor'),
       switchInCurve: Curves.easeIn,
@@ -150,8 +39,140 @@ Widget buildView(
             SizedBox(
               height: Adapt.px(30),
             ),
-            _buildKnownForCell(),
+            _KownForList(
+              cast: state.cast,
+              dispatch: dispatch,
+            ),
           ],
         ),
       ));
+}
+
+class _ShimmerCell extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: Adapt.px(240),
+      height: Adapt.px(480),
+      child: Column(
+        children: <Widget>[
+          Container(
+            color: Colors.grey[200],
+            width: Adapt.px(240),
+            height: Adapt.px(342),
+          ),
+          Container(
+            height: Adapt.px(24),
+            margin: EdgeInsets.fromLTRB(0, Adapt.px(15), Adapt.px(20), 0),
+            color: Colors.grey[200],
+          ),
+          Container(
+            height: Adapt.px(24),
+            margin:
+                EdgeInsets.fromLTRB(0, Adapt.px(5), Adapt.px(50), Adapt.px(20)),
+            color: Colors.grey[200],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ShimmerList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return Shimmer.fromColors(
+        baseColor: _theme.primaryColorDark,
+        highlightColor: _theme.primaryColorLight,
+        child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+            itemBuilder: (_, __) => _ShimmerCell(),
+            separatorBuilder: (_, __) => SizedBox(width: Adapt.px(20)),
+            itemCount: 3));
+  }
+}
+
+class _KownForCell extends StatelessWidget {
+  final Function onTap;
+  final CastData data;
+  const _KownForCell({this.data, this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return GestureDetector(
+        key: ValueKey('knowforCell${data.id}'),
+        onTap: onTap,
+        child: Container(
+          width: Adapt.px(240),
+          height: Adapt.px(400),
+          child: Card(
+            elevation: 1.0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  width: Adapt.px(240),
+                  height: Adapt.px(342),
+                  decoration: BoxDecoration(
+                      color: _theme.primaryColorLight,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: CachedNetworkImageProvider(
+                            ImageUrl.getUrl(data.posterPath, ImageSize.w300)),
+                      )),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: Adapt.px(15),
+                      left: Adapt.px(20),
+                      right: Adapt.px(20)),
+                  child: Text(
+                    data.title ?? data.name,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: Adapt.px(26)),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ));
+  }
+}
+
+class _KownForList extends StatelessWidget {
+  final List<CastData> cast;
+  final Dispatch dispatch;
+  const _KownForList({this.cast, this.dispatch});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: Adapt.px(480),
+      child: cast.length > 0
+          ? ListView.separated(
+              padding: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
+              separatorBuilder: (_, __) => SizedBox(width: Adapt.px(20)),
+              scrollDirection: Axis.horizontal,
+              itemCount: cast.length,
+              itemBuilder: (_, index) {
+                final _d = cast[index];
+                return _KownForCell(
+                  data: _d,
+                  onTap: () => dispatch(
+                      PeopleDetailPageActionCreator.onCellTapped(
+                          _d.id,
+                          _d.backdropPath,
+                          _d.title ?? _d.name,
+                          _d.posterPath,
+                          _d.mediaType == 'movie'
+                              ? MediaType.movie
+                              : MediaType.person)),
+                );
+              },
+            )
+          : _ShimmerList(),
+    );
+  }
 }

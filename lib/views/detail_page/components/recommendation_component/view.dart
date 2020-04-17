@@ -15,49 +15,31 @@ import 'state.dart';
 
 Widget buildView(
     RecommendationsState state, Dispatch dispatch, ViewService viewService) {
-  Widget _buildRecommendations() {
-    var _model = state.recommendations;
-    return SliverToBoxAdapter(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
-            child: Text(
-              I18n.of(viewService.context).recommendations,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: Adapt.px(35)),
-            ),
+  final _model = state.recommendations;
+  return SliverToBoxAdapter(
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
+          child: Text(
+            I18n.of(viewService.context).recommendations,
+            style:
+                TextStyle(fontWeight: FontWeight.bold, fontSize: Adapt.px(35)),
           ),
-          SizedBox(
-            height: Adapt.px(30),
-          ),
-          Container(
-            height: Adapt.px(450),
-            child: _model.length == 0
-                ? _ShimmmerList()
-                : ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
-                    separatorBuilder: (_, __) => SizedBox(width: Adapt.px(30)),
-                    itemCount: _model.length,
-                    itemBuilder: (_, index) {
-                      final d = _model[index];
-                      return _RecommendationCell(
-                        data: d,
-                        onTap: () => dispatch(
-                            MovieDetailPageActionCreator.movieCellTapped(
-                                d.id, d.posterPath)),
-                      );
-                    }),
-          ),
-          SizedBox(
-            height: Adapt.px(30),
-          ),
-        ]));
-  }
-
-  return _buildRecommendations();
+        ),
+        SizedBox(height: Adapt.px(30)),
+        Container(
+          height: Adapt.px(450),
+          child: _model.length == 0
+              ? _ShimmmerList()
+              : _RecommendationList(
+                  data: _model,
+                  dispatch: dispatch,
+                ),
+        ),
+        SizedBox(height: Adapt.px(30)),
+      ]));
 }
 
 class _ShimmerCell extends StatelessWidget {
@@ -174,6 +156,29 @@ class _RecommendationCell extends StatelessWidget {
               ))
         ],
       ),
+    );
+  }
+}
+
+class _RecommendationList extends StatelessWidget {
+  final List<VideoListResult> data;
+  final Dispatch dispatch;
+  const _RecommendationList({this.data, this.dispatch});
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      scrollDirection: Axis.horizontal,
+      padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
+      separatorBuilder: (_, __) => SizedBox(width: Adapt.px(30)),
+      itemCount: data.length,
+      itemBuilder: (_, index) {
+        final d = data[index];
+        return _RecommendationCell(
+          data: d,
+          onTap: () => dispatch(
+              MovieDetailPageActionCreator.movieCellTapped(d.id, d.posterPath)),
+        );
+      },
     );
   }
 }

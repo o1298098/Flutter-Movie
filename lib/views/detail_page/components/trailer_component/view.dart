@@ -27,20 +27,9 @@ Widget buildView(
         child: AnimatedSwitcher(
           duration: Duration(milliseconds: 300),
           child: (state.videos?.results?.length ?? 0) > 0
-              ? ListView.separated(
-                  padding: EdgeInsets.fromLTRB(
-                      Adapt.px(40), Adapt.px(30), Adapt.px(40), 0),
-                  scrollDirection: Axis.horizontal,
-                  separatorBuilder: (_, __) => SizedBox(width: Adapt.px(30)),
-                  itemCount: state?.videos?.results?.length ?? 0,
-                  itemBuilder: (_, index) {
-                    final d = state.videos.results[index];
-                    return _TrailerCell(
-                      data: d,
-                      onTap: () =>
-                          dispatch(TrailerActionCreator.playTrailer(d.key)),
-                    );
-                  },
+              ? _TrailerList(
+                  dispatch: dispatch,
+                  results: state.videos?.results ?? [],
                 )
               : _ShimmerList(),
         ),
@@ -140,5 +129,27 @@ class _TrailerCell extends StatelessWidget {
                     fontSize: Adapt.px(24), fontWeight: FontWeight.w500),
               )
             ])));
+  }
+}
+
+class _TrailerList extends StatelessWidget {
+  final List<VideoResult> results;
+  final Dispatch dispatch;
+  const _TrailerList({this.results, this.dispatch});
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      padding: EdgeInsets.fromLTRB(Adapt.px(40), Adapt.px(30), Adapt.px(40), 0),
+      scrollDirection: Axis.horizontal,
+      separatorBuilder: (_, __) => SizedBox(width: Adapt.px(30)),
+      itemCount: results?.length ?? 0,
+      itemBuilder: (_, index) {
+        final d = results[index];
+        return _TrailerCell(
+          data: d,
+          onTap: () => dispatch(TrailerActionCreator.playTrailer(d.key)),
+        );
+      },
+    );
   }
 }

@@ -14,7 +14,6 @@ import 'state.dart';
 
 Widget buildView(
     TimeLineState state, Dispatch dispatch, ViewService viewService) {
-  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
   List<CastData> _movies;
   List<CastData> _tvshows;
   void initList() {
@@ -23,60 +22,7 @@ Widget buildView(
     _tvshows = _model.where((d) => d.mediaType == 'tv').toList();
   }
 
-  Widget _buildTitle() {
-    if (state.department == null)
-      return SizedBox(
-          child: Shimmer.fromColors(
-        baseColor: _theme.primaryColorDark,
-        highlightColor: _theme.primaryColorLight,
-        child: Container(
-          height: Adapt.px(40),
-          width: Adapt.px(150),
-          color: Colors.grey[200],
-        ),
-      ));
-    else
-      return Text(
-        state.department ?? '',
-        softWrap: true,
-        style: TextStyle(fontWeight: FontWeight.w500, fontSize: Adapt.px(40)),
-      );
-  }
-
-  Widget _buildActingBody() {
-    if (_movies == null || _tvshows == null) initList();
-    var _data = state.showmovie ? _movies : _tvshows;
-    return Card(
-        //margin: EdgeInsets.all(Adapt.px(10)),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Adapt.px(30))),
-        child: Container(
-          padding: EdgeInsets.all(Adapt.px(30)),
-          child: _data.length > 0
-              ? ListView.separated(
-                  physics: PageScrollPhysics(),
-                  separatorBuilder: (_, __) => Divider(),
-                  shrinkWrap: true,
-                  itemCount: _data.length,
-                  itemBuilder: (_, i) {
-                    final d = _data[i];
-                    return _Cell(
-                      data: d,
-                      onTap: () => dispatch(
-                          PeopleDetailPageActionCreator.onCellTapped(
-                              d.id,
-                              d.backdropPath,
-                              d.title ?? d.name,
-                              d.posterPath,
-                              d.mediaType == 'movie'
-                                  ? MediaType.movie
-                                  : MediaType.person)),
-                    );
-                  })
-              : _ShimmerList(),
-        ));
-  }
-
+  if (_movies == null || _tvshows == null) initList();
   final _selectTextStyle = TextStyle(fontWeight: FontWeight.w500);
   final _unSelectTextStyle = TextStyle(color: Colors.grey);
   return Column(
@@ -89,7 +35,7 @@ Widget buildView(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                _buildTitle(),
+                _Title(department: state.department),
                 Expanded(
                   child: Container(),
                 ),
@@ -116,7 +62,16 @@ Widget buildView(
             )),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-          child: _buildActingBody(),
+          child: _ActingBody(
+            data: state.showmovie ? _movies : _tvshows,
+            showMovie: state.showmovie,
+            onTap: (d) => dispatch(PeopleDetailPageActionCreator.onCellTapped(
+                d.id,
+                d.backdropPath,
+                d.title ?? d.name,
+                d.posterPath,
+                d.mediaType == 'movie' ? MediaType.movie : MediaType.person)),
+          ),
         ),
       ]);
 }
@@ -204,6 +159,62 @@ class _Cell extends StatelessWidget {
             ),
             Text(date)
           ],
+        ));
+  }
+}
+
+class _Title extends StatelessWidget {
+  final String department;
+  const _Title({this.department});
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return department == null
+        ? SizedBox(
+            child: Shimmer.fromColors(
+            baseColor: _theme.primaryColorDark,
+            highlightColor: _theme.primaryColorLight,
+            child: Container(
+              height: Adapt.px(40),
+              width: Adapt.px(150),
+              color: Colors.grey[200],
+            ),
+          ))
+        : Text(
+            department ?? '',
+            softWrap: true,
+            style:
+                TextStyle(fontWeight: FontWeight.w500, fontSize: Adapt.px(40)),
+          );
+  }
+}
+
+class _ActingBody extends StatelessWidget {
+  final bool showMovie;
+  final List<CastData> data;
+  final Function(CastData) onTap;
+  const _ActingBody({this.showMovie, this.data, this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(Adapt.px(30))),
+        child: Container(
+          padding: EdgeInsets.all(Adapt.px(30)),
+          child: data.length > 0
+              ? ListView.separated(
+                  physics: PageScrollPhysics(),
+                  separatorBuilder: (_, __) => Divider(),
+                  shrinkWrap: true,
+                  itemCount: data.length,
+                  itemBuilder: (_, i) {
+                    final d = data[i];
+                    return _Cell(
+                      data: d,
+                      onTap: () => onTap(d),
+                    );
+                  })
+              : _ShimmerList(),
         ));
   }
 }

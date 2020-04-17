@@ -56,7 +56,6 @@ class MyListsPageState extends MutableSource
 
 MyListsPageState initState(Map<String, dynamic> args) {
   MyListsPageState state = MyListsPageState();
-  state.accountId = args['accountid'];
   state.isEdit = false;
   state.listkey = GlobalKey<AnimatedListState>();
   return state;

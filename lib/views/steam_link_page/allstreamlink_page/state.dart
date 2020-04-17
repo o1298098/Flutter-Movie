@@ -36,7 +36,7 @@ class AllStreamLinkPageState implements Cloneable<AllStreamLinkPageState> {
 
 AllStreamLinkPageState initState(Map<String, dynamic> args) {
   AllStreamLinkPageState state = new AllStreamLinkPageState();
-  state.scaffoldKey = GlobalKey<ScaffoldState>();
+  state.scaffoldKey = GlobalKey<ScaffoldState>(debugLabel: 'allStreamLinkPage');
   state.mediaType = args['type'] ?? MediaType.movie;
   state.orderBy = 'updateTime';
   state.desc = true;

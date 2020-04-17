@@ -9,6 +9,7 @@ import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/imagemodel.dart';
+import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/tvdetail_page/action.dart';
 import 'package:parallax_image/parallax_image.dart';
 import 'package:shimmer/shimmer.dart';
@@ -17,49 +18,76 @@ import 'state.dart';
 
 Widget buildView(
     ImagesState state, Dispatch dispatch, ViewService viewService) {
-  final Random random = new Random(DateTime.now().millisecondsSinceEpoch);
-  List<ImageData> _allimage;
-  Widget _buildImageCell(int index) {
-    final d = _allimage[index];
-    double w = (Adapt.screenW() - Adapt.px(100)) / 2;
-    double h = w / d.aspectRatio;
-    return GestureDetector(
-      key: ValueKey(d.filePath),
-      onTap: () => dispatch(
-          TVDetailPageActionCreator.onImageCellTapped(index, _allimage)),
-      child: Container(
-        width: w,
-        height: h,
-        decoration: BoxDecoration(
-          color: Color.fromRGBO(random.nextInt(255), random.nextInt(255),
-              random.nextInt(255), random.nextDouble()),
-        ),
-        child: ParallaxImage(
-            extent: h,
-            image: CachedNetworkImageProvider(
-                ImageUrl.getUrl(d.filePath, ImageSize.w400))),
+  return Container(child: Builder(builder: (BuildContext context) {
+    return CustomScrollView(slivers: <Widget>[
+      SliverOverlapInjector(
+        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
       ),
-    );
-  }
+      _ImageBody(
+        backdrops: state.backdrops,
+        posters: state.posters,
+        dispatch: dispatch,
+      )
+    ]);
+  }));
+}
 
-  Widget _buildShimmerImageCell(double h) {
+class _ShimmerImageCell extends StatelessWidget {
+  final double height;
+  const _ShimmerImageCell({this.height});
+  @override
+  Widget build(BuildContext context) {
+    final _theme = ThemeStyle.getTheme(context);
     double w = (Adapt.screenW() - Adapt.px(100)) / 2;
     return Shimmer.fromColors(
-      baseColor: Colors.grey[200],
-      highlightColor: Colors.grey[100],
+      baseColor: _theme.primaryColorDark,
+      highlightColor: _theme.primaryColorLight,
       child: Container(
         width: w,
-        height: h,
+        height: height,
         color: Colors.grey[200],
       ),
     );
   }
+}
 
-  Widget _getImageBody() {
-    var hset = new HashSet<ImageData>()
-      ..addAll(state.backdrops)
-      ..addAll(state.posters);
-    _allimage = hset.toList();
+class _ImageCell extends StatelessWidget {
+  final int index;
+  final ImageData data;
+  final Function(ImageData) onTap;
+  const _ImageCell({this.data, this.index, this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    final _theme = ThemeStyle.getTheme(context);
+    double w = (Adapt.screenW() - Adapt.px(100)) / 2;
+    double h = w / data.aspectRatio;
+    return GestureDetector(
+      key: ValueKey(data.filePath),
+      onTap: () => onTap(data),
+      child: Container(
+        width: w,
+        height: h,
+        decoration: BoxDecoration(
+          color: _theme.primaryColorDark,
+        ),
+        child: ParallaxImage(
+            extent: h,
+            image: CachedNetworkImageProvider(
+                ImageUrl.getUrl(data.filePath, ImageSize.w400))),
+      ),
+    );
+  }
+}
+
+class _ImageBody extends StatelessWidget {
+  final List<ImageData> backdrops;
+  final List<ImageData> posters;
+  final Dispatch dispatch;
+  const _ImageBody({this.backdrops, this.dispatch, this.posters});
+  @override
+  Widget build(BuildContext context) {
+    final hset = new HashSet<ImageData>()..addAll(backdrops)..addAll(posters);
+    final _allimage = hset.toList();
     if (_allimage.length > 0)
       return SliverStaggeredGrid.countBuilder(
         crossAxisCount: 4,
@@ -68,7 +96,12 @@ Widget buildView(
         crossAxisSpacing: Adapt.px(20),
         itemCount: _allimage.length,
         itemBuilder: (BuildContext contxt, int index) {
-          return _buildImageCell(index);
+          return _ImageCell(
+            index: index,
+            data: _allimage[index],
+            onTap: (e) => dispatch(
+                TVDetailPageActionCreator.onImageCellTapped(index, _allimage)),
+          );
         },
       );
     else
@@ -79,17 +112,8 @@ Widget buildView(
         crossAxisSpacing: Adapt.px(20),
         itemCount: 6,
         itemBuilder: (BuildContext contxt, int index) {
-          return _buildShimmerImageCell(80.0 * index);
+          return _ShimmerImageCell(height: 80.0 * index);
         },
       );
   }
-
-  return Container(child: Builder(builder: (BuildContext context) {
-    return CustomScrollView(slivers: <Widget>[
-      SliverOverlapInjector(
-        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-      ),
-      _getImageBody()
-    ]);
-  }));
 }

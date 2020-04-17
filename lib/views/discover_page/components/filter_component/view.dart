@@ -13,29 +13,6 @@ Widget buildView(
     FilterState state, Dispatch dispatch, ViewService viewService) {
   return Builder(builder: (context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
-    Widget _buildGernesCell(SortCondition d) {
-      return ChoiceChip(
-        label: Text(d.name),
-        selected: d.isSelected,
-        selectedColor: Colors.transparent,
-        backgroundColor: Colors.transparent,
-        labelStyle: TextStyle(
-            color:
-                d.isSelected ? _theme.textTheme.bodyText1.color : Colors.grey),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Adapt.px(10)),
-            side: BorderSide(
-                color: d.isSelected
-                    ? _theme.textTheme.bodyText1.color
-                    : Colors.grey)),
-        onSelected: (s) {
-          d.isSelected = s;
-          //Navigator.pop(viewService.context);
-          dispatch(FilterActionCreator.onGenresChanged());
-          viewService.broadcast(DiscoverPageActionCreator.onRefreshData());
-        },
-      );
-    }
 
     return Container(
       key: GlobalKey(),
@@ -73,17 +50,13 @@ Widget buildView(
                           borderSide:
                               new BorderSide(color: Colors.transparent)))),
             ),
-            SizedBox(
-              height: Adapt.px(20),
-            ),
+            SizedBox(height: Adapt.px(20)),
             Text(
               'Type',
               style: TextStyle(
                   fontSize: Adapt.px(30), fontWeight: FontWeight.w600),
             ),
-            SizedBox(
-              height: Adapt.px(20),
-            ),
+            SizedBox(height: Adapt.px(20)),
             Row(
               children: <Widget>[
                 GestureDetector(
@@ -105,7 +78,6 @@ Widget buildView(
                                 : Colors.grey),
                       )),
                   onTap: () {
-                    //Navigator.pop(viewService.context);
                     dispatch(FilterActionCreator.onSortChanged(true));
                     viewService
                         .broadcast(DiscoverPageActionCreator.onRefreshData());
@@ -140,9 +112,7 @@ Widget buildView(
                 ),
               ],
             ),
-            SizedBox(
-              height: Adapt.px(20),
-            ),
+            SizedBox(height: Adapt.px(20)),
             Text(
               'Genres',
               style: TextStyle(
@@ -151,12 +121,56 @@ Widget buildView(
             Wrap(
               spacing: Adapt.px(10),
               children: state.isMovie
-                  ? state.movieGenres.map(_buildGernesCell).toList()
-                  : state.tvGenres.map(_buildGernesCell).toList(),
+                  ? state.movieGenres
+                      .map((e) => _GernesCell(
+                            data: e,
+                            dispatch: dispatch,
+                            viewService: viewService,
+                          ))
+                      .toList()
+                  : state.tvGenres
+                      .map((e) => _GernesCell(
+                            data: e,
+                            dispatch: dispatch,
+                            viewService: viewService,
+                          ))
+                      .toList(),
             )
           ],
         ),
       ),
     );
   });
+}
+
+class _GernesCell extends StatelessWidget {
+  final SortCondition data;
+  final Dispatch dispatch;
+  final ViewService viewService;
+  _GernesCell({this.data, this.dispatch, this.viewService});
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return ChoiceChip(
+      label: Text(data.name),
+      selected: data.isSelected,
+      selectedColor: Colors.transparent,
+      backgroundColor: Colors.transparent,
+      labelStyle: TextStyle(
+          color:
+              data.isSelected ? _theme.textTheme.bodyText1.color : Colors.grey),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Adapt.px(10)),
+          side: BorderSide(
+              color: data.isSelected
+                  ? _theme.textTheme.bodyText1.color
+                  : Colors.grey)),
+      onSelected: (s) {
+        data.isSelected = s;
+        //Navigator.pop(viewService.context);
+        dispatch(FilterActionCreator.onGenresChanged());
+        viewService.broadcast(DiscoverPageActionCreator.onRefreshData());
+      },
+    );
+  }
 }

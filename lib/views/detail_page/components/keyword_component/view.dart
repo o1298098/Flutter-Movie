@@ -1,9 +1,9 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/models/keyword.dart';
 import 'package:movie/style/themestyle.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'state.dart';
 
@@ -21,57 +21,78 @@ Widget buildView(
         );
       }
 
-      Widget _buildKeyWord() {
-        var _model = state.keyWords;
-        return SliverToBoxAdapter(
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
-                  child: Text(
-                    'KeyWords',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: Adapt.px(35)),
-                  ),
+      final _model = state.keyWords;
+      return SliverToBoxAdapter(
+        child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
+                child: Text(
+                  'KeyWords',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: Adapt.px(35)),
                 ),
-                SizedBox(height: Adapt.px(10)),
-                Container(
-                  padding: EdgeInsets.fromLTRB(
-                      Adapt.px(40), 0, Adapt.px(40), Adapt.px(30)),
-                  child: Wrap(
-                    spacing: Adapt.px(15),
-                    direction: Axis.horizontal,
-                    children: _model.length == 0
-                        ? <Widget>[
-                            ShimmerCell(
-                                Adapt.px(120), Adapt.px(60), Adapt.px(30),
-                                baseColor: _theme.primaryColorDark,
-                                highlightColor: _theme.primaryColorLight,
-                                margin: EdgeInsets.only(top: Adapt.px(20))),
-                            ShimmerCell(
-                                Adapt.px(180), Adapt.px(60), Adapt.px(30),
-                                baseColor: _theme.primaryColorDark,
-                                highlightColor: _theme.primaryColorLight,
-                                margin: EdgeInsets.only(top: Adapt.px(20))),
-                            ShimmerCell(
-                                Adapt.px(200), Adapt.px(60), Adapt.px(30),
-                                baseColor: _theme.primaryColorDark,
-                                highlightColor: _theme.primaryColorLight,
-                                margin: EdgeInsets.only(top: Adapt.px(20))),
-                          ]
-                        : state.keyWords.map(_buildKeyWordCell).toList(),
-                  ),
-                ),
-                SizedBox(height: Adapt.px(30)),
-              ],
-            ),
+              ),
+              SizedBox(height: Adapt.px(10)),
+              Container(
+                padding: EdgeInsets.fromLTRB(
+                    Adapt.px(40), 0, Adapt.px(40), Adapt.px(30)),
+                child: _model.length == 0
+                    ? _ShimmerCell()
+                    : Wrap(
+                        spacing: Adapt.px(15),
+                        direction: Axis.horizontal,
+                        children:
+                            state.keyWords.map(_buildKeyWordCell).toList(),
+                      ),
+              ),
+              SizedBox(height: Adapt.px(30)),
+            ],
           ),
-        );
-      }
-
-      return _buildKeyWord();
+        ),
+      );
     },
   );
+}
+
+class _ShimmerCell extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return Shimmer.fromColors(
+        baseColor: _theme.primaryColorDark,
+        highlightColor: _theme.primaryColorLight,
+        child: Wrap(
+          spacing: Adapt.px(15),
+          direction: Axis.horizontal,
+          children: <Widget>[
+            Container(
+              width: Adapt.px(120),
+              height: Adapt.px(60),
+              decoration: BoxDecoration(
+                color: const Color(0xFFEEEEEE),
+                borderRadius: BorderRadius.circular(Adapt.px(30)),
+              ),
+            ),
+            Container(
+              width: Adapt.px(180),
+              height: Adapt.px(60),
+              decoration: BoxDecoration(
+                color: const Color(0xFFEEEEEE),
+                borderRadius: BorderRadius.circular(Adapt.px(30)),
+              ),
+            ),
+            Container(
+              width: Adapt.px(200),
+              height: Adapt.px(60),
+              decoration: BoxDecoration(
+                color: const Color(0xFFEEEEEE),
+                borderRadius: BorderRadius.circular(Adapt.px(30)),
+              ),
+            ),
+          ],
+        ));
+  }
 }

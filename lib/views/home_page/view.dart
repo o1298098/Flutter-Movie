@@ -26,7 +26,6 @@ Widget buildView(
               onTap: () => dispatch(HomePageActionCreator.onSearchBarTapped()),
             ),
           ),
-          //backgroundColor: Colors.white,
           body: BackDrop(
             height: Adapt.px(520),
             backChild: viewService.buildComponent('header'),

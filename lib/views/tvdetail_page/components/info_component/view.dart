@@ -7,6 +7,7 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
+import 'package:movie/models/externalidsmodel.dart';
 import 'package:movie/models/tvdetail.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/tvdetail_page/components/info_component/action.dart';
@@ -16,8 +17,31 @@ import 'dart:ui' as ui;
 import 'state.dart';
 
 Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
-  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
-  Widget _buildInfoCell(String title, String value) {
+  return SliverToBoxAdapter(
+      child: Container(
+    padding: EdgeInsets.only(
+        left: Adapt.px(30), right: Adapt.px(30), bottom: Adapt.px(70)),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        _Externals(
+          dispatch: dispatch,
+          homePage: state.tvDetailModel.homepage,
+          externalIds: state.tvDetailModel?.externalIds,
+        ),
+        _Facts(tvDetailModel: state.tvDetailModel),
+      ],
+    ),
+  ));
+}
+
+class _InfoCell extends StatelessWidget {
+  final String title;
+  final String value;
+  const _InfoCell({this.title, this.value});
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
     return Container(
       width: Adapt.px(300),
       child: Column(
@@ -47,8 +71,17 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
       ),
     );
   }
+}
 
-  Widget _buildExternalCell(String icon, String url, String id) {
+class _ExternalCell extends StatelessWidget {
+  final String icon;
+  final String url;
+  final String id;
+  final Dispatch dispatch;
+  const _ExternalCell({this.icon, this.id, this.url, this.dispatch});
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
     return id != null
         ? InkWell(
             borderRadius: BorderRadius.circular(Adapt.px(30)),
@@ -62,35 +95,53 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
               ),
             ),
           )
-        : Container();
+        : SizedBox();
   }
+}
 
-  Widget _buildGenderCell(Genre g) {
+class _GenderCell extends StatelessWidget {
+  final Genre g;
+  const _GenderCell({this.g});
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
     return Chip(
       elevation: 3.0,
       backgroundColor: _theme.cardColor,
       label: Text(g.name),
     );
   }
+}
 
-  Widget _buildNetworkCell(NetWork d) {
+class _NetworkCell extends StatelessWidget {
+  final NetWork data;
+  const _NetworkCell({this.data});
+  @override
+  Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(bottom: Adapt.px(10)),
       width: Adapt.px(120),
       height: Adapt.px(60),
       decoration: BoxDecoration(
-          image: DecorationImage(
-              fit: BoxFit.scaleDown,
-              image: CachedNetworkImageProvider(d.logoPath == null
-                  ? ImageUrl.emptyimage
-                  : ImageUrl.getUrl(d.logoPath, ImageSize.w300)))),
+        image: DecorationImage(
+          fit: BoxFit.scaleDown,
+          image: CachedNetworkImageProvider(
+            data.logoPath == null
+                ? ImageUrl.emptyimage
+                : ImageUrl.getUrl(data.logoPath, ImageSize.w300),
+          ),
+        ),
+      ),
     );
   }
+}
 
-  Widget _buildCertification() {
-    var q = state?.tvDetailModel?.contentRatings?.results
-        ?.where((d) => d.iso31661 == ui.window.locale.countryCode)
-        ?.toList();
+class _Certification extends StatelessWidget {
+  final List<ContentRatingResult> q;
+  const _Certification({this.q});
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
     ContentRatingResult d;
     if (q != null && q.length > 0) d = q.first;
     if (d != null)
@@ -100,11 +151,13 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
             width: Adapt.px(60),
             height: Adapt.px(40),
             decoration: BoxDecoration(
-                image: DecorationImage(
-                    alignment: Alignment.topLeft,
-                    fit: BoxFit.cover,
-                    image: CachedNetworkImageProvider(
-                        'http://www.geonames.org/flags/x/${ui.window.locale.countryCode.toLowerCase()}.gif'))),
+              image: DecorationImage(
+                alignment: Alignment.topLeft,
+                fit: BoxFit.cover,
+                image: CachedNetworkImageProvider(
+                    'http://www.geonames.org/flags/x/${ui.window.locale.countryCode.toLowerCase()}.gif'),
+              ),
+            ),
           ),
           SizedBox(
             width: Adapt.px(20),
@@ -129,27 +182,41 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
         highlightColor: _theme.primaryColorLight,
       );
   }
+}
 
-  Widget _getExternal() {
-    var d = state.tvDetailModel.externalIds;
+class _Externals extends StatelessWidget {
+  final ExternalIdsModel externalIds;
+  final Dispatch dispatch;
+  final String homePage;
+  const _Externals({this.dispatch, this.externalIds, this.homePage});
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    final d = externalIds;
     if (d != null)
       return Row(
         children: <Widget>[
-          _buildExternalCell('images/facebook_circle.png',
-              'https://www.facebook.com/', d.facebookId),
-          SizedBox(
-            width: Adapt.px(10),
+          _ExternalCell(
+            icon: 'images/facebook_circle.png',
+            url: 'https://www.facebook.com/',
+            id: d.facebookId,
+            dispatch: dispatch,
           ),
-          _buildExternalCell(
-              'images/twitter_circle.png', 'https://twitter.com/', d.twitterId),
-          SizedBox(
-            width: Adapt.px(10),
+          SizedBox(width: Adapt.px(10)),
+          _ExternalCell(
+            icon: 'images/twitter_circle.png',
+            url: 'https://twitter.com/',
+            id: d.twitterId,
+            dispatch: dispatch,
           ),
-          _buildExternalCell('images/instagram_circle.png',
-              'https://www.instagram.com/', d.instagramId),
-          SizedBox(
-            width: Adapt.px(20),
+          SizedBox(width: Adapt.px(10)),
+          _ExternalCell(
+            icon: 'images/instagram_circle.png',
+            url: 'https://www.instagram.com/',
+            id: d.instagramId,
+            dispatch: dispatch,
           ),
+          SizedBox(width: Adapt.px(20)),
           d.facebookId == null && d.twitterId == null && d.instagramId == null
               ? Container()
               : Container(
@@ -157,14 +224,12 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
                   height: Adapt.px(50),
                   color: Colors.grey,
                 ),
-          SizedBox(
-            width: Adapt.px(20),
-          ),
-          state.tvDetailModel.homepage != null
+          SizedBox(width: Adapt.px(20)),
+          homePage != null
               ? InkWell(
                   borderRadius: BorderRadius.circular(Adapt.px(30)),
-                  onTap: () => dispatch(InfoActionCreator.onExternalTapped(
-                      state.tvDetailModel.homepage)),
+                  onTap: () =>
+                      dispatch(InfoActionCreator.onExternalTapped(homePage)),
                   child: Container(
                     width: Adapt.px(40),
                     height: Adapt.px(40),
@@ -172,7 +237,8 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
                       'images/link_bold.png',
                       color: _theme.iconTheme.color,
                     ),
-                  ))
+                  ),
+                )
               : SizedBox(),
         ],
       );
@@ -208,38 +274,41 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
           )
         ],
       );
+    ;
   }
+}
 
-  Widget _getFacts() {
+class _Facts extends StatelessWidget {
+  final TVDetailModel tvDetailModel;
+  const _Facts({this.tvDetailModel});
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          SizedBox(
-            height: Adapt.px(30),
-          ),
+          SizedBox(height: Adapt.px(30)),
           Text(
-            I18n.of(viewService.context).facts,
+            I18n.of(context).facts,
             style:
                 TextStyle(fontSize: Adapt.px(40), fontWeight: FontWeight.bold),
           ),
-          SizedBox(
-            height: Adapt.px(10),
-          ),
+          SizedBox(height: Adapt.px(10)),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                I18n.of(viewService.context).network,
+                I18n.of(context).network,
                 style: TextStyle(
                     fontSize: Adapt.px(30), fontWeight: FontWeight.bold),
               ),
               SizedBox(height: Adapt.px(10)),
               Wrap(
                 spacing: Adapt.px(40),
-                children: state.tvDetailModel?.networks != null
-                    ? state.tvDetailModel.networks
-                        .map(_buildNetworkCell)
+                children: tvDetailModel?.networks != null
+                    ? tvDetailModel.networks
+                        .map((d) => _NetworkCell(data: d))
                         .toList()
                     : <Widget>[
                         ShimmerCell(
@@ -269,50 +338,50 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
                     fontSize: Adapt.px(30), fontWeight: FontWeight.bold),
               ),
               SizedBox(height: Adapt.px(10)),
-              _buildCertification()
+              _Certification(
+                  q: tvDetailModel?.contentRatings?.results
+                      ?.where((d) => d.iso31661 == ui.window.locale.countryCode)
+                      ?.toList())
             ],
           ),
-          SizedBox(
-            height: Adapt.px(10),
-          ),
+          SizedBox(height: Adapt.px(10)),
           Row(
             children: <Widget>[
-              _buildInfoCell(I18n.of(viewService.context).status,
-                  state.tvDetailModel?.status),
-              _buildInfoCell(
-                  I18n.of(viewService.context).type, state.tvDetailModel?.type),
+              _InfoCell(
+                  title: I18n.of(context).status, value: tvDetailModel?.status),
+              _InfoCell(
+                  title: I18n.of(context).type, value: tvDetailModel?.type),
             ],
           ),
-          SizedBox(
-            height: Adapt.px(10),
-          ),
+          SizedBox(height: Adapt.px(10)),
           Row(
             children: <Widget>[
-              _buildInfoCell(I18n.of(viewService.context).originalLanguage,
-                  state.tvDetailModel?.originalLanguage),
-              _buildInfoCell(
-                  I18n.of(viewService.context).runtime,
-                  state.tvDetailModel.episodeRunTime == null ||
-                          state.tvDetailModel.episodeRunTime?.length == 0
+              _InfoCell(
+                  title: I18n.of(context).originalLanguage,
+                  value: tvDetailModel?.originalLanguage),
+              _InfoCell(
+                  title: I18n.of(context).runtime,
+                  value: tvDetailModel.episodeRunTime == null ||
+                          tvDetailModel.episodeRunTime?.length == 0
                       ? 'none'
-                      : state.tvDetailModel.episodeRunTime[0].toString() + 'M'),
+                      : tvDetailModel.episodeRunTime[0].toString() + 'M'),
             ],
           ),
-          SizedBox(
-            height: Adapt.px(10),
-          ),
+          SizedBox(height: Adapt.px(10)),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                I18n.of(viewService.context).genders,
+                I18n.of(context).genders,
                 style: TextStyle(
                     fontSize: Adapt.px(30), fontWeight: FontWeight.bold),
               ),
               Wrap(
                 spacing: Adapt.px(20),
-                children: state.tvDetailModel?.genres != null
-                    ? state.tvDetailModel.genres.map(_buildGenderCell).toList()
+                children: tvDetailModel?.genres != null
+                    ? tvDetailModel.genres
+                        .map((d) => _GenderCell(g: d))
+                        .toList()
                     : <Widget>[
                         ShimmerCell(
                           Adapt.px(100),
@@ -343,17 +412,4 @@ Widget buildView(InfoState state, Dispatch dispatch, ViewService viewService) {
       ),
     );
   }
-
-  return SliverToBoxAdapter(
-      child: Container(
-    padding: EdgeInsets.only(
-        left: Adapt.px(30), right: Adapt.px(30), bottom: Adapt.px(70)),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        _getExternal(),
-        _getFacts(),
-      ],
-    ),
-  ));
 }

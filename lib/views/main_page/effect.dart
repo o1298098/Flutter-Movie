@@ -5,7 +5,7 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fish_redux/fish_redux.dart';
-import 'package:flutter/material.dart' hide Action;
+import 'package:flutter/material.dart' hide Action, Page;
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/actions/downloader_callback.dart';
@@ -24,7 +24,6 @@ import 'state.dart';
 Effect<MainPageState> buildEffect() {
   return combineEffects(<Object, Effect<MainPageState>>{
     MainPageAction.action: _onAction,
-    MainPageAction.openDrawer: _onOpenDrawer,
     Lifecycle.initState: _onInit,
     Lifecycle.dispose: _onDispose,
   });
@@ -80,10 +79,6 @@ Future _push(Map<String, dynamic> message, Context<MainPageState> ctx) async {
   }
 }
 
-void _onOpenDrawer(Action action, Context<MainPageState> ctx) {
-  ctx.state.scaffoldKey.currentState.openEndDrawer();
-}
-
 Future _checkAppUpdate(Context<MainPageState> ctx) async {
   if (!Platform.isAndroid) return;
 
@@ -95,8 +90,8 @@ Future _checkAppUpdate(Context<MainPageState> ctx) async {
   final _result = await _github.checkUpdate();
   if (_result != null) {
     if (_ignoreVersion == _result.tagName) return;
-    final _shouldUpdate = VersionComparison()
-        .compare(_packageInfo.version, _result.tagName);
+    final _shouldUpdate =
+        VersionComparison().compare(_packageInfo.version, _result.tagName);
     final _apk = _result.assets.singleWhere(
         (e) => e.contentType == 'application/vnd.android.package-archive');
 

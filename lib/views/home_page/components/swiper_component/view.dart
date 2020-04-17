@@ -16,51 +16,14 @@ import 'state.dart';
 
 Widget buildView(
     SwiperState state, Dispatch dispatch, ViewService viewService) {
-  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
-  Widget _buildSwiper() {
-    var _model = state.showHeaderMovie ? state.movie : state.tv;
-    Widget _child = _model.results.length > 0
-        ? Swiper(
-            key: ValueKey(_model),
-            autoplay: true,
-            duration: 1000,
-            autoplayDelay: 10000,
-            viewportFraction: 0.9999,
-            itemCount: _model.results.length,
-            itemBuilder: (ctx, index) {
-              var d = _model.results[index];
-              return _Cell(
-                data: d,
-                onTap: () => dispatch(HomePageActionCreator.onCellTapped(
-                    d.id,
-                    d.backdropPath,
-                    d.title ?? d.name,
-                    d.posterPath,
-                    state.showHeaderMovie ? MediaType.movie : MediaType.tv)),
-              );
-            },
-          )
-        : Container(
-            margin: EdgeInsets.only(bottom: Adapt.px(55)),
-            child: ShimmerCell(
-              Adapt.screenW() - Adapt.px(60),
-              Adapt.px(170),
-              0,
-              baseColor: _theme.primaryColorDark,
-              highlightColor: _theme.primaryColorLight,
-            ),
-          );
-    return Container(
-      height: Adapt.px(225),
-      child: AnimatedSwitcher(
-          duration: Duration(milliseconds: 600),
-          switchInCurve: Curves.easeIn,
-          switchOutCurve: Curves.easeOut,
-          child: _child),
-    );
-  }
-
-  return _buildSwiper();
+  return SizedBox(
+    height: Adapt.px(225),
+    child: _Swiper(
+      model: state.showHeaderMovie ? state.movie : state.tv,
+      showMovie: state.showHeaderMovie,
+      dispatch: dispatch,
+    ),
+  );
 }
 
 class _Cell extends StatelessWidget {
@@ -175,6 +138,60 @@ class _Cell extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class _ShimmerCell extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return Container(
+      margin: EdgeInsets.only(bottom: Adapt.px(55)),
+      child: ShimmerCell(
+        Adapt.screenW() - Adapt.px(60),
+        Adapt.px(170),
+        0,
+        baseColor: _theme.primaryColorDark,
+        highlightColor: _theme.primaryColorLight,
+      ),
+    );
+  }
+}
+
+class _Swiper extends StatelessWidget {
+  final VideoListModel model;
+  final bool showMovie;
+  final Dispatch dispatch;
+  const _Swiper({this.model, this.showMovie, this.dispatch});
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSwitcher(
+      duration: Duration(milliseconds: 600),
+      switchInCurve: Curves.easeIn,
+      switchOutCurve: Curves.easeOut,
+      child: model.results.length > 0
+          ? Swiper(
+              key: ValueKey(model),
+              autoplay: true,
+              duration: 1000,
+              autoplayDelay: 10000,
+              viewportFraction: 0.9999,
+              itemCount: model.results.length,
+              itemBuilder: (ctx, index) {
+                var d = model.results[index];
+                return _Cell(
+                  data: d,
+                  onTap: () => dispatch(HomePageActionCreator.onCellTapped(
+                      d.id,
+                      d.backdropPath,
+                      d.title ?? d.name,
+                      d.posterPath,
+                      showMovie ? MediaType.movie : MediaType.tv)),
+                );
+              },
+            )
+          : _ShimmerCell(),
     );
   }
 }

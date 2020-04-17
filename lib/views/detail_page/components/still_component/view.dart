@@ -12,57 +12,35 @@ import 'package:shimmer/shimmer.dart';
 import 'state.dart';
 
 Widget buildView(StillState state, Dispatch dispatch, ViewService viewService) {
-  Widget _buildStill() {
-    return SliverToBoxAdapter(
-      child: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              height: Adapt.px(30),
+  return SliverToBoxAdapter(
+    child: Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(height: Adapt.px(30)),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
+            child: Text(
+              'Stills',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: Adapt.px(35)),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
-              child: Text(
-                'Stills',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: Adapt.px(35)),
-              ),
-            ),
-            SizedBox(
-              height: Adapt.px(30),
-            ),
-            Container(
-              height: Adapt.px(180),
-              child: state.imagesmodel.backdrops.length == 0
-                  ? _ShimmerList()
-                  : ListView.separated(
-                      padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
-                      scrollDirection: Axis.horizontal,
-                      separatorBuilder: (_, __) =>
-                          SizedBox(width: Adapt.px(30)),
-                      itemCount: state.imagesmodel.backdrops.length,
-                      itemBuilder: (_, index) {
-                        final d = state.imagesmodel.backdrops[index];
-                        return _ImageCell(
-                          data: d,
-                          index: index,
-                          onTap: () => dispatch(
-                              MovieDetailPageActionCreator.stillImageTapped(
-                                  index)),
-                        );
-                      }),
-            ),
-            SizedBox(
-              height: Adapt.px(50),
-            ),
-          ],
-        ),
+          ),
+          SizedBox(height: Adapt.px(30)),
+          Container(
+            height: Adapt.px(180),
+            child: state.imagesmodel.backdrops.length == 0
+                ? _ShimmerList()
+                : _StillList(
+                    backdrops: state.imagesmodel.backdrops,
+                    dispatch: dispatch,
+                  ),
+          ),
+          SizedBox(height: Adapt.px(50)),
+        ],
       ),
-    );
-  }
-
-  return _buildStill();
+    ),
+  );
 }
 
 class _ShimmerList extends StatelessWidget {
@@ -111,6 +89,30 @@ class _ImageCell extends StatelessWidget {
                 image: DecorationImage(
                     fit: BoxFit.cover, image: CachedNetworkImageProvider(url))),
           )),
+    );
+  }
+}
+
+class _StillList extends StatelessWidget {
+  final List<ImageData> backdrops;
+  final Dispatch dispatch;
+  const _StillList({this.backdrops, this.dispatch});
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
+      scrollDirection: Axis.horizontal,
+      separatorBuilder: (_, __) => SizedBox(width: Adapt.px(30)),
+      itemCount: backdrops.length,
+      itemBuilder: (_, index) {
+        final d = backdrops[index];
+        return _ImageCell(
+          data: d,
+          index: index,
+          onTap: () =>
+              dispatch(MovieDetailPageActionCreator.stillImageTapped(index)),
+        );
+      },
     );
   }
 }

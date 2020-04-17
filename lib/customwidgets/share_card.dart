@@ -186,7 +186,7 @@ class ShareCardState extends State<ShareCard> {
                                   'DownLoad',
                                   style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: Adapt.px(30),
+                                      fontSize: Adapt.px(28),
                                       fontWeight: FontWeight.bold),
                                 )
                               ],
@@ -206,7 +206,7 @@ class ShareCardState extends State<ShareCard> {
                                   Text('Share',
                                       style: TextStyle(
                                           color: Colors.black,
-                                          fontSize: Adapt.px(30),
+                                          fontSize: Adapt.px(28),
                                           fontWeight: FontWeight.bold))
                                 ]),
                           )),

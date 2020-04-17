@@ -11,31 +11,31 @@ import 'state.dart';
 
 Widget buildView(
     CommentState state, Dispatch dispatch, ViewService viewService) {
-  Widget _buildCommentsList() {
-    return state.comments == null
-        ? SliverToBoxAdapter(
-            child: Container(
+  return state.comments == null
+      ? SliverToBoxAdapter(
+          child: Container(
+            height: Adapt.px(300),
+            child: Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(Color(0xFF505050)),
+              ),
+            ),
+          ),
+        )
+      : state.comments.data.length > 0
+          ? SliverList(
+              delegate: SliverChildListDelegate(state.comments.data
+                  .map((e) => _CommentCell(data: e))
+                  .toList()),
+            )
+          : SliverToBoxAdapter(
+              child: Container(
                 height: Adapt.px(300),
                 child: Center(
-                    child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation(Color(0xFF505050)),
-                ))),
-          )
-        : state.comments.data.length > 0
-            ? SliverList(
-                delegate: SliverChildListDelegate(state.comments.data
-                    .map((e) => _CommentCell(data: e))
-                    .toList()),
-              )
-            : SliverToBoxAdapter(
-                child: Container(
-                    height: Adapt.px(300),
-                    child: Center(
-                      child: Image.asset('images/empty_comment.png'),
-                    )));
-  }
-
-  return _buildCommentsList();
+                  child: Image.asset('images/empty_comment.png'),
+                ),
+              ),
+            );
 }
 
 class _CommentCell extends StatelessWidget {

@@ -8,9 +8,26 @@ import 'state.dart';
 
 Widget buildView(
     EpisodeListState state, Dispatch dispatch, ViewService viewService) {
-  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
   final _adapter = viewService.buildAdapter();
-  Widget _buildShimmerCell() {
+
+  return state.episodes != null
+      ? MediaQuery.removePadding(
+          context: viewService.context,
+          removeTop: true,
+          child: ListView.separated(
+            padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+            itemCount: _adapter.itemCount,
+            separatorBuilder: (_, __) => SizedBox(
+              height: Adapt.px(14),
+            ),
+            itemBuilder: _adapter.itemBuilder,
+          ))
+      : _ShimmerTabview();
+}
+
+class _ShimmerCell extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     final _color = Colors.grey[300];
     final _rightWdith = Adapt.screenW() - Adapt.px(300);
     return Row(
@@ -46,8 +63,12 @@ Widget buildView(
       ],
     );
   }
+}
 
-  Widget _buildShimmerTabview() {
+class _ShimmerTabview extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
     return Shimmer.fromColors(
       baseColor: _theme.primaryColorDark,
       highlightColor: _theme.primaryColorLight,
@@ -55,33 +76,15 @@ Widget buildView(
           padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
           child: Column(
             children: <Widget>[
-              _buildShimmerCell(),
+              _ShimmerCell(),
               SizedBox(height: Adapt.px(30)),
-              _buildShimmerCell(),
+              _ShimmerCell(),
               SizedBox(height: Adapt.px(30)),
-              _buildShimmerCell(),
+              _ShimmerCell(),
               SizedBox(height: Adapt.px(30)),
-              _buildShimmerCell()
+              _ShimmerCell()
             ],
           )),
     );
   }
-
-  Widget _buildEpisodeList() {
-    return state.episodes != null
-        ? MediaQuery.removePadding(
-            context: viewService.context,
-            removeTop: true,
-            child: ListView.separated(
-              padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-              itemCount: _adapter.itemCount,
-              separatorBuilder: (_, __) => SizedBox(
-                height: Adapt.px(14),
-              ),
-              itemBuilder: _adapter.itemBuilder,
-            ))
-        : _buildShimmerTabview();
-  }
-
-  return _buildEpisodeList();
 }

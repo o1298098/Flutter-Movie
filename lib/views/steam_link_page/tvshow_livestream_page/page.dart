@@ -1,5 +1,9 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/views/steam_link_page/tvshow_livestream_page/components/cast_component/state.dart';
+import 'package:movie/views/steam_link_page/tvshow_livestream_page/components/player_componet/component.dart';
+import 'package:movie/views/steam_link_page/tvshow_livestream_page/components/player_componet/state.dart';
+import 'package:movie/views/steam_link_page/tvshow_livestream_page/components/stream_link_component/component.dart';
+import 'package:movie/views/steam_link_page/tvshow_livestream_page/components/stream_link_component/state.dart';
 
 import 'components/cast_component/component.dart';
 import 'components/comment_component/component.dart';
@@ -23,6 +27,8 @@ class TvShowLiveStreamPage
               slots: <String, Dependent<TvShowLiveStreamPageState>>{
                 'commentComponent': CommentConnector() + CommentComponent(),
                 'castComponent': CastConnector() + CastComponent(),
+                'player': TvPlayerConnector() + TvPlayerComponent(),
+                'streamLink': StreamLinkConnector() + StreamLinkComponent()
               }),
           middleware: <Middleware<TvShowLiveStreamPageState>>[],
         );

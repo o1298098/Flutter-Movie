@@ -1,8 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/customwidgets/shimmercell.dart';
 import 'package:movie/style/themestyle.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -13,35 +13,6 @@ Widget buildView(
 
   return Builder(builder: (context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
-    Widget _buildListShimmerCell() {
-      return Container(
-        margin: EdgeInsets.only(
-            top: Adapt.px(20), left: Adapt.px(20), right: Adapt.px(20)),
-        child: ShimmerCell(
-          Adapt.screenW(),
-          Adapt.px(400),
-          Adapt.px(30),
-          baseColor: _theme.primaryColorDark,
-          highlightColor: _theme.primaryColorLight,
-        ),
-      );
-    }
-
-    Widget _buildList() {
-      return state.listData == null
-          ? SliverToBoxAdapter(
-              child: Column(children: <Widget>[
-              _buildListShimmerCell(),
-              _buildListShimmerCell(),
-              _buildListShimmerCell()
-            ]))
-          : SliverList(
-              delegate:
-                  SliverChildBuilderDelegate((BuildContext ctx, int index) {
-                return _adapter.itemBuilder(ctx, index);
-              }, childCount: _adapter.itemCount),
-            );
-    }
 
     return Scaffold(
         appBar: AppBar(
@@ -84,8 +55,46 @@ Widget buildView(
           controller: state.scrollController,
           slivers: <Widget>[
             viewService.buildComponent('addCell'),
-            _buildList(),
+            state.listData == null
+                ? _ShimmerList()
+                : SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                        (BuildContext ctx, int index) {
+                      return _adapter.itemBuilder(ctx, index);
+                    }, childCount: _adapter.itemCount),
+                  ),
           ],
         ));
   });
+}
+
+class _ListShimmerCell extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(
+          top: Adapt.px(20), left: Adapt.px(20), right: Adapt.px(20)),
+      width: Adapt.screenW(),
+      height: Adapt.px(400),
+      decoration: BoxDecoration(
+          color: const Color(0xFFEEEEEE),
+          borderRadius: BorderRadius.circular(Adapt.px(30))),
+    );
+  }
+}
+
+class _ShimmerList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return SliverToBoxAdapter(
+        child: Shimmer.fromColors(
+            baseColor: _theme.primaryColorDark,
+            highlightColor: _theme.primaryColorLight,
+            child: Column(children: <Widget>[
+              _ListShimmerCell(),
+              _ListShimmerCell(),
+              _ListShimmerCell()
+            ])));
+  }
 }

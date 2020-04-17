@@ -12,71 +12,6 @@ import 'state.dart';
 Widget buildView(
     PlayerState state, Dispatch dispatch, ViewService viewService) {
   final double _height = Adapt.screenW() * 9 / 16;
-
-  Widget _getPlayer() {
-    String key = state.streamLinkTypeName ?? '';
-    switch (key) {
-      case 'YouTube':
-        return youtube.YoutubePlayer(
-          controller: state.youtubePlayerController,
-          topActions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.chevron_left,
-                color: Colors.white,
-                size: Adapt.px(80),
-              ),
-              onPressed: () => Navigator.of(viewService.context).pop(),
-            )
-          ],
-          progressIndicatorColor: Colors.red,
-          progressColors: youtube.ProgressBarColors(
-            playedColor: Colors.amber,
-            handleColor: Colors.amberAccent,
-          ),
-        );
-      case 'WebView':
-        return AspectRatio(
-          aspectRatio: 16 / 9,
-          child: InAppWebView(
-              key: ValueKey(state.streamAddress),
-              initialUrl: state.streamAddress,
-              initialHeaders: {},
-              initialOptions: InAppWebViewWidgetOptions(
-                  crossPlatform: InAppWebViewOptions(
-                debuggingEnabled: true,
-              ))),
-        );
-      case 'other':
-        return Container(
-          color: Colors.black,
-          alignment: Alignment.bottomCenter,
-          height: _height,
-          child: state.chewieController != null
-              ? Chewie(
-                  key: ValueKey(state.chewieController),
-                  controller: state.chewieController)
-              : SizedBox(
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation(Colors.white),
-                    ),
-                  ),
-                ),
-        );
-      case 'Torrent':
-        return WebTorrentPlayer(
-          key: ValueKey(state.streamAddress),
-          url: state.streamAddress,
-        );
-      default:
-        return Container(
-          height: _height,
-          color: Colors.black,
-        );
-    }
-  }
-
   return SliverPersistentHeader(
     pinned: true,
     delegate: SliverAppBarDelegate(
@@ -90,9 +25,90 @@ Widget buildView(
                 color: Colors.black,
                 height: Adapt.padTopH(),
               ),
-              _getPlayer()
+              _Player(
+                streamAddress: state.streamAddress,
+                streamLinkTypeName: state.streamLinkTypeName,
+                youtubePlayerController: state.youtubePlayerController,
+                chewieController: state.chewieController,
+              )
             ],
           ),
         )),
   );
+}
+
+class _Player extends StatelessWidget {
+  final String streamLinkTypeName;
+  final String streamAddress;
+  final ChewieController chewieController;
+  final youtube.YoutubePlayerController youtubePlayerController;
+  const _Player(
+      {this.chewieController,
+      this.streamAddress,
+      this.streamLinkTypeName,
+      this.youtubePlayerController});
+  @override
+  Widget build(BuildContext context) {
+    final double _height = Adapt.screenW() * 9 / 16;
+    String key = streamLinkTypeName ?? '';
+    switch (key) {
+      case 'YouTube':
+        return youtube.YoutubePlayer(
+          controller: youtubePlayerController,
+          topActions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.chevron_left,
+                color: Colors.white,
+                size: Adapt.px(80),
+              ),
+              onPressed: () => Navigator.of(context).pop(),
+            )
+          ],
+          progressIndicatorColor: Colors.red,
+          progressColors: youtube.ProgressBarColors(
+            playedColor: Colors.amber,
+            handleColor: Colors.amberAccent,
+          ),
+        );
+      case 'WebView':
+        return AspectRatio(
+          aspectRatio: 16 / 9,
+          child: InAppWebView(
+              key: ValueKey(streamAddress),
+              initialUrl: streamAddress,
+              initialHeaders: {},
+              initialOptions: InAppWebViewWidgetOptions(
+                  crossPlatform: InAppWebViewOptions(
+                debuggingEnabled: true,
+              ))),
+        );
+      case 'other':
+        return Container(
+          color: Colors.black,
+          alignment: Alignment.bottomCenter,
+          height: _height,
+          child: chewieController != null
+              ? Chewie(
+                  key: ValueKey(chewieController), controller: chewieController)
+              : SizedBox(
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation(Colors.white),
+                    ),
+                  ),
+                ),
+        );
+      case 'Torrent':
+        return WebTorrentPlayer(
+          key: ValueKey(streamAddress),
+          url: streamAddress,
+        );
+      default:
+        return Container(
+          height: _height,
+          color: Colors.black,
+        );
+    }
+  }
 }

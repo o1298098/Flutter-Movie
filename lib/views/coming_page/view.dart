@@ -1,11 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:movie/actions/adapt.dart';
-import 'package:movie/generated/i18n.dart';
 import 'package:movie/style/themestyle.dart';
 
-import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
@@ -17,30 +13,7 @@ Widget buildView(
       child: Scaffold(
           appBar: AppBar(
             brightness: _theme.brightness,
-            title: Container(
-                child: TabBar(
-              onTap: (i) {
-                if (i == 0)
-                  dispatch(ComingPageActionCreator.onFilterChanged(true));
-                else
-                  dispatch(ComingPageActionCreator.onFilterChanged(false));
-              },
-              indicatorSize: TabBarIndicatorSize.label,
-              indicatorColor: _theme.tabBarTheme.labelColor,
-              labelColor: _theme.tabBarTheme.labelColor,
-              unselectedLabelColor: _theme.tabBarTheme.unselectedLabelColor,
-              labelStyle: TextStyle(
-                  fontSize: Adapt.px(35), fontWeight: FontWeight.bold),
-              unselectedLabelStyle: TextStyle(color: Colors.grey),
-              tabs: <Widget>[
-                Tab(
-                  text: I18n.of(viewService.context).movies,
-                ),
-                Tab(
-                  text: I18n.of(viewService.context).tvShows,
-                )
-              ],
-            )),
+            title: viewService.buildComponent('tab'),
             backgroundColor: _theme.backgroundColor,
             elevation: 0.0,
           ),

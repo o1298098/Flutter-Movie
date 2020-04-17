@@ -52,154 +52,45 @@ Widget buildView(
         });
   }
 
-  Widget _buildnamecell() {
-    if (state.profileName == null)
-      return SizedBox(
-          child: Shimmer.fromColors(
-        baseColor: _theme.primaryColorDark,
-        highlightColor: _theme.primaryColorLight,
-        child: Container(
-          height: Adapt.px(50),
-          width: Adapt.px(300),
-          color: Colors.grey[200],
-        ),
-      ));
-    else
-      return Hero(
-        tag: 'Actor' + state.peopleid.toString(),
-        child: Material(
-          color: Colors.transparent,
-          child: Text(
-            state.profileName ?? '',
-            style:
-                TextStyle(fontSize: Adapt.px(50), fontWeight: FontWeight.w700),
-          ),
-        ),
-      );
-  }
-
-  Widget _buildBiography() {
-    if (state.biography == null)
-      return SizedBox(
-          child: Shimmer.fromColors(
-        baseColor: _theme.primaryColorDark,
-        highlightColor: _theme.primaryColorLight,
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(left: Adapt.px(60)),
-                color: Colors.grey[200],
-                height: Adapt.px(30),
-              ),
-              SizedBox(
-                height: Adapt.px(10),
-              ),
-              Container(
-                color: Colors.grey[200],
-                height: Adapt.px(30),
-              ),
-              SizedBox(
-                height: Adapt.px(10),
-              ),
-              Container(
-                color: Colors.grey[200],
-                height: Adapt.px(30),
-              ),
-              SizedBox(
-                height: Adapt.px(10),
-              ),
-              Container(
-                color: Colors.grey[200],
-                height: Adapt.px(30),
-              ),
-              SizedBox(
-                height: Adapt.px(10),
-              ),
-              Container(
-                color: Colors.grey[200],
-                height: Adapt.px(30),
-              ),
-              SizedBox(
-                height: Adapt.px(10),
-              ),
-              Container(
-                color: Colors.grey[200],
-                height: Adapt.px(30),
-              ),
-            ],
-          ),
-        ),
-      ));
-    else
-      return Text(
-        state?.biography == null || state?.biography?.isEmpty == true
-            ? "We don't have a biography for ${state.profileName}"
-            : state.biography,
-        maxLines: 10,
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(fontSize: Adapt.px(30)),
-      );
-  }
-
-  Widget _buildYearsOld() {
-    if (state.birthday != null) {
-      var _now = state.deathday != null
-          ? DateTime.parse(state.deathday).year
-          : DateTime.now().year;
-      int yearold = _now - DateTime.parse(state.birthday).year;
-      return Text(
-        '$yearold years old',
-        style: TextStyle(color: Colors.grey[600], fontSize: Adapt.px(32)),
-      );
-    } else
-      return SizedBox(
-        height: Adapt.px(35),
-      );
-  }
-
   return Container(
       key: ValueKey('header'),
-      //padding: EdgeInsets.all(Adapt.px(30)),
       width: Adapt.screenW(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Hero(
-              tag: 'people${state.peopleid}',
-              child: Material(
-                child: Container(
-                  height: Adapt.px(900),
-                  decoration: BoxDecoration(
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                            blurRadius: 20,
-                            offset: Offset(0, 5),
-                            color: Colors.black38),
-                      ],
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(Adapt.px(50)),
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: CachedNetworkImageProvider(
-                            ImageUrl.getUrl(state.profilePath, ImageSize.w300)),
-                      )),
+            tag: 'people${state.peopleid}',
+            child: Material(
+              child: Container(
+                height: Adapt.px(900),
+                decoration: BoxDecoration(
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                        blurRadius: 20,
+                        offset: Offset(0, 5),
+                        color: Colors.black38),
+                  ],
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(Adapt.px(50)),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(
+                        ImageUrl.getUrl(state.profilePath, ImageSize.w300)),
+                  ),
                 ),
-              )),
-          SizedBox(
-            height: Adapt.px(50),
+              ),
+            ),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-            child: _buildnamecell(),
+          SizedBox(height: Adapt.px(50)),
+          _NameCell(
+            peopleid: state.peopleid,
+            profileName: state.profileName,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-            child: _buildYearsOld(),
+          _YearsOld(
+            birthday: state.birthday,
+            deathday: state.deathday,
           ),
-          SizedBox(
-            height: Adapt.px(50),
-          ),
+          SizedBox(height: Adapt.px(50)),
           Padding(
               padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
               child: Row(
@@ -222,16 +113,151 @@ Widget buildView(
                       ))
                 ],
               )),
-          SizedBox(
-            height: Adapt.px(30),
+          SizedBox(height: Adapt.px(30)),
+          _BiographyCell(
+            biography: state.biography,
+            profileName: state.profileName,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-            child: _buildBiography(),
-          ),
-          SizedBox(
-            height: Adapt.px(50),
-          )
+          SizedBox(height: Adapt.px(50))
         ],
       ));
+}
+
+class _NameCell extends StatelessWidget {
+  final String profileName;
+  final int peopleid;
+  const _NameCell({this.peopleid, this.profileName});
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+      child: profileName == null
+          ? SizedBox(
+              child: Shimmer.fromColors(
+                baseColor: _theme.primaryColorDark,
+                highlightColor: _theme.primaryColorLight,
+                child: Container(
+                  height: Adapt.px(50),
+                  width: Adapt.px(300),
+                  color: Colors.grey[200],
+                ),
+              ),
+            )
+          : Hero(
+              tag: 'Actor' + peopleid.toString(),
+              child: Material(
+                color: Colors.transparent,
+                child: Text(
+                  profileName ?? '',
+                  style: TextStyle(
+                      fontSize: Adapt.px(50), fontWeight: FontWeight.w700),
+                ),
+              ),
+            ),
+    );
+  }
+}
+
+class _BiographyShimmer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return Shimmer.fromColors(
+      baseColor: _theme.primaryColorDark,
+      highlightColor: _theme.primaryColorLight,
+      child: Container(
+        child: Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(left: Adapt.px(60)),
+              color: Colors.grey[200],
+              height: Adapt.px(30),
+            ),
+            SizedBox(
+              height: Adapt.px(10),
+            ),
+            Container(
+              color: Colors.grey[200],
+              height: Adapt.px(30),
+            ),
+            SizedBox(
+              height: Adapt.px(10),
+            ),
+            Container(
+              color: Colors.grey[200],
+              height: Adapt.px(30),
+            ),
+            SizedBox(
+              height: Adapt.px(10),
+            ),
+            Container(
+              color: Colors.grey[200],
+              height: Adapt.px(30),
+            ),
+            SizedBox(
+              height: Adapt.px(10),
+            ),
+            Container(
+              color: Colors.grey[200],
+              height: Adapt.px(30),
+            ),
+            SizedBox(
+              height: Adapt.px(10),
+            ),
+            Container(
+              color: Colors.grey[200],
+              height: Adapt.px(30),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _BiographyCell extends StatelessWidget {
+  final String biography;
+  final String profileName;
+  const _BiographyCell({this.biography, this.profileName});
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+        child: biography == null
+            ? _BiographyShimmer()
+            : Text(
+                biography == null || biography?.isEmpty == true
+                    ? "We don't have a biography for $profileName"
+                    : biography,
+                maxLines: 10,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: Adapt.px(30)),
+              ));
+  }
+}
+
+class _YearsOld extends StatelessWidget {
+  final String birthday;
+  final String deathday;
+  const _YearsOld({this.birthday, this.deathday});
+  @override
+  Widget build(BuildContext context) {
+    if (birthday != null) {
+      final _now = deathday != null
+          ? DateTime.parse(deathday).year
+          : DateTime.now().year;
+
+      int yearold = _now - DateTime.parse(birthday).year;
+      return Padding(
+          padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+          child: Text(
+            '$yearold years old',
+            style: TextStyle(color: Colors.grey[600], fontSize: Adapt.px(32)),
+          ));
+    } else
+      return SizedBox(
+        height: Adapt.px(35),
+      );
+  }
 }

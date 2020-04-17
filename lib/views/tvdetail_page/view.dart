@@ -10,7 +10,6 @@ import 'state.dart';
 Widget buildView(
     TVDetailPageState state, Dispatch dispatch, ViewService viewService) {
   final s = state.tvDetailModel;
-  //var dominantColor = state.palette?.dominantColor?.color ?? Colors.black38;
   final dominantColor = state.mainColor;
 
   return Builder(builder: (context) {

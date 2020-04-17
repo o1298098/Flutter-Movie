@@ -138,38 +138,12 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
         color: _theme.backgroundColor,
         borderRadius:
             BorderRadius.vertical(top: Radius.circular(Adapt.px(50)))),
-    //padding: EdgeInsets.only(top:Adapt.px(30)),
     child: ListView(
       physics: BouncingScrollPhysics(),
       children: <Widget>[
-        Container(
-          margin: EdgeInsets.all(Adapt.px(20)),
-          height: Adapt.px(100),
-          child: Row(
-            children: <Widget>[
-              Container(
-                height: Adapt.px(100),
-                width: Adapt.px(100),
-                decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(Adapt.px(50)),
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: CachedNetworkImageProvider(
-                            ImageUrl.getUrl(state.posterPic, ImageSize.w300)))),
-              ),
-              SizedBox(
-                width: Adapt.px(30),
-              ),
-              SizedBox(
-                  width: Adapt.screenW() - Adapt.px(170),
-                  child: Text(
-                    state.name,
-                    style: TextStyle(
-                        fontSize: Adapt.px(40), fontWeight: FontWeight.bold),
-                  )),
-            ],
-          ),
+        _MenuHeader(
+          poster: state.backdropPic,
+          title: state.name,
         ),
         Divider(height: 1),
         _buildListTitel(Icons.format_list_bulleted, 'Add to List', _addToList,
@@ -182,7 +156,6 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
             'Mark as Favorite', () {
           Navigator.of(viewService.context).pop();
           dispatch(MenuActionCreator.setFirebaseFavorite());
-          //dispatch(MenuActionCreator.setFavorite(!state.accountState.favorite));
         },
             iconColor: state.accountState.favorite
                 ? Colors.pink[400]
@@ -219,4 +192,46 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
       ],
     ),
   );
+}
+
+class _MenuHeader extends StatelessWidget {
+  final String poster;
+  final String title;
+  const _MenuHeader({this.poster, this.title});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(Adapt.px(20)),
+      height: Adapt.px(100),
+      child: Row(
+        children: <Widget>[
+          Container(
+            height: Adapt.px(100),
+            width: Adapt.px(100),
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(Adapt.px(50)),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: CachedNetworkImageProvider(
+                  ImageUrl.getUrl(poster, ImageSize.w300),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: Adapt.px(30),
+          ),
+          SizedBox(
+            width: Adapt.screenW() - Adapt.px(170),
+            child: Text(
+              title,
+              style: TextStyle(
+                  fontSize: Adapt.px(40), fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

@@ -12,14 +12,11 @@ Widget buildView(
     body: Stack(
       alignment: Alignment.topRight,
       children: <Widget>[
-        MediaQuery.removePadding(
-          context: viewService.context,
-          removeTop: true,
-          child: ListView.builder(
-            itemBuilder: adapter.itemBuilder,
-            itemCount: adapter.itemCount,
-            physics: state.pageScrollPhysics,
-          ),
+        ListView.builder(
+          padding: EdgeInsets.only(bottom: Adapt.px(50)),
+          itemBuilder: adapter.itemBuilder,
+          itemCount: adapter.itemCount,
+          physics: state.pageScrollPhysics,
         ),
         SafeArea(
           child: Container(

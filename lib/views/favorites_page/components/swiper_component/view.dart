@@ -15,67 +15,35 @@ import 'state.dart';
 
 Widget buildView(
     SwiperState state, Dispatch dispatch, ViewService viewService) {
-  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
-  Widget _buildListCell(UserMedia d) {
-    return Container(
-      key: ValueKey(d),
-      //margin: EdgeInsets.all(Adapt.px(20)),
-      width: Adapt.px(200),
-      decoration: BoxDecoration(
-          color: _theme.primaryColorDark,
-          borderRadius: BorderRadius.circular(Adapt.px(20)),
-          image: DecorationImage(
-              fit: BoxFit.cover,
-              image: CachedNetworkImageProvider(
-                  ImageUrl.getUrl(d.photoUrl, ImageSize.w500)))),
-    );
-  }
+  final UserMediaModel _d = state.isMovie ? state.movies : state.tvshows;
 
-  Widget _buildSwiper() {
-    var height = (Adapt.screenW() * 0.55 - Adapt.px(40)) * 1.7;
-    UserMediaModel d = state.isMovie ? state.movies : state.tvshows;
-    Widget bodychild = d?.data != null
-        ? Container(
-            key: ValueKey(d),
-            height: height,
-            child: Swiper(
-              loop: false,
-              scale: 0.65,
-              fade: 0.1,
-              viewportFraction: 0.55,
-              itemBuilder: (BuildContext context, int index) {
-                return _buildListCell(d.data[index]);
-              },
-              itemCount: d?.data?.length ?? 0,
-              onIndexChanged: (index) {
-                var r = d.data[index];
-                dispatch(SwiperActionCreator.setBackground(r));
-                state.animationController.forward(from: 0.0);
-              },
-            ),
-          )
-        : Container(
-            height: height,
-            child: Swiper(
-              loop: false,
-              scale: 0.65,
-              viewportFraction: 0.55,
-              itemBuilder: (BuildContext context, int index) {
-                return ShimmerCell(Adapt.px(300), height, Adapt.px(20));
-              },
-              itemCount: 3,
-            ));
-    return AnimatedSwitcher(
-        switchOutCurve: Curves.easeOut,
-        switchInCurve: Curves.easeIn,
-        duration: Duration(milliseconds: 300),
-        child: bodychild);
-  }
+  return Column(
+    children: <Widget>[
+      _SwitchTitle(
+        controller: state.animationController,
+        isMovie: state.isMovie,
+        onTabChanged: (b) => dispatch(SwiperActionCreator.mediaTpyeChanged(b)),
+      ),
+      SizedBox(height: Adapt.px(40)),
+      _Swiper(
+        data: _d?.data,
+        controller: state.animationController,
+        dispatch: dispatch,
+      )
+    ],
+  );
+}
 
-  Widget _buildSwitchTitle() {
-    TextStyle selectTextStyle =
+class _SwitchTitle extends StatelessWidget {
+  final Function(bool) onTabChanged;
+  final AnimationController controller;
+  final bool isMovie;
+  const _SwitchTitle({this.onTabChanged, this.controller, this.isMovie});
+  @override
+  Widget build(BuildContext context) {
+    final TextStyle selectTextStyle =
         TextStyle(fontSize: Adapt.px(30), fontWeight: FontWeight.bold);
-    TextStyle unSelectTextStyle = TextStyle(fontSize: Adapt.px(30));
+    final TextStyle unSelectTextStyle = TextStyle(fontSize: Adapt.px(30));
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
       child: Row(
@@ -84,12 +52,12 @@ Widget buildView(
         children: <Widget>[
           GestureDetector(
             onTap: () {
-              dispatch(SwiperActionCreator.mediaTpyeChanged(true));
-              state.animationController.forward(from: 0.0);
+              onTabChanged(true);
+              controller.forward(from: 0.0);
             },
             child: Text(
-              I18n.of(viewService.context).movies,
-              style: state.isMovie ? selectTextStyle : unSelectTextStyle,
+              I18n.of(context).movies,
+              style: isMovie ? selectTextStyle : unSelectTextStyle,
             ),
           ),
           SizedBox(
@@ -97,24 +65,85 @@ Widget buildView(
           ),
           GestureDetector(
             onTap: () {
-              dispatch(SwiperActionCreator.mediaTpyeChanged(false));
-              state.animationController.forward(from: 0.0);
+              onTabChanged(false);
+              controller.forward(from: 0.0);
             },
             child: Text(
-              I18n.of(viewService.context).tvShows,
-              style: state.isMovie ? unSelectTextStyle : selectTextStyle,
+              I18n.of(context).tvShows,
+              style: isMovie ? unSelectTextStyle : selectTextStyle,
             ),
           ),
         ],
       ),
     );
   }
+}
 
-  return Column(
-    children: <Widget>[
-      _buildSwitchTitle(),
-      SizedBox(height: Adapt.px(40)),
-      _buildSwiper(),
-    ],
-  );
+class _ListCell extends StatelessWidget {
+  final UserMedia data;
+  const _ListCell({this.data});
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return Container(
+      key: ValueKey(data),
+      width: Adapt.px(200),
+      decoration: BoxDecoration(
+        color: _theme.primaryColorDark,
+        borderRadius: BorderRadius.circular(Adapt.px(20)),
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: CachedNetworkImageProvider(
+            ImageUrl.getUrl(data.photoUrl, ImageSize.w500),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _Swiper extends StatelessWidget {
+  final List<UserMedia> data;
+  final AnimationController controller;
+  final Dispatch dispatch;
+  const _Swiper({this.data, this.controller, this.dispatch});
+  @override
+  Widget build(BuildContext context) {
+    final height = (Adapt.screenW() * 0.55 - Adapt.px(40)) * 1.7;
+    return AnimatedSwitcher(
+        switchOutCurve: Curves.easeOut,
+        switchInCurve: Curves.easeIn,
+        duration: Duration(milliseconds: 300),
+        child: data != null
+            ? Container(
+                key: ValueKey(data),
+                height: height,
+                child: Swiper(
+                  loop: false,
+                  scale: 0.65,
+                  fade: 0.1,
+                  viewportFraction: 0.55,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _ListCell(data: data[index]);
+                  },
+                  itemCount: data?.length ?? 0,
+                  onIndexChanged: (index) {
+                    var r = data[index];
+                    dispatch(SwiperActionCreator.setBackground(r));
+                    controller.forward(from: 0.0);
+                  },
+                ),
+              )
+            : Container(
+                height: height,
+                child: Swiper(
+                  loop: false,
+                  scale: 0.65,
+                  viewportFraction: 0.55,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ShimmerCell(Adapt.px(300), height, Adapt.px(20));
+                  },
+                  itemCount: 3,
+                )));
+  }
 }

@@ -9,8 +9,31 @@ import 'state.dart';
 
 Widget buildView(
     RegisterPageState state, Dispatch dispatch, ViewService viewService) {
+  return Scaffold(
+    resizeToAvoidBottomPadding: false,
+    body: Stack(
+      children: <Widget>[
+        _Header(),
+        _RegisterForm(
+          dispatch: dispatch,
+          emailTextController: state.emailTextController,
+          nameTextController: state.nameTextController,
+          emailFocusNode: state.emailFocusNode,
+          nameFocusNode: state.nameFocusNode,
+          passWordTextController: state.passWordTextController,
+          pwdFocusNode: state.pwdFocusNode,
+          submitAnimationController: state.submitAnimationController,
+        ),
+        _AppBar(),
+      ],
+    ),
+  );
+}
+
+class _Header extends StatelessWidget {
   final double headerHeight = Adapt.screenH() / 3;
-  Widget _buildHeader() {
+  @override
+  Widget build(BuildContext context) {
     return ClipPath(
       clipper: CustomCliperPath(
           height: headerHeight, width: Adapt.screenW(), radius: Adapt.px(1000)),
@@ -39,26 +62,49 @@ Widget buildView(
       ),
     );
   }
+}
 
-  Widget _buildSubmit() {
-    var submitWidth = CurvedAnimation(
-      parent: state.submitAnimationController,
+class _AppBar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 0.0,
+      left: 0.0,
+      right: 0.0,
+      child: AppBar(
+        brightness: Brightness.dark,
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
+    );
+  }
+}
+
+class _SubmitButton extends StatelessWidget {
+  final AnimationController controller;
+  final Function onSubimt;
+  const _SubmitButton({this.controller, this.onSubimt});
+  @override
+  Widget build(BuildContext context) {
+    final submitWidth = CurvedAnimation(
+      parent: controller,
       curve: Interval(
         0.0,
         0.5,
         curve: Curves.ease,
       ),
     );
-    var loadCurved = CurvedAnimation(
-      parent: state.submitAnimationController,
+    final loadCurved = CurvedAnimation(
+      parent: controller,
       curve: Interval(
         0.5,
         1.0,
         curve: Curves.ease,
       ),
     );
-    return new AnimatedBuilder(
-      animation: state.submitAnimationController,
+    return AnimatedBuilder(
+      animation: controller,
       builder: (ctx, w) {
         double buttonWidth = Adapt.screenW() * 0.8;
         return Container(
@@ -81,8 +127,7 @@ Widget buildView(
                           fontSize: Tween<double>(begin: Adapt.px(35), end: 0.0)
                               .animate(submitWidth)
                               .value)),
-                  onPressed: () =>
-                      dispatch(RegisterPageActionCreator.onRegisterWithEmail()),
+                  onPressed: onSubimt,
                 ),
               ),
               ScaleTransition(
@@ -104,8 +149,28 @@ Widget buildView(
       },
     );
   }
+}
 
-  Widget _buildRegisterForm() {
+class _RegisterForm extends StatelessWidget {
+  final Dispatch dispatch;
+  final TextEditingController nameTextController;
+  final TextEditingController passWordTextController;
+  final TextEditingController emailTextController;
+  final FocusNode nameFocusNode;
+  final FocusNode emailFocusNode;
+  final FocusNode pwdFocusNode;
+  final AnimationController submitAnimationController;
+  const _RegisterForm(
+      {this.dispatch,
+      this.emailFocusNode,
+      this.emailTextController,
+      this.nameFocusNode,
+      this.nameTextController,
+      this.passWordTextController,
+      this.pwdFocusNode,
+      this.submitAnimationController});
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: Form(
         child: Card(
@@ -120,8 +185,8 @@ Widget buildView(
                 Padding(
                     padding: EdgeInsets.all(Adapt.px(40)),
                     child: TextFormField(
-                      controller: state.nameTextController,
-                      focusNode: state.nameFocusNode,
+                      controller: nameTextController,
+                      focusNode: nameFocusNode,
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.next,
                       cursorColor: Colors.black,
@@ -142,13 +207,13 @@ Widget buildView(
                         }
                         return null;
                       },
-                      onFieldSubmitted: (_) => state.nameFocusNode.nextFocus(),
+                      onFieldSubmitted: (_) => nameFocusNode.nextFocus(),
                     )),
                 Padding(
                     padding: EdgeInsets.all(Adapt.px(40)),
                     child: TextFormField(
-                      controller: state.emailTextController,
-                      focusNode: state.emailFocusNode,
+                      controller: emailTextController,
+                      focusNode: emailFocusNode,
                       textInputAction: TextInputAction.next,
                       cursorColor: Colors.black,
                       style: TextStyle(fontSize: Adapt.px(35)),
@@ -168,14 +233,14 @@ Widget buildView(
                         }
                         return null;
                       },
-                      onFieldSubmitted: (_) => state.emailFocusNode.nextFocus(),
+                      onFieldSubmitted: (_) => emailFocusNode.nextFocus(),
                     )),
                 Padding(
                     padding: EdgeInsets.all(Adapt.px(40)),
                     child: TextFormField(
                       obscureText: true,
-                      controller: state.passWordTextController,
-                      focusNode: state.pwdFocusNode,
+                      controller: passWordTextController,
+                      focusNode: pwdFocusNode,
                       textInputAction: TextInputAction.done,
                       cursorColor: Colors.black,
                       style: TextStyle(fontSize: Adapt.px(35)),
@@ -196,7 +261,11 @@ Widget buildView(
                         return null;
                       },
                     )),
-                _buildSubmit(),
+                _SubmitButton(
+                  controller: submitAnimationController,
+                  onSubimt: () =>
+                      dispatch(RegisterPageActionCreator.onRegisterWithEmail()),
+                ),
               ],
             ),
           ),
@@ -204,29 +273,4 @@ Widget buildView(
       ),
     );
   }
-
-  Widget _buildAppBar() {
-    return Positioned(
-      top: 0.0,
-      left: 0.0,
-      right: 0.0,
-      child: AppBar(
-        brightness: Brightness.dark,
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        iconTheme: IconThemeData(color: Colors.white),
-      ),
-    );
-  }
-
-  return Scaffold(
-    resizeToAvoidBottomPadding: false,
-    body: Stack(
-      children: <Widget>[
-        _buildHeader(),
-        _buildRegisterForm(),
-        _buildAppBar(),
-      ],
-    ),
-  );
 }

@@ -17,60 +17,22 @@ import 'state.dart';
 Widget buildView(
     HeaderState state, Dispatch dispatch, ViewService viewService) {
   final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
-
-  Widget _buildHeaderBody() {
-    var _model = state.showHeaderMovie ? state.movie : state.tv;
-    return Container(
-      height: Adapt.px(400),
-      child: AnimatedSwitcher(
-        duration: Duration(milliseconds: 600),
-        switchInCurve: Curves.easeIn,
-        switchOutCurve: Curves.easeOut,
-        child: _model.results.length > 0
-            ? ListView.separated(
-                key: ValueKey(_model),
-                padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                separatorBuilder: (_, __) => SizedBox(width: Adapt.px(30)),
-                itemCount: _model.results.length,
-                itemBuilder: (_, index) {
-                  final _d = _model.results[index];
-                  return _HeaderListCell(
-                    data: _model.results[index],
-                    onTap: () => dispatch(
-                      HomePageActionCreator.onCellTapped(
-                          _d.id,
-                          _d.backdropPath,
-                          _d.title ?? _d.name,
-                          _d.posterPath,
-                          state.showHeaderMovie
-                              ? MediaType.movie
-                              : MediaType.tv),
-                    ),
-                  );
-                })
-            : _ShimmerHeaderList(),
-      ),
-    );
-  }
-
   return Container(
     color: _theme.bottomAppBarColor,
     child: Column(
       children: <Widget>[
-        SizedBox(
-          height: Adapt.px(30),
-        ),
+        SizedBox(height: Adapt.px(30)),
         _TabTitel(
           isMovie: state.showHeaderMovie,
           onTap: () => dispatch(HeaderActionCreator.onHeaderFilterChanged(
               !state.showHeaderMovie)),
         ),
-        SizedBox(
-          height: Adapt.px(45),
-        ),
-        _buildHeaderBody()
+        SizedBox(height: Adapt.px(45)),
+        _HeaderBody(
+          data: state.showHeaderMovie ? state.movie : state.tv,
+          dispatch: dispatch,
+          isMovie: state.showHeaderMovie,
+        )
       ],
     ),
   );
@@ -210,6 +172,48 @@ class _HeaderListCell extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _HeaderBody extends StatelessWidget {
+  final VideoListModel data;
+  final bool isMovie;
+  final Dispatch dispatch;
+  _HeaderBody({this.data, this.dispatch, this.isMovie = true})
+      : assert(data != null);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: Adapt.px(400),
+      child: AnimatedSwitcher(
+        duration: Duration(milliseconds: 600),
+        switchInCurve: Curves.easeIn,
+        switchOutCurve: Curves.easeOut,
+        child: data.results.length > 0
+            ? ListView.separated(
+                key: ValueKey(data),
+                padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+                physics: BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                separatorBuilder: (_, __) => SizedBox(width: Adapt.px(30)),
+                itemCount: data.results.length,
+                itemBuilder: (_, index) {
+                  final _d = data.results[index];
+                  return _HeaderListCell(
+                    data: data.results[index],
+                    onTap: () => dispatch(
+                      HomePageActionCreator.onCellTapped(
+                          _d.id,
+                          _d.backdropPath,
+                          _d.title ?? _d.name,
+                          _d.posterPath,
+                          isMovie ? MediaType.movie : MediaType.tv),
+                    ),
+                  );
+                })
+            : _ShimmerHeaderList(),
+      ),
     );
   }
 }

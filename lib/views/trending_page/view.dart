@@ -12,43 +12,6 @@ Widget buildView(
   return Builder(builder: (context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
 
-    Widget _buildRefreshing() {
-      return SliverToBoxAdapter(
-          child: FadeTransition(
-        opacity: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-          parent: state.refreshController,
-          curve: Curves.ease,
-        )),
-        child: SizedBox(
-          height: Adapt.px(5),
-          child: LinearProgressIndicator(
-            backgroundColor: Colors.white,
-            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF505050)),
-          ),
-        ),
-      ));
-    }
-
-    Widget _buildLoading() {
-      return SliverToBoxAdapter(
-        child: Container(
-          padding: EdgeInsets.only(bottom: Adapt.px(30)),
-          alignment: Alignment.center,
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(_theme.iconTheme.color),
-          ),
-        ),
-      );
-    }
-
-    Widget _buildList() {
-      return SliverList(
-        delegate: SliverChildBuilderDelegate((ctx, index) {
-          return _adapter.itemBuilder(ctx, index);
-        }, childCount: _adapter.itemCount),
-      );
-    }
-
     return Scaffold(
         appBar: AppBar(
           brightness: _theme.brightness,
@@ -78,14 +41,57 @@ Widget buildView(
             controller: state.controller,
             slivers: <Widget>[
               viewService.buildComponent('fliter'),
-              _buildRefreshing(),
+              _Refreshing(refreshController: state.refreshController),
               SliverToBoxAdapter(
                 child: SizedBox(height: Adapt.px(30)),
               ),
-              _buildList(),
-              _buildLoading(),
+              SliverList(
+                delegate: SliverChildBuilderDelegate((ctx, index) {
+                  return _adapter.itemBuilder(ctx, index);
+                }, childCount: _adapter.itemCount),
+              ),
+              _Loading(),
             ],
           ),
         )));
   });
+}
+
+class _Refreshing extends StatelessWidget {
+  final AnimationController refreshController;
+  const _Refreshing({this.refreshController});
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: FadeTransition(
+        opacity: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+          parent: refreshController,
+          curve: Curves.ease,
+        )),
+        child: SizedBox(
+          height: Adapt.px(5),
+          child: LinearProgressIndicator(
+            backgroundColor: Colors.white,
+            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF505050)),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _Loading extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return SliverToBoxAdapter(
+      child: Container(
+        padding: EdgeInsets.only(bottom: Adapt.px(30)),
+        alignment: Alignment.center,
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(_theme.iconTheme.color),
+        ),
+      ),
+    );
+  }
 }

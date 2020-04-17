@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,39 @@ import 'state.dart';
 
 Widget buildView(
     SettingPageState state, Dispatch dispatch, ViewService viewService) {
-  Widget _buildAppBar() {
+  return Scaffold(
+    body: Stack(
+      children: <Widget>[
+        _BackGround(pageAnimation: state.pageAnimation),
+        _SettingBody(
+          dispatch: dispatch,
+          pageAnimation: state.pageAnimation,
+          userEditAnimation: state.userEditAnimation,
+          adultSwitchValue: state.adultSwitchValue,
+          loading: state.loading,
+          cachedSize: state.cachedSize,
+          version: state.version,
+          user: state.user,
+        ),
+        _UserProfilePanel(
+          dispatch: dispatch,
+          user: state.user,
+          phoneController: state.phoneController,
+          photoController: state.photoController,
+          userNameController: state.userNameController,
+          userEditAnimation: state.userEditAnimation,
+          userPanelPhotoUrl: state.userPanelPhotoUrl,
+        ),
+        _LoadingPanel(uploading: state.uploading),
+        _AppBar(),
+      ],
+    ),
+  );
+}
+
+class _AppBar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return Positioned(
       top: 0.0,
       left: 0.0,
@@ -17,21 +50,25 @@ Widget buildView(
       child: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
-        title: Text('Settings'),
+        title: const Text('Settings'),
       ),
     );
   }
+}
 
-  Widget _buildBackGround() {
+class _BackGround extends StatelessWidget {
+  final AnimationController pageAnimation;
+  const _BackGround({this.pageAnimation});
+  @override
+  Widget build(BuildContext context) {
     final CurvedAnimation _heightAnimation =
-        CurvedAnimation(parent: state.pageAnimation, curve: Curves.ease);
+        CurvedAnimation(parent: pageAnimation, curve: Curves.ease);
     final Animation _height = Tween(begin: Adapt.px(380), end: Adapt.px(1200))
         .animate(_heightAnimation);
     final CurvedAnimation _pathAnimation = CurvedAnimation(
-        parent: state.pageAnimation,
-        curve: Interval(0.4, 1.0, curve: Curves.ease));
+        parent: pageAnimation, curve: Interval(0.4, 1.0, curve: Curves.ease));
     return AnimatedBuilder(
-      animation: state.pageAnimation,
+      animation: pageAnimation,
       builder: (_, __) {
         return ClipPath(
             clipper: CustomCliperPath(
@@ -48,17 +85,15 @@ Widget buildView(
                     end: Alignment.bottomRight,
                     colors: <Color>[
                       ColorTween(
-                              begin: Color(0xFF6495ED), end: Color(0xFF111111))
+                              begin: const Color(0xFF6495ED),
+                              end: const Color(0xFF111111))
                           .animate(_heightAnimation)
                           .value,
                       ColorTween(
-                              begin: Color(0xFF6A5ACD), end: Color(0xFF111111))
+                              begin: const Color(0xFF6A5ACD),
+                              end: const Color(0xFF111111))
                           .animate(_heightAnimation)
                           .value,
-                      //Color(0xFF6495ED),
-                      //Color(0xFF6A5ACD),
-                      //Color(0xFF707070),
-                      //Color(0xFF202020),
                     ],
                     stops: <double>[
                       0.0,
@@ -69,97 +104,112 @@ Widget buildView(
       },
     );
   }
+}
 
-  Widget _buildListCell(double begin, double end,
-      {Color shadowColor = const Color(0xFF808080), @required Widget child}) {
+class _ListCell extends StatelessWidget {
+  final AnimationController pageAnimation;
+  final double begin;
+  final double end;
+  final Widget child;
+  const _ListCell(
+      {this.pageAnimation, this.begin, this.end, @required this.child});
+  @override
+  Widget build(BuildContext context) {
     final CurvedAnimation _animation = CurvedAnimation(
-        parent: state.pageAnimation,
-        curve: Interval(begin, end, curve: Curves.ease));
+        parent: pageAnimation, curve: Interval(begin, end, curve: Curves.ease));
     return FadeTransition(
-        opacity: Tween(begin: 0.0, end: 1.0).animate(_animation),
-        child: SlideTransition(
-            position: Tween(begin: Offset(0, 2), end: Offset.zero)
-                .animate(_animation),
-            child: Container(
-              height: Adapt.px(250),
-              margin: EdgeInsets.only(bottom: Adapt.px(40)),
-              decoration: BoxDecoration(
-                color: Color(0xFF202020),
-                borderRadius: BorderRadius.circular(Adapt.px(20)),
-              ),
-              child: child,
-            )));
+      opacity: Tween(begin: 0.0, end: 1.0).animate(_animation),
+      child: SlideTransition(
+        position:
+            Tween(begin: Offset(0, 2), end: Offset.zero).animate(_animation),
+        child: Container(
+          height: Adapt.px(250),
+          margin: EdgeInsets.only(bottom: Adapt.px(40)),
+          decoration: BoxDecoration(
+            color: Color(0xFF202020),
+            borderRadius: BorderRadius.circular(Adapt.px(20)),
+          ),
+          child: child,
+        ),
+      ),
+    );
   }
+}
 
-  Widget _buildLoadingPanel() {
-    return state.uploading
-        ? Container(
-            width: Adapt.screenW(),
-            height: Adapt.screenH(),
-            color: Colors.black38,
-            child: Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(Colors.white),
+class _UserCell extends StatelessWidget {
+  final AnimationController pageAnimation;
+  final AnimationController userEditAnimation;
+  final FirebaseUser user;
+  const _UserCell({this.pageAnimation, this.user, this.userEditAnimation});
+  @override
+  Widget build(BuildContext context) {
+    return _ListCell(
+      pageAnimation: pageAnimation,
+      begin: .1,
+      end: .7,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: Adapt.px(30), vertical: Adapt.px(60)),
+        child: ListTile(
+          leading: Container(
+            width: Adapt.px(80),
+            height: Adapt.px(80),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.grey,
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: CachedNetworkImageProvider(user?.photoUrl ?? ''),
               ),
-            ),
-          )
-        : SizedBox();
-  }
-
-  Widget _buildUserCell() {
-    return _buildListCell(.1, .7,
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: Adapt.px(30), vertical: Adapt.px(60)),
-          child: ListTile(
-            leading: Container(
-              width: Adapt.px(80),
-              height: Adapt.px(80),
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.grey,
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: CachedNetworkImageProvider(
-                          state.user?.photoUrl ?? ''))),
-            ),
-            title: Text(
-              state.user?.displayName ?? 'Guest',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: Adapt.px(35)),
-            ),
-            subtitle: Text(
-              state.user?.email ?? '-',
-              maxLines: 1,
-              style: TextStyle(
-                  color: Colors.grey,
-                  fontWeight: FontWeight.bold,
-                  fontSize: Adapt.px(24)),
-            ),
-            trailing: IconButton(
-              onPressed: () {
-                if (state.user != null) state.userEditAnimation.forward();
-              },
-              icon: Icon(Icons.edit),
-              color: Colors.white,
-              iconSize: Adapt.px(60),
             ),
           ),
-        ));
+          title: Text(
+            user?.displayName ?? 'Guest',
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: Adapt.px(35)),
+          ),
+          subtitle: Text(
+            user?.email ?? '-',
+            maxLines: 1,
+            style: TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.bold,
+                fontSize: Adapt.px(24)),
+          ),
+          trailing: IconButton(
+            onPressed: () {
+              if (user != null) userEditAnimation.forward();
+            },
+            icon: Icon(Icons.edit),
+            color: Colors.white,
+            iconSize: Adapt.px(60),
+          ),
+        ),
+      ),
+    );
   }
+}
 
-  Widget _buildAdultCell() {
-    return _buildListCell(.2, .8,
-        shadowColor: Color(0xFF303030),
+class _AdultCell extends StatelessWidget {
+  final Function onTap;
+  final AnimationController pageAnimation;
+  final bool adultSwitchValue;
+  const _AdultCell({this.onTap, this.adultSwitchValue, this.pageAnimation});
+  @override
+  Widget build(BuildContext context) {
+    return _ListCell(
+        pageAnimation: pageAnimation,
+        begin: .2,
+        end: .8,
         child: Padding(
           padding: EdgeInsets.symmetric(
               horizontal: Adapt.px(30), vertical: Adapt.px(60)),
           child: ListTile(
-            onTap: () => dispatch(SettingPageActionCreator.adultCellTapped()),
+            onTap: onTap,
             leading: Icon(
-              state.adultSwitchValue ? Icons.visibility : Icons.visibility_off,
+              adultSwitchValue ? Icons.visibility : Icons.visibility_off,
               color: Colors.white,
               size: Adapt.px(80),
             ),
@@ -171,25 +221,34 @@ Widget buildView(
                   fontSize: Adapt.px(35)),
             ),
             subtitle: Text(
-              state.adultSwitchValue ? 'on' : 'off',
+              adultSwitchValue ? 'on' : 'off',
               style: TextStyle(
                   color: Colors.grey,
                   fontWeight: FontWeight.bold,
                   fontSize: Adapt.px(35)),
             ),
             trailing: CupertinoSwitch(
-              onChanged: (b) =>
-                  dispatch(SettingPageActionCreator.adultCellTapped()),
+              onChanged: (b) => onTap(),
               activeColor: Color(0xFF111111),
               trackColor: Color(0xFFD0D0D0),
-              value: state.adultSwitchValue,
+              value: adultSwitchValue,
             ),
           ),
         ));
   }
+}
 
-  Widget _buildCachedCell() {
-    return _buildListCell(.3, .9,
+class _CachedCell extends StatelessWidget {
+  final Function onTap;
+  final AnimationController pageAnimation;
+  final double cachedSize;
+  const _CachedCell({this.onTap, this.pageAnimation, this.cachedSize});
+  @override
+  Widget build(BuildContext context) {
+    return _ListCell(
+        pageAnimation: pageAnimation,
+        begin: .3,
+        end: .9,
         child: Padding(
           padding: EdgeInsets.symmetric(
               horizontal: Adapt.px(30), vertical: Adapt.px(60)),
@@ -207,14 +266,14 @@ Widget buildView(
                   fontSize: Adapt.px(35)),
             ),
             subtitle: Text(
-              '${state.cachedSize.toStringAsFixed(2)} MB',
+              '${cachedSize.toStringAsFixed(2)} MB',
               style: TextStyle(
                   color: Colors.grey,
                   fontWeight: FontWeight.bold,
                   fontSize: Adapt.px(35)),
             ),
             trailing: IconButton(
-              onPressed: () => dispatch(SettingPageActionCreator.cleanCached()),
+              onPressed: onTap,
               icon: Icon(Icons.delete_outline),
               color: Colors.white,
               iconSize: Adapt.px(60),
@@ -222,134 +281,253 @@ Widget buildView(
           ),
         ));
   }
+}
 
-  Widget _buildVersionCell() {
-    return _buildListCell(.4, 1.0,
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: Adapt.px(30), vertical: Adapt.px(60)),
-          child: ListTile(
-            leading: Icon(
-              Icons.system_update,
-              color: Colors.white,
-              size: Adapt.px(80),
-            ),
-            title: Text(
-              'Version',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: Adapt.px(35)),
-            ),
-            subtitle: Text(
-              state.version ?? '-',
-              style: TextStyle(
-                  color: Colors.grey,
-                  fontWeight: FontWeight.bold,
-                  fontSize: Adapt.px(35)),
-            ),
-            trailing: IconButton(
-              onPressed: () =>
-                  dispatch(SettingPageActionCreator.onCheckUpdate()),
-              icon: state.loading
-                  ? SizedBox(
-                      width: Adapt.px(40),
-                      height: Adapt.px(40),
-                      child: CircularProgressIndicator(
-                        strokeWidth: Adapt.px(5),
-                        valueColor:
-                            AlwaysStoppedAnimation(const Color(0xFFFFFFFF)),
-                      ))
-                  : Icon(Icons.refresh),
-              color: Colors.white,
-              iconSize: Adapt.px(60),
-            ),
+class _VersionCell extends StatelessWidget {
+  final Function onTap;
+  final AnimationController pageAnimation;
+  final bool loading;
+  final String version;
+  const _VersionCell(
+      {this.onTap, this.pageAnimation, this.loading, this.version});
+  @override
+  Widget build(BuildContext context) {
+    return _ListCell(
+      pageAnimation: pageAnimation,
+      begin: .4,
+      end: 1.0,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: Adapt.px(30), vertical: Adapt.px(60)),
+        child: ListTile(
+          leading: Icon(
+            Icons.system_update,
+            color: Colors.white,
+            size: Adapt.px(80),
           ),
-        ));
+          title: Text(
+            'Version',
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: Adapt.px(35)),
+          ),
+          subtitle: Text(
+            version ?? '-',
+            style: TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.bold,
+                fontSize: Adapt.px(35)),
+          ),
+          trailing: IconButton(
+            onPressed: onTap,
+            icon: loading
+                ? SizedBox(
+                    width: Adapt.px(40),
+                    height: Adapt.px(40),
+                    child: CircularProgressIndicator(
+                      strokeWidth: Adapt.px(5),
+                      valueColor:
+                          AlwaysStoppedAnimation(const Color(0xFFFFFFFF)),
+                    ))
+                : Icon(Icons.refresh),
+            color: Colors.white,
+            iconSize: Adapt.px(60),
+          ),
+        ),
+      ),
+    );
   }
+}
 
-  Widget _buildBody() {
+class _SettingBody extends StatelessWidget {
+  final AnimationController pageAnimation;
+  final AnimationController userEditAnimation;
+  final FirebaseUser user;
+  final bool adultSwitchValue;
+  final double cachedSize;
+  final bool loading;
+  final String version;
+  final Dispatch dispatch;
+  const _SettingBody(
+      {this.adultSwitchValue,
+      this.cachedSize,
+      this.dispatch,
+      this.loading,
+      this.pageAnimation,
+      this.user,
+      this.userEditAnimation,
+      this.version});
+  @override
+  Widget build(BuildContext context) {
     final double _margin = Adapt.px(120) + Adapt.padTopH();
     final Animation _run = Tween(begin: .00, end: 1.0).animate(
-        CurvedAnimation(parent: state.userEditAnimation, curve: Curves.ease));
+        CurvedAnimation(parent: userEditAnimation, curve: Curves.ease));
     return AnimatedBuilder(
-      animation: state.userEditAnimation,
+      animation: userEditAnimation,
       builder: (_, __) {
         return Padding(
-            padding: EdgeInsets.only(
-                top: _margin, left: Adapt.px(60), right: Adapt.px(60)),
-            child: Container(
-                transform: Matrix4.identity()
-                  ..scale(1.0 - _run.value, 1.0, 1.0),
-                height: Adapt.screenH() - _margin,
-                child: ListView(
-                  physics: ClampingScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  //padding: EdgeInsets.symmetric(horizontal: Adapt.px(60)),
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    _buildUserCell(),
-                    _buildAdultCell(),
-                    _buildCachedCell(),
-                    _buildVersionCell()
-                  ],
-                )));
+          padding: EdgeInsets.only(
+              top: _margin, left: Adapt.px(60), right: Adapt.px(60)),
+          child: Container(
+            transform: Matrix4.identity()..scale(1.0 - _run.value, 1.0, 1.0),
+            height: Adapt.screenH() - _margin,
+            child: ListView(
+              physics: ClampingScrollPhysics(),
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              children: <Widget>[
+                _UserCell(
+                  pageAnimation: pageAnimation,
+                  userEditAnimation: userEditAnimation,
+                  user: user,
+                ),
+                _AdultCell(
+                  pageAnimation: pageAnimation,
+                  adultSwitchValue: adultSwitchValue,
+                  onTap: () =>
+                      dispatch(SettingPageActionCreator.adultCellTapped()),
+                ),
+                _CachedCell(
+                  pageAnimation: pageAnimation,
+                  cachedSize: cachedSize,
+                  onTap: () => dispatch(SettingPageActionCreator.cleanCached()),
+                ),
+                _VersionCell(
+                  pageAnimation: pageAnimation,
+                  version: version,
+                  loading: loading,
+                  onTap: () =>
+                      dispatch(SettingPageActionCreator.onCheckUpdate()),
+                )
+              ],
+            ),
+          ),
+        );
       },
     );
   }
+}
 
-  Widget _buildButtonGrounp() {
-    return Padding(
-        padding: EdgeInsets.all(Adapt.px(40)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            InkWell(
-              onTap: () => state.userEditAnimation.reverse(),
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-                height: Adapt.px(80),
-                width: Adapt.px(200),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(Adapt.px(40)),
-                    border: Border.all(color: Colors.white, width: 3)),
-                child: Center(
-                    child: Text(
-                  'Cancel',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: Adapt.px(35),
-                      fontWeight: FontWeight.w500),
-                )),
+class _LoadingPanel extends StatelessWidget {
+  final bool uploading;
+  const _LoadingPanel({@required this.uploading});
+  @override
+  Widget build(BuildContext context) {
+    return uploading
+        ? Container(
+            width: Adapt.screenW(),
+            height: Adapt.screenH(),
+            color: Colors.black38,
+            child: Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(Colors.white),
               ),
             ),
-            SizedBox(width: Adapt.px(60)),
-            InkWell(
-              onTap: () {
-                dispatch(SettingPageActionCreator.profileEdit());
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-                height: Adapt.px(80),
-                width: Adapt.px(200),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(Adapt.px(40)),
-                    border: Border.all(color: Colors.white, width: 3)),
-                child: Center(
-                    child: Text(
+          )
+        : SizedBox();
+  }
+}
+
+class _ButtonGrounp extends StatelessWidget {
+  final AnimationController userEditAnimation;
+  final Function submit;
+  const _ButtonGrounp({this.submit, this.userEditAnimation});
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(Adapt.px(40)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          InkWell(
+            onTap: () => userEditAnimation.reverse(),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+              height: Adapt.px(80),
+              width: Adapt.px(200),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Adapt.px(40)),
+                  border: Border.all(color: Colors.white, width: 3)),
+              child: Center(
+                  child: Text(
+                'Cancel',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: Adapt.px(35),
+                    fontWeight: FontWeight.w500),
+              )),
+            ),
+          ),
+          SizedBox(width: Adapt.px(60)),
+          InkWell(
+            onTap: submit,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+              height: Adapt.px(80),
+              width: Adapt.px(200),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Adapt.px(40)),
+                  border: Border.all(color: Colors.white, width: 3)),
+              child: Center(
+                child: Text(
                   'OK',
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: Adapt.px(35),
                       fontWeight: FontWeight.w500),
-                )),
+                ),
               ),
-            )
-          ],
-        ));
+            ),
+          )
+        ],
+      ),
+    );
   }
+}
 
-  Widget _buildTextFieldCell(String title, {TextEditingController controller}) {
+class _UserProfileAvatar extends StatelessWidget {
+  final Function onTap;
+  final String userPanelPhotoUrl;
+  const _UserProfileAvatar({this.onTap, this.userPanelPhotoUrl});
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        width: Adapt.px(150),
+        height: Adapt.px(150),
+        alignment: Alignment.center,
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.grey,
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: CachedNetworkImageProvider(userPanelPhotoUrl ?? ''),
+            ),
+          ),
+          child: Container(
+            width: Adapt.px(150),
+            height: Adapt.px(150),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.black38,
+            ),
+            child: Icon(Icons.file_upload, color: Colors.white54),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TextFieldCell extends StatelessWidget {
+  final TextEditingController controller;
+  final String title;
+  const _TextFieldCell({this.controller, this.title});
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -373,70 +551,67 @@ Widget buildView(
             cursorColor: Colors.white,
             controller: controller,
             decoration: InputDecoration(
-                focusedBorder: UnderlineInputBorder(
-                    borderSide:
-                        BorderSide(width: 0, color: Colors.transparent)),
-                enabledBorder: UnderlineInputBorder(
-                    borderSide:
-                        BorderSide(width: 0, color: Colors.transparent))),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(width: 0, color: Colors.transparent),
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(width: 0, color: Colors.transparent),
+              ),
+            ),
           ),
         )
       ],
     );
   }
+}
 
-  Widget _buildTextFields() {
+class _TextFields extends StatelessWidget {
+  final TextEditingController userNameController;
+  final TextEditingController photoController;
+  final TextEditingController phoneController;
+  const _TextFields(
+      {this.phoneController, this.photoController, this.userNameController});
+  @override
+  Widget build(BuildContext context) {
     return Padding(
         padding:
             EdgeInsets.fromLTRB(Adapt.px(40), Adapt.px(80), Adapt.px(40), 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _buildTextFieldCell('UserName',
-                controller: state.userNameController),
+            _TextFieldCell(title: 'UserName', controller: userNameController),
             SizedBox(height: Adapt.px(40)),
-            _buildTextFieldCell('Phone', controller: state.phoneController),
+            _TextFieldCell(title: 'Phone', controller: phoneController),
             SizedBox(height: Adapt.px(40)),
-            _buildTextFieldCell('PhotoUrl', controller: state.photoController),
+            _TextFieldCell(title: 'PhotoUrl', controller: photoController),
           ],
         ));
   }
+}
 
-  Widget _buildUserProfileAvatar() {
-    return InkWell(
-      onTap: () => dispatch(SettingPageActionCreator.openPhotoPicker()),
-      child: Container(
-        width: Adapt.px(150),
-        height: Adapt.px(150),
-        alignment: Alignment.center,
-        child: Container(
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.grey,
-              image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: CachedNetworkImageProvider(
-                      state.userPanelPhotoUrl ?? ''))),
-          child: Container(
-            width: Adapt.px(150),
-            height: Adapt.px(150),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.black38,
-            ),
-            child: Icon(Icons.file_upload, color: Colors.white54),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildUserProfilePanel() {
+class _UserProfilePanel extends StatelessWidget {
+  final AnimationController userEditAnimation;
+  final String userPanelPhotoUrl;
+  final TextEditingController userNameController;
+  final TextEditingController photoController;
+  final TextEditingController phoneController;
+  final Dispatch dispatch;
+  final FirebaseUser user;
+  const _UserProfilePanel(
+      {this.dispatch,
+      this.phoneController,
+      this.photoController,
+      this.user,
+      this.userEditAnimation,
+      this.userNameController,
+      this.userPanelPhotoUrl});
+  @override
+  Widget build(BuildContext context) {
     final double _margin = Adapt.px(120) + Adapt.padTopH();
     final CurvedAnimation _run =
-        CurvedAnimation(parent: state.userEditAnimation, curve: Curves.ease);
+        CurvedAnimation(parent: userEditAnimation, curve: Curves.ease);
     return AnimatedBuilder(
-        animation: state.userEditAnimation,
+        animation: userEditAnimation,
         builder: (_, __) {
           return Padding(
               padding:
@@ -458,35 +633,34 @@ Widget buildView(
                       shrinkWrap: true,
                       children: <Widget>[
                         SizedBox(height: Adapt.px(60)),
-                        _buildUserProfileAvatar(),
+                        _UserProfileAvatar(
+                          userPanelPhotoUrl: userPanelPhotoUrl,
+                          onTap: () => dispatch(
+                              SettingPageActionCreator.openPhotoPicker()),
+                        ),
                         SizedBox(height: Adapt.px(30)),
                         Text(
-                          '${state.user?.email ?? '-'}',
+                          '${user?.email ?? '-'}',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
                               fontSize: Adapt.px(35)),
                         ),
-                        _buildTextFields(),
+                        _TextFields(
+                          phoneController: phoneController,
+                          photoController: photoController,
+                          userNameController: userNameController,
+                        ),
                         SizedBox(height: Adapt.px(60)),
-                        //Expanded(child: SizedBox()),
-                        _buildButtonGrounp(),
+                        _ButtonGrounp(
+                          userEditAnimation: userEditAnimation,
+                          submit: () =>
+                              dispatch(SettingPageActionCreator.profileEdit()),
+                        ),
                       ],
                     ),
                   )));
         });
   }
-
-  return Scaffold(
-    body: Stack(
-      children: <Widget>[
-        _buildBackGround(),
-        _buildBody(),
-        _buildUserProfilePanel(),
-        _buildLoadingPanel(),
-        _buildAppBar(),
-      ],
-    ),
-  );
 }

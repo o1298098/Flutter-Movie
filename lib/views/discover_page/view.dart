@@ -69,29 +69,7 @@ Widget buildView(
                     return _adapter.itemBuilder(ctx, index);
                   }, childCount: _adapter.itemCount),
                 ),
-                SliverToBoxAdapter(
-                    child: Offstage(
-                  offstage: state.isbusy,
-                  child: Shimmer.fromColors(
-                      baseColor: _theme.primaryColorDark,
-                      highlightColor: _theme.primaryColorLight,
-                      child: Container(
-                        margin: EdgeInsets.only(
-                            top: Adapt.px(10),
-                            bottom: Adapt.px(30),
-                            left: Adapt.px(30),
-                            right: Adapt.px(30)),
-                        child: Column(
-                          children: <Widget>[
-                            _ShimmerCell(),
-                            SizedBox(height: Adapt.px(30)),
-                            _ShimmerCell(),
-                            SizedBox(height: Adapt.px(30)),
-                            _ShimmerCell(),
-                          ],
-                        ),
-                      )),
-                ))
+                _ShimmerList(isbusy: state.isbusy)
               ],
             ),
             GZXDropDownMenu(
@@ -208,6 +186,40 @@ class _ShimmerCell extends StatelessWidget {
             )
           ],
         ));
+  }
+}
+
+class _ShimmerList extends StatelessWidget {
+  final bool isbusy;
+  _ShimmerList({this.isbusy});
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return SliverToBoxAdapter(
+      child: Offstage(
+        offstage: isbusy,
+        child: Shimmer.fromColors(
+          baseColor: _theme.primaryColorDark,
+          highlightColor: _theme.primaryColorLight,
+          child: Container(
+            margin: EdgeInsets.only(
+                top: Adapt.px(10),
+                bottom: Adapt.px(30),
+                left: Adapt.px(30),
+                right: Adapt.px(30)),
+            child: Column(
+              children: <Widget>[
+                _ShimmerCell(),
+                SizedBox(height: Adapt.px(30)),
+                _ShimmerCell(),
+                SizedBox(height: Adapt.px(30)),
+                _ShimmerCell(),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 

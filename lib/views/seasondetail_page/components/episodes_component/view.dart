@@ -16,37 +16,168 @@ import 'state.dart';
 
 Widget buildView(
     EpisodesState state, Dispatch dispatch, ViewService viewService) {
-  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
+  return Column(
+      key: ValueKey(state.episodes),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.all(Adapt.px(30)),
+          child: Text.rich(TextSpan(children: [
+            TextSpan(
+                text: I18n.of(viewService.context).episodes,
+                style: TextStyle(
+                    fontSize: Adapt.px(35), fontWeight: FontWeight.bold)),
+            TextSpan(
+                text:
+                    ' ${state.episodes != null ? state.episodes.length.toString() : ''}',
+                style: TextStyle(color: Colors.grey, fontSize: Adapt.px(26)))
+          ])),
+        ),
+        state.episodes.length > 0
+            ? ListView.separated(
+                shrinkWrap: true,
+                physics: PageScrollPhysics(),
+                padding: EdgeInsets.symmetric(
+                    horizontal: Adapt.px(20), vertical: Adapt.px(30)),
+                separatorBuilder: (_, __) => SizedBox(height: Adapt.px(30)),
+                itemCount: state.episodes.length,
+                itemBuilder: (_, i) => _EpisodeCell(
+                  data: state.episodes[i],
+                  onTap: (d) => dispatch(EpisodesActionCreator.onCellTapped(d)),
+                ),
+              )
+            : _ShimmerList()
+      ]);
+}
 
-  Widget _buildEpisodeCell(Episode d) {
+class _ShimmerCell extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          width: Adapt.screenW() - Adapt.px(60),
+          height: (Adapt.screenW() - Adapt.px(60)) * 9 / 16,
+          color: Colors.grey[200],
+        ),
+        Container(
+          margin: EdgeInsets.only(left: Adapt.px(20), top: Adapt.px(20)),
+          width: Adapt.px(150),
+          height: Adapt.px(24),
+          color: Colors.grey[200],
+        ),
+        SizedBox(
+          height: Adapt.px(20),
+        ),
+        Row(
+          children: <Widget>[
+            SizedBox(
+              width: Adapt.px(20),
+            ),
+            Container(
+              width: Adapt.px(90),
+              height: Adapt.px(45),
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(Adapt.px(25))),
+            ),
+            SizedBox(
+              width: Adapt.px(20),
+            ),
+            Container(
+              color: Colors.grey[200],
+              width: Adapt.px(400),
+              height: Adapt.px(30),
+            )
+          ],
+        ),
+        Container(
+          margin: EdgeInsets.only(
+              left: Adapt.px(20), bottom: Adapt.px(8), top: Adapt.px(20)),
+          color: Colors.grey[200],
+          width: Adapt.screenW() - Adapt.px(100),
+          height: Adapt.px(24),
+        ),
+        Container(
+          margin: EdgeInsets.only(left: Adapt.px(20), bottom: Adapt.px(8)),
+          color: Colors.grey[200],
+          width: Adapt.screenW() - Adapt.px(100),
+          height: Adapt.px(24),
+        ),
+        Container(
+          margin: EdgeInsets.only(left: Adapt.px(20), bottom: Adapt.px(8)),
+          color: Colors.grey[200],
+          width: Adapt.screenW() - Adapt.px(100),
+          height: Adapt.px(24),
+        ),
+        Container(
+          margin: EdgeInsets.only(left: Adapt.px(20), bottom: Adapt.px(8)),
+          color: Colors.grey[200],
+          width: Adapt.screenW() - Adapt.px(300),
+          height: Adapt.px(24),
+        )
+      ],
+    );
+  }
+}
+
+class _ShimmerList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return Shimmer.fromColors(
+      baseColor: _theme.primaryColorDark,
+      highlightColor: _theme.primaryColorLight,
+      child: SizedBox(
+        child: ListView.separated(
+          shrinkWrap: true,
+          padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+          separatorBuilder: (_, __) => SizedBox(height: Adapt.px(30)),
+          itemCount: 3,
+          itemBuilder: (_, __) => _ShimmerCell(),
+        ),
+      ),
+    );
+  }
+}
+
+class _EpisodeCell extends StatelessWidget {
+  final Episode data;
+  final Function(Episode) onTap;
+  const _EpisodeCell({this.data, this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
     return Container(
-      key: ValueKey(d.id),
-      padding: EdgeInsets.only(bottom: Adapt.px(30)),
+      key: ValueKey(data.id),
       child: GestureDetector(
-        onTap: () => dispatch(EpisodesActionCreator.onCellTapped(d)),
+        onTap: () => onTap(data),
         child: Card(
             elevation: 0.0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Hero(
-                  tag: 'pic' + d.episodeNumber.toString(),
+                  tag: 'pic' + data.episodeNumber.toString(),
                   child: Container(
                     width: Adapt.screenW() - Adapt.px(40),
                     height: (Adapt.screenW() - Adapt.px(40)) * 9 / 16,
                     decoration: BoxDecoration(
-                        color: _theme.primaryColorDark,
-                        image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: CachedNetworkImageProvider(
-                                d.stillPath == null
-                                    ? ImageUrl.emptyimage
-                                    : ImageUrl.getUrl(
-                                        d.stillPath, ImageSize.w300)))),
+                      color: _theme.primaryColorDark,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: CachedNetworkImageProvider(
+                          data.stillPath == null
+                              ? ImageUrl.emptyimage
+                              : ImageUrl.getUrl(data.stillPath, ImageSize.w300),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 Hero(
-                  tag: 'episodeDate' + d.episodeNumber.toString(),
+                  tag: 'episodeDate' + data.episodeNumber.toString(),
                   child: Material(
                     color: Colors.transparent,
                     child: Container(
@@ -56,13 +187,13 @@ Widget buildView(
                             Adapt.px(20), Adapt.px(10)),
                         child: Text(
                           DateFormat.yMMMd().format(
-                              DateTime.parse(d.airDate ?? '1990-01-01')),
+                              DateTime.parse(data.airDate ?? '1990-01-01')),
                           style: TextStyle(fontSize: Adapt.px(24)),
                         )),
                   ),
                 ),
                 Hero(
-                  tag: 'episodetitle' + d.episodeNumber.toString(),
+                  tag: 'episodetitle' + data.episodeNumber.toString(),
                   child: Material(
                     color: Colors.transparent,
                     child: Row(
@@ -89,7 +220,7 @@ Widget buildView(
                                 width: Adapt.px(5),
                               ),
                               Text(
-                                d.voteAverage.toStringAsFixed(1),
+                                data.voteAverage.toStringAsFixed(1),
                                 style: TextStyle(color: Colors.white),
                               )
                             ],
@@ -101,7 +232,7 @@ Widget buildView(
                         Container(
                           width: Adapt.screenW() - Adapt.px(230),
                           child: Text(
-                            '${d.episodeNumber}  ${d.name}',
+                            '${data.episodeNumber}  ${data.name}',
                             maxLines: 2,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -113,13 +244,13 @@ Widget buildView(
                   ),
                 ),
                 Hero(
-                  tag: 'episodeoverWatch' + d.episodeNumber.toString(),
+                  tag: 'episodeoverWatch' + data.episodeNumber.toString(),
                   child: Material(
                     color: Colors.transparent,
                     child: Container(
                       padding: EdgeInsets.fromLTRB(Adapt.px(20), Adapt.px(10),
                           Adapt.px(20), Adapt.px(20)),
-                      child: Text(d.overview ?? '-'),
+                      child: Text(data.overview ?? '-'),
                     ),
                   ),
                 ),
@@ -128,118 +259,4 @@ Widget buildView(
       ),
     );
   }
-
-  Widget _buildShimmerCell() {
-    return SizedBox(
-      child: Shimmer.fromColors(
-          baseColor: _theme.primaryColorDark,
-          highlightColor: _theme.primaryColorLight,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                width: Adapt.screenW() - Adapt.px(60),
-                height: (Adapt.screenW() - Adapt.px(60)) * 9 / 16,
-                color: Colors.grey[200],
-              ),
-              Container(
-                margin: EdgeInsets.only(left: Adapt.px(20), top: Adapt.px(20)),
-                width: Adapt.px(150),
-                height: Adapt.px(24),
-                color: Colors.grey[200],
-              ),
-              SizedBox(
-                height: Adapt.px(20),
-              ),
-              Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: Adapt.px(20),
-                  ),
-                  Container(
-                    width: Adapt.px(90),
-                    height: Adapt.px(45),
-                    decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(Adapt.px(25))),
-                  ),
-                  SizedBox(
-                    width: Adapt.px(20),
-                  ),
-                  Container(
-                    color: Colors.grey[200],
-                    width: Adapt.px(400),
-                    height: Adapt.px(30),
-                  )
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.only(
-                    left: Adapt.px(20), bottom: Adapt.px(8), top: Adapt.px(20)),
-                color: Colors.grey[200],
-                width: Adapt.screenW() - Adapt.px(100),
-                height: Adapt.px(24),
-              ),
-              Container(
-                margin:
-                    EdgeInsets.only(left: Adapt.px(20), bottom: Adapt.px(8)),
-                color: Colors.grey[200],
-                width: Adapt.screenW() - Adapt.px(100),
-                height: Adapt.px(24),
-              ),
-              Container(
-                margin:
-                    EdgeInsets.only(left: Adapt.px(20), bottom: Adapt.px(8)),
-                color: Colors.grey[200],
-                width: Adapt.screenW() - Adapt.px(100),
-                height: Adapt.px(24),
-              ),
-              Container(
-                margin:
-                    EdgeInsets.only(left: Adapt.px(20), bottom: Adapt.px(8)),
-                color: Colors.grey[200],
-                width: Adapt.screenW() - Adapt.px(300),
-                height: Adapt.px(24),
-              )
-            ],
-          )),
-    );
-  }
-
-  return Column(
-      key: ValueKey(state.episodes),
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.all(Adapt.px(30)),
-          child: Text.rich(TextSpan(children: [
-            TextSpan(
-                text: I18n.of(viewService.context).episodes,
-                style: TextStyle(
-                    fontSize: Adapt.px(35), fontWeight: FontWeight.bold)),
-            TextSpan(
-                text:
-                    ' ${state.episodes != null ? state.episodes.length.toString() : ''}',
-                style: TextStyle(color: Colors.grey, fontSize: Adapt.px(26)))
-          ])),
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: Adapt.px(20), right: Adapt.px(20)),
-          child: Column(
-            children: state.episodes.length > 0
-                ? state.episodes.map(_buildEpisodeCell).toList()
-                : [
-                    _buildShimmerCell(),
-                    SizedBox(
-                      height: Adapt.px(30),
-                    ),
-                    _buildShimmerCell(),
-                    SizedBox(
-                      height: Adapt.px(30),
-                    ),
-                    _buildShimmerCell(),
-                  ],
-          ),
-        )
-      ]);
 }

@@ -15,125 +15,6 @@ Widget buildView(
     AllStreamLinkPageState state, Dispatch dispatch, ViewService viewService) {
   return Builder(builder: (context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
-    Widget _buildMenu() {
-      return SliverToBoxAdapter(
-          child: AnimatedBuilder(
-              animation: state.animationController,
-              builder: (_, __) {
-                return Container(
-                    color: _theme.backgroundColor,
-                    height: Tween<double>(begin: 0.0, end: Adapt.px(130))
-                        .animate(CurvedAnimation(
-                          parent: state.animationController,
-                          curve: Curves.ease,
-                        ))
-                        .value,
-                    child: Opacity(
-                        opacity: state.animationController.value,
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                              width: Adapt.screenW() - Adapt.px(160),
-                              margin: EdgeInsets.all(Adapt.px(25)),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: Adapt.px(30)),
-                              decoration: BoxDecoration(
-                                  color: _theme.primaryColorDark,
-                                  borderRadius:
-                                      BorderRadius.circular(Adapt.px(35))),
-                              child: TextField(
-                                onSubmitted: (s) => dispatch(
-                                    AllStreamLinkPageActionCreator.search(s)),
-                                cursorColor: Colors.grey,
-                                decoration: InputDecoration(
-                                  fillColor: Colors.black,
-                                  hintStyle: TextStyle(fontSize: Adapt.px(35)),
-                                  labelStyle: TextStyle(fontSize: Adapt.px(35)),
-                                  enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.transparent, width: 0)),
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.transparent, width: 0)),
-                                  hintText: 'Search',
-                                ),
-                              ),
-                            ),
-                            PopupMenuButton<SortCondition>(
-                              padding: EdgeInsets.zero,
-                              offset: Offset(0, Adapt.px(100)),
-                              icon: Icon(Icons.sort),
-                              onSelected: (selected) => dispatch(
-                                  AllStreamLinkPageActionCreator.sortChanged(
-                                      selected)),
-                              itemBuilder: (ctx) {
-                                return state.sortTypes.map((s) {
-                                  var unSelectedStyle =
-                                      TextStyle(color: Colors.grey);
-                                  var selectedStyle =
-                                      TextStyle(fontWeight: FontWeight.bold);
-                                  return PopupMenuItem<SortCondition>(
-                                    value: s,
-                                    child: Row(
-                                      children: <Widget>[
-                                        Text(
-                                          s.name,
-                                          style: s.isSelected
-                                              ? selectedStyle
-                                              : unSelectedStyle,
-                                        ),
-                                        Expanded(
-                                          child: Container(),
-                                        ),
-                                        s.isSelected
-                                            ? Icon(Icons.check)
-                                            : SizedBox()
-                                      ],
-                                    ),
-                                  );
-                                }).toList();
-                              },
-                            )
-                          ],
-                        )));
-              }));
-    }
-
-    Widget _buildCell(dynamic d) {
-      return GestureDetector(
-        onTap: () => dispatch(AllStreamLinkPageActionCreator.gridCellTapped(
-            d.id, d.photourl, d.name, d.photourl)),
-        child: Container(
-          key: ValueKey(d),
-          decoration: BoxDecoration(
-              color: _theme.primaryColorDark,
-              image: DecorationImage(
-                  image: CachedNetworkImageProvider(
-                      ImageUrl.getUrl(d.photourl, ImageSize.w300)))),
-        ),
-      );
-    }
-
-    Widget _buildGridView() {
-      var _list =
-          state.mediaType == MediaType.movie ? state.movieList : state.tvList;
-      return _list == null
-          ? SliverToBoxAdapter(
-              child: Container(
-                  height: Adapt.px(400),
-                  child: Center(
-                      child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation(Color(0xFF505050)),
-                  ))))
-          : SliverGrid.count(
-              crossAxisCount: 3,
-              childAspectRatio: 2 / 3,
-              children: state.mediaType == MediaType.movie
-                  ? state.movieList.data.map(_buildCell).toList()
-                  : state.tvList.data.map(_buildCell).toList(),
-            );
-    }
-
     return Scaffold(
       key: state.scaffoldKey,
       resizeToAvoidBottomPadding: false,
@@ -164,10 +45,174 @@ Widget buildView(
       body: CustomScrollView(
         controller: state.scrollController,
         slivers: <Widget>[
-          _buildMenu(),
-          _buildGridView(),
+          _Menu(
+            animationController: state.animationController,
+            sortTypes: state.sortTypes,
+            sortChanged: (e) =>
+                dispatch(AllStreamLinkPageActionCreator.sortChanged(e)),
+            submit: (s) => dispatch(AllStreamLinkPageActionCreator.search(s)),
+          ),
+          //_buildGridView()
+
+          _GridView(
+            dispatch: dispatch,
+            list: state.mediaType == MediaType.movie
+                ? state.movieList?.data
+                : state.tvList?.data,
+          ),
         ],
       ),
     );
   });
+}
+
+class _Menu extends StatelessWidget {
+  final AnimationController animationController;
+  final List<SortCondition<dynamic>> sortTypes;
+  final Function(String) submit;
+  final Function(SortCondition<dynamic>) sortChanged;
+  const _Menu(
+      {this.animationController,
+      this.submit,
+      this.sortChanged,
+      this.sortTypes});
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return SliverToBoxAdapter(
+      child: AnimatedBuilder(
+        animation: animationController,
+        builder: (_, __) {
+          return Container(
+            color: _theme.backgroundColor,
+            height: Tween<double>(begin: 0.0, end: Adapt.px(130))
+                .animate(CurvedAnimation(
+                  parent: animationController,
+                  curve: Curves.ease,
+                ))
+                .value,
+            child: Opacity(
+              opacity: animationController.value,
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    width: Adapt.screenW() - Adapt.px(160),
+                    margin: EdgeInsets.all(Adapt.px(25)),
+                    padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+                    decoration: BoxDecoration(
+                        color: _theme.primaryColorDark,
+                        borderRadius: BorderRadius.circular(Adapt.px(35))),
+                    child: TextField(
+                      onSubmitted: (s) => submit(s),
+                      cursorColor: Colors.grey,
+                      decoration: InputDecoration(
+                        fillColor: Colors.black,
+                        hintStyle: TextStyle(fontSize: Adapt.px(35)),
+                        labelStyle: TextStyle(fontSize: Adapt.px(35)),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.transparent, width: 0)),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.transparent, width: 0)),
+                        hintText: 'Search',
+                      ),
+                    ),
+                  ),
+                  PopupMenuButton<SortCondition>(
+                    padding: EdgeInsets.zero,
+                    offset: Offset(0, Adapt.px(100)),
+                    icon: Icon(Icons.sort),
+                    onSelected: (selected) => sortChanged(selected),
+                    itemBuilder: (ctx) {
+                      return sortTypes.map((s) {
+                        var unSelectedStyle = TextStyle(color: Colors.grey);
+                        var selectedStyle =
+                            TextStyle(fontWeight: FontWeight.bold);
+                        return PopupMenuItem<SortCondition>(
+                          value: s,
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                s.name,
+                                style: s.isSelected
+                                    ? selectedStyle
+                                    : unSelectedStyle,
+                              ),
+                              Expanded(
+                                child: Container(),
+                              ),
+                              s.isSelected ? Icon(Icons.check) : SizedBox()
+                            ],
+                          ),
+                        );
+                      }).toList();
+                    },
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _GridCell extends StatelessWidget {
+  final dynamic data;
+  final Function(dynamic) onTap;
+  const _GridCell({this.data, this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return GestureDetector(
+      onTap: () => onTap(data),
+      child: Container(
+        key: ValueKey(data),
+        decoration: BoxDecoration(
+          color: _theme.primaryColorDark,
+          image: DecorationImage(
+            image: CachedNetworkImageProvider(
+              ImageUrl.getUrl(data.photourl, ImageSize.w300),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _GridView extends StatelessWidget {
+  final dynamic list;
+  final Dispatch dispatch;
+  const _GridView({this.dispatch, this.list});
+  @override
+  Widget build(BuildContext context) {
+    return list == null
+        ? SliverToBoxAdapter(
+            child: Container(
+              height: Adapt.px(400),
+              child: Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Color(0xFF505050)),
+                ),
+              ),
+            ),
+          )
+        : SliverGrid.count(
+            crossAxisCount: 3,
+            childAspectRatio: 2 / 3,
+            children: list
+                .map<Widget>(
+                  (d) => _GridCell(
+                    data: d,
+                    onTap: (e) => dispatch(
+                        AllStreamLinkPageActionCreator.gridCellTapped(
+                            e.id, e.photourl, e.name, e.photourl)),
+                  ),
+                )
+                .toList(),
+          );
+  }
 }

@@ -10,67 +10,6 @@ import 'state.dart';
 
 Widget buildView(
     HeaderState state, Dispatch dispatch, ViewService viewService) {
-  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
-  Widget _buildAirDateShimmerCell() {
-    return Shimmer.fromColors(
-      baseColor: _theme.primaryColorDark,
-      highlightColor: _theme.primaryColorLight,
-      child: Container(
-        width: Adapt.px(300),
-        height: Adapt.px(28),
-        color: Colors.grey[200],
-      ),
-    );
-  }
-
-  Widget _buildOverWatchShimmerCell() {
-    return Shimmer.fromColors(
-        baseColor: _theme.primaryColorDark,
-        highlightColor: _theme.primaryColorLight,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-                width: Adapt.screenW() - Adapt.px(350),
-                height: Adapt.px(26),
-                color: Colors.grey[200]),
-            SizedBox(
-              height: Adapt.px(8),
-            ),
-            Container(
-                width: Adapt.screenW() - Adapt.px(350),
-                height: Adapt.px(26),
-                color: Colors.grey[200]),
-            SizedBox(
-              height: Adapt.px(8),
-            ),
-            Container(
-                width: Adapt.screenW() - Adapt.px(500),
-                height: Adapt.px(26),
-                color: Colors.grey[200]),
-          ],
-        ));
-  }
-
-  Widget _getAirDateCell() {
-    if (state.airDate != null)
-      return Text('Air Date:${state.airDate}');
-    else
-      return _buildAirDateShimmerCell();
-  }
-
-  Widget _getOverWatchCell() {
-    if (state.overwatch != null)
-      return Container(
-        width: Adapt.screenW() - Adapt.px(310),
-        child: Text(state.overwatch?.isEmpty == true || state.overwatch == null
-            ? 'No OverWatch have been added.'
-            : state.overwatch),
-      );
-    else
-      return _buildOverWatchShimmerCell();
-  }
-
   return Container(
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,17 +46,86 @@ Widget buildView(
                     ),
                   )),
             ),
-            SizedBox(
-              height: Adapt.px(8),
+            SizedBox(height: Adapt.px(8)),
+            _AirDateCell(
+              airDate: state.airDate,
             ),
-            _getAirDateCell(),
-            SizedBox(
-              height: Adapt.px(20),
-            ),
-            _getOverWatchCell()
+            SizedBox(height: Adapt.px(20)),
+            _OverWatchCell(
+              overwatch: state.overwatch,
+            )
           ],
         )
       ],
     ),
   );
+}
+
+class _OverWatchShimmerCell extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return Shimmer.fromColors(
+        baseColor: _theme.primaryColorDark,
+        highlightColor: _theme.primaryColorLight,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+                width: Adapt.screenW() - Adapt.px(350),
+                height: Adapt.px(26),
+                color: Colors.grey[200]),
+            SizedBox(
+              height: Adapt.px(8),
+            ),
+            Container(
+                width: Adapt.screenW() - Adapt.px(350),
+                height: Adapt.px(26),
+                color: Colors.grey[200]),
+            SizedBox(
+              height: Adapt.px(8),
+            ),
+            Container(
+                width: Adapt.screenW() - Adapt.px(500),
+                height: Adapt.px(26),
+                color: Colors.grey[200]),
+          ],
+        ));
+  }
+}
+
+class _OverWatchCell extends StatelessWidget {
+  final String overwatch;
+  const _OverWatchCell({this.overwatch});
+  @override
+  Widget build(BuildContext context) {
+    return overwatch != null
+        ? Container(
+            width: Adapt.screenW() - Adapt.px(310),
+            child: Text(overwatch?.isEmpty == true || overwatch == null
+                ? 'No OverWatch have been added.'
+                : overwatch),
+          )
+        : _OverWatchShimmerCell();
+  }
+}
+
+class _AirDateCell extends StatelessWidget {
+  final String airDate;
+  const _AirDateCell({@required this.airDate});
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return airDate != null
+        ? Text('Air Date:$airDate')
+        : Shimmer.fromColors(
+            baseColor: _theme.primaryColorDark,
+            highlightColor: _theme.primaryColorLight,
+            child: Container(
+              width: Adapt.px(300),
+              height: Adapt.px(28),
+              color: Colors.grey[200],
+            ),
+          );
+  }
 }

@@ -39,7 +39,6 @@ class WatchlistPageState
 
 WatchlistPageState initState(Map<String, dynamic> args) {
   WatchlistPageState state = WatchlistPageState();
-  state.accountId = args['accountid'];
   state.isMovie = true;
   return state;
 }

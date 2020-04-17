@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:flutter/material.dart' hide Action;
+import 'package:flutter/material.dart' hide Action, Page;
 import 'package:movie/actions/base_api.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/sortcondition.dart';
@@ -114,7 +114,7 @@ Future _onCellTapped(Action action, Context<AllStreamLinkPageState> ctx) async {
   var data = {
     type == MediaType.movie ? 'id' : 'tvid': id,
     'bgpic': type == MediaType.movie ? posterpic : bgpic,
-    type == MediaType.tv ? 'title' : 'name': title,
+    type == MediaType.tv ? 'name' : 'title': title,
     'posterpic': posterpic
   };
   Page page = type == MediaType.movie ? MovieDetailPage() : TVDetailPage();

@@ -15,8 +15,37 @@ import 'state.dart';
 
 Widget buildView(
     LoginPageState state, Dispatch dispatch, ViewService viewService) {
-  double headerHeight = Adapt.screenH() / 3;
-  Widget _buildBackGround() {
+  return Scaffold(
+    resizeToAvoidBottomPadding: false,
+    body: Stack(
+      children: <Widget>[
+        _BackGround(controller: state.animationController),
+        _LoginBody(
+          animationController: state.animationController,
+          submitAnimationController: state.submitAnimationController,
+          emailLogin: state.emailLogin,
+          accountFocusNode: state.accountFocusNode,
+          pwdFocusNode: state.pwdFocusNode,
+          accountTextController: state.accountTextController,
+          passWordTextController: state.passWordTextController,
+          phoneTextController: state.phoneTextController,
+          codeTextContraller: state.codeTextContraller,
+          countryCode: state.countryCode,
+          countryCodes: state.countryCodes,
+          dispatch: dispatch,
+        ),
+        _AppBar(),
+      ],
+    ),
+  );
+}
+
+class _BackGround extends StatelessWidget {
+  final AnimationController controller;
+  const _BackGround({this.controller});
+  @override
+  Widget build(BuildContext context) {
+    final double headerHeight = Adapt.screenH() / 3;
     return Column(children: [
       ClipPath(
         clipper: CustomCliperPath(
@@ -43,7 +72,7 @@ Widget buildView(
               child: SlideTransition(
                   position: Tween(begin: Offset(0, -1), end: Offset.zero)
                       .animate(CurvedAnimation(
-                    parent: state.animationController,
+                    parent: controller,
                     curve: Interval(
                       0.0,
                       0.4,
@@ -67,7 +96,7 @@ Widget buildView(
           child: SafeArea(
             child: FadeTransition(
                 opacity: Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-                  parent: state.animationController,
+                  parent: controller,
                   curve: Interval(
                     0.7,
                     1.0,
@@ -78,8 +107,11 @@ Widget buildView(
           )),
     ]);
   }
+}
 
-  Widget _buildAppbar() {
+class _AppBar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return Positioned(
       top: 0.0,
       left: 0.0,
@@ -92,10 +124,26 @@ Widget buildView(
       ),
     );
   }
+}
 
-  Widget _buildEmailEntry() {
+class _EmailEntry extends StatelessWidget {
+  final AnimationController controller;
+  final TextEditingController accountTextController;
+  final TextEditingController passWordTextController;
+  final FocusNode accountFocusNode;
+  final FocusNode pwdFocusNode;
+  final Function(String) onSubmit;
+  const _EmailEntry(
+      {this.controller,
+      this.accountFocusNode,
+      this.pwdFocusNode,
+      this.accountTextController,
+      this.passWordTextController,
+      this.onSubmit});
+  @override
+  Widget build(BuildContext context) {
     final accountCurve = CurvedAnimation(
-      parent: state.animationController,
+      parent: controller,
       curve: Interval(
         0.3,
         0.5,
@@ -103,13 +151,14 @@ Widget buildView(
       ),
     );
     final passwordCurve = CurvedAnimation(
-      parent: state.animationController,
+      parent: controller,
       curve: Interval(
         0.4,
         0.6,
         curve: Curves.ease,
       ),
     );
+
     return Column(children: [
       SlideTransition(
         position:
@@ -119,8 +168,8 @@ Widget buildView(
             child: Padding(
               padding: EdgeInsets.all(Adapt.px(40)),
               child: TextField(
-                focusNode: state.accountFocusNode,
-                controller: state.accountTextController,
+                focusNode: accountFocusNode,
+                controller: accountTextController,
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
                 style: TextStyle(fontSize: Adapt.px(35)),
@@ -135,7 +184,7 @@ Widget buildView(
                     focusedBorder: new UnderlineInputBorder(
                         borderSide: new BorderSide(color: Colors.black87))),
                 onSubmitted: (s) {
-                  state.accountFocusNode.nextFocus();
+                  accountFocusNode.nextFocus();
                 },
               ),
             )),
@@ -148,8 +197,8 @@ Widget buildView(
           child: Padding(
             padding: EdgeInsets.all(Adapt.px(40)),
             child: TextField(
-              focusNode: state.pwdFocusNode,
-              controller: state.passWordTextController,
+              focusNode: pwdFocusNode,
+              controller: passWordTextController,
               style: TextStyle(color: Colors.black, fontSize: Adapt.px(35)),
               cursorColor: Colors.black,
               obscureText: true,
@@ -162,22 +211,37 @@ Widget buildView(
                       TextStyle(color: Colors.black, fontSize: Adapt.px(35)),
                   focusedBorder: new UnderlineInputBorder(
                       borderSide: new BorderSide(color: Colors.black87))),
-              onSubmitted: (s) =>
-                  dispatch(LoginPageActionCreator.onLoginClicked()),
+              onSubmitted: onSubmit,
             ),
           ),
         ),
       ),
     ]);
   }
+}
 
-  Widget _buildPhoneNumberEntry() {
+class _PhoneNumberEntry extends StatelessWidget {
+  final TextEditingController phoneTextController;
+  final TextEditingController codeTextContraller;
+  final List<CountryPhoneCode> countryCodes;
+  final String countryCode;
+  final Function(String) countryCodeTap;
+  final Function sendVerificationCode;
+  const _PhoneNumberEntry(
+      {this.phoneTextController,
+      this.codeTextContraller,
+      this.countryCodeTap,
+      this.countryCode,
+      this.countryCodes,
+      this.sendVerificationCode});
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
       child: Column(children: [
         SizedBox(height: Adapt.px(40)),
         TextField(
-          controller: state.phoneTextController,
+          controller: phoneTextController,
           keyboardType: TextInputType.number,
           textInputAction: TextInputAction.next,
           cursorColor: Colors.black,
@@ -186,17 +250,16 @@ Widget buildView(
             hintText: 'Phone Number',
             prefixIcon: InkWell(
                 onTap: () => showDialog(
-                    context: viewService.context,
+                    context: context,
                     child: _CountryCodeDialog(
-                      countrys: state.countryCodes,
-                      onCellTap: (str) => dispatch(
-                          LoginPageActionCreator.countryCodeChange(str)),
+                      countrys: countryCodes,
+                      onCellTap: countryCodeTap,
                     )),
                 child: SizedBox(
                   width: Adapt.px(60),
                   child: Center(
                     child: Text(
-                      state.countryCode,
+                      countryCode,
                     ),
                   ),
                 )),
@@ -211,7 +274,7 @@ Widget buildView(
         SizedBox(height: Adapt.px(80)),
         Theme(
           child: TextField(
-            controller: state.codeTextContraller,
+            controller: codeTextContraller,
             keyboardType: TextInputType.number,
             textInputAction: TextInputAction.done,
             cursorColor: Colors.black,
@@ -220,9 +283,8 @@ Widget buildView(
               hintText: 'Verification Code',
               prefixIcon: Icon(Icons.sms),
               suffixIcon: _SmsSendCell(
-                phone: state.phoneTextController,
-                onPress: () =>
-                    dispatch(LoginPageActionCreator.sendVerificationCode()),
+                phone: phoneTextController,
+                onPress: sendVerificationCode,
               ),
               floatingLabelBehavior: FloatingLabelBehavior.auto,
               filled: true,
@@ -233,7 +295,7 @@ Widget buildView(
               ),
             ),
           ),
-          data: Theme.of(viewService.context).copyWith(
+          data: Theme.of(context).copyWith(
             primaryColor: Colors.black87,
           ),
         ),
@@ -241,18 +303,24 @@ Widget buildView(
       ]),
     );
   }
+}
 
-  Widget _buildSubmit() {
-    var submitWidth = CurvedAnimation(
-      parent: state.submitAnimationController,
+class _SubmitButton extends StatelessWidget {
+  final AnimationController controller;
+  final Function onSubimt;
+  const _SubmitButton({this.controller, this.onSubimt});
+  @override
+  Widget build(BuildContext context) {
+    final submitWidth = CurvedAnimation(
+      parent: controller,
       curve: Interval(
         0.0,
         0.5,
         curve: Curves.ease,
       ),
     );
-    var loadCurved = CurvedAnimation(
-      parent: state.submitAnimationController,
+    final loadCurved = CurvedAnimation(
+      parent: controller,
       curve: Interval(
         0.5,
         1.0,
@@ -260,7 +328,7 @@ Widget buildView(
       ),
     );
     return AnimatedBuilder(
-      animation: state.submitAnimationController,
+      animation: controller,
       builder: (ctx, w) {
         double buttonWidth = Adapt.screenW() * 0.8;
         return Container(
@@ -283,8 +351,7 @@ Widget buildView(
                           fontSize: Tween<double>(begin: Adapt.px(35), end: 0.0)
                               .animate(submitWidth)
                               .value)),
-                  onPressed: () =>
-                      dispatch(LoginPageActionCreator.onLoginClicked()),
+                  onPressed: onSubimt,
                 ),
               ),
               ScaleTransition(
@@ -306,10 +373,38 @@ Widget buildView(
       },
     );
   }
+}
 
-  Widget _buildLoginBody() {
+class _LoginBody extends StatelessWidget {
+  final Dispatch dispatch;
+  final AnimationController animationController;
+  final AnimationController submitAnimationController;
+  final TextEditingController phoneTextController;
+  final TextEditingController codeTextContraller;
+  final TextEditingController accountTextController;
+  final TextEditingController passWordTextController;
+  final FocusNode accountFocusNode;
+  final FocusNode pwdFocusNode;
+  final List<CountryPhoneCode> countryCodes;
+  final String countryCode;
+  final bool emailLogin;
+  const _LoginBody(
+      {this.accountFocusNode,
+      this.accountTextController,
+      this.animationController,
+      this.codeTextContraller,
+      this.dispatch,
+      this.emailLogin,
+      this.passWordTextController,
+      this.phoneTextController,
+      this.pwdFocusNode,
+      this.submitAnimationController,
+      this.countryCode,
+      this.countryCodes});
+  @override
+  Widget build(BuildContext context) {
     final cardCurve = CurvedAnimation(
-      parent: state.animationController,
+      parent: animationController,
       curve: Interval(
         0,
         0.4,
@@ -317,7 +412,7 @@ Widget buildView(
       ),
     );
     final submitCurve = CurvedAnimation(
-      parent: state.animationController,
+      parent: animationController,
       curve: Interval(
         0.5,
         0.7,
@@ -346,16 +441,37 @@ Widget buildView(
                 ),*/
                 AnimatedSwitcher(
                   duration: Duration(milliseconds: 300),
-                  child: state.emailLogin
-                      ? _buildEmailEntry()
-                      : _buildPhoneNumberEntry(),
+                  child: emailLogin
+                      ? _EmailEntry(
+                          onSubmit: (s) =>
+                              dispatch(LoginPageActionCreator.onLoginClicked()),
+                          controller: animationController,
+                          accountFocusNode: accountFocusNode,
+                          pwdFocusNode: pwdFocusNode,
+                          accountTextController: accountTextController,
+                          passWordTextController: passWordTextController,
+                        )
+                      : _PhoneNumberEntry(
+                          phoneTextController: phoneTextController,
+                          codeTextContraller: codeTextContraller,
+                          countryCode: countryCode,
+                          countryCodes: countryCodes,
+                          sendVerificationCode: () => dispatch(
+                              LoginPageActionCreator.sendVerificationCode()),
+                          countryCodeTap: (str) => dispatch(
+                              LoginPageActionCreator.countryCodeChange(str)),
+                        ),
                 ),
                 SlideTransition(
                     position: Tween(begin: Offset(0, 1), end: Offset.zero)
                         .animate(submitCurve),
                     child: FadeTransition(
                       opacity: Tween(begin: 0.0, end: 1.0).animate(submitCurve),
-                      child: _buildSubmit(),
+                      child: _SubmitButton(
+                        controller: submitAnimationController,
+                        onSubimt: () =>
+                            dispatch(LoginPageActionCreator.onLoginClicked()),
+                      ),
                     )),
                 Container(
                     padding: EdgeInsets.fromLTRB(
@@ -364,7 +480,7 @@ Widget buildView(
                     child: FadeTransition(
                       opacity:
                           Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-                        parent: state.animationController,
+                        parent: animationController,
                         curve: Interval(
                           0.7,
                           1.0,
@@ -381,50 +497,51 @@ Widget buildView(
                       ),
                     )),
                 Container(
-                    alignment: Alignment.bottomRight,
-                    height: Adapt.px(120),
-                    child: FadeTransition(
-                      opacity:
-                          Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-                        parent: state.animationController,
-                        curve: Interval(
-                          0.7,
-                          1.0,
-                          curve: Curves.ease,
-                        ),
-                      )),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          InkWell(
-                            onTap: () => dispatch(
-                                LoginPageActionCreator.switchLoginMode()),
-                            child: Image.asset(
-                              state.emailLogin
-                                  ? 'images/phone_sms.png'
-                                  : 'images/email_login.png',
-                              width: Adapt.px(50),
-                            ),
-                          ),
-                          SizedBox(width: Adapt.px(20)),
-                          InkWell(
-                            onTap: () => dispatch(
-                                LoginPageActionCreator.onGoogleSignIn()),
-                            child: Image.asset(
-                              'images/google.png',
-                              width: Adapt.px(50),
-                            ),
-                          ),
-                          SizedBox(width: Adapt.px(20)),
-                          Icon(
-                            FontAwesomeIcons.facebook,
-                            color: Colors.blue[700],
-                            size: Adapt.px(45),
-                          ),
-                          SizedBox(width: Adapt.px(50)),
-                        ],
+                  alignment: Alignment.bottomRight,
+                  height: Adapt.px(120),
+                  child: FadeTransition(
+                    opacity:
+                        Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+                      parent: animationController,
+                      curve: Interval(
+                        0.7,
+                        1.0,
+                        curve: Curves.ease,
                       ),
-                    ))
+                    )),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        InkWell(
+                          onTap: () => dispatch(
+                              LoginPageActionCreator.switchLoginMode()),
+                          child: Image.asset(
+                            emailLogin
+                                ? 'images/phone_sms.png'
+                                : 'images/email_login.png',
+                            width: Adapt.px(50),
+                          ),
+                        ),
+                        SizedBox(width: Adapt.px(20)),
+                        InkWell(
+                          onTap: () =>
+                              dispatch(LoginPageActionCreator.onGoogleSignIn()),
+                          child: Image.asset(
+                            'images/google.png',
+                            width: Adapt.px(50),
+                          ),
+                        ),
+                        SizedBox(width: Adapt.px(20)),
+                        Icon(
+                          FontAwesomeIcons.facebook,
+                          color: Colors.blue[700],
+                          size: Adapt.px(45),
+                        ),
+                        SizedBox(width: Adapt.px(50)),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -432,17 +549,6 @@ Widget buildView(
       ),
     );
   }
-
-  return Scaffold(
-    resizeToAvoidBottomPadding: false,
-    body: Stack(
-      children: <Widget>[
-        _buildBackGround(),
-        _buildLoginBody(),
-        _buildAppbar(),
-      ],
-    ),
-  );
 }
 
 class _SmsSendCell extends StatefulWidget {

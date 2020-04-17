@@ -13,56 +13,33 @@ import 'package:shimmer/shimmer.dart';
 import 'state.dart';
 
 Widget buildView(CastState state, Dispatch dispatch, ViewService viewService) {
-  Widget _buildCast() {
-    var _model = state.cast;
-    return SliverToBoxAdapter(
-      child: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              height: Adapt.px(50),
+  return SliverToBoxAdapter(
+    child: Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(
+            height: Adapt.px(50),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
+            child: Text(
+              I18n.of(viewService.context).topBilledCast,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: Adapt.px(35)),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
-              child: Text(
-                I18n.of(viewService.context).topBilledCast,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: Adapt.px(35)),
-              ),
-            ),
-            SizedBox(
-              height: Adapt.px(30),
-            ),
-            Container(
-              height: Adapt.px(300),
-              child: _model.length == 0
-                  ? _CastShimmerList()
-                  : ListView.separated(
-                      padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
-                      physics: BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      separatorBuilder: (_, __) =>
-                          SizedBox(width: Adapt.px(30)),
-                      itemCount: _model.length,
-                      itemBuilder: (_, index) {
-                        final d = _model[index];
-                        return _CastCell(
-                          data: d,
-                          onTap: () => dispatch(
-                              MovieDetailPageActionCreator.castCellTapped(
-                                  d.id, d.profilePath, d.name, d.character)),
-                        );
-                      },
-                    ),
-            )
-          ],
-        ),
+          ),
+          SizedBox(
+            height: Adapt.px(30),
+          ),
+          _CastList(
+            data: state.cast,
+            dispatch: dispatch,
+          )
+        ],
       ),
-    );
-  }
-
-  return _buildCast();
+    ),
+  );
 }
 
 class _CastShimmerCell extends StatelessWidget {
@@ -167,6 +144,37 @@ class _CastCell extends StatelessWidget {
               ))
         ],
       ),
+    );
+  }
+}
+
+class _CastList extends StatelessWidget {
+  final List<CastData> data;
+  final Dispatch dispatch;
+  const _CastList({this.data, this.dispatch});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: Adapt.px(300),
+      child: data.length == 0
+          ? _CastShimmerList()
+          : ListView.separated(
+              padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
+              physics: BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              separatorBuilder: (_, __) => SizedBox(width: Adapt.px(30)),
+              itemCount: data.length,
+              itemBuilder: (_, index) {
+                final d = data[index];
+                return _CastCell(
+                  data: d,
+                  onTap: () => dispatch(
+                    MovieDetailPageActionCreator.castCellTapped(
+                        d.id, d.profilePath, d.name, d.character),
+                  ),
+                );
+              },
+            ),
     );
   }
 }

@@ -14,127 +14,20 @@ import 'action.dart';
 import 'state.dart';
 
 Widget buildView(ShareState state, Dispatch dispatch, ViewService viewService) {
-  final TextStyle _selectPopStyle = TextStyle(
-    fontSize: Adapt.px(24),
-    fontWeight: FontWeight.bold,
-  );
-
-  final TextStyle _unselectPopStyle =
-      TextStyle(fontSize: Adapt.px(24), color: Colors.grey);
-  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
-  Widget _buildFrontTitel(
-      {EdgeInsetsGeometry padding =
-          const EdgeInsets.symmetric(horizontal: 20)}) {
-    return Padding(
-      padding: padding,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-            'New Share',
-            style:
-                TextStyle(fontSize: Adapt.px(35), fontWeight: FontWeight.bold),
-          ),
-          GestureDetector(
-            onTap: () =>
-                viewService.broadcast(HomePageActionCreator.onShareMore()),
-            child: Row(
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () =>
-                      dispatch(ShareActionCreator.onShareFilterChanged(true)),
-                  child: Text(I18n.of(viewService.context).movies,
-                      style: state.showShareMovie
-                          ? _selectPopStyle
-                          : _unselectPopStyle),
-                ),
-                SizedBox(
-                  width: Adapt.px(20),
-                ),
-                GestureDetector(
-                  onTap: () =>
-                      dispatch(ShareActionCreator.onShareFilterChanged(false)),
-                  child: Text(I18n.of(viewService.context).tvShows,
-                      style: state.showShareMovie
-                          ? _unselectPopStyle
-                          : _selectPopStyle),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMoreCell() {
-    return InkWell(
-        onTap: () => dispatch(HomePageActionCreator.onShareMore()),
-        child: Column(
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                color: _theme.primaryColorLight,
-                borderRadius: BorderRadius.circular(Adapt.px(15)),
-              ),
-              width: Adapt.px(250),
-              height: Adapt.px(350),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      I18n.of(viewService.context).more,
-                      style: TextStyle(fontSize: Adapt.px(35)),
-                    ),
-                    Icon(Icons.arrow_forward, size: Adapt.px(35))
-                  ]),
-            )
-          ],
-        ));
-  }
-
-  Widget _buildShareBody() {
-    var model = state.showShareMovie
-        ? (state.shareMovies?.data ?? [])
-        : (state.shareTvshows?.data ?? []);
-    return AnimatedSwitcher(
-        duration: Duration(milliseconds: 600),
-        child: Container(
-          key: ValueKey(model),
-          height: Adapt.px(450),
-          child: model.length > 0
-              ? ListView.separated(
-                  padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-                  scrollDirection: Axis.horizontal,
-                  physics: PageScrollPhysics(),
-                  shrinkWrap: true,
-                  separatorBuilder: (_, index) => SizedBox(width: Adapt.px(30)),
-                  itemCount: model.length + 1,
-                  itemBuilder: (_, index) {
-                    if (index == model.length) return _buildMoreCell();
-                    final dynamic d = model[index];
-                    return _Cell(
-                      data: d,
-                      onTap: () => dispatch(HomePageActionCreator.onCellTapped(
-                          d.id,
-                          d.photourl,
-                          d.name,
-                          d.photourl,
-                          state.showShareMovie
-                              ? MediaType.movie
-                              : MediaType.tv)),
-                    );
-                  })
-              : _ShimmerList(),
-        ));
-  }
-
   return Column(
     children: <Widget>[
-      _buildFrontTitel(),
+      _FrontTitel(
+        dispatch: dispatch,
+        showShareMovie: state.showShareMovie,
+      ),
       SizedBox(height: Adapt.px(30)),
-      _buildShareBody(),
+      _ShareBody(
+        model: state.showShareMovie
+            ? (state.shareMovies?.data ?? [])
+            : (state.shareTvshows?.data ?? []),
+        dispatch: dispatch,
+        showMovie: state.showShareMovie,
+      ),
     ],
   );
 }
@@ -230,5 +123,131 @@ class _Cell extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class _FrontTitel extends StatelessWidget {
+  final Dispatch dispatch;
+  final bool showShareMovie;
+  const _FrontTitel({this.dispatch, this.showShareMovie});
+  @override
+  Widget build(BuildContext context) {
+    final TextStyle _selectPopStyle = TextStyle(
+      fontSize: Adapt.px(24),
+      fontWeight: FontWeight.bold,
+    );
+    final TextStyle _unselectPopStyle =
+        TextStyle(fontSize: Adapt.px(24), color: Colors.grey);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            'New Share',
+            style:
+                TextStyle(fontSize: Adapt.px(35), fontWeight: FontWeight.bold),
+          ),
+          GestureDetector(
+            onTap: () => dispatch(HomePageActionCreator.onShareMore()),
+            child: Row(
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () =>
+                      dispatch(ShareActionCreator.onShareFilterChanged(true)),
+                  child: Text(I18n.of(context).movies,
+                      style:
+                          showShareMovie ? _selectPopStyle : _unselectPopStyle),
+                ),
+                SizedBox(
+                  width: Adapt.px(20),
+                ),
+                GestureDetector(
+                  onTap: () =>
+                      dispatch(ShareActionCreator.onShareFilterChanged(false)),
+                  child: Text(I18n.of(context).tvShows,
+                      style:
+                          showShareMovie ? _unselectPopStyle : _selectPopStyle),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _MoreCell extends StatelessWidget {
+  final Dispatch dispatch;
+  const _MoreCell({this.dispatch});
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return InkWell(
+        onTap: () => dispatch(HomePageActionCreator.onShareMore()),
+        child: Column(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                color: _theme.primaryColorLight,
+                borderRadius: BorderRadius.circular(Adapt.px(15)),
+              ),
+              width: Adapt.px(250),
+              height: Adapt.px(350),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      I18n.of(context).more,
+                      style: TextStyle(fontSize: Adapt.px(35)),
+                    ),
+                    Icon(Icons.arrow_forward, size: Adapt.px(35))
+                  ]),
+            )
+          ],
+        ));
+  }
+}
+
+class _ShareBody extends StatelessWidget {
+  final List<dynamic> model;
+  final Dispatch dispatch;
+  final bool showMovie;
+  const _ShareBody({this.model, this.dispatch, this.showMovie});
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSwitcher(
+        duration: Duration(milliseconds: 600),
+        child: Container(
+          key: ValueKey(model),
+          height: Adapt.px(450),
+          child: model.length > 0
+              ? ListView.separated(
+                  padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+                  scrollDirection: Axis.horizontal,
+                  physics: PageScrollPhysics(),
+                  shrinkWrap: true,
+                  separatorBuilder: (_, index) => SizedBox(width: Adapt.px(30)),
+                  itemCount: model.length + 1,
+                  itemBuilder: (_, index) {
+                    if (index == model.length)
+                      return _MoreCell(
+                        dispatch: dispatch,
+                      );
+                    final dynamic d = model[index];
+                    return _Cell(
+                      data: d,
+                      onTap: () => dispatch(HomePageActionCreator.onCellTapped(
+                          d.id,
+                          d.photourl,
+                          d.name,
+                          d.photourl,
+                          showMovie ? MediaType.movie : MediaType.tv)),
+                    );
+                  })
+              : _ShimmerList(),
+        ));
   }
 }

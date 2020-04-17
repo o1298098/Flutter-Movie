@@ -14,114 +14,30 @@ import 'state.dart';
 
 Widget buildView(
     SwiperState state, Dispatch dispatch, ViewService viewService) {
-  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
-  Widget _buildmySeiper() {
-    List<UserMedia> _list = state.isMovie
-        ? (state?.movies?.data ?? [])
-        : (state?.tvshows?.data ?? []);
-    Widget _child = _list.length == 0
-        ? Shimmer.fromColors(
-            baseColor: _theme.primaryColorDark,
-            highlightColor: _theme.primaryColorLight,
-            child: Center(
-              child: Container(
-                width: Adapt.screenW() * .85,
-                height: Adapt.screenH() / 2 + Adapt.px(80),
-                margin:
-                    EdgeInsets.only(right: Adapt.px(20), bottom: Adapt.px(70)),
-                decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(Adapt.px(50))),
-              ),
-            ),
-          )
-        : _SwiperView(
-            key: ValueKey(_list),
-            itemCount: _list.length,
-            viewportFraction: 0.85,
-            physics: BouncingScrollPhysics(),
-            scale: 0.9,
-            itemTapped: (index) =>
-                dispatch(WatchlistPageActionCreator.swiperCellTapped()),
-            onPageChanged: (index) => dispatch(
-                WatchlistPageActionCreator.swiperChanged(_list[index])),
-            itemBuilder: (ctx, index) {
-              var _d = _list[index];
-              return Container(
-                  key: ValueKey(_d),
-                  margin: EdgeInsets.only(right: Adapt.px(20)),
-                  child: Hero(
-                      tag: 'Background${_d.mediaId}',
-                      child: Stack(
-                        alignment: Alignment.bottomRight,
-                        children: <Widget>[
-                          Container(
-                            height: Adapt.screenH() / 2 + Adapt.px(80),
-                            alignment: Alignment.bottomRight,
-                            margin: EdgeInsets.only(
-                                right: Adapt.px(20), bottom: Adapt.px(70)),
-                            decoration: BoxDecoration(
-                                color: index.isEven
-                                    ? Colors.amber
-                                    : Colors.blueAccent,
-                                image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    alignment: Alignment.bottomCenter,
-                                    image: CachedNetworkImageProvider(
-                                        ImageUrl.getUrl(
-                                            _d.photoUrl, ImageSize.w500))),
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                      blurRadius: 20,
-                                      offset: Offset(-5, 12),
-                                      color: Colors.black26)
-                                ],
-                                borderRadius:
-                                    BorderRadius.circular(Adapt.px(50))),
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.only(
-                                right: Adapt.px(10), bottom: Adapt.px(60)),
-                            width: Adapt.px(120),
-                            height: Adapt.px(120),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.circular(Adapt.px(30))),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: Text(
-                                _d.rated.toString(),
-                                style: TextStyle(
-                                    color:
-                                        Colors.tealAccent[700].withAlpha(200),
-                                    fontSize: Adapt.px(50),
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: Adapt.px(60),
-                            height: Adapt.px(60),
-                            margin: EdgeInsets.only(bottom: Adapt.px(140)),
-                            decoration: BoxDecoration(
-                                color: Colors.white, shape: BoxShape.circle),
-                            child: Icon(Icons.star, color: Colors.yellow),
-                          )
-                        ],
-                      )));
-            },
-          );
-    return Container(
-        height: Adapt.screenH() / 2 + Adapt.px(150),
-        child: AnimatedSwitcher(
-          duration: Duration(milliseconds: 600),
-          child: _child,
-        ));
-  }
+  final List<UserMedia> _list = state.isMovie
+      ? (state?.movies?.data ?? [])
+      : (state?.tvshows?.data ?? []);
 
-  return _buildmySeiper();
+  return Container(
+      height: Adapt.screenH() / 2 + Adapt.px(150),
+      child: AnimatedSwitcher(
+        duration: Duration(milliseconds: 600),
+        child: _list.length == 0
+            ? _ShimmerCell()
+            : _SwiperView(
+                key: ValueKey(_list),
+                itemCount: _list.length,
+                viewportFraction: 0.85,
+                physics: BouncingScrollPhysics(),
+                scale: 0.9,
+                itemTapped: (index) =>
+                    dispatch(WatchlistPageActionCreator.swiperCellTapped()),
+                onPageChanged: (index) => dispatch(
+                    WatchlistPageActionCreator.swiperChanged(_list[index])),
+                itemBuilder: (ctx, index) =>
+                    _SwiperCell(data: _list[index], index: index),
+              ),
+      ));
 }
 
 class _SwiperView extends StatefulWidget {
@@ -192,6 +108,106 @@ class _SwiperViewState extends State<_SwiperView> {
       },
       onPageChanged: widget.onPageChanged,
       itemCount: widget.itemCount,
+    );
+  }
+}
+
+class _SwiperCell extends StatelessWidget {
+  final UserMedia data;
+  final int index;
+  const _SwiperCell({this.data, this.index});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      key: ValueKey(data),
+      margin: EdgeInsets.only(right: Adapt.px(20)),
+      child: Hero(
+        tag: 'Background${data.mediaId}',
+        child: Stack(
+          alignment: Alignment.bottomRight,
+          children: <Widget>[
+            Container(
+              height: Adapt.screenH() / 2 + Adapt.px(80),
+              alignment: Alignment.bottomRight,
+              margin:
+                  EdgeInsets.only(right: Adapt.px(20), bottom: Adapt.px(70)),
+              decoration: BoxDecoration(
+                color: index.isEven ? Colors.amber : Colors.blueAccent,
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  alignment: Alignment.bottomCenter,
+                  image: CachedNetworkImageProvider(
+                    ImageUrl.getUrl(data.photoUrl, ImageSize.w500),
+                  ),
+                ),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      blurRadius: 20,
+                      offset: Offset(-5, 12),
+                      color: Colors.black26)
+                ],
+                borderRadius: BorderRadius.circular(
+                  Adapt.px(50),
+                ),
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(
+                right: Adapt.px(10),
+                bottom: Adapt.px(60),
+              ),
+              width: Adapt.px(120),
+              height: Adapt.px(120),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(
+                  Adapt.px(30),
+                ),
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: Text(
+                  data.rated.toString(),
+                  style: TextStyle(
+                      color: Colors.tealAccent[700].withAlpha(200),
+                      fontSize: Adapt.px(50),
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            Container(
+              width: Adapt.px(60),
+              height: Adapt.px(60),
+              margin: EdgeInsets.only(bottom: Adapt.px(140)),
+              decoration:
+                  BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+              child: Icon(Icons.star, color: Colors.yellow),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ShimmerCell extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return Shimmer.fromColors(
+      baseColor: _theme.primaryColorDark,
+      highlightColor: _theme.primaryColorLight,
+      child: Center(
+        child: Container(
+          width: Adapt.screenW() * .85,
+          height: Adapt.screenH() / 2 + Adapt.px(80),
+          margin: EdgeInsets.only(right: Adapt.px(20), bottom: Adapt.px(70)),
+          decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(Adapt.px(50))),
+        ),
+      ),
     );
   }
 }

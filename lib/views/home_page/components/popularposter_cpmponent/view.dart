@@ -15,134 +15,17 @@ import 'state.dart';
 
 Widget buildView(
     PopularPosterState state, Dispatch dispatch, ViewService viewService) {
-  final TextStyle _selectPopStyle = TextStyle(
-    fontSize: Adapt.px(24),
-    fontWeight: FontWeight.bold,
-  );
-
-  final TextStyle _unselectPopStyle =
-      TextStyle(fontSize: Adapt.px(24), color: const Color(0xFF9E9E9E));
-
-  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
-  Widget _buildFrontTitel(String title, Widget action,
-      {EdgeInsetsGeometry padding =
-          const EdgeInsets.symmetric(horizontal: 20)}) {
-    return Padding(
-      padding: padding,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-            title,
-            style: TextStyle(
-                //color: Colors.black,
-                fontSize: Adapt.px(35),
-                fontWeight: FontWeight.bold),
-          ),
-          action
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMoreCell() {
-    return Column(
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-            color: _theme.primaryColorLight,
-            borderRadius: BorderRadius.circular(Adapt.px(15)),
-          ),
-          width: Adapt.px(250),
-          height: Adapt.px(350),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  I18n.of(viewService.context).more,
-                  style: TextStyle(fontSize: Adapt.px(35)),
-                ),
-                Icon(Icons.arrow_forward, size: Adapt.px(35))
-              ]),
-        )
-      ],
-    );
-  }
-
-  Widget _buildbody() {
-    VideoListModel model =
-        state.showmovie ? state.popularMoives : state.popularTVShows;
-    return AnimatedSwitcher(
-        transitionBuilder: (widget, animated) {
-          return SlideTransition(
-            position:
-                animated.drive(Tween(begin: Offset(1, 0), end: Offset.zero)),
-            child: widget,
-          );
-        },
-        switchInCurve: Curves.easeIn,
-        switchOutCurve: Curves.easeOut,
-        duration: Duration(milliseconds: 300),
-        child: Container(
-          key: ValueKey(model),
-          height: Adapt.px(450),
-          child: model.results.length > 0
-              ? ListView.separated(
-                  padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-                  scrollDirection: Axis.horizontal,
-                  physics: PageScrollPhysics(),
-                  shrinkWrap: true,
-                  separatorBuilder: (_, index) => SizedBox(width: Adapt.px(30)),
-                  itemCount: model.results.length + 1,
-                  itemBuilder: (_, index) {
-                    if (index == model.results.length) return _buildMoreCell();
-                    final d = model.results[index];
-                    return _Cell(
-                      data: d,
-                      onTap: () => dispatch(
-                          PopularPosterActionCreator.onCellTapped(
-                              d.id,
-                              d.backdropPath,
-                              state.showmovie ? d.title : d.name,
-                              d.posterPath)),
-                    );
-                  },
-                )
-              : _ShimmerList(),
-        ));
-  }
-
   return Column(
     children: <Widget>[
-      _buildFrontTitel(
-          I18n.of(viewService.context).popular,
-          Row(
-            children: <Widget>[
-              GestureDetector(
-                onTap: () => dispatch(
-                    PopularPosterActionCreator.onPopularFilterChanged(true)),
-                child: Text(I18n.of(viewService.context).movies,
-                    style:
-                        state.showmovie ? _selectPopStyle : _unselectPopStyle),
-              ),
-              SizedBox(
-                width: Adapt.px(20),
-              ),
-              GestureDetector(
-                onTap: () => dispatch(
-                    PopularPosterActionCreator.onPopularFilterChanged(false)),
-                child: Text(I18n.of(viewService.context).tvShows,
-                    style:
-                        state.showmovie ? _unselectPopStyle : _selectPopStyle),
-              )
-            ],
-          ),
-          padding: EdgeInsets.symmetric(horizontal: Adapt.px(30))),
-      SizedBox(
-        height: Adapt.px(30),
+      _FrontTitel(
+        showMovie: state.showmovie,
+        dispatch: dispatch,
       ),
-      _buildbody(),
+      SizedBox(height: Adapt.px(30)),
+      _PopBody(
+        dispatch: dispatch,
+        model: state.showmovie ? state.popularMoives : state.popularTVShows,
+      ),
     ],
   );
 }
@@ -239,5 +122,126 @@ class _Cell extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class _MoreCell extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return Column(
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            color: _theme.primaryColorLight,
+            borderRadius: BorderRadius.circular(Adapt.px(15)),
+          ),
+          width: Adapt.px(250),
+          height: Adapt.px(350),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  I18n.of(context).more,
+                  style: TextStyle(fontSize: Adapt.px(35)),
+                ),
+                Icon(Icons.arrow_forward, size: Adapt.px(35))
+              ]),
+        )
+      ],
+    );
+  }
+}
+
+class _FrontTitel extends StatelessWidget {
+  final bool showMovie;
+  final Dispatch dispatch;
+  const _FrontTitel({this.showMovie, this.dispatch});
+  @override
+  Widget build(BuildContext context) {
+    final TextStyle _selectPopStyle = TextStyle(
+      fontSize: Adapt.px(24),
+      fontWeight: FontWeight.bold,
+    );
+
+    final TextStyle _unselectPopStyle =
+        TextStyle(fontSize: Adapt.px(24), color: const Color(0xFF9E9E9E));
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            I18n.of(context).popular,
+            style:
+                TextStyle(fontSize: Adapt.px(35), fontWeight: FontWeight.bold),
+          ),
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () => dispatch(
+                    PopularPosterActionCreator.onPopularFilterChanged(true)),
+                child: Text(I18n.of(context).movies,
+                    style: showMovie ? _selectPopStyle : _unselectPopStyle),
+              ),
+              SizedBox(
+                width: Adapt.px(20),
+              ),
+              GestureDetector(
+                onTap: () => dispatch(
+                    PopularPosterActionCreator.onPopularFilterChanged(false)),
+                child: Text(I18n.of(context).tvShows,
+                    style: showMovie ? _unselectPopStyle : _selectPopStyle),
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _PopBody extends StatelessWidget {
+  final VideoListModel model;
+  final Dispatch dispatch;
+  const _PopBody({this.model, this.dispatch}) : assert(model != null);
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSwitcher(
+        transitionBuilder: (widget, animated) {
+          return SlideTransition(
+            position:
+                animated.drive(Tween(begin: Offset(1, 0), end: Offset.zero)),
+            child: widget,
+          );
+        },
+        switchInCurve: Curves.easeIn,
+        switchOutCurve: Curves.easeOut,
+        duration: Duration(milliseconds: 300),
+        child: Container(
+          key: ValueKey(model),
+          height: Adapt.px(450),
+          child: model.results.length > 0
+              ? ListView.separated(
+                  padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+                  scrollDirection: Axis.horizontal,
+                  physics: PageScrollPhysics(),
+                  shrinkWrap: true,
+                  separatorBuilder: (_, index) => SizedBox(width: Adapt.px(30)),
+                  itemCount: model.results.length + 1,
+                  itemBuilder: (_, index) {
+                    if (index == model.results.length) return _MoreCell();
+                    final d = model.results[index];
+                    return _Cell(
+                      data: d,
+                      onTap: () => dispatch(
+                          PopularPosterActionCreator.onCellTapped(d.id,
+                              d.backdropPath, d.title ?? d.name, d.posterPath)),
+                    );
+                  },
+                )
+              : _ShimmerList(),
+        ));
   }
 }
