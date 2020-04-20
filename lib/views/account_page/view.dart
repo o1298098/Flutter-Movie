@@ -253,8 +253,9 @@ class _AccountBody extends StatelessWidget {
           ),
           _GirdCell(
               icon: 'images/chewbacca.png',
-              title: 'Stream Links',
-              onTap: () {}),
+              title: 'Payment',
+              onTap: () => dispatch(
+                  AccountPageActionCreator.navigatorPush('premiumPage'))),
           _GirdCell(
               icon: 'images/c3po.png',
               title: 'MyRated',

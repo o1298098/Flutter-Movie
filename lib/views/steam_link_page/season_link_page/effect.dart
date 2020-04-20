@@ -34,19 +34,15 @@ void _onInit(Action action, Context<SeasonLinkPageState> ctx) async {
       }
     });
   ctx.state.animationController =
-      AnimationController(vsync: ticker, duration: Duration(milliseconds: 400));
+      AnimationController(vsync: ticker, duration: Duration(milliseconds: 300));
   ctx.state.scrollController = ScrollController()
     ..addListener(() {
-      if (ctx.state.scrollController.position.pixels > 100 &&
-          ctx.state.scrollController.position.pixels <= 150) {
-        ctx.state.animationController.value =
-            1 - (150 - ctx.state.scrollController.position.pixels) / 50;
-      } else if (ctx.state.scrollController.position.pixels > 150 &&
+      if (ctx.state.scrollController.position.pixels >= 100 &&
           !ctx.state.animationController.isAnimating)
-        ctx.state.animationController.animateTo(1);
+        ctx.state.animationController.animateTo(1, curve: Curves.ease);
       else if (ctx.state.scrollController.position.pixels < 100 &&
           !ctx.state.animationController.isAnimating)
-        ctx.state.animationController.animateTo(0);
+        ctx.state.animationController.animateTo(0, curve: Curves.ease);
     });
   ctx.state.preferences = await SharedPreferences.getInstance();
   if (_seasons != null)

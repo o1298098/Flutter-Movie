@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/customwidgets/customcliper_path.dart';
 import 'package:movie/models/country_phone_code.dart';
+import 'package:movie/style/themestyle.dart';
 import 'package:toast/toast.dart';
 
 import 'action.dart';
@@ -577,6 +578,7 @@ class _SmsSendCellState extends State<_SmsSendCell> {
 
   @override
   Widget build(BuildContext context) {
+    final _theme = ThemeStyle.getTheme(context);
     return _isWaiting
         ? Container(
             width: Adapt.px(90),
@@ -584,7 +586,7 @@ class _SmsSendCellState extends State<_SmsSendCell> {
             margin: EdgeInsets.symmetric(vertical: Adapt.px(15)),
             padding: EdgeInsets.all(Adapt.px(10)),
             decoration: BoxDecoration(
-                border: Border.all(),
+                border: Border.all(color: _theme.iconTheme.color),
                 borderRadius: BorderRadius.circular(Adapt.px(10))),
             child: Text('$_counter s'),
           )

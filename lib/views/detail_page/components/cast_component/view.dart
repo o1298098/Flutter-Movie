@@ -18,9 +18,7 @@ Widget buildView(CastState state, Dispatch dispatch, ViewService viewService) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          SizedBox(
-            height: Adapt.px(50),
-          ),
+          SizedBox(height: Adapt.px(50)),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
             child: Text(
@@ -29,9 +27,7 @@ Widget buildView(CastState state, Dispatch dispatch, ViewService viewService) {
                   fontWeight: FontWeight.bold, fontSize: Adapt.px(35)),
             ),
           ),
-          SizedBox(
-            height: Adapt.px(30),
-          ),
+          SizedBox(height: Adapt.px(30)),
           _CastList(
             data: state.cast,
             dispatch: dispatch,
