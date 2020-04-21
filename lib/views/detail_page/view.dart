@@ -9,21 +9,24 @@ Widget buildView(
     final ThemeData _theme = ThemeStyle.getTheme(context);
 
     return Scaffold(
-      key: state.scaffoldkey,
-      backgroundColor: _theme.backgroundColor,
-      body: CustomScrollView(
-        controller: state.scrollController,
-        physics: ClampingScrollPhysics(),
-        slivers: <Widget>[
-          viewService.buildComponent('header'),
-          viewService.buildComponent('overView'),
-          viewService.buildComponent('cast'),
-          viewService.buildComponent('still'),
-          viewService.buildComponent('keyWords'),
-          viewService.buildComponent('trailer'),
-          viewService.buildComponent('recommendations'),
-        ],
-      ),
-    );
+        key: state.scaffoldkey,
+        backgroundColor: _theme.backgroundColor,
+        body: Stack(children: [
+          CustomScrollView(
+            controller: state.scrollController,
+            physics: ClampingScrollPhysics(),
+            slivers: <Widget>[
+              viewService.buildComponent('mainInfo'),
+              //viewService.buildComponent('header'),
+              viewService.buildComponent('overView'),
+              viewService.buildComponent('cast'),
+              viewService.buildComponent('still'),
+              viewService.buildComponent('keyWords'),
+              viewService.buildComponent('trailer'),
+              viewService.buildComponent('recommendations'),
+            ],
+          ),
+          viewService.buildComponent('appbar')
+        ]));
   });
 }

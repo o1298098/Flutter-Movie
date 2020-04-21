@@ -7,46 +7,51 @@ import 'state.dart';
 
 Widget buildView(
     PremiumPageState state, Dispatch dispatch, ViewService viewService) {
-  final _theme = ThemeStyle.getTheme(viewService.context);
-  SystemChrome.setSystemUIOverlayStyle(_theme.brightness == Brightness.light
-      ? SystemUiOverlayStyle.dark
-      : SystemUiOverlayStyle.light);
-  return Scaffold(
-    body: SafeArea(
-      child: Container(
-        width: Adapt.screenW(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: Adapt.px(60)),
-            _Title(),
-            SizedBox(height: Adapt.px(60)),
-            Text(
-              'Balalalalalalalala',
-              style: TextStyle(
-                  fontSize: Adapt.px(40), fontWeight: FontWeight.bold),
+  return Builder(
+    builder: (context) {
+      final _theme = ThemeStyle.getTheme(context);
+      SystemChrome.setSystemUIOverlayStyle(_theme.brightness == Brightness.light
+          ? SystemUiOverlayStyle.dark
+          : SystemUiOverlayStyle.light);
+      return Scaffold(
+        body: SafeArea(
+          child: Container(
+            width: Adapt.screenW(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: Adapt.px(60)),
+                _Title(),
+                SizedBox(height: Adapt.px(60)),
+                Text(
+                  'Balalalalalalalala',
+                  style: TextStyle(
+                      fontSize: Adapt.px(40), fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: Adapt.px(60)),
+                Expanded(
+                  child: SizedBox(
+                    width: Adapt.px(450),
+                    child: Placeholder(),
+                  ),
+                ),
+                SizedBox(height: Adapt.px(60)),
+                _ItemCell(),
+                SizedBox(height: Adapt.px(60)),
+                _ItemCell(),
+                SizedBox(height: Adapt.px(60)),
+                _ItemCell(),
+                SizedBox(height: Adapt.px(80)),
+                _OneMonthButton(),
+                SizedBox(height: Adapt.px(20)),
+                _ThreeMonthButton(),
+                SizedBox(height: Adapt.px(30)),
+              ],
             ),
-            SizedBox(height: Adapt.px(60)),
-            Expanded(
-                child: SizedBox(
-              width: Adapt.px(450),
-              child: Placeholder(),
-            )),
-            SizedBox(height: Adapt.px(60)),
-            _ItemCell(),
-            SizedBox(height: Adapt.px(60)),
-            _ItemCell(),
-            SizedBox(height: Adapt.px(60)),
-            _ItemCell(),
-            SizedBox(height: Adapt.px(80)),
-            _OneMonthButton(),
-            SizedBox(height: Adapt.px(20)),
-            _ThreeMonthButton(),
-            SizedBox(height: Adapt.px(30)),
-          ],
+          ),
         ),
-      ),
-    ),
+      );
+    },
   );
 }
 

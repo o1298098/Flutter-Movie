@@ -3,12 +3,16 @@ import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/views/detail_page/components/trailer_component/component.dart';
 import 'package:movie/views/detail_page/components/trailer_component/state.dart';
 
+import 'components/appbar_component/component.dart';
+import 'components/appbar_component/state.dart';
 import 'components/cast_component/component.dart';
 import 'components/cast_component/state.dart';
 import 'components/header_component/component.dart';
 import 'components/header_component/state.dart';
 import 'components/keyword_component/component.dart';
 import 'components/keyword_component/state.dart';
+import 'components/maininfo_component/component.dart';
+import 'components/maininfo_component/state.dart';
 import 'components/menu_component/component.dart';
 import 'components/menu_component/state.dart';
 import 'components/overview_component/component.dart';
@@ -35,6 +39,8 @@ class MovieDetailPage extends Page<MovieDetailPageState, Map<String, dynamic>> {
           dependencies: Dependencies<MovieDetailPageState>(
               adapter: null,
               slots: <String, Dependent<MovieDetailPageState>>{
+                'appbar': AppBarConnector() + AppBarComponent(),
+                'mainInfo': MainInfoConnector() + MainInfoComponent(),
                 'menu': MenuConnector() + MenuComponent(),
                 'header': HeaderConnector() + HeaderComponent(),
                 'overView': OverViewConnector() + OverViewComponent(),
