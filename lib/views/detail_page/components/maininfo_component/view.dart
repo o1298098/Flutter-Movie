@@ -17,6 +17,7 @@ import 'state.dart';
 
 Widget buildView(
     MainInfoState state, Dispatch dispatch, ViewService viewService) {
+  final _height = Adapt.px(1150).floorToDouble();
   return Builder(
     builder: (context) {
       return SliverToBoxAdapter(
@@ -24,14 +25,14 @@ Widget buildView(
           AnimatedSwitcher(
               duration: Duration(milliseconds: 600),
               child: SizedBox(
-                height: Adapt.px(1150).floorToDouble(),
+                height: _height,
                 child: _HeaderBackground(
                   imgUrl: state.bgPic,
                   scrollController: state.scrollController,
                 ),
               )),
           Container(
-              height: Adapt.px(1150).floorToDouble(),
+              height: _height,
               alignment: Alignment.bottomCenter,
               child: Column(children: [
                 Expanded(child: SizedBox()),

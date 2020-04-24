@@ -274,7 +274,6 @@ class _Externals extends StatelessWidget {
           )
         ],
       );
-    ;
   }
 }
 

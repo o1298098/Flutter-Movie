@@ -2,6 +2,8 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:movie/actions/adapt.dart';
+import 'package:movie/models/base_api_model/checkout_model.dart';
+import 'package:movie/models/enums/premium_type.dart';
 import 'package:movie/style/themestyle.dart';
 import 'state.dart';
 
@@ -42,9 +44,26 @@ Widget buildView(
                 SizedBox(height: Adapt.px(60)),
                 _ItemCell(),
                 SizedBox(height: Adapt.px(80)),
-                _OneMonthButton(),
+                _OneMonthButton(
+                  onTap: () async => await Navigator.of(context)
+                      .pushNamed('checkoutPage', arguments: {
+                    'data': CheckOutModel(
+                        name: 'Premium one month',
+                        amount: 2.99,
+                        isPremium: true)
+                  }),
+                ),
                 SizedBox(height: Adapt.px(20)),
-                _ThreeMonthButton(),
+                _ThreeMonthButton(
+                  onTap: () async => await Navigator.of(context)
+                      .pushNamed('checkoutPage', arguments: {
+                    'data': CheckOutModel(
+                        name: 'Premium three months',
+                        amount: 6.99,
+                        isPremium: true,
+                        premiumType: PremiumType.threeMonths)
+                  }),
+                ),
                 SizedBox(height: Adapt.px(30)),
               ],
             ),
@@ -125,21 +144,26 @@ class _ItemCell extends StatelessWidget {
 }
 
 class _OneMonthButton extends StatelessWidget {
+  final Function onTap;
+  const _OneMonthButton({this.onTap});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: Adapt.px(80),
-      width: Adapt.px(500),
-      decoration: BoxDecoration(
-        color: Colors.black87,
-        borderRadius: BorderRadius.circular(Adapt.px(40)),
-      ),
-      child: Center(
-        child: Text(
-          '\$ 2.99 per/Month',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFFFFFFFF),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: Adapt.px(80),
+        width: Adapt.px(500),
+        decoration: BoxDecoration(
+          color: Colors.black87,
+          borderRadius: BorderRadius.circular(Adapt.px(40)),
+        ),
+        child: Center(
+          child: Text(
+            '\$ 2.99 per/Month',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFFFFFFFF),
+            ),
           ),
         ),
       ),
@@ -148,21 +172,26 @@ class _OneMonthButton extends StatelessWidget {
 }
 
 class _ThreeMonthButton extends StatelessWidget {
+  final Function onTap;
+  const _ThreeMonthButton({this.onTap});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: Adapt.px(80),
-      width: Adapt.px(500),
-      decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xFFA0A0A0)),
-        borderRadius: BorderRadius.circular(Adapt.px(40)),
-      ),
-      child: Center(
-        child: Text(
-          '\$ 6.99 3 Month',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFFA0A0A0),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: Adapt.px(80),
+        width: Adapt.px(500),
+        decoration: BoxDecoration(
+          border: Border.all(color: const Color(0xFFA0A0A0)),
+          borderRadius: BorderRadius.circular(Adapt.px(40)),
+        ),
+        child: Center(
+          child: Text(
+            '\$ 6.99 3 Month',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFFA0A0A0),
+            ),
           ),
         ),
       ),

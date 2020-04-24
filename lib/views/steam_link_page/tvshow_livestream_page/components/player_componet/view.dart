@@ -7,7 +7,6 @@ import 'package:movie/customwidgets/sliverappbar_delegate.dart';
 import 'package:movie/customwidgets/web_torrent_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-import 'action.dart';
 import 'state.dart';
 
 Widget buildView(

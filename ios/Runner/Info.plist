@@ -36,9 +36,21 @@
 				<string>com.googleusercontent.apps.472468283055-5vepq9actfcm7p0vgm7it41ed3plkbfn</string>
 			</array>
 		</dict>
+		<dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLName</key>
+        <string>com.o1298098.movies.payments</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>com.o1298098.movies.payments</string>
+        </array>
+    </dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FDAllFilesDownloadedMessage</key>
+	<string>All files have been downloaded</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
 	<key>GADApplicationIdentifier</key>
@@ -84,7 +96,5 @@
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
-	<key>FDAllFilesDownloadedMessage</key>
-    <string>All files have been downloaded</string>
 </dict>
 </plist>

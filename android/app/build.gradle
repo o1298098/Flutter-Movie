@@ -67,6 +67,10 @@ dependencies {
     androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.android.support:multidex:1.0.3'
+    implementation 'io.card:android-sdk:5.+'
 }
 
 apply plugin: 'com.google.gms.google-services'
+googleServices {
+    disableVersionCheck = true
+}

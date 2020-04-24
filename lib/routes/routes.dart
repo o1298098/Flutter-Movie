@@ -2,6 +2,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/views/account_page/page.dart';
+import 'package:movie/views/checkout_page/page.dart';
 import 'package:movie/views/coming_page/page.dart';
 import 'package:movie/views/createlist_page/page.dart';
 import 'package:movie/views/discover_page/page.dart';
@@ -69,7 +70,8 @@ class Routes {
       'seasonLinkPage': SeasonLinkPage(),
       'testPage': TestPage(),
       'settingPage': SettingPage(),
-      'premiumPage': PremiumPage()
+      'premiumPage': PremiumPage(),
+      'checkoutPage': CheckOutPage()
     },
     visitor: (String path, Page<Object, dynamic> page) {
       if (page.isTypeof<GlobalBaseState>()) {

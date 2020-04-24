@@ -1,6 +1,7 @@
 import UIKit
 import Flutter
 import flutter_downloader
+import Braintree
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -10,6 +11,7 @@ import flutter_downloader
   ) -> Bool {
     GeneratedPluginRegistrant.register(with: self)
     FlutterDownloaderPlugin.setPluginRegistrantCallback(registerPlugins)
+    BTAppSwitch.setReturnURLScheme("com.o1298098.movies.payments")
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }
@@ -17,4 +19,11 @@ private func registerPlugins(registry: FlutterPluginRegistry) {
     if (!registry.hasPlugin("FlutterDownloaderPlugin")) {
        FlutterDownloaderPlugin.register(with: registry.registrar(forPlugin: "FlutterDownloaderPlugin"))
     }
+}
+override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        if url.scheme == "com.o1298098.movies.payments" {
+            return BTAppSwitch.handleOpen(url, options:options)
+        }
+        
+        return false
 }

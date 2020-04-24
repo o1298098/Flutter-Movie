@@ -4,7 +4,9 @@ import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/base_api_model/base_tvshow.dart';
 import 'package:movie/models/base_api_model/movie_comment.dart';
 import 'package:movie/models/base_api_model/movie_stream_link.dart';
+import 'package:movie/models/base_api_model/purchase.dart';
 import 'package:movie/models/base_api_model/stream_link_report.dart';
+import 'package:movie/models/base_api_model/transaction.dart';
 import 'package:movie/models/base_api_model/tvshow_comment.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/models/base_api_model/user_list.dart';
@@ -366,5 +368,32 @@ class BaseApi {
     };
     var r = await _http.request(_url, method: "POST", data: _data);
     return r;
+  }
+
+  static Future<String> getPaymentToken(String userId) async {
+    String _url = '/Payment/ClientToken/$userId';
+    var _r = await _http.request(_url);
+    return _r;
+  }
+
+  static Future<TransactionModel> transactionSearch(String userId) async {
+    TransactionModel model;
+    String _url = '/payment/TransactionSearch/$userId';
+    var _r = await _http.request(_url);
+    if (_r != null) model = TransactionModel.fromJson(_r);
+    return model;
+  }
+
+  static Future<TransactionModel> createPurchase(Purchase purchase) async {
+    TransactionModel model;
+    String _url = '/CreatePurchase';
+    var _r = await _http.request(_url, method: 'POST', data: {
+      'userId': purchase.userId,
+      'amount': purchase.amount,
+      'paymentMethodNonce': purchase.paymentMethodNonce,
+      'deviceData': purchase.deviceData
+    });
+    if (_r != null) model = TransactionModel.fromJson(_r);
+    return model;
   }
 }

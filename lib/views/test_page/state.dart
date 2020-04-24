@@ -13,7 +13,8 @@ class TestPageState implements GlobalBaseState, Cloneable<TestPageState> {
     return TestPageState()
       ..testData = testData
       ..themeColor = themeColor
-      ..locale = locale;
+      ..locale = locale
+      ..user = user;
   }
 
   @override

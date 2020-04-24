@@ -17,54 +17,7 @@ Widget buildView(
     HeaderState state, Dispatch dispatch, ViewService viewService) {
   final s = state.tvDetailModel;
   final dominantColor = state.mainColor;
-  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
   double evote = 0.0;
-  Widget _getTitle() {
-    if (state.name == null)
-      return SizedBox(
-          child: Shimmer.fromColors(
-        baseColor: _theme.primaryColorDark,
-        highlightColor: _theme.primaryColorLight,
-        child: Container(
-          height: Adapt.px(50),
-          width: Adapt.px(200),
-          color: Colors.grey[200],
-        ),
-      ));
-    else
-      return RichText(
-        text: TextSpan(children: <TextSpan>[
-          TextSpan(
-              text: state.name,
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: Adapt.px(50),
-                  color: Colors.white,
-                  shadows: <Shadow>[
-                    Shadow(
-                      offset: Offset(2.0, 2.0),
-                      blurRadius: 2.0,
-                      color: Colors.black,
-                    ),
-                  ])),
-          TextSpan(
-              text: s.name == null
-                  ? ' (-)'
-                  : ' (${DateTime.tryParse(s.firstAirDate)?.year.toString()})',
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: Adapt.px(30),
-                  color: Colors.grey[400],
-                  shadows: <Shadow>[
-                    Shadow(
-                      offset: Offset(2.0, 2.0),
-                      blurRadius: 2.0,
-                      color: Colors.black,
-                    ),
-                  ])),
-        ]),
-      );
-  }
 
   return Container(
     child: Stack(

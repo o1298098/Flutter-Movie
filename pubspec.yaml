@@ -72,6 +72,7 @@ dependencies:
   lottie: ^0.3.2
   package_info: ^0.4.0+16
   flutter_downloader: ^1.4.3
+  flutter_braintree: ^0.6.0
   
 
 dev_dependencies:

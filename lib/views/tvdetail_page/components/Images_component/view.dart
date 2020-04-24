@@ -1,6 +1,4 @@
 import 'dart:collection';
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';

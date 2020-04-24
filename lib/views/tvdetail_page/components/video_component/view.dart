@@ -130,6 +130,5 @@ class _VideoBody extends StatelessWidget {
               SliverChildBuilderDelegate((BuildContext contxt, int index) {
         return _ShimmerVideoCell();
       }, childCount: 3));
-    ;
   }
 }
