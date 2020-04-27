@@ -384,16 +384,14 @@ class BaseApi {
     return model;
   }
 
-  static Future<TransactionModel> createPurchase(Purchase purchase) async {
-    TransactionModel model;
-    String _url = '/CreatePurchase';
+  static Future<dynamic> createPurchase(Purchase purchase) async {
+    String _url = '/payment/CreatePurchase';
     var _r = await _http.request(_url, method: 'POST', data: {
       'userId': purchase.userId,
       'amount': purchase.amount,
       'paymentMethodNonce': purchase.paymentMethodNonce,
       'deviceData': purchase.deviceData
     });
-    if (_r != null) model = TransactionModel.fromJson(_r);
-    return model;
+    return _r;
   }
 }

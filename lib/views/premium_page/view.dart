@@ -154,7 +154,7 @@ class _OneMonthButton extends StatelessWidget {
         height: Adapt.px(80),
         width: Adapt.px(500),
         decoration: BoxDecoration(
-          color: Colors.black87,
+          color: const Color(0xDD000000),
           borderRadius: BorderRadius.circular(Adapt.px(40)),
         ),
         child: Center(

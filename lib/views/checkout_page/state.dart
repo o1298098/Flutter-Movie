@@ -11,13 +11,15 @@ class CheckOutPageState
   CheckOutModel checkoutData;
   BraintreeDropInResult braintreeDropInResult;
   bool isSelected;
+  bool loading;
   @override
   CheckOutPageState clone() {
     return CheckOutPageState()
       ..checkoutData = checkoutData
       ..braintreeDropInResult = braintreeDropInResult
       ..isSelected = isSelected
-      ..user = user;
+      ..user = user
+      ..loading = loading;
   }
 
   @override
@@ -33,6 +35,7 @@ class CheckOutPageState
 CheckOutPageState initState(Map<String, dynamic> args) {
   final _state = CheckOutPageState();
   _state.isSelected = false;
+  _state.loading = false;
   if (args?.containsKey('data') ?? false) _state.checkoutData = args['data'];
   return _state;
 }

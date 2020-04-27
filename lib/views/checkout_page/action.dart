@@ -1,7 +1,13 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter_braintree/flutter_braintree.dart';
 
-enum CheckOutPageAction { action, selectPaymentMethod, updatePaymentMethod }
+enum CheckOutPageAction {
+  action,
+  selectPaymentMethod,
+  updatePaymentMethod,
+  pay,
+  loading
+}
 
 class CheckOutPageActionCreator {
   static Action onAction() {
@@ -16,5 +22,13 @@ class CheckOutPageActionCreator {
       BraintreeDropInResult braintreeDropInResult) {
     return Action(CheckOutPageAction.updatePaymentMethod,
         payload: braintreeDropInResult);
+  }
+
+  static Action onPay() {
+    return const Action(CheckOutPageAction.pay);
+  }
+
+  static Action loading(bool loading) {
+    return Action(CheckOutPageAction.loading, payload: loading);
   }
 }
