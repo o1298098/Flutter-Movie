@@ -22,7 +22,9 @@ Future _selectPaymentMethod(
   ctx.dispatch(CheckOutPageActionCreator.loading(true));
   PaymentClientToken _clientNonce = await _getToken(ctx.state.user.uid);
   ctx.dispatch(CheckOutPageActionCreator.loading(false));
-  if (_clientNonce?.token == null) return;
+  if (_clientNonce?.token == null)
+    return Toast.show('Something wrong', ctx.context,
+        gravity: Toast.CENTER, duration: 5);
   final request = BraintreeDropInRequest(
     vaultManagerEnabled: true,
     clientToken: _clientNonce.token,
@@ -32,12 +34,12 @@ Future _selectPaymentMethod(
     maskSecurityCode: true,
     cardEnabled: true,
     googlePaymentRequest: BraintreeGooglePaymentRequest(
-      totalPrice: '4.20',
+      totalPrice: ctx.state.checkoutData.amount.toString(),
       currencyCode: 'USD',
       billingAddressRequired: false,
     ),
     paypalRequest: BraintreePayPalRequest(
-      amount: '4.20',
+      amount: ctx.state.checkoutData.amount.toString(),
       displayName: 'Example company',
     ),
   );
@@ -48,7 +50,11 @@ Future _selectPaymentMethod(
 
 void _onPay(Action action, Context<CheckOutPageState> ctx) async {
   ctx.dispatch(CheckOutPageActionCreator.loading(true));
-  if (ctx.state.user == null || ctx.state.braintreeDropInResult == null) return;
+  if (ctx.state.user == null || ctx.state.braintreeDropInResult == null) {
+    ctx.dispatch(CheckOutPageActionCreator.loading(false));
+    return Toast.show('empty payment method', ctx.context,
+        gravity: Toast.CENTER, duration: 5);
+  }
   final _r = await BaseApi.createPurchase(Purchase(
       userId: ctx.state.user.uid,
       amount: ctx.state.checkoutData.amount,
@@ -77,7 +83,9 @@ Future<PaymentClientToken> _getToken(String uid) async {
       _clientNonce = PaymentClientToken.fromParams(
           token: r, expiredTime: DateTime.now().millisecondsSinceEpoch);
       preferences.setString('PaymentToken', _clientNonce.toString());
-    }
+    } else
+      _clientNonce = PaymentClientToken.fromParams(
+          expiredTime: DateTime.now().millisecondsSinceEpoch);
   }
   return _clientNonce;
 }

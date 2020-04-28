@@ -163,25 +163,20 @@ class _TotalCell extends StatelessWidget {
   }
 }
 
+final Map<String, String> _paymentType = {
+  'none': '',
+  'PayPal': 'images/paypal_account.png',
+  'Visa': 'images/visa.png',
+  'MasterCard': 'images/mastercard.png',
+  'Discover': 'images/discover.png',
+  'JCB': 'images/jcb.png',
+  'Google Pay': 'images/google.png'
+};
+
 class _PaymentCell extends StatelessWidget {
   final Function onTap;
   final BraintreeDropInResult braintreeDropInResult;
   const _PaymentCell({this.braintreeDropInResult, this.onTap});
-  Widget _buildIcon(String type) {
-    String _urlPath;
-    switch (type) {
-      case 'PayPal':
-        _urlPath = 'images/paypal_account.png';
-        break;
-      case 'Visa':
-        _urlPath = 'images/visa.png';
-        break;
-    }
-    return Image.asset(
-      _urlPath,
-      height: Adapt.px(50),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -189,8 +184,8 @@ class _PaymentCell extends StatelessWidget {
     final _boxShadow = [
       BoxShadow(
           color: _theme.brightness == Brightness.light
-              ? Color(0xFFD0D0D0)
-              : Color(0xFF202020),
+              ? const Color(0xFFD0D0D0)
+              : const Color(0xFF202020),
           blurRadius: Adapt.px(10),
           offset: Offset(Adapt.px(5), Adapt.px(5)))
     ];
@@ -215,14 +210,17 @@ class _PaymentCell extends StatelessWidget {
             children: [
               braintreeDropInResult == null
                   ? SizedBox(height: Adapt.px(50))
-                  : _buildIcon(
-                      braintreeDropInResult?.paymentMethodNonce?.typeLabel ??
-                          ''),
+                  : Image.asset(
+                      _paymentType[braintreeDropInResult
+                              ?.paymentMethodNonce?.typeLabel ??
+                          'none'],
+                      height: Adapt.px(50),
+                    ),
               SizedBox(width: Adapt.px(20)),
               SizedBox(
                 width: Adapt.px(500),
                 child: Text(
-                  '${braintreeDropInResult?.paymentMethodNonce?.description ?? '-'}',
+                  '${braintreeDropInResult?.paymentMethodNonce?.description ?? '---'}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),

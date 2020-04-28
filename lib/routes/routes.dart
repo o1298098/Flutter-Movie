@@ -16,6 +16,7 @@ import 'package:movie/views/main_page/page.dart';
 import 'package:movie/views/moremedia_page/page.dart';
 import 'package:movie/views/moviedetail_page/page.dart';
 import 'package:movie/views/mylists_page/page.dart';
+import 'package:movie/views/payment_page/page.dart';
 import 'package:movie/views/peopledetail_page/page.dart';
 import 'package:movie/views/premium_page/page.dart';
 import 'package:movie/views/register_page/page.dart';
@@ -70,8 +71,9 @@ class Routes {
       'seasonLinkPage': SeasonLinkPage(),
       'testPage': TestPage(),
       'settingPage': SettingPage(),
+      'paymentPage': PaymentPage(),
       'premiumPage': PremiumPage(),
-      'checkoutPage': CheckOutPage()
+      'checkoutPage': CheckOutPage(),
     },
     visitor: (String path, Page<Object, dynamic> page) {
       if (page.isTypeof<GlobalBaseState>()) {

@@ -2,6 +2,7 @@ import 'package:movie/actions/request.dart';
 import 'package:movie/models/base_api_model/account_state.dart';
 import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/base_api_model/base_tvshow.dart';
+import 'package:movie/models/base_api_model/braintree_customer.dart';
 import 'package:movie/models/base_api_model/movie_comment.dart';
 import 'package:movie/models/base_api_model/movie_stream_link.dart';
 import 'package:movie/models/base_api_model/purchase.dart';
@@ -376,12 +377,28 @@ class BaseApi {
     return _r;
   }
 
-  static Future<TransactionModel> transactionSearch(String userId) async {
+  static Future<TransactionModel> transactionSearch(String userId,
+      {DateTime begin, DateTime end}) async {
     TransactionModel model;
     String _url = '/payment/TransactionSearch/$userId';
     var _r = await _http.request(_url);
     if (_r != null) model = TransactionModel.fromJson(_r);
     return model;
+  }
+
+  static Future<BraintreeCustomer> getBraintreeCustomer(String userId) async {
+    BraintreeCustomer model;
+    String _url = '/payment/Customer/$userId';
+    var _r = await _http.request(_url);
+    if (_r != null) model = BraintreeCustomer.fromJson(_r);
+    return model;
+  }
+
+  static Future<dynamic> updateCreditCard(
+      String token, dynamic creditCardRequest) async {
+    String _url = '/payment/CreditCard';
+    var _r = await _http.request(_url, method: 'PUT', data: creditCardRequest);
+    return _r;
   }
 
   static Future<dynamic> createPurchase(Purchase purchase) async {

@@ -255,12 +255,12 @@ class _AccountBody extends StatelessWidget {
               icon: 'images/chewbacca.png',
               title: 'Payment',
               onTap: () => dispatch(
-                  AccountPageActionCreator.navigatorPush('premiumPage'))),
+                  AccountPageActionCreator.navigatorPush('paymentPage'))),
           _GirdCell(
               icon: 'images/c3po.png',
               title: 'MyRated',
-              onTap: () =>
-                  dispatch(AccountPageActionCreator.navigatorPush('testPage'))),
+              onTap: () => dispatch(
+                  AccountPageActionCreator.navigatorPush('premiumPage'))),
           _GirdCell(
             icon: 'images/r2d2.png',
             title: 'Settings',

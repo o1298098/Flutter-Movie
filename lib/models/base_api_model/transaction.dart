@@ -28,7 +28,6 @@ class TransactionModel {
 class Transaction {
   Object additionalProcessorResponse;
   Object amexExpressCheckoutDetails;
-  Object androidPayDetails;
   Object applePayDetails;
   Object authorizedTransactionId;
   Object avsErrorResponseCode;
@@ -43,14 +42,10 @@ class Transaction {
   Object idealPaymentDetails;
   Object localPaymentDetails;
   Object masterpassCardDetails;
-  Object networkResponseCode;
-  Object networkResponseText;
-  Object networkTransactionId;
   Object orderId;
   Object payPalHereDetails;
   Object paymentInstrumentType;
   Object planId;
-  Object processorAuthorizationCode;
   Object processorResponseType;
   Object purchaseOrderNumber;
   Object refundedTransactionId;
@@ -80,6 +75,10 @@ class Transaction {
   String graphQLId;
   String id;
   String merchantAccountId;
+  String networkResponseCode;
+  String networkResponseText;
+  String networkTransactionId;
+  String processorAuthorizationCode;
   String processorResponseCode;
   String processorResponseText;
   String processorSettlementResponseCode;
@@ -92,7 +91,8 @@ class Transaction {
   List<dynamic> disputes;
   List<dynamic> partialSettlementTransactionIds;
   List<dynamic> refundIds;
-  List<StatusHistory> statusHistorys;
+  List<StatusHistory> statusHistory;
+  AndroidPayDetails androidPayDetails;
   BillingAddress billingAddress;
   CreditCard creditCard;
   CustomerDetails customerDetails;
@@ -105,7 +105,6 @@ class Transaction {
   Transaction.fromParams(
       {this.additionalProcessorResponse,
       this.amexExpressCheckoutDetails,
-      this.androidPayDetails,
       this.applePayDetails,
       this.authorizedTransactionId,
       this.avsErrorResponseCode,
@@ -120,14 +119,10 @@ class Transaction {
       this.idealPaymentDetails,
       this.localPaymentDetails,
       this.masterpassCardDetails,
-      this.networkResponseCode,
-      this.networkResponseText,
-      this.networkTransactionId,
       this.orderId,
       this.payPalHereDetails,
       this.paymentInstrumentType,
       this.planId,
-      this.processorAuthorizationCode,
       this.processorResponseType,
       this.purchaseOrderNumber,
       this.refundedTransactionId,
@@ -157,6 +152,10 @@ class Transaction {
       this.graphQLId,
       this.id,
       this.merchantAccountId,
+      this.networkResponseCode,
+      this.networkResponseText,
+      this.networkTransactionId,
+      this.processorAuthorizationCode,
       this.processorResponseCode,
       this.processorResponseText,
       this.processorSettlementResponseCode,
@@ -169,7 +168,8 @@ class Transaction {
       this.disputes,
       this.partialSettlementTransactionIds,
       this.refundIds,
-      this.statusHistorys,
+      this.statusHistory,
+      this.androidPayDetails,
       this.billingAddress,
       this.creditCard,
       this.customerDetails,
@@ -182,7 +182,6 @@ class Transaction {
   Transaction.fromJson(jsonRes) {
     additionalProcessorResponse = jsonRes['additionalProcessorResponse'];
     amexExpressCheckoutDetails = jsonRes['amexExpressCheckoutDetails'];
-    androidPayDetails = jsonRes['androidPayDetails'];
     applePayDetails = jsonRes['applePayDetails'];
     authorizedTransactionId = jsonRes['authorizedTransactionId'];
     avsErrorResponseCode = jsonRes['avsErrorResponseCode'];
@@ -197,14 +196,10 @@ class Transaction {
     idealPaymentDetails = jsonRes['idealPaymentDetails'];
     localPaymentDetails = jsonRes['localPaymentDetails'];
     masterpassCardDetails = jsonRes['masterpassCardDetails'];
-    networkResponseCode = jsonRes['networkResponseCode'];
-    networkResponseText = jsonRes['networkResponseText'];
-    networkTransactionId = jsonRes['networkTransactionId'];
     orderId = jsonRes['orderId'];
     payPalHereDetails = jsonRes['payPalHereDetails'];
     paymentInstrumentType = jsonRes['paymentInstrumentType'];
     planId = jsonRes['planId'];
-    processorAuthorizationCode = jsonRes['processorAuthorizationCode'];
     processorResponseType = jsonRes['processorResponseType'];
     purchaseOrderNumber = jsonRes['purchaseOrderNumber'];
     refundedTransactionId = jsonRes['refundedTransactionId'];
@@ -234,6 +229,10 @@ class Transaction {
     graphQLId = jsonRes['graphQLId'];
     id = jsonRes['id'];
     merchantAccountId = jsonRes['merchantAccountId'];
+    networkResponseCode = jsonRes['networkResponseCode'];
+    networkResponseText = jsonRes['networkResponseText'];
+    networkTransactionId = jsonRes['networkTransactionId'];
+    processorAuthorizationCode = jsonRes['processorAuthorizationCode'];
     processorResponseCode = jsonRes['processorResponseCode'];
     processorResponseText = jsonRes['processorResponseText'];
     processorSettlementResponseCode =
@@ -285,15 +284,18 @@ class Transaction {
       refundIds.add(refundIdsItem);
     }
 
-    statusHistorys = jsonRes['statusHistory'] == null ? null : [];
+    statusHistory = jsonRes['statusHistory'] == null ? null : [];
 
-    for (var statusHistorysItem
-        in statusHistorys == null ? [] : jsonRes['statusHistory']) {
-      statusHistorys.add(statusHistorysItem == null
+    for (var statusHistoryItem
+        in statusHistory == null ? [] : jsonRes['statusHistory']) {
+      statusHistory.add(statusHistoryItem == null
           ? null
-          : new StatusHistory.fromJson(statusHistorysItem));
+          : new StatusHistory.fromJson(statusHistoryItem));
     }
 
+    androidPayDetails = jsonRes['androidPayDetails'] == null
+        ? null
+        : new AndroidPayDetails.fromJson(jsonRes['androidPayDetails']);
     billingAddress = jsonRes['billingAddress'] == null
         ? null
         : new BillingAddress.fromJson(jsonRes['billingAddress']);
@@ -322,7 +324,7 @@ class Transaction {
 
   @override
   String toString() {
-    return '{"additionalProcessorResponse": $additionalProcessorResponse,"amexExpressCheckoutDetails": $amexExpressCheckoutDetails,"androidPayDetails": $androidPayDetails,"applePayDetails": $applePayDetails,"authorizedTransactionId": $authorizedTransactionId,"avsErrorResponseCode": $avsErrorResponseCode,"channel": $channel,"coinbaseDetails": $coinbaseDetails,"customFields": $customFields,"discountAmount": $discountAmount,"escrowStatus": $escrowStatus,"facilitatedDetails": $facilitatedDetails,"facilitatorDetails": $facilitatorDetails,"gatewayRejectionReason": $gatewayRejectionReason,"idealPaymentDetails": ${id != null ? '${json.encode(id)}' : 'null'}ealPaymentDetails,"localPaymentDetails": $localPaymentDetails,"masterpassCardDetails": $masterpassCardDetails,"networkResponseCode": $networkResponseCode,"networkResponseText": $networkResponseText,"networkTransactionId": $networkTransactionId,"orderId": $orderId,"payPalHereDetails": $payPalHereDetails,"paymentInstrumentType": $paymentInstrumentType,"planId": $planId,"processorAuthorizationCode": $processorAuthorizationCode,"processorResponseType": $processorResponseType,"purchaseOrderNumber": $purchaseOrderNumber,"refundedTransactionId": $refundedTransactionId,"riskData": $riskData,"samsungPayCardDetails": $samsungPayCardDetails,"serviceFeeAmount": $serviceFeeAmount,"shippingAmount": $shippingAmount,"shipsFromPostalCode": $shipsFromPostalCode,"status": $status,"subscriptionId": $subscriptionId,"taxAmount": $taxAmount,"threeDSecureInfo": $threeDSecureInfo,"type": $type,"usBankAccountDetails": $usBankAccountDetails,"venmoAccountDetails": $venmoAccountDetails,"visaCheckoutCardDetails": $visaCheckoutCardDetails,"voiceReferralNumber": $voiceReferralNumber,"amount": $amount,"recurring": $recurring,"taxExempt": $taxExempt,"authorizationExpiresAt": ${authorizationExpiresAt != null ? '${json.encode(authorizationExpiresAt)}' : 'null'},"avsPostalCodeResponseCode": ${avsPostalCodeResponseCode != null ? '${json.encode(avsPostalCodeResponseCode)}' : 'null'},"avsStreetAddressResponseCode": ${avsStreetAddressResponseCode != null ? '${json.encode(avsStreetAddressResponseCode)}' : 'null'},"createdAt": ${createdAt != null ? '${json.encode(createdAt)}' : 'null'},"currencyIsoCode": ${currencyIsoCode != null ? '${json.encode(currencyIsoCode)}' : 'null'},"cvvResponseCode": ${cvvResponseCode != null ? '${json.encode(cvvResponseCode)}' : 'null'},"graphQLId": ${graphQLId != null ? '${json.encode(graphQLId)}' : 'null'},"id": ${id != null ? '${json.encode(id)}' : 'null'},"merchantAccountId": ${merchantAccountId != null ? '${json.encode(merchantAccountId)}' : 'null'},"processorResponseCode": ${processorResponseCode != null ? '${json.encode(processorResponseCode)}' : 'null'},"processorResponseText": ${processorResponseText != null ? '${json.encode(processorResponseText)}' : 'null'},"processorSettlementResponseCode": ${processorSettlementResponseCode != null ? '${json.encode(processorSettlementResponseCode)}' : 'null'},"processorSettlementResponseText": ${processorSettlementResponseText != null ? '${json.encode(processorSettlementResponseText)}' : 'null'},"settlementBatchId": ${settlementBatchId != null ? '${json.encode(settlementBatchId)}' : 'null'},"updatedAt": ${updatedAt != null ? '${json.encode(updatedAt)}' : 'null'},"addOns": $addOns,"authorizationAdjustments": $authorizationAdjustments,"discounts": $discounts,"disputes": $disputes,"partialSettlementTransactionIds": $partialSettlementTransactionIds,"refundIds": $refundIds,"statusHistory": $statusHistorys,"billingAddress": $billingAddress,"creditCard": $creditCard,"customerDetails": $customerDetails,"descriptor": $descriptor,"disbursementDetails": $disbursementDetails,"payPalDetails": $payPalDetails,"shippingAddress": $shippingAddress,"subscriptionDetails": $subscriptionDetails}';
+    return '{"additionalProcessorResponse": $additionalProcessorResponse,"amexExpressCheckoutDetails": $amexExpressCheckoutDetails,"applePayDetails": $applePayDetails,"authorizedTransactionId": $authorizedTransactionId,"avsErrorResponseCode": $avsErrorResponseCode,"channel": $channel,"coinbaseDetails": $coinbaseDetails,"customFields": $customFields,"discountAmount": $discountAmount,"escrowStatus": $escrowStatus,"facilitatedDetails": $facilitatedDetails,"facilitatorDetails": $facilitatorDetails,"gatewayRejectionReason": $gatewayRejectionReason,"idealPaymentDetails": ${id != null ? '${json.encode(id)}' : 'null'}ealPaymentDetails,"localPaymentDetails": $localPaymentDetails,"masterpassCardDetails": $masterpassCardDetails,"orderId": $orderId,"payPalHereDetails": $payPalHereDetails,"paymentInstrumentType": $paymentInstrumentType,"planId": $planId,"processorResponseType": $processorResponseType,"purchaseOrderNumber": $purchaseOrderNumber,"refundedTransactionId": $refundedTransactionId,"riskData": $riskData,"samsungPayCardDetails": $samsungPayCardDetails,"serviceFeeAmount": $serviceFeeAmount,"shippingAmount": $shippingAmount,"shipsFromPostalCode": $shipsFromPostalCode,"status": $status,"subscriptionId": $subscriptionId,"taxAmount": $taxAmount,"threeDSecureInfo": $threeDSecureInfo,"type": $type,"usBankAccountDetails": $usBankAccountDetails,"venmoAccountDetails": $venmoAccountDetails,"visaCheckoutCardDetails": $visaCheckoutCardDetails,"voiceReferralNumber": $voiceReferralNumber,"amount": $amount,"recurring": $recurring,"taxExempt": $taxExempt,"authorizationExpiresAt": ${authorizationExpiresAt != null ? '${json.encode(authorizationExpiresAt)}' : 'null'},"avsPostalCodeResponseCode": ${avsPostalCodeResponseCode != null ? '${json.encode(avsPostalCodeResponseCode)}' : 'null'},"avsStreetAddressResponseCode": ${avsStreetAddressResponseCode != null ? '${json.encode(avsStreetAddressResponseCode)}' : 'null'},"createdAt": ${createdAt != null ? '${json.encode(createdAt)}' : 'null'},"currencyIsoCode": ${currencyIsoCode != null ? '${json.encode(currencyIsoCode)}' : 'null'},"cvvResponseCode": ${cvvResponseCode != null ? '${json.encode(cvvResponseCode)}' : 'null'},"graphQLId": ${graphQLId != null ? '${json.encode(graphQLId)}' : 'null'},"id": ${id != null ? '${json.encode(id)}' : 'null'},"merchantAccountId": ${merchantAccountId != null ? '${json.encode(merchantAccountId)}' : 'null'},"networkResponseCode": ${networkResponseCode != null ? '${json.encode(networkResponseCode)}' : 'null'},"networkResponseText": ${networkResponseText != null ? '${json.encode(networkResponseText)}' : 'null'},"networkTransactionId": ${networkTransactionId != null ? '${json.encode(networkTransactionId)}' : 'null'},"processorAuthorizationCode": ${processorAuthorizationCode != null ? '${json.encode(processorAuthorizationCode)}' : 'null'},"processorResponseCode": ${processorResponseCode != null ? '${json.encode(processorResponseCode)}' : 'null'},"processorResponseText": ${processorResponseText != null ? '${json.encode(processorResponseText)}' : 'null'},"processorSettlementResponseCode": ${processorSettlementResponseCode != null ? '${json.encode(processorSettlementResponseCode)}' : 'null'},"processorSettlementResponseText": ${processorSettlementResponseText != null ? '${json.encode(processorSettlementResponseText)}' : 'null'},"settlementBatchId": ${settlementBatchId != null ? '${json.encode(settlementBatchId)}' : 'null'},"updatedAt": ${updatedAt != null ? '${json.encode(updatedAt)}' : 'null'},"addOns": $addOns,"authorizationAdjustments": $authorizationAdjustments,"discounts": $discounts,"disputes": $disputes,"partialSettlementTransactionIds": $partialSettlementTransactionIds,"refundIds": $refundIds,"statusHistory": $statusHistory,"androidPayDetails": $androidPayDetails,"billingAddress": $billingAddress,"creditCard": $creditCard,"customerDetails": $customerDetails,"descriptor": $descriptor,"disbursementDetails": $disbursementDetails,"payPalDetails": $payPalDetails,"shippingAddress": $shippingAddress,"subscriptionDetails": $subscriptionDetails}';
   }
 }
 
@@ -571,7 +573,6 @@ class CustomerDetails {
 
 class CreditCard {
   Object accountType;
-  Object bin;
   Object cardType;
   Object cardholderName;
   Object commercial;
@@ -580,31 +581,31 @@ class CreditCard {
   Object customerLocation;
   Object debit;
   Object durbinRegulated;
-  Object expirationMonth;
-  Object expirationYear;
   Object healthcare;
   Object isDefault;
   Object isExpired;
-  Object lastFour;
   Object payroll;
   Object prepaid;
-  Object uniqueNumberIdentifier;
   Object updatedAt;
   Object verification;
   bool isVenmoSdk;
+  String bin;
   String countryOfIssuance;
   String expirationDate;
+  String expirationMonth;
+  String expirationYear;
   String imageUrl;
   String issuingBank;
+  String lastFour;
   String maskedNumber;
   String productId;
   String token;
+  String uniqueNumberIdentifier;
   List<dynamic> subscriptions;
   BillingAddress billingAddress;
 
   CreditCard.fromParams(
       {this.accountType,
-      this.bin,
       this.cardType,
       this.cardholderName,
       this.commercial,
@@ -613,31 +614,31 @@ class CreditCard {
       this.customerLocation,
       this.debit,
       this.durbinRegulated,
-      this.expirationMonth,
-      this.expirationYear,
       this.healthcare,
       this.isDefault,
       this.isExpired,
-      this.lastFour,
       this.payroll,
       this.prepaid,
-      this.uniqueNumberIdentifier,
       this.updatedAt,
       this.verification,
       this.isVenmoSdk,
+      this.bin,
       this.countryOfIssuance,
       this.expirationDate,
+      this.expirationMonth,
+      this.expirationYear,
       this.imageUrl,
       this.issuingBank,
+      this.lastFour,
       this.maskedNumber,
       this.productId,
       this.token,
+      this.uniqueNumberIdentifier,
       this.subscriptions,
       this.billingAddress});
 
   CreditCard.fromJson(jsonRes) {
     accountType = jsonRes['accountType'];
-    bin = jsonRes['bin'];
     cardType = jsonRes['cardType'];
     cardholderName = jsonRes['cardholderName'];
     commercial = jsonRes['commercial'];
@@ -646,25 +647,26 @@ class CreditCard {
     customerLocation = jsonRes['customerLocation'];
     debit = jsonRes['debit'];
     durbinRegulated = jsonRes['durbinRegulated'];
-    expirationMonth = jsonRes['expirationMonth'];
-    expirationYear = jsonRes['expirationYear'];
     healthcare = jsonRes['healthcare'];
     isDefault = jsonRes['isDefault'];
     isExpired = jsonRes['isExpired'];
-    lastFour = jsonRes['lastFour'];
     payroll = jsonRes['payroll'];
     prepaid = jsonRes['prepaid'];
-    uniqueNumberIdentifier = jsonRes['uniqueNumberIdentifier'];
     updatedAt = jsonRes['updatedAt'];
     verification = jsonRes['verification'];
     isVenmoSdk = jsonRes['isVenmoSdk'];
+    bin = jsonRes['bin'];
     countryOfIssuance = jsonRes['countryOfIssuance'];
     expirationDate = jsonRes['expirationDate'];
+    expirationMonth = jsonRes['expirationMonth'];
+    expirationYear = jsonRes['expirationYear'];
     imageUrl = jsonRes['imageUrl'];
     issuingBank = jsonRes['issuingBank'];
+    lastFour = jsonRes['lastFour'];
     maskedNumber = jsonRes['maskedNumber'];
     productId = jsonRes['productId'];
     token = jsonRes['token'];
+    uniqueNumberIdentifier = jsonRes['uniqueNumberIdentifier'];
     subscriptions = jsonRes['subscriptions'] == null ? null : [];
 
     for (var subscriptionsItem
@@ -679,7 +681,7 @@ class CreditCard {
 
   @override
   String toString() {
-    return '{"accountType": $accountType,"bin": $bin,"cardType": $cardType,"cardholderName": $cardholderName,"commercial": $commercial,"createdAt": $createdAt,"customerId": $customerId,"customerLocation": $customerLocation,"debit": $debit,"durbinRegulated": $durbinRegulated,"expirationMonth": $expirationMonth,"expirationYear": $expirationYear,"healthcare": $healthcare,"isDefault": $isDefault,"isExpired": $isExpired,"lastFour": $lastFour,"payroll": $payroll,"prepaid": $prepaid,"uniqueNumberIdentifier": $uniqueNumberIdentifier,"updatedAt": $updatedAt,"verification": $verification,"isVenmoSdk": $isVenmoSdk,"countryOfIssuance": ${countryOfIssuance != null ? '${json.encode(countryOfIssuance)}' : 'null'},"expirationDate": ${expirationDate != null ? '${json.encode(expirationDate)}' : 'null'},"imageUrl": ${imageUrl != null ? '${json.encode(imageUrl)}' : 'null'},"issuingBank": ${issuingBank != null ? '${json.encode(issuingBank)}' : 'null'},"maskedNumber": ${maskedNumber != null ? '${json.encode(maskedNumber)}' : 'null'},"productId": ${productId != null ? '${json.encode(productId)}' : 'null'},"token": ${token != null ? '${json.encode(token)}' : 'null'},"subscriptions": $subscriptions,"billingAddress": $billingAddress}';
+    return '{"accountType": $accountType,"cardType": $cardType,"cardholderName": $cardholderName,"commercial": $commercial,"createdAt": $createdAt,"customerId": $customerId,"customerLocation": $customerLocation,"debit": $debit,"durbinRegulated": $durbinRegulated,"healthcare": $healthcare,"isDefault": $isDefault,"isExpired": $isExpired,"payroll": $payroll,"prepaid": $prepaid,"updatedAt": $updatedAt,"verification": $verification,"isVenmoSdk": $isVenmoSdk,"bin": ${bin != null ? '${json.encode(bin)}' : 'null'},"countryOfIssuance": ${countryOfIssuance != null ? '${json.encode(countryOfIssuance)}' : 'null'},"expirationDate": ${expirationDate != null ? '${json.encode(expirationDate)}' : 'null'},"expirationMonth": ${expirationMonth != null ? '${json.encode(expirationMonth)}' : 'null'},"expirationYear": ${expirationYear != null ? '${json.encode(expirationYear)}' : 'null'},"imageUrl": ${imageUrl != null ? '${json.encode(imageUrl)}' : 'null'},"issuingBank": ${issuingBank != null ? '${json.encode(issuingBank)}' : 'null'},"lastFour": ${lastFour != null ? '${json.encode(lastFour)}' : 'null'},"maskedNumber": ${maskedNumber != null ? '${json.encode(maskedNumber)}' : 'null'},"productId": ${productId != null ? '${json.encode(productId)}' : 'null'},"token": ${token != null ? '${json.encode(token)}' : 'null'},"uniqueNumberIdentifier": ${uniqueNumberIdentifier != null ? '${json.encode(uniqueNumberIdentifier)}' : 'null'},"subscriptions": $subscriptions,"billingAddress": $billingAddress}';
   }
 }
 
@@ -741,6 +743,91 @@ class BillingAddress {
   @override
   String toString() {
     return '{"company": $company,"countryCodeAlpha2": $countryCodeAlpha2,"countryCodeAlpha3": $countryCodeAlpha3,"countryCodeNumeric": $countryCodeNumeric,"countryName": $countryName,"createdAt": $createdAt,"customerId": $customerId,"extendedAddress": $extendedAddress,"firstName": $firstName,"id": $id,"lastName": $lastName,"locality": $locality,"postalCode": $postalCode,"region": $region,"streetAddress": $streetAddress,"updatedAt": $updatedAt}';
+  }
+}
+
+class AndroidPayDetails {
+  Object countryOfIssuance;
+  Object globalId;
+  Object issuingBank;
+  Object token;
+  bool isNetworkTokenized;
+  String bin;
+  String cardType;
+  String commercial;
+  String debit;
+  String durbinRegulated;
+  String expirationMonth;
+  String expirationYear;
+  String googleTransactionId;
+  String healthcare;
+  String imageUrl;
+  String last4;
+  String payroll;
+  String prepaid;
+  String productId;
+  String sourceCardLast4;
+  String sourceCardType;
+  String sourceDescription;
+  String virtualCardLast4;
+  String virtualCardType;
+
+  AndroidPayDetails.fromParams(
+      {this.countryOfIssuance,
+      this.globalId,
+      this.issuingBank,
+      this.token,
+      this.isNetworkTokenized,
+      this.bin,
+      this.cardType,
+      this.commercial,
+      this.debit,
+      this.durbinRegulated,
+      this.expirationMonth,
+      this.expirationYear,
+      this.googleTransactionId,
+      this.healthcare,
+      this.imageUrl,
+      this.last4,
+      this.payroll,
+      this.prepaid,
+      this.productId,
+      this.sourceCardLast4,
+      this.sourceCardType,
+      this.sourceDescription,
+      this.virtualCardLast4,
+      this.virtualCardType});
+
+  AndroidPayDetails.fromJson(jsonRes) {
+    countryOfIssuance = jsonRes['countryOfIssuance'];
+    globalId = jsonRes['globalId'];
+    issuingBank = jsonRes['issuingBank'];
+    token = jsonRes['token'];
+    isNetworkTokenized = jsonRes['isNetworkTokenized'];
+    bin = jsonRes['bin'];
+    cardType = jsonRes['cardType'];
+    commercial = jsonRes['commercial'];
+    debit = jsonRes['debit'];
+    durbinRegulated = jsonRes['durbinRegulated'];
+    expirationMonth = jsonRes['expirationMonth'];
+    expirationYear = jsonRes['expirationYear'];
+    googleTransactionId = jsonRes['googleTransactionId'];
+    healthcare = jsonRes['healthcare'];
+    imageUrl = jsonRes['imageUrl'];
+    last4 = jsonRes['last4'];
+    payroll = jsonRes['payroll'];
+    prepaid = jsonRes['prepaid'];
+    productId = jsonRes['productId'];
+    sourceCardLast4 = jsonRes['sourceCardLast4'];
+    sourceCardType = jsonRes['sourceCardType'];
+    sourceDescription = jsonRes['sourceDescription'];
+    virtualCardLast4 = jsonRes['virtualCardLast4'];
+    virtualCardType = jsonRes['virtualCardType'];
+  }
+
+  @override
+  String toString() {
+    return '{"countryOfIssuance": $countryOfIssuance,"globalId": $globalId,"issuingBank": $issuingBank,"token": $token,"isNetworkTokenized": $isNetworkTokenized,"bin": ${bin != null ? '${json.encode(bin)}' : 'null'},"cardType": ${cardType != null ? '${json.encode(cardType)}' : 'null'},"commercial": ${commercial != null ? '${json.encode(commercial)}' : 'null'},"debit": ${debit != null ? '${json.encode(debit)}' : 'null'},"durbinRegulated": ${durbinRegulated != null ? '${json.encode(durbinRegulated)}' : 'null'},"expirationMonth": ${expirationMonth != null ? '${json.encode(expirationMonth)}' : 'null'},"expirationYear": ${expirationYear != null ? '${json.encode(expirationYear)}' : 'null'},"googleTransactionId": ${googleTransactionId != null ? '${json.encode(googleTransactionId)}' : 'null'},"healthcare": ${healthcare != null ? '${json.encode(healthcare)}' : 'null'},"imageUrl": ${imageUrl != null ? '${json.encode(imageUrl)}' : 'null'},"last4": ${last4 != null ? '${json.encode(last4)}' : 'null'},"payroll": ${payroll != null ? '${json.encode(payroll)}' : 'null'},"prepaid": ${prepaid != null ? '${json.encode(prepaid)}' : 'null'},"productId": ${productId != null ? '${json.encode(productId)}' : 'null'},"sourceCardLast4": ${sourceCardLast4 != null ? '${json.encode(sourceCardLast4)}' : 'null'},"sourceCardType": ${sourceCardType != null ? '${json.encode(sourceCardType)}' : 'null'},"sourceDescription": ${sourceDescription != null ? '${json.encode(sourceDescription)}' : 'null'},"virtualCardLast4": ${virtualCardLast4 != null ? '${json.encode(virtualCardLast4)}' : 'null'},"virtualCardType": ${virtualCardType != null ? '${json.encode(virtualCardType)}' : 'null'}}';
   }
 }
 
