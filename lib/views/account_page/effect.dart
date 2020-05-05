@@ -5,6 +5,7 @@ import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/globalbasestate/action.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/views/setting_page/page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -41,7 +42,6 @@ Future _onInit(Action action, Context<AccountPageState> ctx) async {
     ctx.state.animationController = AnimationController(
         vsync: ticker, duration: Duration(milliseconds: 1000));
   }
-  //final FirebaseUser currentUser = await _auth.currentUser();
   String name = ctx.state.user?.displayName;
   String avatar = ctx.state.user?.photoUrl;
   bool islogin = ctx.state.user != null;
@@ -57,12 +57,11 @@ void _onDispose(Action action, Context<AccountPageState> ctx) {
 }
 
 Future _onLogout(Action action, Context<AccountPageState> ctx) async {
-  //var q = await ApiHelper.deleteSession();
-  //if (q) await _onInit(action, ctx);
-
   final FirebaseUser currentUser = await _auth.currentUser();
+  SharedPreferences _preferences = await SharedPreferences.getInstance();
   if (currentUser != null) {
     try {
+      _preferences.remove('PaymentToken');
       _auth.signOut();
       GlobalStore.store.dispatch(GlobalActionCreator.setUser(null));
     } on Exception catch (_) {}

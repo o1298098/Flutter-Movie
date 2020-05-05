@@ -14,6 +14,7 @@ import 'package:movie/models/base_api_model/user_list.dart';
 import 'package:movie/models/base_api_model/user_list_detail.dart';
 import 'package:movie/models/base_api_model/user_media.dart';
 import 'package:movie/models/enums/media_type.dart';
+import 'package:movie/models/enums/premium_type.dart';
 
 class BaseApi {
   static Request _http = Request('https://www.fluttermovie.top/api');
@@ -382,7 +383,7 @@ class BaseApi {
     TransactionModel model;
     String _url = '/payment/TransactionSearch/$userId';
     var _r = await _http.request(_url);
-    if (_r != null) model = TransactionModel.fromJson(_r);
+    if (_r != null) model = TransactionModel(_r);
     return model;
   }
 
@@ -390,7 +391,7 @@ class BaseApi {
     BraintreeCustomer model;
     String _url = '/payment/Customer/$userId';
     var _r = await _http.request(_url);
-    if (_r != null) model = BraintreeCustomer.fromJson(_r);
+    if (_r != null) model = BraintreeCustomer(_r);
     return model;
   }
 
@@ -408,6 +409,21 @@ class BaseApi {
       'amount': purchase.amount,
       'paymentMethodNonce': purchase.paymentMethodNonce,
       'deviceData': purchase.deviceData
+    });
+    return _r;
+  }
+
+  static Future<dynamic> createPremiumPurchase(
+      Purchase purchase, PremiumType type) async {
+    String _url = '/payment/CreatePremiumPurchase';
+    var _r = await _http.request(_url, method: 'POST', data: {
+      'purchaseData': {
+        'userId': purchase.userId,
+        'amount': purchase.amount,
+        'paymentMethodNonce': purchase.paymentMethodNonce,
+        'deviceData': purchase.deviceData
+      },
+      'type': type.toString().split('.').last
     });
     return _r;
   }

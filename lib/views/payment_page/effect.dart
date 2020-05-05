@@ -13,6 +13,11 @@ Effect<PaymentPageState> buildEffect() {
 void _onAction(Action action, Context<PaymentPageState> ctx) {}
 
 void _onInit(Action action, Context<PaymentPageState> ctx) async {
-  final _r = await BaseApi.transactionSearch(ctx.state.user.uid);
-  if (_r != null) ctx.dispatch(PaymentPageActionCreator.setTransactions(_r));
+  if (ctx.state.user == null) return;
+  final _customer = await BaseApi.getBraintreeCustomer(ctx.state.user.uid);
+  if (_customer != null)
+    ctx.dispatch(PaymentPageActionCreator.setCustomer(_customer));
+  final _transaction = await BaseApi.transactionSearch(ctx.state.user.uid);
+  if (_transaction != null)
+    ctx.dispatch(PaymentPageActionCreator.setTransactions(_transaction));
 }
