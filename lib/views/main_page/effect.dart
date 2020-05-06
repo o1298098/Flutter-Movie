@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action, Page;
@@ -10,10 +9,9 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/actions/downloader_callback.dart';
 import 'package:movie/actions/github_api.dart';
+import 'package:movie/actions/user_info_operate.dart';
 import 'package:movie/actions/version_comparison.dart';
 import 'package:movie/customwidgets/update_info_dialog.dart';
-import 'package:movie/globalbasestate/action.dart';
-import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/views/detail_page/page.dart';
 import 'package:movie/views/tvdetail_page/page.dart';
 import 'package:package_info/package_info.dart';
@@ -33,9 +31,7 @@ ReceivePort _port = ReceivePort();
 void _onAction(Action action, Context<MainPageState> ctx) {}
 void _onInit(Action action, Context<MainPageState> ctx) async {
   await ApiHelper.init();
-  var _user = await FirebaseAuth.instance.currentUser();
-  if (_user != null)
-    GlobalStore.store.dispatch(GlobalActionCreator.setUser(_user));
+  await UserInfoOperate.whenAppStart();
   FirebaseMessaging().configure(
       onMessage: (_) async => print('233333'),
       onResume: (message) async {

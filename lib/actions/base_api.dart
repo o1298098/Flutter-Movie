@@ -13,6 +13,7 @@ import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/models/base_api_model/user_list.dart';
 import 'package:movie/models/base_api_model/user_list_detail.dart';
 import 'package:movie/models/base_api_model/user_media.dart';
+import 'package:movie/models/base_api_model/user_premium_model.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/enums/premium_type.dart';
 
@@ -413,18 +414,26 @@ class BaseApi {
     return _r;
   }
 
-  static Future<dynamic> createPremiumPurchase(
+  static Future<UserPremiumModel> createPremiumPurchase(
       Purchase purchase, PremiumType type) async {
+    UserPremiumModel _model;
     String _url = '/payment/CreatePremiumPurchase';
     var _r = await _http.request(_url, method: 'POST', data: {
-      'purchaseData': {
-        'userId': purchase.userId,
-        'amount': purchase.amount,
-        'paymentMethodNonce': purchase.paymentMethodNonce,
-        'deviceData': purchase.deviceData
-      },
-      'type': type.toString().split('.').last
+      'userId': purchase.userId,
+      'amount': purchase.amount,
+      'paymentMethodNonce': purchase.paymentMethodNonce,
+      'deviceData': purchase.deviceData,
+      'premiumType': type.toString().split('.').last
     });
-    return _r;
+    if (_r != null) _model = UserPremiumModel(_r);
+    return _model;
+  }
+
+  static Future<UserPremiumModel> getUserPremium(String uid) async {
+    UserPremiumModel _model;
+    String _url = '/users/UserPremium/$uid';
+    var _r = await _http.request(_url);
+    if (_r != null) _model = UserPremiumModel(_r);
+    return _model;
   }
 }

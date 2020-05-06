@@ -1,6 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_braintree/flutter_braintree.dart';
 import 'package:movie/actions/base_api.dart';
+import 'package:movie/actions/user_info_operate.dart';
 import 'package:movie/models/base_api_model/payment_client_token.dart';
 import 'package:movie/models/base_api_model/purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -55,19 +57,51 @@ void _onPay(Action action, Context<CheckOutPageState> ctx) async {
     return Toast.show('empty payment method', ctx.context,
         gravity: Toast.CENTER, duration: 5);
   }
-  final _r = await BaseApi.createPurchase(Purchase(
+  final _r = await BaseApi.createPremiumPurchase(
+    Purchase(
       userId: ctx.state.user.uid,
       amount: ctx.state.checkoutData.amount,
       paymentMethodNonce:
-          ctx.state.braintreeDropInResult.paymentMethodNonce.nonce));
+          ctx.state.braintreeDropInResult.paymentMethodNonce.nonce,
+    ),
+    ctx.state.checkoutData.premiumType,
+  );
   ctx.dispatch(CheckOutPageActionCreator.loading(false));
   if (_r == null)
     return Toast.show('Something wrong', ctx.context,
         gravity: Toast.CENTER, duration: 5);
-  if (_r['status'])
-    Toast.show('payed', ctx.context, gravity: Toast.CENTER, duration: 5);
-  else
-    Toast.show(_r['message'], ctx.context, gravity: Toast.CENTER, duration: 5);
+  if (_r.status) {
+    if (_r.data == null) return;
+    if (_r.data.expireDate == null) return;
+    UserInfoOperate.setPremium(_r.data.expireDate);
+    await Navigator.of(ctx.context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => Scaffold(
+            appBar: AppBar(
+              title: Text('Payed'),
+            ),
+            body: Center(
+              child: Container(
+                child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Thank you!!!',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 40),
+                      Text('Premium expire date: ${_r.data.expireDate}')
+                    ]),
+              ),
+            ),
+          ),
+        ),
+        (route) => route.isFirst);
+  } else
+    Toast.show(_r.message, ctx.context, gravity: Toast.CENTER, duration: 5);
   print(_r);
 }
 

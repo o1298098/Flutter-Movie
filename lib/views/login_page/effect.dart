@@ -5,8 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart' hide Action;
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:movie/actions/base_api.dart';
 import 'package:movie/actions/pop_result.dart';
+import 'package:movie/actions/user_info_operate.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/globalbasestate/action.dart';
 import 'package:movie/globalbasestate/store.dart';
@@ -93,11 +93,7 @@ Future _onLoginClicked(Action action, Context<LoginPageState> ctx) async {
     if (user.displayName == null)
       user.updateProfile(UserUpdateInfo()..displayName = _nickName).then(
           (v) => GlobalStore.store.dispatch(GlobalActionCreator.setUser(user)));
-
-    GlobalStore.store.dispatch(GlobalActionCreator.setUser(user));
-
-    BaseApi.updateUser(
-        user.uid, user.email, user.photoUrl, _nickName, user.phoneNumber);
+    UserInfoOperate.whenLogin(user, _nickName);
 
     Navigator.of(ctx.context).pop({'s': true, 'name': _nickName});
   }
@@ -137,11 +133,6 @@ Future<AuthResult> _phoneNumSignIn(
 }
 
 Future _onSignUp(Action action, Context<LoginPageState> ctx) async {
-  /*var url = 'https://www.themoviedb.org/account/signup';
-  if (await canLaunch(url)) {
-    await launch(url);
-  }*/
-  //await Navigator.of(ctx.context).pushNamed('registerPage');
   Navigator.of(ctx.context)
       .push(PageRouteBuilder(pageBuilder: (context, an, _) {
     return FadeTransition(
@@ -162,6 +153,8 @@ void _onGoogleSignIn(Action action, Context<LoginPageState> ctx) async {
   try {
     GoogleSignIn _googleSignIn = GoogleSignIn();
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    if (googleUser == null)
+      return ctx.state.submitAnimationController.reverse();
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
     final AuthCredential credential = GoogleAuthProvider.getCredential(
@@ -178,9 +171,7 @@ void _onGoogleSignIn(Action action, Context<LoginPageState> ctx) async {
     final FirebaseUser currentUser = await _auth.currentUser();
     assert(user.uid == currentUser.uid);
     if (user != null) {
-      GlobalStore.store.dispatch(GlobalActionCreator.setUser(user));
-      BaseApi.updateUser(user.uid, user.email, user.photoUrl, user.displayName,
-          user.phoneNumber);
+      UserInfoOperate.whenLogin(user, user.displayName);
       Navigator.of(ctx.context).pop({'s': true, 'name': user.displayName});
     } else {
       ctx.state.submitAnimationController.reverse();

@@ -1,11 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
+import 'package:movie/actions/user_info_operate.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
-import 'package:movie/globalbasestate/action.dart';
-import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/views/setting_page/page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -22,7 +19,6 @@ Effect<AccountPageState> buildEffect() {
   });
 }
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
 void _onAction(Action action, Context<AccountPageState> ctx) {}
 
 Future _onLogin(Action action, Context<AccountPageState> ctx) async {
@@ -57,16 +53,8 @@ void _onDispose(Action action, Context<AccountPageState> ctx) {
 }
 
 Future _onLogout(Action action, Context<AccountPageState> ctx) async {
-  final FirebaseUser currentUser = await _auth.currentUser();
-  SharedPreferences _preferences = await SharedPreferences.getInstance();
-  if (currentUser != null) {
-    try {
-      _preferences.remove('PaymentToken');
-      _auth.signOut();
-      GlobalStore.store.dispatch(GlobalActionCreator.setUser(null));
-    } on Exception catch (_) {}
-    await _onInit(action, ctx);
-  }
+  bool isLogout = await UserInfoOperate.whenLogout();
+  if (isLogout) await _onInit(action, ctx);
 }
 
 Future _navigatorPush(Action action, Context<AccountPageState> ctx) async {
