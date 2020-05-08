@@ -55,7 +55,7 @@ Future _onInit(Action action, Context<TVDetailPageState> ctx) async {
       final _user = GlobalStore.store.getState().user;
       if (_user != null) {
         var accountstate = await BaseApi.getAccountState(
-            _user.uid, ctx.state.tvid, MediaType.tv);
+            _user.firebaseUser.uid, ctx.state.tvid, MediaType.tv);
         if (accountstate != null)
           ctx.dispatch(
               TVDetailPageActionCreator.onSetAccountState(accountstate));

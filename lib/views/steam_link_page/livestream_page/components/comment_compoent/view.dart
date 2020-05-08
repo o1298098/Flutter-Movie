@@ -61,6 +61,7 @@ class _CommentCell extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: _theme.primaryColorDark,
                 image: DecorationImage(
+                    fit: BoxFit.cover,
                     image: CachedNetworkImageProvider(data.u.photoUrl ?? ''))),
           ),
           title: Text(data.u.userName),

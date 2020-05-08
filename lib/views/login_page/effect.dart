@@ -8,8 +8,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:movie/actions/pop_result.dart';
 import 'package:movie/actions/user_info_operate.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
-import 'package:movie/globalbasestate/action.dart';
-import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/country_phone_code.dart';
 import 'package:movie/views/register_page/page.dart';
 import 'action.dart';
@@ -91,10 +89,10 @@ Future _onLoginClicked(Action action, Context<LoginPageState> ctx) async {
         user.phoneNumber.substring(user.phoneNumber.length - 4);
 
     if (user.displayName == null)
-      user.updateProfile(UserUpdateInfo()..displayName = _nickName).then(
-          (v) => GlobalStore.store.dispatch(GlobalActionCreator.setUser(user)));
+      user
+          .updateProfile(UserUpdateInfo()..displayName = _nickName)
+          .then((v) => UserInfoOperate.whenLogin(user, _nickName));
     UserInfoOperate.whenLogin(user, _nickName);
-
     Navigator.of(ctx.context).pop({'s': true, 'name': _nickName});
   }
 }

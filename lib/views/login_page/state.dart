@@ -1,10 +1,9 @@
 import 'dart:ui';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/country_phone_code.dart';
+import 'package:movie/models/app_user.dart';
 
 class LoginPageState implements GlobalBaseState, Cloneable<LoginPageState> {
   String account = '';
@@ -46,7 +45,7 @@ class LoginPageState implements GlobalBaseState, Cloneable<LoginPageState> {
   Locale locale;
 
   @override
-  FirebaseUser user;
+  AppUser user;
 }
 
 LoginPageState initState(Map<String, dynamic> args) {

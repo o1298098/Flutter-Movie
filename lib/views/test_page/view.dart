@@ -42,8 +42,8 @@ Widget buildView(
                   String _clientNonce = preferences.getString('PaymentToken');
                   Request _http = Request('http://localhost:5000/api/payment');
                   if (_clientNonce == null) {
-                    var r =
-                        await _http.request('/ClientToken/${state.user.uid}');
+                    var r = await _http
+                        .request('/ClientToken/${state.user.firebaseUser.uid}');
                     if (r != null) _clientNonce = r;
                     preferences.setString('PaymentToken', r);
                   }
@@ -71,7 +71,7 @@ Widget buildView(
                     print('Nonce: ${result.paymentMethodNonce.typeLabel}');
                     var _e = await _http
                         .request('/CreatePurchase', method: 'POST', data: {
-                      'userId': state.user.uid,
+                      'userId': state.user.firebaseUser.uid,
                       'amount': 4.20,
                       'paymentMethodNonce': result.paymentMethodNonce.nonce,
                       'deviceData': result.deviceData

@@ -22,7 +22,7 @@ void _onInit(Action action, Context<StreamLinksPageState> ctx) {
   if (ctx.state.user != null) {
     final Stream<QuerySnapshot> snapshot = Firestore.instance
         .collection('AccountState')
-        .document(ctx.state.user.uid)
+        .document(ctx.state.user.firebaseUser.uid)
         .collection('MyStreamLink')
         .snapshots();
     ctx.dispatch(StreamLinksPageActionCreator.setSnapshot(snapshot));

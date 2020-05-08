@@ -22,7 +22,7 @@ Future _onInit(Action action, Context<MyListsPageState> ctx) async {
       vsync: ticker, duration: Duration(milliseconds: 1000));
   ctx.state.scrollController = ScrollController(keepScrollOffset: false);
   if (ctx.state.user != null) {
-    final data = await BaseApi.getUserList(ctx.state.user.uid);
+    final data = await BaseApi.getUserList(ctx.state.user.firebaseUser.uid);
     ctx.dispatch(MyListsPageActionCreator.setList(data));
   }
 }

@@ -1,6 +1,6 @@
 import 'dart:ui';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/app_user.dart';
 
 abstract class GlobalBaseState {
   Color get themeColor;
@@ -9,8 +9,8 @@ abstract class GlobalBaseState {
   Locale get locale;
   set locale(Locale locale);
 
-  FirebaseUser get user;
-  set user(FirebaseUser u);
+  AppUser get user;
+  set user(AppUser u);
 }
 
 class GlobalState implements GlobalBaseState, Cloneable<GlobalState> {
@@ -20,7 +20,7 @@ class GlobalState implements GlobalBaseState, Cloneable<GlobalState> {
   Locale locale;
 
   @override
-  FirebaseUser user;
+  AppUser user;
 
   @override
   GlobalState clone() {

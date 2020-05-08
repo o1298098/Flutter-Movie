@@ -14,7 +14,7 @@ Widget buildView(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-            padding: EdgeInsets.fromLTRB(Adapt.px(30), Adapt.px(30), 0, 0),
+            padding: EdgeInsets.fromLTRB(Adapt.px(30), 0, 0, 0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[

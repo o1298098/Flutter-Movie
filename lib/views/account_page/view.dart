@@ -1,10 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/customwidgets/customcliper_path.dart';
+import 'package:movie/models/app_user.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -81,7 +82,7 @@ class _BackGround extends StatelessWidget {
 }
 
 class _Header extends StatelessWidget {
-  final FirebaseUser user;
+  final AppUser user;
   final Dispatch dispatch;
   const _Header({this.user, this.dispatch});
   @override
@@ -89,18 +90,59 @@ class _Header extends StatelessWidget {
     return Row(
       children: <Widget>[
         SizedBox(width: Adapt.px(40)),
-        SizedBox(
-          width: Adapt.screenW() - Adapt.px(225),
-          child: Text(
-            'Hi, ${user?.displayName ?? 'Guest'}',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: Adapt.px(60),
+        Container(
+          width: Adapt.px(100),
+          height: Adapt.px(100),
+          decoration: BoxDecoration(
+            color: Color(0xFF8499FD),
+            shape: BoxShape.circle,
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: CachedNetworkImageProvider(
+                  user?.firebaseUser?.photoUrl ?? ''),
             ),
           ),
+        ),
+        SizedBox(width: Adapt.px(20)),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${user?.firebaseUser?.displayName ?? 'Guest'}',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: Adapt.px(35),
+              ),
+            ),
+            SizedBox(height: Adapt.px(10)),
+            Row(children: [
+              Container(
+                height: Adapt.px(40),
+                width: Adapt.px(100),
+                decoration: BoxDecoration(
+                  color: user?.isPremium ?? false
+                      ? const Color(0xFFFFC107)
+                      : const Color(0xFF616161),
+                  borderRadius: BorderRadius.circular(
+                    Adapt.px(10),
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    'Premium',
+                    style: TextStyle(
+                        fontSize: Adapt.px(18),
+                        color: user?.isPremium ?? false
+                            ? const Color(0xFF000000)
+                            : Colors.grey),
+                  ),
+                ),
+              ),
+            ])
+          ],
         ),
         Expanded(child: SizedBox()),
         user == null

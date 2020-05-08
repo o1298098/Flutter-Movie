@@ -1,10 +1,10 @@
 import 'dart:ui';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter_braintree/flutter_braintree.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/base_api_model/checkout_model.dart';
+import 'package:movie/models/app_user.dart';
 
 class CheckOutPageState
     implements GlobalBaseState, Cloneable<CheckOutPageState> {
@@ -29,7 +29,7 @@ class CheckOutPageState
   Color themeColor;
 
   @override
-  FirebaseUser user;
+  AppUser user;
 }
 
 CheckOutPageState initState(Map<String, dynamic> args) {

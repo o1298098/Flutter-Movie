@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/state.dart';
@@ -8,6 +7,7 @@ import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/base_api_model/account_state.dart';
 import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/enums/theme_color.dart';
+import 'package:movie/models/app_user.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/keyword.dart';
 import 'package:movie/models/review.dart';
@@ -65,7 +65,7 @@ class TVDetailPageState
   Locale locale;
 
   @override
-  FirebaseUser user;
+  AppUser user;
 }
 
 TVDetailPageState initState(Map<String, dynamic> args) {
@@ -98,7 +98,7 @@ TVDetailPageState initState(Map<String, dynamic> args) {
   state.videomodel = new VideoModel.fromParams(results: List<VideoResult>());
   state.accountState = AccountState.fromParams(
       id: 0,
-      uid: GlobalStore.store.getState().user?.uid,
+      uid: GlobalStore.store.getState().user?.firebaseUser?.uid,
       mediaId: state.tvid,
       favorite: false,
       watchlist: false,

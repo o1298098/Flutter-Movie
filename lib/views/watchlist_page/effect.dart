@@ -24,9 +24,11 @@ Future _onInit(Action action, Context<WatchlistPageState> ctx) async {
       AnimationController(vsync: ticker, duration: Duration(milliseconds: 300));
   ctx.state.swiperController = SwiperController();
   if (ctx.state.user != null) {
-    final movie = await BaseApi.getWatchlist(ctx.state.user.uid, 'movie');
+    final movie =
+        await BaseApi.getWatchlist(ctx.state.user.firebaseUser.uid, 'movie');
     if (movie != null) ctx.dispatch(WatchlistPageActionCreator.setMovie(movie));
-    final tv = await BaseApi.getWatchlist(ctx.state.user.uid, 'tv');
+    final tv =
+        await BaseApi.getWatchlist(ctx.state.user.firebaseUser.uid, 'tv');
     if (tv != null) ctx.dispatch(WatchlistPageActionCreator.setTVShow(tv));
   }
 }

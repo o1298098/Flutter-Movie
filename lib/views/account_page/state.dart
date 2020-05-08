@@ -1,9 +1,9 @@
 import 'dart:ui';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/state.dart';
+import 'package:movie/models/app_user.dart';
 
 class AccountPageState implements GlobalBaseState, Cloneable<AccountPageState> {
   GlobalKey<ScaffoldState> scafoldState =
@@ -38,7 +38,7 @@ class AccountPageState implements GlobalBaseState, Cloneable<AccountPageState> {
   Color themeColor;
 
   @override
-  FirebaseUser user;
+  AppUser user;
 }
 
 AccountPageState initState(Map<String, dynamic> args) {

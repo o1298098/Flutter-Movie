@@ -1,9 +1,9 @@
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/globalbasestate/state.dart';
+import 'package:movie/models/app_user.dart';
 import 'package:video_player/video_player.dart';
 
 class StreamLinksPageState
@@ -25,7 +25,7 @@ class StreamLinksPageState
   Color themeColor;
 
   @override
-  FirebaseUser user;
+  AppUser user;
 }
 
 StreamLinksPageState initState(Map<String, dynamic> args) {

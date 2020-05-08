@@ -1,10 +1,10 @@
 import 'dart:ui';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/episodemodel.dart';
+import 'package:movie/models/app_user.dart';
 import 'package:movie/models/seasondetail.dart';
 
 import 'components/episodes_component/state.dart';
@@ -41,7 +41,7 @@ class SeasonDetailPageState extends MutableSource
   Locale locale;
 
   @override
-  FirebaseUser user;
+  AppUser user;
 
   @override
   Object getItemData(int index) {

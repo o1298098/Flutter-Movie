@@ -1,9 +1,9 @@
 import 'dart:ui';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/episodemodel.dart';
+import 'package:movie/models/app_user.dart';
 
 import 'components/credits_component/state.dart';
 import 'components/header_component/state.dart';
@@ -28,7 +28,7 @@ class EpisodeDetailPageState extends MutableSource
   Locale locale;
 
   @override
-  FirebaseUser user;
+  AppUser user;
 
   @override
   Object getItemData(int index) {

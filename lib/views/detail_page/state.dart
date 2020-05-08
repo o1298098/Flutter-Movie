@@ -42,7 +42,7 @@ MovieDetailPageState initState(Map<String, dynamic> args) {
   state.imagesmodel = ImageModel.fromParams(backdrops: [], posters: []);
   state.accountState = AccountState.fromParams(
       id: 0,
-      uid: GlobalStore.store.getState().user?.uid,
+      uid: GlobalStore.store.getState().user?.firebaseUser?.uid,
       mediaId: state.mediaId,
       favorite: false,
       watchlist: false,

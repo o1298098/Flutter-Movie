@@ -1,11 +1,11 @@
 import 'dart:ui';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/combinedcredits.dart';
+import 'package:movie/models/app_user.dart';
 import 'package:movie/models/peopledetail.dart';
 import 'components/gallery_component/state.dart';
 import 'components/header_component/state.dart';
@@ -48,7 +48,7 @@ class PeopleDetailPageState extends MutableSource
   Locale locale;
 
   @override
-  FirebaseUser user;
+  AppUser user;
 
   @override
   Object getItemData(int index) {

@@ -28,7 +28,7 @@ Widget buildView(
               _CommentsTitle(
                 commentController: state.commentController,
                 commentFocusNode: state.commentFocusNode,
-                user: state.user,
+                user: state.user.firebaseUser,
                 submit: () => dispatch(LiveStreamPageActionCreator.addComment(
                     state.commentController.text)),
               ),
@@ -81,12 +81,57 @@ class _HeaderInfo extends StatelessWidget {
                     rating: (rated ?? 0) / 2,
                   ),
                   SizedBox(width: Adapt.px(8)),
-                  Text('$rated}  ($rateCount)')
+                  Text('$rated  ($rateCount)')
                 ],
-              )
+              ),
+              SizedBox(height: Adapt.px(30)),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+                _Button(
+                  icon: Icons.thumb_up,
+                  title: '0',
+                ),
+                _Button(
+                  icon: Icons.thumb_down,
+                  title: 'unlike',
+                ),
+                _Button(
+                  icon: Icons.cloud_download,
+                  title: 'download',
+                  onPressed: () async =>
+                      await Navigator.of(context).pushNamed('downloadPage'),
+                ),
+                _Button(
+                  icon: Icons.comment,
+                  title: 'commnet',
+                ),
+              ])
             ],
           ),
         ));
+  }
+}
+
+class _Button extends StatelessWidget {
+  final Function onPressed;
+  final String title;
+  final IconData icon;
+  const _Button({this.icon, this.title, this.onPressed});
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Column(
+        children: [
+          Icon(
+            icon,
+            size: Adapt.px(40),
+            color: Colors.grey,
+          ),
+          SizedBox(height: Adapt.px(8)),
+          Text(title)
+        ],
+      ),
+    );
   }
 }
 
@@ -123,6 +168,7 @@ class _CommentsTitle extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: _theme.primaryColorDark,
                   image: DecorationImage(
+                    fit: BoxFit.cover,
                     image: CachedNetworkImageProvider(user?.photoUrl ?? ''),
                   ),
                 ),

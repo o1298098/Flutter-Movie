@@ -1,10 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/base_api_model/user_list.dart';
 import 'package:movie/models/base_api_model/user_list_detail.dart';
 import 'package:movie/models/enums/list_sort_type.dart';
+import 'package:movie/models/app_user.dart';
 import 'package:movie/models/sortcondition.dart';
 
 class ListDetailPageState
@@ -35,7 +35,7 @@ class ListDetailPageState
   Color themeColor;
 
   @override
-  FirebaseUser user;
+  AppUser user;
 }
 
 ListDetailPageState initState(Map<String, dynamic> args) {

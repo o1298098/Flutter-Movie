@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/base_api_model/user_list.dart';
+import 'package:movie/models/app_user.dart';
 
 class CreateListPageState
     implements GlobalBaseState, Cloneable<CreateListPageState> {
@@ -33,7 +33,7 @@ class CreateListPageState
   Color themeColor;
 
   @override
-  FirebaseUser user;
+  AppUser user;
 }
 
 CreateListPageState initState(Map<String, dynamic> args) {

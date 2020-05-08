@@ -6,6 +6,7 @@ import 'package:movie/views/checkout_page/page.dart';
 import 'package:movie/views/coming_page/page.dart';
 import 'package:movie/views/createlist_page/page.dart';
 import 'package:movie/views/discover_page/page.dart';
+import 'package:movie/views/download_page/page.dart';
 import 'package:movie/views/episodedetail_page/page.dart';
 import 'package:movie/views/favorites_page/page.dart';
 import 'package:movie/views/gallery_page/page.dart';
@@ -74,6 +75,7 @@ class Routes {
       'paymentPage': PaymentPage(),
       'premiumPage': PremiumPage(),
       'checkoutPage': CheckOutPage(),
+      'downloadPage': DownloadPage(),
     },
     visitor: (String path, Page<Object, dynamic> page) {
       if (page.isTypeof<GlobalBaseState>()) {

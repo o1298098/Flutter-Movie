@@ -6,12 +6,10 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:movie/actions/apihelper.dart';
-import 'package:movie/actions/base_api.dart';
 import 'package:movie/actions/github_api.dart';
+import 'package:movie/actions/user_info_operate.dart';
 import 'package:movie/actions/version_comparison.dart';
 import 'package:movie/customwidgets/update_info_dialog.dart';
-import 'package:movie/globalbasestate/action.dart';
-import 'package:movie/globalbasestate/store.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
@@ -118,10 +116,7 @@ void _profileEdit(Action action, Context<SettingPageState> ctx) {
 
         ctx.dispatch(SettingPageActionCreator.userUpadate(_user));
 
-        GlobalStore.store.dispatch(GlobalActionCreator.setUser(_user));
-
-        BaseApi.updateUser(_user.uid, _user.email, _user.photoUrl,
-            _user.displayName, _user.phoneNumber);
+        UserInfoOperate.whenLogin(_user, _user.displayName);
         ctx.dispatch(SettingPageActionCreator.onUploading(false));
         ctx.state.userEditAnimation.reverse();
       });

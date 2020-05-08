@@ -36,7 +36,7 @@ void _onSubmit(Action action, Context<AddLinkPageState> ctx) {
       });
       Firestore.instance
           .collection('AccountState')
-          .document(ctx.state.user.uid)
+          .document(ctx.state.user.firebaseUser.uid)
           .collection('MyStreamLink')
           .document('$mtype${ctx.state.id}')
           .setData({
@@ -45,7 +45,7 @@ void _onSubmit(Action action, Context<AddLinkPageState> ctx) {
         'name': ctx.state.name,
         'photourl': ctx.state.photoUrl
       });
-      d.collection('Link').document(ctx.state.user.uid).setData({
+      d.collection('Link').document(ctx.state.user.firebaseUser.uid).setData({
         'linkName': ctx.state.linkName,
         'streamLink': ctx.state.streamLink,
         'streamLinkType': streamType,
@@ -54,7 +54,10 @@ void _onSubmit(Action action, Context<AddLinkPageState> ctx) {
       });
     } else {
       d.updateData({'updateTime': DateTime.now()});
-      d.collection('Link').document(ctx.state.user.uid).updateData({
+      d
+          .collection('Link')
+          .document(ctx.state.user.firebaseUser.uid)
+          .updateData({
         'linkName': ctx.state.linkName,
         'streamLink': ctx.state.streamLink,
         'streamLinkType': streamType,
@@ -71,7 +74,7 @@ Future _onInit(Action action, Context<AddLinkPageState> ctx) async {
       .collection('StreamLinks')
       .document('$mtype${ctx.state.id}')
       .collection('Link')
-      .document(ctx.state.user.uid)
+      .document(ctx.state.user.firebaseUser.uid)
       .get()
       .then((d) {
     if (d.exists) ctx.dispatch(AddLinkPageActionCreator.setLinkData(d));

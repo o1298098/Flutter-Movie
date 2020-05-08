@@ -50,7 +50,7 @@ void _chipSelected(Action action, Context<LiveStreamPageState> ctx) async {
   final MovieStreamLink d = action.payload;
   if (d != null) {
     assert(!d.selected);
-    if (d.needAd) {
+    if (d.needAd && !(ctx.state.user?.isPremium ?? false)) {
       ctx.dispatch(LiveStreamPageActionCreator.loading(true));
       _streamLink = d;
       _rewardedVideoAd.load(
@@ -79,15 +79,15 @@ void _addComment(Action action, Context<LiveStreamPageState> ctx) {
   if (ctx.state.user != null && comment != '') {
     final datetime = DateTime.now().toString();
     final commentModel = MovieComment.fromParams(
-        uid: ctx.state.user.uid,
+        uid: ctx.state.user.firebaseUser.uid,
         mediaId: ctx.state.id,
         createTime: datetime,
         updateTime: datetime,
         like: 0,
         u: BaseUser.fromParams(
-            uid: ctx.state.user.uid,
-            userName: ctx.state.user.displayName,
-            photoUrl: ctx.state.user.photoUrl),
+            uid: ctx.state.user.firebaseUser.uid,
+            userName: ctx.state.user.firebaseUser.displayName,
+            photoUrl: ctx.state.user.firebaseUser.photoUrl),
         comment: comment);
     ctx.dispatch(LiveStreamPageActionCreator.insertComment(commentModel));
     BaseApi.createMovieComment(commentModel).then((d) {
@@ -145,7 +145,7 @@ void _onInit(Action action, Context<LiveStreamPageState> ctx) {
 
         ctx.dispatch(LiveStreamPageActionCreator.setStreamLinks(_list));
 
-        if (_list[0].needAd) {
+        if (_list[0].needAd && !(ctx.state.user?.isPremium ?? false)) {
           ctx.dispatch(LiveStreamPageActionCreator.loading(true));
           _streamLink = _list[0];
           _rewardedVideoAd.load(

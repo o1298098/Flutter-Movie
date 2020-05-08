@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:movie/globalbasestate/action.dart';
 import 'package:movie/globalbasestate/store.dart';
+import 'package:movie/models/app_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'base_api.dart';
@@ -10,15 +11,16 @@ class UserInfoOperate {
   static String premiumExpireDate;
 
   static Future whenLogin(FirebaseUser user, String nickName) async {
-    GlobalStore.store.dispatch(GlobalActionCreator.setUser(user));
     BaseApi.updateUser(
         user.uid, user.email, user.photoUrl, nickName, user.phoneNumber);
+
+    GlobalStore.store.dispatch(GlobalActionCreator.setUser(
+        AppUser(firebaseUser: user, premiumExpireDate: null)));
     final _r = await BaseApi.getUserPremium(user.uid);
     if (_r != null) {
       if (_r.status) {
-        if (_r.data == null) return;
-        if (_r.data.expireDate == null) return;
-        await setPremium(_r.data.expireDate);
+        if (_r.data != null) if (_r.data.expireDate != null)
+          await setPremium(_r.data.expireDate);
       }
     }
     print(_r);
@@ -34,7 +36,6 @@ class UserInfoOperate {
         _preferences.remove('PaymentToken');
         _preferences.remove('premiumExpireDate');
         premiumExpireDate = null;
-        checkPremium();
         GlobalStore.store.dispatch(GlobalActionCreator.setUser(null));
       } on Exception catch (_) {
         return false;
@@ -47,12 +48,14 @@ class UserInfoOperate {
   static Future whenAppStart() async {
     var _user = await FirebaseAuth.instance.currentUser();
     if (_user != null) {
-      GlobalStore.store.dispatch(GlobalActionCreator.setUser(_user));
       SharedPreferences _preferences = await SharedPreferences.getInstance();
       String _date = _preferences.getString('premiumExpireDate');
-      if (_date == null) return;
-      premiumExpireDate = _date;
-      checkPremium();
+      if (_date != null) premiumExpireDate = _date;
+      GlobalStore.store.dispatch(GlobalActionCreator.setUser(AppUser(
+          firebaseUser: _user,
+          premiumExpireDate: premiumExpireDate == null
+              ? null
+              : DateTime.parse(premiumExpireDate))));
     }
   }
 
@@ -60,7 +63,8 @@ class UserInfoOperate {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     _preferences.setString('premiumExpireDate', date);
     premiumExpireDate = date;
-    checkPremium();
+    GlobalStore.store
+        .dispatch(GlobalActionCreator.setUserPremium(DateTime.parse(date)));
   }
 
   static bool checkPremium() {

@@ -25,7 +25,7 @@ class HeaderConnector extends ConnOp<ListDetailPageState, HeaderState> {
     mstate.description = state.listDetailModel?.description ?? '';
     mstate.sortBy = state.sortBy;
     mstate.sortType = state.sortType;
-    mstate.user = state.user;
+    mstate.user = state.user.firebaseUser;
     return mstate;
   }
 

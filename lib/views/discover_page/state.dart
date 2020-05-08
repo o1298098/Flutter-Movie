@@ -1,10 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gzx_dropdown_menu/gzx_dropdown_menu.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/discoversorttype.dart';
+import 'package:movie/models/app_user.dart';
 import 'package:movie/models/sortcondition.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:movie/views/discover_page/components/filter_component/state.dart';
@@ -45,7 +45,7 @@ class DiscoverPageState extends MutableSource
   Locale locale;
 
   @override
-  FirebaseUser user;
+  AppUser user;
 
   @override
   Object getItemData(int index) => VideoCellState()

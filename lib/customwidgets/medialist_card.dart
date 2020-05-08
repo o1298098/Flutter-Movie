@@ -42,7 +42,7 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
   initUserlist() {
     if (_user != null)
       setState(() {
-        _userList = BaseApi.getUserList(_user.uid);
+        _userList = BaseApi.getUserList(_user.firebaseUser.uid);
       });
   }
 
@@ -52,7 +52,7 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
         _userList = null;
       });
       BaseApi.createUserList(UserList.fromParams(
-              uid: _user.uid,
+              uid: _user.firebaseUser.uid,
               listName: name,
               description: description,
               backGroundUrl: ImageUrl.getUrl(widget.photourl, ImageSize.w300)))

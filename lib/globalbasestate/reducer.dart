@@ -1,9 +1,9 @@
 import 'dart:ui';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/generated/i18n.dart';
+import 'package:movie/models/app_user.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -14,6 +14,7 @@ Reducer<GlobalState> buildReducer() {
       GlobalAction.changeThemeColor: _onchangeThemeColor,
       GlobalAction.changeLocale: _onChangeLocale,
       GlobalAction.setUser: _onSetUser,
+      GlobalAction.setUserPremium: _onSetUserPremium
     },
   );
 }
@@ -38,6 +39,13 @@ GlobalState _onChangeLocale(GlobalState state, Action action) {
 }
 
 GlobalState _onSetUser(GlobalState state, Action action) {
-  final FirebaseUser user = action.payload;
+  final AppUser user = action.payload;
   return state.clone()..user = user;
+}
+
+GlobalState _onSetUserPremium(GlobalState state, Action action) {
+  final DateTime _date = action.payload;
+  final AppUser _user = AppUser(
+      firebaseUser: state.user.firebaseUser, premiumExpireDate: _date);
+  return state.clone()..user = _user;
 }

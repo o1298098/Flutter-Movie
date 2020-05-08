@@ -70,15 +70,15 @@ void _addComment(Action action, Context<TvShowLiveStreamPageState> ctx) async {
     final TvShowComment _comment = TvShowComment.fromParams(
         mediaId: ctx.state.tvid,
         comment: _commentTxt,
-        uid: ctx.state.user.uid,
+        uid: ctx.state.user.firebaseUser.uid,
         updateTime: _date,
         createTime: _date,
         season: ctx.state.season.seasonNumber,
         episode: ctx.state.episodeNumber,
         u: BaseUser.fromParams(
-            uid: ctx.state.user.uid,
-            userName: ctx.state.user.displayName,
-            photoUrl: ctx.state.user.photoUrl),
+            uid: ctx.state.user.firebaseUser.uid,
+            userName: ctx.state.user.firebaseUser.displayName,
+            photoUrl: ctx.state.user.firebaseUser.photoUrl),
         like: 0);
     ctx.state.commentController.clear();
     ctx.dispatch(TvShowLiveStreamPageActionCreator.insertComment(_comment));

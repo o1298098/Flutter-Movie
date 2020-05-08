@@ -1,12 +1,12 @@
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/enums/streamlink_type.dart';
+import 'package:movie/models/app_user.dart';
 
 class AddLinkPageState implements GlobalBaseState, Cloneable<AddLinkPageState> {
   String name;
@@ -43,7 +43,7 @@ class AddLinkPageState implements GlobalBaseState, Cloneable<AddLinkPageState> {
   Color themeColor;
 
   @override
-  FirebaseUser user;
+  AppUser user;
 }
 
 AddLinkPageState initState(Map<String, dynamic> args) {

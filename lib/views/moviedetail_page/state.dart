@@ -1,10 +1,9 @@
 import 'dart:math';
 import 'dart:ui';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/state.dart';
+import 'package:movie/models/app_user.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/media_accountstatemodel.dart';
 import 'package:movie/models/moviedetail.dart';
@@ -57,7 +56,7 @@ class MovieDetailPageState
   Locale locale;
 
   @override
-  FirebaseUser user;
+  AppUser user;
 }
 
 MovieDetailPageState initState(Map<String, dynamic> args) {

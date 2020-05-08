@@ -1,10 +1,9 @@
 import 'dart:ui';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/base_api_model/braintree_customer.dart';
 import 'package:movie/models/base_api_model/transaction.dart';
+import 'package:movie/models/app_user.dart';
 
 class PaymentPageState implements GlobalBaseState, Cloneable<PaymentPageState> {
   TransactionModel transactions;
@@ -24,7 +23,7 @@ class PaymentPageState implements GlobalBaseState, Cloneable<PaymentPageState> {
   Color themeColor;
 
   @override
-  FirebaseUser user;
+  AppUser user;
 }
 
 PaymentPageState initState(Map<String, dynamic> args) {

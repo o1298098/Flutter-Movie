@@ -41,10 +41,11 @@ void _setFirebaseFavorite(Action action, Context<MenuState> ctx) async {
   if (user != null) {
     ctx.dispatch(MenuActionCreator.updateFavorite(!_isFavorite));
     if (_isFavorite)
-      await BaseApi.deleteFavorite(user.uid, MediaType.movie, ctx.state.id);
+      await BaseApi.deleteFavorite(
+          user.firebaseUser.uid, MediaType.movie, ctx.state.id);
     else
       await BaseApi.setFavorite(UserMedia.fromParams(
-          uid: user.uid,
+          uid: user.firebaseUser.uid,
           name: ctx.state.name,
           photoUrl: ctx.state.detail.posterPath,
           overwatch: ctx.state.detail.overview,
@@ -87,10 +88,11 @@ Future _setWatchlist(Action action, Context<MenuState> ctx) async {
   if (user != null) {
     ctx.dispatch(MenuActionCreator.updateWatctlist(!_isWatchlist));
     if (_isWatchlist)
-      await BaseApi.deleteWatchlist(user.uid, MediaType.movie, ctx.state.id);
+      await BaseApi.deleteWatchlist(
+          user.firebaseUser.uid, MediaType.movie, ctx.state.id);
     else
       await BaseApi.setWatchlist(UserMedia.fromParams(
-          uid: user.uid,
+          uid: user.firebaseUser.uid,
           name: ctx.state.name,
           photoUrl: ctx.state.detail.posterPath,
           overwatch: ctx.state.detail.overview,

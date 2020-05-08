@@ -183,38 +183,33 @@ class _Body extends StatelessWidget {
 class _CreditsShimmerCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final ThemeData _theme = ThemeStyle.getTheme(context);
     return SizedBox(
       width: Adapt.px(240),
       height: Adapt.px(480),
-      child: Shimmer.fromColors(
-        baseColor: _theme.primaryColorDark,
-        highlightColor: _theme.primaryColorLight,
-        child: Column(
-          children: <Widget>[
-            Container(
-              color: Colors.grey[200],
-              width: Adapt.px(240),
-              height: Adapt.px(260),
-            ),
-            Container(
-              height: Adapt.px(24),
-              margin: EdgeInsets.fromLTRB(0, Adapt.px(15), Adapt.px(20), 0),
-              color: Colors.grey[200],
-            ),
-            Container(
-              height: Adapt.px(24),
-              margin: EdgeInsets.fromLTRB(0, Adapt.px(5), Adapt.px(20), 0),
-              color: Colors.grey[200],
-            ),
-            Container(
-              height: Adapt.px(24),
-              margin: EdgeInsets.fromLTRB(
-                  0, Adapt.px(5), Adapt.px(70), Adapt.px(20)),
-              color: Colors.grey[200],
-            ),
-          ],
-        ),
+      child: Column(
+        children: <Widget>[
+          Container(
+            color: Colors.grey[200],
+            width: Adapt.px(240),
+            height: Adapt.px(260),
+          ),
+          Container(
+            height: Adapt.px(24),
+            margin: EdgeInsets.fromLTRB(0, Adapt.px(15), Adapt.px(20), 0),
+            color: Colors.grey[200],
+          ),
+          Container(
+            height: Adapt.px(24),
+            margin: EdgeInsets.fromLTRB(0, Adapt.px(5), Adapt.px(20), 0),
+            color: Colors.grey[200],
+          ),
+          Container(
+            height: Adapt.px(24),
+            margin:
+                EdgeInsets.fromLTRB(0, Adapt.px(5), Adapt.px(70), Adapt.px(20)),
+            color: Colors.grey[200],
+          ),
+        ],
       ),
     );
   }
@@ -223,13 +218,17 @@ class _CreditsShimmerCell extends StatelessWidget {
 class _CreditsShimmerList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      scrollDirection: Axis.horizontal,
-      padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-      separatorBuilder: (context, index) => SizedBox(width: Adapt.px(30)),
-      itemCount: 3,
-      itemBuilder: (context, index) => _CreditsShimmerCell(),
-    );
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return Shimmer.fromColors(
+        baseColor: _theme.primaryColorDark,
+        highlightColor: _theme.primaryColorLight,
+        child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+          separatorBuilder: (context, index) => SizedBox(width: Adapt.px(30)),
+          itemCount: 3,
+          itemBuilder: (context, index) => _CreditsShimmerCell(),
+        ));
   }
 }
 

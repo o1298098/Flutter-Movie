@@ -51,7 +51,7 @@ Future _onInit(Action action, Context<MovieDetailPageState> ctx) async {
     final _user = GlobalStore.store.getState().user;
     if (_user != null) {
       var accountstate = await BaseApi.getAccountState(
-          _user.uid, ctx.state.mediaId, MediaType.movie);
+          _user.firebaseUser.uid, ctx.state.mediaId, MediaType.movie);
       if (accountstate != null)
         ctx.dispatch(
             MovieDetailPageActionCreator.onSetAccountState(accountstate));

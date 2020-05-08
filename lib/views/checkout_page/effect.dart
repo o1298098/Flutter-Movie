@@ -22,7 +22,8 @@ void _onAction(Action action, Context<CheckOutPageState> ctx) {}
 Future _selectPaymentMethod(
     Action action, Context<CheckOutPageState> ctx) async {
   ctx.dispatch(CheckOutPageActionCreator.loading(true));
-  PaymentClientToken _clientNonce = await _getToken(ctx.state.user.uid);
+  PaymentClientToken _clientNonce =
+      await _getToken(ctx.state.user.firebaseUser.uid);
   ctx.dispatch(CheckOutPageActionCreator.loading(false));
   if (_clientNonce?.token == null)
     return Toast.show('Something wrong', ctx.context,
@@ -59,7 +60,7 @@ void _onPay(Action action, Context<CheckOutPageState> ctx) async {
   }
   final _r = await BaseApi.createPremiumPurchase(
     Purchase(
-      userId: ctx.state.user.uid,
+      userId: ctx.state.user.firebaseUser.uid,
       amount: ctx.state.checkoutData.amount,
       paymentMethodNonce:
           ctx.state.braintreeDropInResult.paymentMethodNonce.nonce,

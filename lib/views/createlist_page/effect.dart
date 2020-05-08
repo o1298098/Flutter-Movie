@@ -31,7 +31,7 @@ void _submit(Action action, Context<CreateListPageState> ctx) {
     else {
       final _date = DateTime.now().toString();
       ctx.state.listData = UserList.fromParams(
-        uid: ctx.state.user.uid,
+        uid: ctx.state.user.firebaseUser.uid,
         listName: ctx.state.nameTextController.text,
         backGroundUrl: ctx.state.backGroundTextController.text,
         description: ctx.state.descriptionTextController.text,

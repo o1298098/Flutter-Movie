@@ -17,7 +17,7 @@ class ShareCardConnector extends ConnOp<ListDetailPageState, ShareCardState> {
   ShareCardState get(ListDetailPageState state) {
     ShareCardState mstate = ShareCardState();
     mstate.listDetailModel = state.listDetailModel;
-    mstate.user = state.user;
+    mstate.user = state.user.firebaseUser;
     return mstate;
   }
 
