@@ -19,6 +19,7 @@ class LiveStreamPageState
   String releaseDate;
   String comment;
   String streamAddress;
+  String posterUrl;
   FocusNode commentFocusNode;
   MovieComments comments;
   TextEditingController commentController;
@@ -39,6 +40,7 @@ class LiveStreamPageState
       ..releaseDate = releaseDate
       ..user = user
       ..streamLinks = streamLinks
+      ..posterUrl = posterUrl
       ..comment = comment
       ..comments = comments
       ..streamAddress = streamAddress
@@ -68,5 +70,6 @@ LiveStreamPageState initState(Map<String, dynamic> args) {
     ..rateCount = args['rateCount']
     ..rated = args['rated']
     ..releaseDate = args['releaseDate']
+    ..posterUrl = args['posterUrl']
     ..loading = false;
 }

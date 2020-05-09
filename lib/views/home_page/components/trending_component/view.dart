@@ -147,6 +147,8 @@ class _Trending extends StatelessWidget {
                       ),
                       child: Text(
                         d.title ?? d.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             color: Colors.white,
                             fontSize:

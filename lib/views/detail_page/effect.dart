@@ -71,7 +71,8 @@ Future _playStreamLink(Action action, Context<MovieDetailPageState> ctx) async {
       'name': ctx.state.detail.title,
       'rated': ctx.state.detail.voteAverage,
       'rateCount': ctx.state.detail.voteCount,
-      'releaseDate': ctx.state.detail.releaseDate
+      'releaseDate': ctx.state.detail.releaseDate,
+      'posterUrl': ctx.state.detail.posterPath
     });
 }
 

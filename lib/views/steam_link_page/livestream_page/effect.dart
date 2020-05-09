@@ -199,6 +199,7 @@ void _changedVideoSource(
       ctx.state.youtubePlayerController.load(ctx.state.streamAddress);
     }
   } else {
+    ctx.state.streamAddress = d.streamLink;
     await ctx.state.videoControllers[index].initialize();
     ctx.state.chewieController = ChewieController(
         customControls: CustomCupertinoControls(

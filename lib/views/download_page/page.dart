@@ -5,7 +5,8 @@ import 'reducer.dart';
 import 'state.dart';
 import 'view.dart';
 
-class DownloadPage extends Page<DownloadPageState, Map<String, dynamic>> {
+class DownloadPage extends Page<DownloadPageState, Map<String, dynamic>>
+    with TickerProviderMixin {
   DownloadPage()
       : super(
           initState: initState,

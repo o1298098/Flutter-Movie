@@ -23,6 +23,8 @@ Widget buildView(
                 releaseDate: state.releaseDate,
                 rated: state.rated,
                 rateCount: state.rateCount,
+                streamAddress: state.streamAddress,
+                posterUrl: state.posterUrl,
               ),
               viewService.buildComponent('streamLinks'),
               _CommentsTitle(
@@ -47,7 +49,15 @@ class _HeaderInfo extends StatelessWidget {
   final String releaseDate;
   final double rated;
   final int rateCount;
-  const _HeaderInfo({this.name, this.rateCount, this.rated, this.releaseDate});
+  final String streamAddress;
+  final String posterUrl;
+  const _HeaderInfo(
+      {this.name,
+      this.rateCount,
+      this.rated,
+      this.releaseDate,
+      this.streamAddress,
+      this.posterUrl});
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
@@ -97,8 +107,12 @@ class _HeaderInfo extends StatelessWidget {
                 _Button(
                   icon: Icons.cloud_download,
                   title: 'download',
-                  onPressed: () async =>
-                      await Navigator.of(context).pushNamed('downloadPage'),
+                  onPressed: () async => await Navigator.of(context)
+                      .pushNamed('downloadPage', arguments: {
+                    'name': name,
+                    'streamAddress': streamAddress,
+                    'posterUrl': posterUrl
+                  }),
                 ),
                 _Button(
                   icon: Icons.comment,

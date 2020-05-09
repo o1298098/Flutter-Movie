@@ -45,7 +45,6 @@ class _YoutubePlayerState extends State<_YoutubePlayer> {
         flags: YoutubePlayerFlags(
           mute: false,
           autoPlay: true,
-          forceHideAnnotation: true,
         ));
     super.initState();
   }
