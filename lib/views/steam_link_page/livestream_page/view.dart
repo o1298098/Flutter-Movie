@@ -107,12 +107,14 @@ class _HeaderInfo extends StatelessWidget {
                 _Button(
                   icon: Icons.cloud_download,
                   title: 'download',
-                  onPressed: () async => await Navigator.of(context)
-                      .pushNamed('downloadPage', arguments: {
-                    'name': name,
-                    'streamAddress': streamAddress,
-                    'posterUrl': posterUrl
-                  }),
+                  onPressed: () async => await Navigator.of(context).pushNamed(
+                    'downloadPage',
+                    arguments: {
+                      'name': name,
+                      'streamAddress': streamAddress,
+                      'posterUrl': posterUrl,
+                    },
+                  ),
                 ),
                 _Button(
                   icon: Icons.comment,

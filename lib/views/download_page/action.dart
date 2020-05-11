@@ -1,12 +1,14 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:movie/models/download_queue.dart';
 
 enum DownloadPageAction {
   action,
   setDownloadTask,
   createTask,
   startAllTasks,
-  pauseAllTasks
+  pauseAllTasks,
+  taskCellActionTapped,
 }
 
 class DownloadPageActionCreator {
@@ -28,5 +30,9 @@ class DownloadPageActionCreator {
 
   static Action pauseAllTasks() {
     return const Action(DownloadPageAction.pauseAllTasks);
+  }
+
+  static Action taskCellActionTapped(DownloadQueue task) {
+    return Action(DownloadPageAction.taskCellActionTapped, payload: task);
   }
 }

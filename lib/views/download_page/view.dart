@@ -11,7 +11,6 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/download_queue.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/style/themestyle.dart';
-
 import 'action.dart';
 import 'state.dart';
 
@@ -66,6 +65,7 @@ Widget buildView(
                       SizedBox(height: Adapt.px(20)),
                       _DownLoadTaskList(
                         key: ValueKey("downloadKey"),
+                        dispatch: dispatch,
                         tasks: state.downloadTask,
                       ),
                     ],
@@ -178,9 +178,25 @@ class _NewTaskCell extends StatelessWidget {
   }
 }
 
+String _getFileExtension(String address) {
+  List<String> _fileExtensions = ['mp4', 'm3u8', 'mkv', 'mov', 'webm', 'apk'];
+  String _fileExtension = address.split('.').last ?? '';
+  return _fileExtensions.contains(_fileExtension) ? _fileExtension : 'X';
+}
+
+final Map<String, Color> _taskCellColors = {
+  'mp4': const Color(0xFFBBDEFB),
+  'webm': const Color(0xFFB39DBD),
+  'mkv': const Color(0xFFF8BBD0),
+  'apk': const Color(0xFFAED581),
+  'm3u8': const Color(0xFFC5CAE9),
+  'X': const Color(0xFF80CBC4)
+};
+
 class _TaskItem extends StatelessWidget {
   final DownloadQueue task;
-  const _TaskItem({this.task});
+  final Function(DownloadQueue) onActionTap;
+  const _TaskItem({this.task, this.onActionTap});
   IconData _getIcon() {
     switch (task.status.value) {
       case 1:
@@ -193,44 +209,19 @@ class _TaskItem extends StatelessWidget {
         return Icons.play_arrow;
       case 4:
         return Icons.close;
-      case 4:
+      case 5:
         return Icons.refresh;
       case 0:
-        return Icons.warning;
+        return Icons.close;
       default:
         return Icons.warning;
-    }
-  }
-
-  void onTap() async {
-    switch (task.status.value) {
-      case 1:
-        await FlutterDownloader.pause(taskId: task.taskId);
-        break;
-      case 2:
-        await FlutterDownloader.pause(taskId: task.taskId);
-        break;
-      case 6:
-        await FlutterDownloader.resume(taskId: task.taskId);
-        break;
-      case 3:
-        await FlutterDownloader.open(taskId: task.taskId);
-        break;
-      case 4:
-        await FlutterDownloader.cancel(taskId: task.taskId);
-        break;
-      case 4:
-        await FlutterDownloader.retry(taskId: task.taskId);
-        break;
-      case 0:
-        await FlutterDownloader.cancel(taskId: task.taskId);
-        break;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
+    final String _fileExtension = _getFileExtension(task?.filename ?? '');
     return Stack(children: [
       task.status == DownloadTaskStatus.complete
           ? SizedBox()
@@ -251,8 +242,16 @@ class _TaskItem extends StatelessWidget {
               height: Adapt.px(80),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(Adapt.px(20)),
-                color: Colors.pink[100],
+                color: _taskCellColors[_fileExtension],
               ),
+              child: Center(
+                  child: Text(
+                _fileExtension,
+                style: TextStyle(
+                    color: const Color(0xFFFFFFFF),
+                    fontSize: Adapt.px(24),
+                    fontWeight: FontWeight.bold),
+              )),
             ),
             SizedBox(width: Adapt.px(30)),
             Expanded(
@@ -287,7 +286,7 @@ class _TaskItem extends StatelessWidget {
                 color: _theme.primaryColorDark,
               ),
               child: GestureDetector(
-                  onTap: () => onTap(),
+                  onTap: () => onActionTap(task),
                   child: Icon(
                     _getIcon(),
                     color: task.status == DownloadTaskStatus.running
@@ -305,7 +304,9 @@ class _TaskItem extends StatelessWidget {
 
 class _DownLoadTaskList extends StatefulWidget {
   final List<DownloadTask> tasks;
-  const _DownLoadTaskList({Key key, this.tasks}) : super(key: key);
+  final Dispatch dispatch;
+  const _DownLoadTaskList({Key key, this.tasks, this.dispatch})
+      : super(key: key);
   @override
   _DownLoadTaskListState createState() => _DownLoadTaskListState();
 }
@@ -324,7 +325,10 @@ class _DownLoadTaskListState extends State<_DownLoadTaskList> {
       String _id = data[0];
       DownloadTaskStatus _status = data[1];
       int _progress = data[2];
-      final _task = tasks?.singleWhere((e) => e.taskId == _id) ?? null;
+      final _task = tasks?.singleWhere(
+        (e) => e.taskId == _id,
+        orElse: () => null,
+      );
       if (_task != null) {
         _task.progress = _progress < 0 ? 0 : _progress;
         _task.status = _status;
@@ -372,6 +376,8 @@ class _DownLoadTaskListState extends State<_DownLoadTaskList> {
               itemCount: tasks.length,
               itemBuilder: (_, index) => _TaskItem(
                 task: tasks[index],
+                onActionTap: (_t) => widget.dispatch(
+                    DownloadPageActionCreator.taskCellActionTapped(_t)),
               ),
             )
           : Container(

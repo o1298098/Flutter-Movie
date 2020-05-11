@@ -4,6 +4,18 @@
 
 #import "GeneratedPluginRegistrant.h"
 
+#if __has_include(<flutter_inappwebview/InAppWebViewFlutterPlugin.h>)
+#import <flutter_inappwebview/InAppWebViewFlutterPlugin.h>
+#else
+@import flutter_inappwebview;
+#endif
+
+#if __has_include(<flutter_mdns_plugin/FlutterMdnsPlugin.h>)
+#import <flutter_mdns_plugin/FlutterMdnsPlugin.h>
+#else
+@import flutter_mdns_plugin;
+#endif
+
 #if __has_include(<cloud_firestore/FLTCloudFirestorePlugin.h>)
 #import <cloud_firestore/FLTCloudFirestorePlugin.h>
 #else
@@ -56,18 +68,6 @@
 #import <flutter_downloader/FlutterDownloaderPlugin.h>
 #else
 @import flutter_downloader;
-#endif
-
-#if __has_include(<flutter_inappwebview/InAppWebViewFlutterPlugin.h>)
-#import <flutter_inappwebview/InAppWebViewFlutterPlugin.h>
-#else
-@import flutter_inappwebview;
-#endif
-
-#if __has_include(<flutter_mdns_plugin/FlutterMdnsPlugin.h>)
-#import <flutter_mdns_plugin/FlutterMdnsPlugin.h>
-#else
-@import flutter_mdns_plugin;
 #endif
 
 #if __has_include(<google_sign_in/FLTGoogleSignInPlugin.h>)
@@ -145,6 +145,8 @@
 @implementation GeneratedPluginRegistrant
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
+  [InAppWebViewFlutterPlugin registerWithRegistrar:[registry registrarForPlugin:@"InAppWebViewFlutterPlugin"]];
+  [FlutterMdnsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterMdnsPlugin"]];
   [FLTCloudFirestorePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTCloudFirestorePlugin"]];
   [FLTFirebaseAdMobPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseAdMobPlugin"]];
   [FLTFirebaseAnalyticsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseAnalyticsPlugin"]];
@@ -154,8 +156,6 @@
   [FLTFirebaseStoragePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseStoragePlugin"]];
   [FlutterBraintreePlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterBraintreePlugin"]];
   [FlutterDownloaderPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterDownloaderPlugin"]];
-  [InAppWebViewFlutterPlugin registerWithRegistrar:[registry registrarForPlugin:@"InAppWebViewFlutterPlugin"]];
-  [FlutterMdnsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterMdnsPlugin"]];
   [FLTGoogleSignInPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleSignInPlugin"]];
   [FLTImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImagePickerPlugin"]];
   [FLTPackageInfoPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPackageInfoPlugin"]];

@@ -76,13 +76,28 @@ class _Player extends StatelessWidget {
         return AspectRatio(
           aspectRatio: 16 / 9,
           child: InAppWebView(
-              key: ValueKey(streamAddress),
-              initialUrl: streamAddress,
-              initialHeaders: {},
-              initialOptions: InAppWebViewWidgetOptions(
-                  crossPlatform: InAppWebViewOptions(
-                debuggingEnabled: true,
-              ))),
+            key: ValueKey(streamAddress),
+            initialHeaders: {},
+            initialOptions: InAppWebViewWidgetOptions(
+                android: AndroidInAppWebViewOptions(
+                  supportMultipleWindows: false,
+                ),
+                crossPlatform: InAppWebViewOptions(
+                  useShouldOverrideUrlLoading: true,
+                  javaScriptCanOpenWindowsAutomatically: false,
+                  debuggingEnabled: true,
+                )),
+            onWebViewCreated: (controller) {
+              controller.loadUrl(url: streamAddress);
+            },
+            shouldOverrideUrlLoading:
+                (controller, shouldOverrideUrlLoadingRequest) {
+              if (shouldOverrideUrlLoadingRequest.url != streamAddress) {
+                controller.stopLoading();
+              }
+              return;
+            },
+          ),
         );
       case 'other':
         return Container(

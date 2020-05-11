@@ -25,7 +25,7 @@ Paypal: sb-dhwa71528371@personal.example.com   password: o1298098
 ## Demo
 <a href='https://github.com/o1298098/Flutter-Movie/releases/download/demo/demo.apk'>Download</a>
 ## Flutter version
->Flutter 1.18.0  
+>Flutter 1.19.0  
 >Tools • Dart 2.9.0  
 ## Preview 
 <img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios.gif" width="150">  
