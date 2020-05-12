@@ -24,7 +24,7 @@ class WebTorrentPlayerState extends State<WebTorrentPlayer> {
     return AspectRatio(
       aspectRatio: 16 / 9,
       child: InAppWebView(
-        initialOptions: InAppWebViewWidgetOptions(),
+        initialOptions: InAppWebViewGroupOptions(),
         initialData: InAppWebViewInitialData(data: """<!DOCTYPE html>
 <html>
   <head>

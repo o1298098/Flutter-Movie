@@ -77,7 +77,7 @@ class _Player extends StatelessWidget {
           child: InAppWebView(
             key: ValueKey(streamAddress),
             initialHeaders: {},
-            initialOptions: InAppWebViewWidgetOptions(
+            initialOptions: InAppWebViewGroupOptions(
                 android: AndroidInAppWebViewOptions(
                   supportMultipleWindows: false,
                 ),
