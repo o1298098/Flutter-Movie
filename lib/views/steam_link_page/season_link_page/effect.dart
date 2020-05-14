@@ -72,7 +72,7 @@ void _getSeasonDetail(Action action, Context<SeasonLinkPageState> ctx) async {
           ctx.state.detail.id, season.seasonNumber);
       season.episodes.forEach((f) {
         final index = season.episodes.indexOf(f);
-        f.streamLink = _streamLinks.list.singleWhere((d) {
+        f.streamLink = _streamLinks.list.firstWhere((d) {
           return d.episode == f.episodeNumber;
         }, orElse: () => null);
         f.playState = season.playStates[index] == '0' ? false : true;

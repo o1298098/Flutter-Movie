@@ -11,7 +11,7 @@ class StreamLinkComponent extends Component<StreamLinkState> {
           effect: buildEffect(),
           reducer: buildReducer(),
           shouldUpdate: (oldState, newState) {
-            return oldState.episodeNumber != newState.episodeNumber ||
+            return oldState.streamLinkId != newState.streamLinkId ||
                 oldState.episodelistController !=
                     newState.episodelistController ||
                 oldState.streamLinks != newState.streamLinks;

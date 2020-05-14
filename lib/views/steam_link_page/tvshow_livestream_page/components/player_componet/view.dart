@@ -84,7 +84,6 @@ class _Player extends StatelessWidget {
                 ),
                 crossPlatform: InAppWebViewOptions(
                   useShouldOverrideUrlLoading: true,
-                  javaScriptCanOpenWindowsAutomatically: false,
                   debuggingEnabled: true,
                 )),
             onWebViewCreated: (controller) {

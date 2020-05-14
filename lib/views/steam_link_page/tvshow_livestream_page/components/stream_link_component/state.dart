@@ -6,7 +6,7 @@ import 'package:movie/views/steam_link_page/tvshow_livestream_page/state.dart';
 class StreamLinkState implements Cloneable<StreamLinkState> {
   ScrollController episodelistController;
   TvShowStreamLinks streamLinks;
-  int episodeNumber;
+  int streamLinkId;
   @override
   StreamLinkState clone() {
     return StreamLinkState();
@@ -18,9 +18,9 @@ class StreamLinkConnector
   @override
   StreamLinkState get(TvShowLiveStreamPageState state) {
     StreamLinkState substate = new StreamLinkState();
-    substate.episodeNumber = state.episodeNumber;
     substate.episodelistController = state.episodelistController;
     substate.streamLinks = state.streamLinks;
+    substate.streamLinkId = state.streamLinkId;
     return substate;
   }
 }

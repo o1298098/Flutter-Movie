@@ -16,6 +16,7 @@ enum TvShowLiveStreamPageAction {
   insertComment,
   episodesMoreTapped,
   streamLinkReport,
+  loading,
 }
 
 class TvShowLiveStreamPageActionCreator {
@@ -40,8 +41,9 @@ class TvShowLiveStreamPageActionCreator {
         payload: episode);
   }
 
-  static Action episodeChanged(Episode ep) {
-    return Action(TvShowLiveStreamPageAction.episodeChanged, payload: ep);
+  static Action episodeChanged(Episode ep, TvShowStreamLink link) {
+    return Action(TvShowLiveStreamPageAction.episodeChanged,
+        payload: [ep, link]);
   }
 
   static Action setComments(TvShowComments d) {
@@ -63,5 +65,9 @@ class TvShowLiveStreamPageActionCreator {
   static Action episodesMoreTapped(Widget child) {
     return Action(TvShowLiveStreamPageAction.episodesMoreTapped,
         payload: child);
+  }
+
+  static Action loading(bool isLoading) {
+    return Action(TvShowLiveStreamPageAction.loading, payload: isLoading);
   }
 }

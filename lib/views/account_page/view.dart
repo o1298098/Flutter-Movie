@@ -12,34 +12,36 @@ import 'state.dart';
 
 Widget buildView(
     AccountPageState state, Dispatch dispatch, ViewService viewService) {
-  return Builder(builder: (context) {
-    return Scaffold(
-      key: state.scafoldState,
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Stack(
-          children: <Widget>[
-            _BackGround(),
-            Container(
-              child: SafeArea(
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(height: Adapt.px(60)),
-                    _Header(
-                      user: state.user,
-                      dispatch: dispatch,
-                    ),
-                    SizedBox(height: Adapt.px(50)),
-                    _AccountBody(dispatch: dispatch),
-                  ],
+  return Builder(
+    builder: (context) {
+      return Scaffold(
+        key: state.scafoldState,
+        body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Stack(
+            children: <Widget>[
+              _BackGround(),
+              Container(
+                child: SafeArea(
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: Adapt.px(60)),
+                      _Header(
+                        user: state.user,
+                        dispatch: dispatch,
+                      ),
+                      SizedBox(height: Adapt.px(50)),
+                      _AccountBody(dispatch: dispatch),
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
-      ),
-    );
-  });
+      );
+    },
+  );
 }
 
 class _DropDownItem extends StatelessWidget {
@@ -118,30 +120,45 @@ class _Header extends StatelessWidget {
               ),
             ),
             SizedBox(height: Adapt.px(10)),
-            Row(children: [
-              Container(
-                height: Adapt.px(40),
-                width: Adapt.px(100),
-                decoration: BoxDecoration(
-                  color: user?.isPremium ?? false
-                      ? const Color(0xFFFFC107)
-                      : const Color(0xFF616161),
-                  borderRadius: BorderRadius.circular(
-                    Adapt.px(10),
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    'Premium',
-                    style: TextStyle(
-                        fontSize: Adapt.px(18),
-                        color: user?.isPremium ?? false
-                            ? const Color(0xFF000000)
-                            : Colors.grey),
-                  ),
-                ),
-              ),
-            ])
+            GestureDetector(
+              onTap: () => dispatch(
+                  AccountPageActionCreator.navigatorPush('premiumPage')),
+              child: (user?.isPremium ?? false)
+                  ? Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: Adapt.px(10),
+                        vertical: Adapt.px(10),
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFC107),
+                        borderRadius: BorderRadius.circular(
+                          Adapt.px(10),
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Premium',
+                          style: TextStyle(
+                            fontSize: Adapt.px(20),
+                            color: const Color(0xFF000000),
+                          ),
+                        ),
+                      ),
+                    )
+                  : Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: Adapt.px(10), vertical: Adapt.px(10)),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(Adapt.px(10))),
+                      child: Text(
+                        'Get Premium >',
+                        style: TextStyle(
+                          fontSize: Adapt.px(20),
+                        ),
+                      ),
+                    ),
+            )
           ],
         ),
         Expanded(child: SizedBox()),
@@ -301,8 +318,8 @@ class _AccountBody extends StatelessWidget {
           _GirdCell(
               icon: 'images/c3po.png',
               title: 'MyRated',
-              onTap: () => dispatch(
-                  AccountPageActionCreator.navigatorPush('premiumPage'))),
+              onTap: () =>
+                  dispatch(AccountPageActionCreator.navigatorPush('testPage'))),
           _GirdCell(
             icon: 'images/r2d2.png',
             title: 'Settings',

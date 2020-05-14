@@ -40,7 +40,7 @@ void _onInit(Action action, Context<MainPageState> ctx) async {
       onLaunch: (message) async {
         _push(message, ctx);
       });
-  _bindBackgroundIsolate();
+  if (Platform.isAndroid) _bindBackgroundIsolate();
 
   FlutterDownloader.registerCallback(DownloaderCallBack.callback);
 
@@ -48,7 +48,7 @@ void _onInit(Action action, Context<MainPageState> ctx) async {
 }
 
 void _onDispose(Action action, Context<MainPageState> ctx) {
-  _unbindBackgroundIsolate();
+  if (Platform.isAndroid) _unbindBackgroundIsolate();
 }
 
 Future _push(Map<String, dynamic> message, Context<MainPageState> ctx) async {
@@ -116,8 +116,12 @@ void _bindBackgroundIsolate() {
     String id = data[0];
     DownloadTaskStatus status = data[1];
     //int progress = data[2];
-    if (status == DownloadTaskStatus.complete)
-      await FlutterDownloader.open(taskId: id);
+    if (status == DownloadTaskStatus.complete) {
+      List<DownloadTask> _tasks = await FlutterDownloader.loadTasks();
+      final _file = _tasks.singleWhere((e) => e.taskId == id, orElse: null);
+      if (_file.filename.split('.').last == 'apk')
+        await FlutterDownloader.open(taskId: id);
+    }
     print('UI Isolate Callback: $data');
   });
 }

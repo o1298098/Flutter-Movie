@@ -29,7 +29,6 @@ Widget buildView(
             TvShowLiveStreamPageActionCreator.episodesMoreTapped(_EpisodesMore(
           data: state.streamLinks,
           dispatch: dispatch,
-          episodeNumber: state.episodeNumber,
         )));
         break;
       case 'report':
@@ -80,25 +79,11 @@ Widget buildView(
         ),
       ),
       SizedBox(height: Adapt.px(30)),
-      SizedBox(
-        height: Adapt.px(130),
-        child: ListView(
-            physics: ClampingScrollPhysics(),
-            controller: state.episodelistController,
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            children: state.streamLinks?.list
-                    ?.map((d) => _StreamLinkCell(
-                          episodeNumber: state.episodeNumber,
-                          data: d,
-                          onTap: (e) {
-                            if (e.episode != state.episodeNumber)
-                              dispatch(TvShowLiveStreamPageActionCreator
-                                  .episodeCellTapped(e));
-                          },
-                        ))
-                    ?.toList() ??
-                [_ShimmerLinkCell(), _ShimmerLinkCell(), _ShimmerLinkCell()]),
+      _StreamLinkList(
+        controller: state.episodelistController,
+        streamLinkId: state.streamLinkId,
+        dispatch: dispatch,
+        streamLinks: state.streamLinks,
       )
     ],
   );
@@ -119,24 +104,36 @@ class _ShimmerLinkCell extends StatelessWidget {
   }
 }
 
+class _ShimmerLinkList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+        physics: ClampingScrollPhysics(),
+        separatorBuilder: (_, __) => SizedBox(),
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        itemCount: 3,
+        itemBuilder: (context, index) => _ShimmerLinkCell());
+  }
+}
+
 class _StreamLinkCell extends StatelessWidget {
   final TvShowStreamLink data;
-  final int episodeNumber;
+  final int streamLinkId;
   final Function(TvShowStreamLink) onTap;
-  const _StreamLinkCell({this.data, this.episodeNumber, this.onTap});
+  const _StreamLinkCell({this.data, this.streamLinkId, this.onTap});
   @override
   Widget build(BuildContext context) {
     final MediaQueryData _mediaQuery = MediaQuery.of(context);
     return GestureDetector(
       onTap: () => onTap(data),
       child: Container(
-        margin: EdgeInsets.only(left: Adapt.px(30)),
         padding: EdgeInsets.all(Adapt.px(20)),
         width: Adapt.px(300),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Adapt.px(20)),
           border: Border.all(
-              color: data.episode == episodeNumber
+              color: data.sid == streamLinkId
                   ? _mediaQuery.platformBrightness == Brightness.light
                       ? Colors.black
                       : Colors.white
@@ -160,11 +157,51 @@ class _StreamLinkCell extends StatelessWidget {
   }
 }
 
+class _StreamLinkList extends StatelessWidget {
+  final TvShowStreamLinks streamLinks;
+  final ScrollController controller;
+  final int streamLinkId;
+  final Dispatch dispatch;
+  const _StreamLinkList(
+      {this.controller, this.dispatch, this.streamLinkId, this.streamLinks});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: Adapt.px(130),
+      child: streamLinks != null
+          ? ListView.separated(
+              padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+              physics: ClampingScrollPhysics(),
+              controller: controller,
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              itemCount: streamLinks.list.length,
+              separatorBuilder: (_, __) => SizedBox(width: Adapt.px(30)),
+              itemBuilder: (context, index) {
+                final d = streamLinks.list[index];
+                return _StreamLinkCell(
+                  streamLinkId: streamLinkId,
+                  data: d,
+                  onTap: (e) {
+                    if (e.sid != streamLinkId)
+                      dispatch(
+                          TvShowLiveStreamPageActionCreator.episodeCellTapped(
+                              e));
+                  },
+                );
+              },
+            )
+          : _ShimmerLinkList(),
+    );
+  }
+}
+
 class _MoreStreamLinkCell extends StatelessWidget {
   final TvShowStreamLink data;
-  final int episodeNumber;
+  final int streamLinkId;
   final Function(TvShowStreamLink) onTap;
-  const _MoreStreamLinkCell({this.data, this.episodeNumber, this.onTap});
+  const _MoreStreamLinkCell({this.data, this.streamLinkId, this.onTap});
   @override
   Widget build(BuildContext context) {
     final MediaQueryData _mediaQuery = MediaQuery.of(context);
@@ -177,7 +214,7 @@ class _MoreStreamLinkCell extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Adapt.px(20)),
           border: Border.all(
-              color: data.episode == episodeNumber
+              color: data.sid == streamLinkId
                   ? _mediaQuery.platformBrightness == Brightness.light
                       ? Colors.black
                       : Colors.white
@@ -203,9 +240,9 @@ class _MoreStreamLinkCell extends StatelessWidget {
 
 class _EpisodesMore extends StatelessWidget {
   final TvShowStreamLinks data;
-  final int episodeNumber;
+  final int streamLinkId;
   final Dispatch dispatch;
-  const _EpisodesMore({this.data, this.dispatch, this.episodeNumber});
+  const _EpisodesMore({this.data, this.dispatch, this.streamLinkId});
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -215,9 +252,9 @@ class _EpisodesMore extends StatelessWidget {
         children: data.list
             .map((d) => _MoreStreamLinkCell(
                   data: d,
-                  episodeNumber: episodeNumber,
+                  streamLinkId: streamLinkId,
                   onTap: (e) {
-                    if (e.episode != episodeNumber)
+                    if (e.sid != streamLinkId)
                       dispatch(
                           TvShowLiveStreamPageActionCreator.episodeCellTapped(
                               e));

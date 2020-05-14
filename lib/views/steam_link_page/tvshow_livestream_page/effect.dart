@@ -1,10 +1,12 @@
 import 'package:chewie/chewie.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/base_api.dart';
 import 'package:movie/customwidgets/custom_video_controls.dart';
 import 'package:movie/customwidgets/stream_link_report_dialog.dart';
+import 'package:movie/models/ad_target_info.dart';
 import 'package:movie/models/base_api_model/base_user.dart';
 import 'package:movie/models/base_api_model/stream_link_report.dart';
 import 'package:movie/models/base_api_model/tvshow_comment.dart';
@@ -42,15 +44,45 @@ void _onInit(Action action, Context<TvShowLiveStreamPageState> ctx) async {
         ctx.dispatch(TvShowLiveStreamPageActionCreator.onShowBottom(false));
     });
   ctx.state.preferences = await SharedPreferences.getInstance();
+  _rewardedVideoAd.listener =
+      (RewardedVideoAdEvent event, {String rewardType, int rewardAmount}) {
+    switch (event) {
+      case RewardedVideoAdEvent.loaded:
+        print('loaded');
+        _rewardedVideoAd.show();
+        break;
+      case RewardedVideoAdEvent.failedToLoad:
+        _startPlayer(_streamLink, ctx);
+        print('failedToLoad');
+        break;
+      case RewardedVideoAdEvent.closed:
+        if (_isRewarded) {
+          _streamLink.needAd = false;
+          _startPlayer(_streamLink, ctx);
+        }
+        ctx.dispatch(TvShowLiveStreamPageActionCreator.loading(false));
+        print('closed');
+        break;
+      case RewardedVideoAdEvent.rewarded:
+        _isRewarded = true;
+        print('rewarded');
+        break;
+      default:
+        break;
+    }
+  };
   final _streamLinks = await BaseApi.getTvSeasonStreamLinks(
       ctx.state.tvid, ctx.state.season.seasonNumber);
+
   if (_streamLinks != null) {
     initVideoPlayer(ctx, _streamLinks);
     ctx.dispatch(
         TvShowLiveStreamPageActionCreator.setStreamLinks(_streamLinks));
-    ctx.dispatch(TvShowLiveStreamPageActionCreator.episodeCellTapped(
-        _streamLinks.list
-            .singleWhere((d) => d.episode == ctx.state.episodeNumber)));
+    Future.delayed(
+        Duration(milliseconds: 300),
+        () => ctx.dispatch(TvShowLiveStreamPageActionCreator.episodeCellTapped(
+            _streamLinks.list
+                .firstWhere((d) => d.episode == ctx.state.episodeNumber))));
   }
 }
 
@@ -89,53 +121,69 @@ void _addComment(Action action, Context<TvShowLiveStreamPageState> ctx) async {
   }
 }
 
+final _rewardedVideoAd = RewardedVideoAd.instance;
+bool _isRewarded = false;
+
+TvShowStreamLink _streamLink;
 void _episodeCellTapped(
     Action action, Context<TvShowLiveStreamPageState> ctx) async {
   final TvShowStreamLink e = action.payload;
   if (e != null) {
-    final Episode episode = ctx.state.season.episodes
-        .singleWhere((d) => d.episodeNumber == e.episode);
-    if (!episode.playState) {
-      final index = ctx.state.season.episodes.indexOf(episode);
-      episode.playState = true;
-      ctx.state.season.playStates[index] = '1';
-      ctx.state.preferences.setStringList(
-          'TvSeason${ctx.state.season.id}', ctx.state.season.playStates);
-    }
-    ctx.dispatch(TvShowLiveStreamPageActionCreator.episodeChanged(episode));
-
-    await ctx.state.episodelistController.animateTo(
-        Adapt.px(330) * (e.episode - 1),
-        curve: Curves.ease,
-        duration: Duration(milliseconds: 300));
-
-    videoSourceChange(ctx, e);
-
-    final comment = await BaseApi.getTvShowComments(
-        ctx.state.tvid, ctx.state.season.seasonNumber, e.episode);
-
-    if (comment != null)
-      ctx.dispatch(TvShowLiveStreamPageActionCreator.setComments(comment));
+    if (e.needAd && !(ctx.state.user?.isPremium ?? false)) {
+      ctx.dispatch(TvShowLiveStreamPageActionCreator.loading(true));
+      _streamLink = e;
+      _rewardedVideoAd.load(
+          adUnitId: RewardedVideoAd.testAdUnitId,
+          targetingInfo: AdTargetInfo.targetingInfo);
+    } else
+      await _startPlayer(e, ctx);
   }
+}
+
+Future _startPlayer(
+    TvShowStreamLink link, Context<TvShowLiveStreamPageState> ctx) async {
+  final Episode episode = ctx.state.season.episodes
+      .singleWhere((d) => d.episodeNumber == link.episode);
+  if (!episode.playState) {
+    final index = ctx.state.season.episodes.indexOf(episode);
+    episode.playState = true;
+    ctx.state.season.playStates[index] = '1';
+    ctx.state.preferences.setStringList(
+        'TvSeason${ctx.state.season.id}', ctx.state.season.playStates);
+  }
+
+  ctx.dispatch(TvShowLiveStreamPageActionCreator.episodeChanged(episode, link));
+  final _scrollIndex = ctx.state.streamLinks.list.indexOf(link);
+  await ctx.state.episodelistController.animateTo(Adapt.px(330) * _scrollIndex,
+      curve: Curves.ease, duration: Duration(milliseconds: 300));
+
+  videoSourceChange(ctx, link);
+
+  final comment = await BaseApi.getTvShowComments(
+      ctx.state.tvid, ctx.state.season.seasonNumber, link.episode);
+
+  if (comment != null)
+    ctx.dispatch(TvShowLiveStreamPageActionCreator.setComments(comment));
 }
 
 void _streamLinkReport(Action action, Context<TvShowLiveStreamPageState> ctx) {
   final TvShowStreamLink e = ctx.state.streamLinks.list
       .singleWhere((d) => d.episode == ctx.state.episodeNumber);
   showDialog(
-      context: ctx.context,
-      builder: (_) {
-        return StreamLinkReportDialog(
-          report: StreamLinkReport(
-            mediaId: ctx.state.tvid,
-            mediaName: ctx.state.mediaName,
-            linkName: ctx.state.season.name + "  " + e?.linkName,
-            streamLink: e.streamLink,
-            type: "tv",
-            streamLinkId: e.sid,
-          ),
-        );
-      });
+    context: ctx.context,
+    builder: (_) {
+      return StreamLinkReportDialog(
+        report: StreamLinkReport(
+          mediaId: ctx.state.tvid,
+          mediaName: ctx.state.mediaName,
+          linkName: ctx.state.season.name + "  " + e?.linkName,
+          streamLink: e.streamLink,
+          type: "tv",
+          streamLinkId: e.sid,
+        ),
+      );
+    },
+  );
 }
 
 void _episodesMoreTapped(
@@ -180,10 +228,10 @@ Future videoSourceChange(
     Context<TvShowLiveStreamPageState> ctx, TvShowStreamLink d) async {
   int index = ctx.state.streamLinks.list.indexOf(d);
   if (ctx.state.chewieController != null) {
-    ctx.state.chewieController?.dispose();
-    ctx.state.chewieController.videoPlayerController
+    await ctx.state.chewieController.videoPlayerController
         .seekTo(Duration(seconds: 0));
-    ctx.state.chewieController.videoPlayerController.pause();
+    await ctx.state.chewieController.videoPlayerController.pause();
+    ctx.state.chewieController?.dispose();
     ctx.state.chewieController = null;
   }
 

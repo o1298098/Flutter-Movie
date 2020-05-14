@@ -65,7 +65,8 @@ Widget buildView(TvShowLiveStreamPageState state, Dispatch dispatch,
                               TvShowLiveStreamPageActionCreator.addComment(s)),
                         )
                       : SizedBox(),
-                ))
+                )),
+            viewService.buildComponent('loading'),
           ],
         ),
       );

@@ -87,14 +87,14 @@ class _Title extends StatelessWidget {
                 style: TextStyle(fontSize: Adapt.px(30)),
               ),
             ),
-            InkWell(
-              onTap: () => Navigator.of(context).pop(),
-              child: Container(
-                padding: EdgeInsets.only(right: Adapt.px(40)),
-                alignment: Alignment.centerRight,
+            Container(
+              padding: EdgeInsets.only(right: Adapt.px(40)),
+              alignment: Alignment.centerRight,
+              child: InkWell(
+                onTap: () => Navigator.of(context).pop(),
                 child: Icon(
                   Icons.close,
-                  size: Adapt.px(30),
+                  size: Adapt.px(50),
                 ),
               ),
             ),

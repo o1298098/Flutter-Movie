@@ -18,6 +18,7 @@ class TvShowLiveStreamPageState
     implements GlobalBaseState, Cloneable<TvShowLiveStreamPageState> {
   GlobalKey<ScaffoldState> scaffold;
   int tvid;
+  int streamLinkId;
   String mediaName;
   Season season;
   CrossFadeState isExpanded;
@@ -35,6 +36,7 @@ class TvShowLiveStreamPageState
   bool showBottom;
   List<VideoPlayerController> videoControllers;
   SharedPreferences preferences;
+  bool loading;
 
   @override
   TvShowLiveStreamPageState clone() {
@@ -44,6 +46,7 @@ class TvShowLiveStreamPageState
       ..tvid = tvid
       ..season = season
       ..episodeNumber = episodeNumber
+      ..streamLinkId = streamLinkId
       ..selectedEpisode = selectedEpisode
       ..streamLinks = streamLinks
       ..streamLinkType = streamLinkType
@@ -58,7 +61,8 @@ class TvShowLiveStreamPageState
       ..isExpanded = isExpanded
       ..showBottom = showBottom
       ..user = user
-      ..preferences = preferences;
+      ..preferences = preferences
+      ..loading = loading;
   }
 
   @override
@@ -80,9 +84,11 @@ TvShowLiveStreamPageState initState(Map<String, dynamic> args) {
   if (_episode != null) {
     state.episodeNumber = _episode.episodeNumber;
     state.selectedEpisode = _episode;
+    state.streamLinkId = _episode.streamLink.sid;
   }
   state.isExpanded = CrossFadeState.showFirst;
   state.scaffold = GlobalKey<ScaffoldState>(debugLabel: '_SeasonLinkPagekey');
   state.showBottom = false;
+  state.loading = false;
   return state;
 }
