@@ -71,36 +71,37 @@ class _BackGround extends StatelessWidget {
       animation: pageAnimation,
       builder: (_, __) {
         return ClipPath(
-            clipper: CustomCliperPath(
-                height: _height.value,
-                width: Adapt.screenW(),
-                radius: Tween(begin: Adapt.px(2000), end: Adapt.px(8000))
-                    .animate(_pathAnimation)
-                    .value),
-            child: Container(
+          clipper: CustomCliperPath(
               height: _height.value,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: <Color>[
-                      ColorTween(
-                              begin: const Color(0xFF6495ED),
-                              end: const Color(0xFF111111))
-                          .animate(_heightAnimation)
-                          .value,
-                      ColorTween(
-                              begin: const Color(0xFF6A5ACD),
-                              end: const Color(0xFF111111))
-                          .animate(_heightAnimation)
-                          .value,
-                    ],
-                    stops: <double>[
-                      0.0,
-                      1.0
-                    ]),
-              ),
-            ));
+              width: Adapt.screenW(),
+              radius: Tween(begin: Adapt.px(2000), end: Adapt.px(8000))
+                  .animate(_pathAnimation)
+                  .value),
+          child: Container(
+            height: _height.value,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: <Color>[
+                    ColorTween(
+                            begin: const Color(0xFF6495ED),
+                            end: const Color(0xFF111111))
+                        .animate(_heightAnimation)
+                        .value,
+                    ColorTween(
+                            begin: const Color(0xFF6A5ACD),
+                            end: const Color(0xFF111111))
+                        .animate(_heightAnimation)
+                        .value,
+                  ],
+                  stops: <double>[
+                    0.0,
+                    1.0
+                  ]),
+            ),
+          ),
+        );
       },
     );
   }
@@ -126,7 +127,7 @@ class _ListCell extends StatelessWidget {
           height: Adapt.px(250),
           margin: EdgeInsets.only(bottom: Adapt.px(40)),
           decoration: BoxDecoration(
-            color: Color(0xFF202020),
+            color: const Color(0xFF202020),
             borderRadius: BorderRadius.circular(Adapt.px(20)),
           ),
           child: child,
@@ -156,11 +157,13 @@ class _UserCell extends StatelessWidget {
             height: Adapt.px(80),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.grey,
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: CachedNetworkImageProvider(user?.photoUrl ?? ''),
-              ),
+              color: const Color(0xFF303030),
+              image: user?.photoUrl != null
+                  ? DecorationImage(
+                      fit: BoxFit.cover,
+                      image: CachedNetworkImageProvider(user?.photoUrl),
+                    )
+                  : null,
             ),
           ),
           title: Text(
@@ -200,41 +203,42 @@ class _AdultCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _ListCell(
-        pageAnimation: pageAnimation,
-        begin: .2,
-        end: .8,
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: Adapt.px(30), vertical: Adapt.px(60)),
-          child: ListTile(
-            onTap: onTap,
-            leading: Icon(
-              adultSwitchValue ? Icons.visibility : Icons.visibility_off,
-              color: Colors.white,
-              size: Adapt.px(80),
-            ),
-            title: Text(
-              'Adult Items',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: Adapt.px(35)),
-            ),
-            subtitle: Text(
-              adultSwitchValue ? 'on' : 'off',
-              style: TextStyle(
-                  color: Colors.grey,
-                  fontWeight: FontWeight.bold,
-                  fontSize: Adapt.px(35)),
-            ),
-            trailing: CupertinoSwitch(
-              onChanged: (b) => onTap(),
-              activeColor: Color(0xFF111111),
-              trackColor: Color(0xFFD0D0D0),
-              value: adultSwitchValue,
-            ),
+      pageAnimation: pageAnimation,
+      begin: .2,
+      end: .8,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: Adapt.px(30), vertical: Adapt.px(60)),
+        child: ListTile(
+          onTap: onTap,
+          leading: Icon(
+            adultSwitchValue ? Icons.visibility : Icons.visibility_off,
+            color: Colors.white,
+            size: Adapt.px(80),
           ),
-        ));
+          title: Text(
+            'Adult Items',
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: Adapt.px(35)),
+          ),
+          subtitle: Text(
+            adultSwitchValue ? 'on' : 'off',
+            style: TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.bold,
+                fontSize: Adapt.px(35)),
+          ),
+          trailing: CupertinoSwitch(
+            onChanged: (b) => onTap(),
+            activeColor: Color(0xFF111111),
+            trackColor: Color(0xFFD0D0D0),
+            value: adultSwitchValue,
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -501,11 +505,13 @@ class _UserProfileAvatar extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.grey,
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: CachedNetworkImageProvider(userPanelPhotoUrl ?? ''),
-            ),
+            color: const Color(0xFF303030),
+            image: userPanelPhotoUrl != null
+                ? DecorationImage(
+                    fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(userPanelPhotoUrl),
+                  )
+                : null,
           ),
           child: Container(
             width: Adapt.px(150),
@@ -611,56 +617,58 @@ class _UserProfilePanel extends StatelessWidget {
     final CurvedAnimation _run =
         CurvedAnimation(parent: userEditAnimation, curve: Curves.ease);
     return AnimatedBuilder(
-        animation: userEditAnimation,
-        builder: (_, __) {
-          return Padding(
-              padding:
-                  EdgeInsets.fromLTRB(Adapt.px(40), _margin, Adapt.px(40), 0),
-              child: SlideTransition(
-                  position: Tween(begin: Offset(1, 0.0), end: Offset.zero)
-                      .animate(_run),
-                  child: Container(
-                    transform: Matrix4.identity()..scale(_run.value, 1.0, 1.0),
-                    margin: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
-                    width: Adapt.screenH() - Adapt.px(120),
-                    height: Adapt.px(1120),
-                    decoration: BoxDecoration(
-                        color: Color(0xFF202020),
-                        borderRadius: BorderRadius.circular(Adapt.px(20))),
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      physics: ClampingScrollPhysics(),
-                      shrinkWrap: true,
-                      children: <Widget>[
-                        SizedBox(height: Adapt.px(60)),
-                        _UserProfileAvatar(
-                          userPanelPhotoUrl: userPanelPhotoUrl,
-                          onTap: () => dispatch(
-                              SettingPageActionCreator.openPhotoPicker()),
-                        ),
-                        SizedBox(height: Adapt.px(30)),
-                        Text(
-                          '${user?.email ?? '-'}',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: Adapt.px(35)),
-                        ),
-                        _TextFields(
-                          phoneController: phoneController,
-                          photoController: photoController,
-                          userNameController: userNameController,
-                        ),
-                        SizedBox(height: Adapt.px(60)),
-                        _ButtonGrounp(
-                          userEditAnimation: userEditAnimation,
-                          submit: () =>
-                              dispatch(SettingPageActionCreator.profileEdit()),
-                        ),
-                      ],
-                    ),
-                  )));
-        });
+      animation: userEditAnimation,
+      builder: (_, __) {
+        return Padding(
+          padding: EdgeInsets.fromLTRB(Adapt.px(40), _margin, Adapt.px(40), 0),
+          child: SlideTransition(
+            position:
+                Tween(begin: Offset(1, 0.0), end: Offset.zero).animate(_run),
+            child: Container(
+              transform: Matrix4.identity()..scale(_run.value, 1.0, 1.0),
+              margin: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
+              width: Adapt.screenH() - Adapt.px(120),
+              height: Adapt.px(1120),
+              decoration: BoxDecoration(
+                  color: Color(0xFF202020),
+                  borderRadius: BorderRadius.circular(Adapt.px(20))),
+              child: ListView(
+                padding: EdgeInsets.zero,
+                physics: ClampingScrollPhysics(),
+                shrinkWrap: true,
+                children: <Widget>[
+                  SizedBox(height: Adapt.px(60)),
+                  _UserProfileAvatar(
+                    userPanelPhotoUrl: userPanelPhotoUrl,
+                    onTap: () =>
+                        dispatch(SettingPageActionCreator.openPhotoPicker()),
+                  ),
+                  SizedBox(height: Adapt.px(30)),
+                  Text(
+                    '${user?.email ?? '-'}',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: Adapt.px(35)),
+                  ),
+                  _TextFields(
+                    phoneController: phoneController,
+                    photoController: photoController,
+                    userNameController: userNameController,
+                  ),
+                  SizedBox(height: Adapt.px(60)),
+                  _ButtonGrounp(
+                    userEditAnimation: userEditAnimation,
+                    submit: () =>
+                        dispatch(SettingPageActionCreator.profileEdit()),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

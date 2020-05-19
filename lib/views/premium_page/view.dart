@@ -12,60 +12,62 @@ Widget buildView(
   return Builder(
     builder: (context) {
       final _theme = ThemeStyle.getTheme(context);
-      SystemChrome.setSystemUIOverlayStyle(_theme.brightness == Brightness.light
-          ? SystemUiOverlayStyle.dark
-          : SystemUiOverlayStyle.light);
       return Scaffold(
-        body: SafeArea(
-          child: Container(
-            width: Adapt.screenW(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: Adapt.px(60)),
-                _Title(),
-                SizedBox(height: Adapt.px(60)),
-                Text(
-                  'Balalalalalalalala',
-                  style: TextStyle(
-                      fontSize: Adapt.px(40), fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: Adapt.px(60)),
-                Expanded(
-                  child: SizedBox(
-                    width: Adapt.px(450),
-                    child: Placeholder(),
+        body: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: _theme.brightness == Brightness.light
+              ? SystemUiOverlayStyle.dark
+              : SystemUiOverlayStyle.light,
+          child: SafeArea(
+            child: Container(
+              width: Adapt.screenW(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: Adapt.px(60)),
+                  _Title(),
+                  SizedBox(height: Adapt.px(60)),
+                  Text(
+                    'Balalalalalalalala',
+                    style: TextStyle(
+                        fontSize: Adapt.px(40), fontWeight: FontWeight.bold),
                   ),
-                ),
-                SizedBox(height: Adapt.px(60)),
-                _ItemCell(),
-                SizedBox(height: Adapt.px(60)),
-                _ItemCell(),
-                SizedBox(height: Adapt.px(60)),
-                _ItemCell(),
-                SizedBox(height: Adapt.px(80)),
-                _OneMonthButton(
-                  onTap: () async => await Navigator.of(context)
-                      .pushNamed('checkoutPage', arguments: {
-                    'data': CheckOutModel(
-                        name: 'Premium one month',
-                        amount: 2.99,
-                        isPremium: true)
-                  }),
-                ),
-                SizedBox(height: Adapt.px(20)),
-                _ThreeMonthButton(
-                  onTap: () async => await Navigator.of(context)
-                      .pushNamed('checkoutPage', arguments: {
-                    'data': CheckOutModel(
-                        name: 'Premium three months',
-                        amount: 6.99,
-                        isPremium: true,
-                        premiumType: PremiumType.threeMonths)
-                  }),
-                ),
-                SizedBox(height: Adapt.px(30)),
-              ],
+                  SizedBox(height: Adapt.px(60)),
+                  Expanded(
+                    child: SizedBox(
+                      width: Adapt.px(450),
+                      child: Placeholder(),
+                    ),
+                  ),
+                  SizedBox(height: Adapt.px(60)),
+                  _ItemCell(),
+                  SizedBox(height: Adapt.px(60)),
+                  _ItemCell(),
+                  SizedBox(height: Adapt.px(60)),
+                  _ItemCell(),
+                  SizedBox(height: Adapt.px(80)),
+                  _OneMonthButton(
+                    onTap: () async => await Navigator.of(context)
+                        .pushNamed('checkoutPage', arguments: {
+                      'data': CheckOutModel(
+                          name: 'Premium one month',
+                          amount: 2.99,
+                          isPremium: true)
+                    }),
+                  ),
+                  SizedBox(height: Adapt.px(20)),
+                  _ThreeMonthButton(
+                    onTap: () async => await Navigator.of(context)
+                        .pushNamed('checkoutPage', arguments: {
+                      'data': CheckOutModel(
+                          name: 'Premium three months',
+                          amount: 6.99,
+                          isPremium: true,
+                          premiumType: PremiumType.threeMonths)
+                    }),
+                  ),
+                  SizedBox(height: Adapt.px(30)),
+                ],
+              ),
             ),
           ),
         ),

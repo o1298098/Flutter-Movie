@@ -30,7 +30,7 @@ Widget buildView(
               _CommentsTitle(
                 commentController: state.commentController,
                 commentFocusNode: state.commentFocusNode,
-                user: state.user.firebaseUser,
+                user: state.user?.firebaseUser,
                 submit: () => dispatch(LiveStreamPageActionCreator.addComment(
                     state.commentController.text)),
               ),
@@ -183,10 +183,12 @@ class _CommentsTitle extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: _theme.primaryColorDark,
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: CachedNetworkImageProvider(user?.photoUrl ?? ''),
-                  ),
+                  image: user?.photoUrl != null
+                      ? DecorationImage(
+                          fit: BoxFit.cover,
+                          image: CachedNetworkImageProvider(user?.photoUrl),
+                        )
+                      : null,
                 ),
               ),
               SizedBox(width: Adapt.px(30)),

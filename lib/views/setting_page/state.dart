@@ -44,7 +44,7 @@ class SettingPageState implements Cloneable<SettingPageState> {
 
 SettingPageState initState(Map<String, dynamic> args) {
   SettingPageState state = SettingPageState();
-  final user = GlobalStore.store.getState().user.firebaseUser;
+  final user = GlobalStore.store.getState().user?.firebaseUser;
   if (user != null) {
     state.user = user;
     state.userName = user.displayName;

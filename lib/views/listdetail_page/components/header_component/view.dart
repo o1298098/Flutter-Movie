@@ -175,9 +175,12 @@ class _Header extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: Colors.grey,
                         borderRadius: BorderRadius.circular(Adapt.px(50)),
-                        image: DecorationImage(
-                            image: CachedNetworkImageProvider(
-                                user.photoUrl ?? ''))),
+                        image: user.photoUrl != null
+                            ? DecorationImage(
+                                fit: BoxFit.cover,
+                                image:
+                                    CachedNetworkImageProvider(user.photoUrl))
+                            : null),
                   ),
                   SizedBox(
                     width: Adapt.px(20),

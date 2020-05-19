@@ -13,6 +13,7 @@ import 'package:movie/models/base_api_model/tvshow_comment.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'action.dart';
@@ -92,12 +93,16 @@ void _onDispose(Action action, Context<TvShowLiveStreamPageState> ctx) {
   ctx.state.commentController.dispose();
   ctx.state.chewieController?.dispose();
   ctx.state.youtubePlayerController?.dispose();
-  ctx.state.videoControllers.forEach((f) => f.dispose());
+  ctx.state.videoControllers?.forEach((f) => f.dispose());
 }
 
 void _addComment(Action action, Context<TvShowLiveStreamPageState> ctx) async {
   final String _commentTxt = action.payload;
-  if (_commentTxt != '' && _commentTxt != null && ctx.state.user != null) {
+  if (ctx.state.user == null) {
+    Toast.show('login before comment', ctx.context, duration: 2);
+    return;
+  }
+  if (_commentTxt != '' && _commentTxt != null) {
     final String _date = DateTime.now().toString();
     final TvShowComment _comment = TvShowComment.fromParams(
         mediaId: ctx.state.tvid,

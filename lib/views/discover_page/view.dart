@@ -1,5 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gzx_dropdown_menu/gzx_dropdown_menu.dart';
 import 'package:movie/actions/adapt.dart';
@@ -24,75 +25,80 @@ Widget buildView(
       endDrawer: Drawer(
         child: viewService.buildComponent('filter'),
       ),
-      body: SafeArea(
-        child: Stack(
-          key: state.stackKey,
-          children: <Widget>[
-            CustomScrollView(
-              controller: state.scrollController,
-              slivers: <Widget>[
-                SliverPersistentHeader(
-                  pinned: true,
-                  floating: true,
-                  delegate: SliverAppBarDelegate(
-                      minHeight: 40,
-                      maxHeight: 40,
-                      child: GZXDropDownHeader(
-                        borderColor: _theme.backgroundColor,
-                        color: _theme.backgroundColor,
-                        items: [
-                          GZXDropDownHeaderItem(state.filterTabNames[0]),
-                          GZXDropDownHeaderItem(
-                              I18n.of(viewService.context).filter,
-                              iconData: Icons.filter_list,
-                              iconSize: 13),
-                        ],
-                        style: TextStyle(
-                          fontSize: Adapt.px(24),
-                        ),
-                        dropDownStyle: TextStyle(
-                          fontSize: Adapt.px(24),
-                        ),
-                        iconDropDownColor: Colors.black,
-                        stackKey: state.stackKey,
-                        controller: state.dropdownMenuController,
-                        onItemTap: (index) {
-                          if (index == 1) {
-                            state.scaffoldKey.currentState.openEndDrawer();
-                          }
-                        },
-                      )),
-                ),
-                SliverList(
-                  delegate:
-                      SliverChildBuilderDelegate((BuildContext ctx, int index) {
-                    return _adapter.itemBuilder(ctx, index);
-                  }, childCount: _adapter.itemCount),
-                ),
-                _ShimmerList(isbusy: state.isbusy)
-              ],
-            ),
-            GZXDropDownMenu(
-              animationMilliseconds: 250,
-              controller: state.dropdownMenuController,
-              menus: [
-                GZXDropdownMenuBuilder(
-                  dropDownHeight: 40 * state.sortType.length.toDouble(),
-                  dropDownWidget: _ConditionList(
-                      items: state.sortType,
-                      onTap: (value) {
-                        int e = state.sortType.indexOf(value);
-                        state.filterTabNames[0] = state.sortType[e].name;
-                        dispatch(DiscoverPageActionCreator.onSortChanged(
-                            state.sortType[e].value));
-                        dispatch(DiscoverPageActionCreator.onRefreshData());
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: _theme.brightness == Brightness.light
+            ? SystemUiOverlayStyle.dark
+            : SystemUiOverlayStyle.light,
+        child: SafeArea(
+          child: Stack(
+            key: state.stackKey,
+            children: <Widget>[
+              CustomScrollView(
+                controller: state.scrollController,
+                slivers: <Widget>[
+                  SliverPersistentHeader(
+                    pinned: true,
+                    floating: true,
+                    delegate: SliverAppBarDelegate(
+                        minHeight: 40,
+                        maxHeight: 40,
+                        child: GZXDropDownHeader(
+                          borderColor: _theme.backgroundColor,
+                          color: _theme.backgroundColor,
+                          items: [
+                            GZXDropDownHeaderItem(state.filterTabNames[0]),
+                            GZXDropDownHeaderItem(
+                                I18n.of(viewService.context).filter,
+                                iconData: Icons.filter_list,
+                                iconSize: 13),
+                          ],
+                          style: TextStyle(
+                            fontSize: Adapt.px(24),
+                          ),
+                          dropDownStyle: TextStyle(
+                            fontSize: Adapt.px(24),
+                          ),
+                          iconDropDownColor: Colors.black,
+                          stackKey: state.stackKey,
+                          controller: state.dropdownMenuController,
+                          onItemTap: (index) {
+                            if (index == 1) {
+                              state.scaffoldKey.currentState.openEndDrawer();
+                            }
+                          },
+                        )),
+                  ),
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                        (BuildContext ctx, int index) {
+                      return _adapter.itemBuilder(ctx, index);
+                    }, childCount: _adapter.itemCount),
+                  ),
+                  _ShimmerList(isbusy: state.isbusy)
+                ],
+              ),
+              GZXDropDownMenu(
+                animationMilliseconds: 250,
+                controller: state.dropdownMenuController,
+                menus: [
+                  GZXDropdownMenuBuilder(
+                    dropDownHeight: 40 * state.sortType.length.toDouble(),
+                    dropDownWidget: _ConditionList(
+                        items: state.sortType,
+                        onTap: (value) {
+                          int e = state.sortType.indexOf(value);
+                          state.filterTabNames[0] = state.sortType[e].name;
+                          dispatch(DiscoverPageActionCreator.onSortChanged(
+                              state.sortType[e].value));
+                          dispatch(DiscoverPageActionCreator.onRefreshData());
 
-                        state.dropdownMenuController.hide();
-                      }),
-                ),
-              ],
-            )
-          ],
+                          state.dropdownMenuController.hide();
+                        }),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

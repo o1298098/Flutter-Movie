@@ -229,17 +229,27 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
               future: _userList,
               builder: (BuildContext context,
                   AsyncSnapshot<UserListModel> snapshot) {
-                if (!snapshot.hasData)
-                  return Container(
-                    margin: EdgeInsets.only(top: Adapt.px(30)),
-                    alignment: Alignment.center,
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation(Colors.black),
-                    ),
-                  );
-                return ListView(
-                  children: snapshot.data.data.map(_buildListCell).toList(),
-                );
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                  case ConnectionState.active:
+                  case ConnectionState.waiting:
+                    return Container(
+                      margin: EdgeInsets.only(top: Adapt.px(30)),
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(Colors.black),
+                      ),
+                    );
+                  case ConnectionState.done:
+                    if (snapshot.hasData)
+                      return ListView(
+                        children:
+                            snapshot.data.data.map(_buildListCell).toList(),
+                      );
+                    else
+                      return SizedBox();
+                }
+                return SizedBox();
               },
             ),
           ),

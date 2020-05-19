@@ -7,7 +7,6 @@ enum AccountPageAction {
   logout,
   navigatorPush,
   settingCellTapped,
-  themeChanged
 }
 
 class AccountPageActionCreator {
@@ -30,10 +29,6 @@ class AccountPageActionCreator {
   static Action navigatorPush(String routeName, {Object arguments}) {
     return Action(AccountPageAction.navigatorPush,
         payload: [routeName, arguments]);
-  }
-
-  static Action themeChange() {
-    return const Action(AccountPageAction.themeChanged);
   }
 
   static Action settingCellTapped() {

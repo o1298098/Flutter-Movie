@@ -56,27 +56,31 @@ class _SearchBar extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-          padding: EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(30)),
-          height: Adapt.px(70),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(Adapt.px(40)),
-            color: Color.fromRGBO(57, 57, 57, 1),
-          ),
-          child: Row(
-            children: <Widget>[
-              Icon(
-                Icons.search,
-                color: Colors.grey,
-              ),
-              SizedBox(
-                width: Adapt.px(20),
-              ),
-              Text(
+        padding: EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(30)),
+        height: Adapt.px(70),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(Adapt.px(40)),
+          color: const Color.fromRGBO(57, 57, 57, 1),
+        ),
+        child: Row(
+          children: <Widget>[
+            Icon(
+              Icons.search,
+              color: Colors.grey,
+            ),
+            SizedBox(width: Adapt.px(20)),
+            SizedBox(
+              width: Adapt.screenW() - Adapt.px(200),
+              child: Text(
                 I18n.of(context).searchbartxt,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(color: Colors.grey, fontSize: Adapt.px(28)),
-              )
-            ],
-          )),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

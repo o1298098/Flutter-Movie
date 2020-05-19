@@ -113,9 +113,11 @@ Widget buildView(
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: _theme.primaryColorDark,
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: CachedNetworkImageProvider(d?.u?.photoUrl ?? ''))),
+                image: d?.u?.photoUrl != null
+                    ? DecorationImage(
+                        fit: BoxFit.cover,
+                        image: CachedNetworkImageProvider(d?.u?.photoUrl))
+                    : null),
           ),
           title: Text(d.u.userName),
           subtitle: Text(timeline),
