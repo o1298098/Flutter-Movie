@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/models/base_api_model/braintree_customer.dart';
-import 'package:movie/models/base_api_model/transaction.dart';
+import 'package:movie/models/base_api_model/braintree_transaction.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -48,7 +48,7 @@ Widget buildView(
         )
       ],
       title: Text(
-        'Wallet',
+        'Payment',
         style: TextStyle(color: _theme.textTheme.bodyText1.color),
       ),
     ),

@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:movie/models/base_api_model/user_premium_model.dart';
 
 class AppUser {
   FirebaseUser firebaseUser;
-  DateTime premiumExpireDate;
-  bool get isPremium => premiumExpireDate == null
+  UserPremiumData premium;
+  bool get isPremium => premium?.expireDate == null
       ? false
-      : premiumExpireDate.compareTo(DateTime.now()) > 0;
-  AppUser({this.firebaseUser, this.premiumExpireDate});
+      : DateTime.parse(premium.expireDate).compareTo(DateTime.now()) > 0;
+  AppUser({this.firebaseUser, this.premium});
 }

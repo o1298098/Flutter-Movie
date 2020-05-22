@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/app_user.dart';
+import 'package:movie/models/base_api_model/user_premium_model.dart';
 
 enum GlobalAction { changeThemeColor, changeLocale, setUser, setUserPremium }
 
@@ -18,7 +19,7 @@ class GlobalActionCreator {
     return Action(GlobalAction.setUser, payload: user);
   }
 
-  static Action setUserPremium(DateTime expireDate) {
-    return Action(GlobalAction.setUserPremium, payload: expireDate);
+  static Action setUserPremium(UserPremiumData premiumData) {
+    return Action(GlobalAction.setUserPremium, payload: premiumData);
   }
 }

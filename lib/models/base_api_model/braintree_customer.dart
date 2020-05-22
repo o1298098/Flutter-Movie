@@ -1,5 +1,11 @@
 import 'dart:convert' show json;
 
+import 'package:movie/models/base_api_model/braintree_subscription.dart';
+
+import 'braintree_billing_address.dart';
+import 'braintree_creditcard.dart';
+import 'braintree_item_type.dart';
+
 class BraintreeCustomer {
   Object company;
   Object customFields;
@@ -13,7 +19,7 @@ class BraintreeCustomer {
   String graphQLId;
   String id;
   String updatedAt;
-  List<Address> addresses;
+  List<BillingAddress> addresses;
   List<dynamic> amexExpressCheckoutCards;
   List<dynamic> androidPayCards;
   List<dynamic> applePayCards;
@@ -76,8 +82,9 @@ class BraintreeCustomer {
     addresses = jsonRes['Addresses'] == null ? null : [];
 
     for (var addressesItem in addresses == null ? [] : jsonRes['Addresses']) {
-      addresses.add(
-          addressesItem == null ? null : new Address.fromJson(addressesItem));
+      addresses.add(addressesItem == null
+          ? null
+          : new BillingAddress.fromJson(addressesItem));
     }
 
     amexExpressCheckoutCards =
@@ -187,7 +194,7 @@ class DefaultPaymentMethod {
   String payerId;
   String token;
   String updatedAt;
-  List<dynamic> subscriptions;
+  List<BraintreeSubscription> subscriptions;
 
   DefaultPaymentMethod.fromParams(
       {this.revokedAt,
@@ -217,7 +224,7 @@ class DefaultPaymentMethod {
 
     for (var subscriptionsItem
         in subscriptions == null ? [] : jsonRes['Subscriptions']) {
-      subscriptions.add(subscriptionsItem);
+      subscriptions.add(BraintreeSubscription(subscriptionsItem));
     }
   }
 
@@ -252,8 +259,8 @@ class PaymentMethod {
   String token;
   String uniqueNumberIdentifier;
   String updatedAt;
-  List<dynamic> subscriptions;
-  Address billingAddress;
+  List<BraintreeSubscription> subscriptions;
+  BillingAddress billingAddress;
   ItemType cardType;
   ItemType commercial;
   ItemType customerLocation;
@@ -330,12 +337,12 @@ class PaymentMethod {
 
     for (var subscriptionsItem
         in subscriptions == null ? [] : jsonRes['Subscriptions']) {
-      subscriptions.add(subscriptionsItem);
+      subscriptions.add(BraintreeSubscription(subscriptionsItem));
     }
 
     billingAddress = jsonRes['BillingAddress'] == null
         ? null
-        : new Address.fromJson(jsonRes['BillingAddress']);
+        : new BillingAddress.fromJson(jsonRes['BillingAddress']);
     cardType = jsonRes['CardType'] == null
         ? null
         : new ItemType.fromJson(jsonRes['CardType']);
@@ -389,7 +396,7 @@ class Verification {
   String networkResponseText;
   String processorResponseCode;
   String processorResponseText;
-  Address billingAddress;
+  BillingAddress billingAddress;
   CreditCard creditCard;
   ItemType processorResponseType;
   ItemType status;
@@ -437,7 +444,7 @@ class Verification {
     processorResponseText = jsonRes['ProcessorResponseText'];
     billingAddress = jsonRes['BillingAddress'] == null
         ? null
-        : new Address.fromJson(jsonRes['BillingAddress']);
+        : new BillingAddress.fromJson(jsonRes['BillingAddress']);
     creditCard = jsonRes['CreditCard'] == null
         ? null
         : new CreditCard.fromJson(jsonRes['CreditCard']);
@@ -455,153 +462,6 @@ class Verification {
   }
 }
 
-class ItemType {
-  String type;
-  String value;
-
-  ItemType.fromParams({this.type, this.value});
-
-  ItemType.fromJson(jsonRes) {
-    type = jsonRes['type'];
-    value = jsonRes['value'];
-  }
-
-  @override
-  String toString() {
-    return '{"type": ${type != null ? '${json.encode(type)}' : 'null'},"value": ${value != null ? '${json.encode(value)}' : 'null'}}';
-  }
-}
-
-class CreditCard {
-  Object accountType;
-  Object cardholderName;
-  Object createdAt;
-  Object customerId;
-  Object imageUrl;
-  Object isDefault;
-  Object isExpired;
-  Object isVenmoSdk;
-  Object updatedAt;
-  Object verification;
-  String bin;
-  String countryOfIssuance;
-  String expirationDate;
-  String expirationMonth;
-  String expirationYear;
-  String issuingBank;
-  String lastFour;
-  String maskedNumber;
-  String productId;
-  String token;
-  String uniqueNumberIdentifier;
-  List<dynamic> subscriptions;
-  Address billingAddress;
-  ItemType cardType;
-  ItemType commercial;
-  ItemType customerLocation;
-  ItemType debit;
-  ItemType durbinRegulated;
-  ItemType healthcare;
-  ItemType payroll;
-  ItemType prepaid;
-
-  CreditCard.fromParams(
-      {this.accountType,
-      this.cardholderName,
-      this.createdAt,
-      this.customerId,
-      this.imageUrl,
-      this.isDefault,
-      this.isExpired,
-      this.isVenmoSdk,
-      this.updatedAt,
-      this.verification,
-      this.bin,
-      this.countryOfIssuance,
-      this.expirationDate,
-      this.expirationMonth,
-      this.expirationYear,
-      this.issuingBank,
-      this.lastFour,
-      this.maskedNumber,
-      this.productId,
-      this.token,
-      this.uniqueNumberIdentifier,
-      this.subscriptions,
-      this.billingAddress,
-      this.cardType,
-      this.commercial,
-      this.customerLocation,
-      this.debit,
-      this.durbinRegulated,
-      this.healthcare,
-      this.payroll,
-      this.prepaid});
-
-  CreditCard.fromJson(jsonRes) {
-    accountType = jsonRes['AccountType'];
-    cardholderName = jsonRes['CardholderName'];
-    createdAt = jsonRes['CreatedAt'];
-    customerId = jsonRes['CustomerId'];
-    imageUrl = jsonRes['ImageUrl'];
-    isDefault = jsonRes['IsDefault'];
-    isExpired = jsonRes['IsExpired'];
-    isVenmoSdk = jsonRes['IsVenmoSdk'];
-    updatedAt = jsonRes['UpdatedAt'];
-    verification = jsonRes['Verification'];
-    bin = jsonRes['Bin'];
-    countryOfIssuance = jsonRes['CountryOfIssuance'];
-    expirationDate = jsonRes['ExpirationDate'];
-    expirationMonth = jsonRes['ExpirationMonth'];
-    expirationYear = jsonRes['ExpirationYear'];
-    issuingBank = jsonRes['IssuingBank'];
-    lastFour = jsonRes['LastFour'];
-    maskedNumber = jsonRes['MaskedNumber'];
-    productId = jsonRes['ProductId'];
-    token = jsonRes['Token'];
-    uniqueNumberIdentifier = jsonRes['UniqueNumberIdentifier'];
-    subscriptions = jsonRes['Subscriptions'] == null ? null : [];
-
-    for (var subscriptionsItem
-        in subscriptions == null ? [] : jsonRes['Subscriptions']) {
-      subscriptions.add(subscriptionsItem);
-    }
-
-    billingAddress = jsonRes['BillingAddress'] == null
-        ? null
-        : new Address.fromJson(jsonRes['BillingAddress']);
-    cardType = jsonRes['CardType'] == null
-        ? null
-        : new ItemType.fromJson(jsonRes['CardType']);
-    commercial = jsonRes['Commercial'] == null
-        ? null
-        : new ItemType.fromJson(jsonRes['Commercial']);
-    customerLocation = jsonRes['CustomerLocation'] == null
-        ? null
-        : new ItemType.fromJson(jsonRes['CustomerLocation']);
-    debit = jsonRes['Debit'] == null
-        ? null
-        : new ItemType.fromJson(jsonRes['Debit']);
-    durbinRegulated = jsonRes['DurbinRegulated'] == null
-        ? null
-        : new ItemType.fromJson(jsonRes['DurbinRegulated']);
-    healthcare = jsonRes['Healthcare'] == null
-        ? null
-        : new ItemType.fromJson(jsonRes['Healthcare']);
-    payroll = jsonRes['Payroll'] == null
-        ? null
-        : new ItemType.fromJson(jsonRes['Payroll']);
-    prepaid = jsonRes['Prepaid'] == null
-        ? null
-        : new ItemType.fromJson(jsonRes['Prepaid']);
-  }
-
-  @override
-  String toString() {
-    return '{"AccountType": $accountType,"CardholderName": $cardholderName,"CreatedAt": $createdAt,"CustomerId": $customerId,"ImageUrl": $imageUrl,"IsDefault": $isDefault,"IsExpired": $isExpired,"IsVenmoSdk": $isVenmoSdk,"UpdatedAt": $updatedAt,"Verification": $verification,"Bin": ${bin != null ? '${json.encode(bin)}' : 'null'},"CountryOfIssuance": ${countryOfIssuance != null ? '${json.encode(countryOfIssuance)}' : 'null'},"ExpirationDate": ${expirationDate != null ? '${json.encode(expirationDate)}' : 'null'},"ExpirationMonth": ${expirationMonth != null ? '${json.encode(expirationMonth)}' : 'null'},"ExpirationYear": ${expirationYear != null ? '${json.encode(expirationYear)}' : 'null'},"IssuingBank": ${issuingBank != null ? '${json.encode(issuingBank)}' : 'null'},"LastFour": ${lastFour != null ? '${json.encode(lastFour)}' : 'null'},"MaskedNumber": ${maskedNumber != null ? '${json.encode(maskedNumber)}' : 'null'},"ProductId": ${productId != null ? '${json.encode(productId)}' : 'null'},"Token": ${token != null ? '${json.encode(token)}' : 'null'},"UniqueNumberIdentifier": ${uniqueNumberIdentifier != null ? '${json.encode(uniqueNumberIdentifier)}' : 'null'},"Subscriptions": $subscriptions,"BillingAddress": $billingAddress,"CardType": $cardType,"Commercial": $commercial,"CustomerLocation": $customerLocation,"Debit": $debit,"DurbinRegulated": $durbinRegulated,"Healthcare": $healthcare,"Payroll": $payroll,"Prepaid": $prepaid}';
-  }
-}
-
 class PayPalAccount {
   Object revokedAt;
   bool isDefault;
@@ -613,7 +473,7 @@ class PayPalAccount {
   String payerId;
   String token;
   String updatedAt;
-  List<List<PaymentMethod>> subscriptions;
+  List<BraintreeSubscription> subscriptions;
 
   PayPalAccount.fromParams(
       {this.revokedAt,
@@ -643,81 +503,12 @@ class PayPalAccount {
 
     for (var subscriptionsItem
         in subscriptions == null ? [] : jsonRes['Subscriptions']) {
-      List<PaymentMethod> subscriptionsChild =
-          subscriptionsItem == null ? null : [];
-      for (var subscriptionsItemItem
-          in subscriptionsChild == null ? [] : subscriptionsItem) {
-        subscriptionsChild.add(subscriptionsItemItem == null
-            ? null
-            : new PaymentMethod.fromJson(subscriptionsItemItem));
-      }
-      subscriptions.add(subscriptionsChild);
+      subscriptions.add(BraintreeSubscription(subscriptionsItem));
     }
   }
 
   @override
   String toString() {
     return '{"RevokedAt": $revokedAt,"IsDefault": $isDefault,"BillingAgreementId": ${billingAgreementId != null ? '${json.encode(billingAgreementId)}' : 'null'},"CreatedAt": ${createdAt != null ? '${json.encode(createdAt)}' : 'null'},"CustomerId": ${customerId != null ? '${json.encode(customerId)}' : 'null'},"Email": ${email != null ? '${json.encode(email)}' : 'null'},"ImageUrl": ${imageUrl != null ? '${json.encode(imageUrl)}' : 'null'},"PayerId": ${payerId != null ? '${json.encode(payerId)}' : 'null'},"Token": ${token != null ? '${json.encode(token)}' : 'null'},"UpdatedAt": ${updatedAt != null ? '${json.encode(updatedAt)}' : 'null'},"Subscriptions": $subscriptions}';
-  }
-}
-
-class Address {
-  Object extendedAddress;
-  String company;
-  String countryCodeAlpha2;
-  String countryCodeAlpha3;
-  String countryCodeNumeric;
-  String countryName;
-  String createdAt;
-  String customerId;
-  String firstName;
-  String id;
-  String lastName;
-  String locality;
-  String postalCode;
-  String region;
-  String streetAddress;
-  String updatedAt;
-
-  Address.fromParams(
-      {this.extendedAddress,
-      this.company,
-      this.countryCodeAlpha2,
-      this.countryCodeAlpha3,
-      this.countryCodeNumeric,
-      this.countryName,
-      this.createdAt,
-      this.customerId,
-      this.firstName,
-      this.id,
-      this.lastName,
-      this.locality,
-      this.postalCode,
-      this.region,
-      this.streetAddress,
-      this.updatedAt});
-
-  Address.fromJson(jsonRes) {
-    extendedAddress = jsonRes['ExtendedAddress'];
-    company = jsonRes['Company'];
-    countryCodeAlpha2 = jsonRes['CountryCodeAlpha2'];
-    countryCodeAlpha3 = jsonRes['CountryCodeAlpha3'];
-    countryCodeNumeric = jsonRes['CountryCodeNumeric'];
-    countryName = jsonRes['CountryName'];
-    createdAt = jsonRes['CreatedAt'];
-    customerId = jsonRes['CustomerId'];
-    firstName = jsonRes['FirstName'];
-    id = jsonRes['Id'];
-    lastName = jsonRes['LastName'];
-    locality = jsonRes['Locality'];
-    postalCode = jsonRes['PostalCode'];
-    region = jsonRes['Region'];
-    streetAddress = jsonRes['StreetAddress'];
-    updatedAt = jsonRes['UpdatedAt'];
-  }
-
-  @override
-  String toString() {
-    return '{"ExtendedAddress": $extendedAddress,"Company": ${company != null ? '${json.encode(company)}' : 'null'},"CountryCodeAlpha2": ${countryCodeAlpha2 != null ? '${json.encode(countryCodeAlpha2)}' : 'null'},"CountryCodeAlpha3": ${countryCodeAlpha3 != null ? '${json.encode(countryCodeAlpha3)}' : 'null'},"CountryCodeNumeric": ${countryCodeNumeric != null ? '${json.encode(countryCodeNumeric)}' : 'null'},"CountryName": ${countryName != null ? '${json.encode(countryName)}' : 'null'},"CreatedAt": ${createdAt != null ? '${json.encode(createdAt)}' : 'null'},"CustomerId": ${customerId != null ? '${json.encode(customerId)}' : 'null'},"FirstName": ${firstName != null ? '${json.encode(firstName)}' : 'null'},"Id": ${id != null ? '${json.encode(id)}' : 'null'},"LastName": ${lastName != null ? '${json.encode(lastName)}' : 'null'},"Locality": ${locality != null ? '${json.encode(locality)}' : 'null'},"PostalCode": ${postalCode != null ? '${json.encode(postalCode)}' : 'null'},"Region": ${region != null ? '${json.encode(region)}' : 'null'},"StreetAddress": ${streetAddress != null ? '${json.encode(streetAddress)}' : 'null'},"UpdatedAt": ${updatedAt != null ? '${json.encode(updatedAt)}' : 'null'}}';
   }
 }

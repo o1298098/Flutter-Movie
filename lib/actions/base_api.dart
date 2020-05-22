@@ -3,11 +3,12 @@ import 'package:movie/models/base_api_model/account_state.dart';
 import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/base_api_model/base_tvshow.dart';
 import 'package:movie/models/base_api_model/braintree_customer.dart';
+import 'package:movie/models/base_api_model/braintree_subscription.dart';
+import 'package:movie/models/base_api_model/braintree_transaction.dart';
 import 'package:movie/models/base_api_model/movie_comment.dart';
 import 'package:movie/models/base_api_model/movie_stream_link.dart';
 import 'package:movie/models/base_api_model/purchase.dart';
 import 'package:movie/models/base_api_model/stream_link_report.dart';
-import 'package:movie/models/base_api_model/transaction.dart';
 import 'package:movie/models/base_api_model/tvshow_comment.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/models/base_api_model/user_list.dart';
@@ -434,6 +435,29 @@ class BaseApi {
     String _url = '/users/UserPremium/$uid';
     var _r = await _http.request(_url);
     if (_r != null) _model = UserPremiumModel(_r);
+    return _model;
+  }
+
+  static Future<UserPremiumModel> createPremiumSubscription(
+      Purchase purchase, PremiumType type) async {
+    UserPremiumModel _model;
+    String _url = '/payment/CreateSubscription';
+    var _r = await _http.request(_url, method: 'POST', data: {
+      'userId': purchase.userId,
+      'amount': purchase.amount,
+      'paymentMethodNonce': purchase.paymentMethodNonce,
+      'deviceData': purchase.deviceData,
+      'premiumType': type.toString().split('.').last
+    });
+    if (_r != null) _model = UserPremiumModel(_r);
+    return _model;
+  }
+
+  static Future<BraintreeSubscription> getPremiumSubscription(String id) async {
+    BraintreeSubscription _model;
+    String _url = '/Payment/Subscription/$id';
+    var _r = await _http.request(_url);
+    if (_r != null) _model = BraintreeSubscription(_r);
     return _model;
   }
 }

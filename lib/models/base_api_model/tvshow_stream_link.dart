@@ -63,7 +63,7 @@ class TvShowStreamLink {
     streamLink = jsonRes['streamLink'];
     uid = jsonRes['uid'];
     updateTime = jsonRes['updateTime'];
-    needAd = jsonRes['needAd'] == 1 ? true : false;
+    needAd = jsonRes['needAd'] == 1;
     language = jsonRes['languageNavigation'] == null
         ? null
         : new Language.fromJson(jsonRes['languageNavigation']);

@@ -1,5 +1,4 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -17,33 +16,27 @@ Widget buildView(
     builder: (context) {
       final ThemeData _theme = ThemeStyle.getTheme(context);
       return Scaffold(
-          appBar: AppBar(
-            backgroundColor: _theme.bottomAppBarColor,
-            brightness: Brightness.dark,
-            elevation: 0.0,
-            automaticallyImplyLeading: false,
-            title: _SearchBar(
-              onTap: () => dispatch(HomePageActionCreator.onSearchBarTapped()),
-            ),
+        appBar: AppBar(
+          backgroundColor: _theme.bottomAppBarColor,
+          brightness: Brightness.dark,
+          elevation: 0.0,
+          automaticallyImplyLeading: false,
+          title: _SearchBar(
+            onTap: () => dispatch(HomePageActionCreator.onSearchBarTapped()),
           ),
-          body: BackDrop(
-            height: Adapt.px(520),
-            backChild: viewService.buildComponent('header'),
-            frontBackGroundColor: _theme.backgroundColor,
-            frontChild: Container(
-              color: _theme.backgroundColor,
-              child: ListView(
-                dragStartBehavior: DragStartBehavior.down,
-                physics: ClampingScrollPhysics(),
-                children: <Widget>[
-                  viewService.buildComponent('swiper'),
-                  viewService.buildComponent('trending'),
-                  viewService.buildComponent('share'),
-                  viewService.buildComponent('popularposter'),
-                ],
-              ),
-            ),
-          ));
+        ),
+        body: BackDrop(
+          height: Adapt.px(520),
+          backChild: viewService.buildComponent('header'),
+          frontBackGroundColor: _theme.backgroundColor,
+          frontChildren: <Widget>[
+            viewService.buildComponent('swiper'),
+            viewService.buildComponent('trending'),
+            viewService.buildComponent('share'),
+            viewService.buildComponent('popularposter'),
+          ],
+        ),
+      );
     },
   );
 }

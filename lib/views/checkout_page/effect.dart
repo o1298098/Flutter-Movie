@@ -58,7 +58,7 @@ void _onPay(Action action, Context<CheckOutPageState> ctx) async {
     return Toast.show('empty payment method', ctx.context,
         gravity: Toast.CENTER, duration: 5);
   }
-  final _r = await BaseApi.createPremiumPurchase(
+  final _r = await BaseApi.createPremiumSubscription(
     Purchase(
       userId: ctx.state.user.firebaseUser.uid,
       amount: ctx.state.checkoutData.amount,
@@ -74,7 +74,7 @@ void _onPay(Action action, Context<CheckOutPageState> ctx) async {
   if (_r.status) {
     if (_r.data == null) return;
     if (_r.data.expireDate == null) return;
-    UserInfoOperate.setPremium(_r.data.expireDate);
+    UserInfoOperate.setPremium(_r.data);
     await Navigator.of(ctx.context).pushAndRemoveUntil(
         MaterialPageRoute(
           builder: (context) => Scaffold(

@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/braintree_customer.dart';
-import 'package:movie/models/base_api_model/transaction.dart';
+import 'package:movie/models/base_api_model/braintree_transaction.dart';
 
 enum PaymentPageAction { action, setTransactions, setCustomer }
 

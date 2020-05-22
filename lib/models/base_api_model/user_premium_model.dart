@@ -29,22 +29,40 @@ class UserPremiumModel {
 
 class UserPremiumData {
   int id;
+  int premiumType;
+  bool subscription;
   String expireDate;
   String startDate;
+  String subscriptionId;
   String uid;
 
   UserPremiumData.fromParams(
-      {this.id, this.expireDate, this.startDate, this.uid});
+      {this.id,
+      this.premiumType,
+      this.subscription,
+      this.expireDate,
+      this.startDate,
+      this.subscriptionId,
+      this.uid});
+
+  factory UserPremiumData(jsonStr) => jsonStr == null
+      ? null
+      : jsonStr is String
+          ? new UserPremiumData.fromJson(json.decode(jsonStr))
+          : new UserPremiumData.fromJson(jsonStr);
 
   UserPremiumData.fromJson(jsonRes) {
     id = jsonRes['id'];
+    premiumType = jsonRes['premiumType'];
+    subscription = jsonRes['subscription'] == 1;
     expireDate = jsonRes['expireDate'];
     startDate = jsonRes['startDate'];
+    subscriptionId = jsonRes['subscriptionId'];
     uid = jsonRes['uid'];
   }
 
   @override
   String toString() {
-    return '{"id": $id,"expireDate": ${expireDate != null ? '${json.encode(expireDate)}' : 'null'},"startDate": ${startDate != null ? '${json.encode(startDate)}' : 'null'},"uid": ${uid != null ? '${json.encode(uid)}' : 'null'}}';
+    return '{"id": $id,"premiumType": $premiumType,"subscription": $subscription,"expireDate": ${expireDate != null ? '${json.encode(expireDate)}' : 'null'},"startDate": ${startDate != null ? '${json.encode(startDate)}' : 'null'},"uid": ${uid != null ? '${json.encode(uid)}' : 'null'},"subscriptionId": ${subscriptionId != null ? '${json.encode(subscriptionId)}' : 'null'}}';
   }
 }

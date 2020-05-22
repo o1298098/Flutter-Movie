@@ -34,7 +34,7 @@ Widget buildView(
       return Scaffold(
         key: state.scaffoldKey,
         body: PageView(
-          physics: ClampingScrollPhysics(),
+          physics: NeverScrollableScrollPhysics(),
           children: state.pages.map(_buildPage).toList(),
           controller: pageController,
           onPageChanged: (int i) =>

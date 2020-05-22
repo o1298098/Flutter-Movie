@@ -4,6 +4,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/app_user.dart';
+import 'package:movie/models/base_api_model/user_premium_model.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -44,8 +45,8 @@ GlobalState _onSetUser(GlobalState state, Action action) {
 }
 
 GlobalState _onSetUserPremium(GlobalState state, Action action) {
-  final DateTime _date = action.payload;
-  final AppUser _user = AppUser(
-      firebaseUser: state.user.firebaseUser, premiumExpireDate: _date);
+  final UserPremiumData _data = action.payload;
+  final AppUser _user =
+      AppUser(firebaseUser: state.user.firebaseUser, premium: _data);
   return state.clone()..user = _user;
 }

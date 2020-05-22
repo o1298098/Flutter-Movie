@@ -58,7 +58,7 @@ class MovieStreamLink {
     streamLink = jsonRes['streamLink'];
     uid = jsonRes['uid'];
     updateTime = jsonRes['updateTime'];
-    needAd = jsonRes['needAd'] == 1 ? true : false;
+    needAd = jsonRes['needAd'] == 1;
     selected = false;
     language = jsonRes['languageNavigation'] == null
         ? null

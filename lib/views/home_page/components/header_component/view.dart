@@ -140,11 +140,12 @@ class _HeaderListCell extends StatelessWidget {
       children: <Widget>[
         GestureDetector(
           onTap: onTap,
+          key: ValueKey('HeaderCell${data.id}'),
           child: Container(
             width: Adapt.px(200),
             height: Adapt.px(280),
             decoration: BoxDecoration(
-              color: Color.fromRGBO(57, 57, 57, 1),
+              color: const Color.fromRGBO(57, 57, 57, 1),
               image: DecorationImage(
                 fit: BoxFit.cover,
                 image: CachedNetworkImageProvider(
@@ -166,7 +167,7 @@ class _HeaderListCell extends StatelessWidget {
             maxLines: 2,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Colors.grey,
+              color: const Color(0xFFE0E0E0),
               fontSize: Adapt.px(26),
             ),
           ),

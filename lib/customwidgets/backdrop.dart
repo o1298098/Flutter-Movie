@@ -3,13 +3,13 @@ import 'package:movie/actions/adapt.dart';
 
 class BackDrop extends StatefulWidget {
   final Widget backChild;
-  final Widget frontChild;
+  final List<Widget> frontChildren;
   final Color frontBackGroundColor;
   final double height;
   BackDrop(
       {Key key,
       @required this.backChild,
-      @required this.frontChild,
+      @required this.frontChildren,
       this.frontBackGroundColor,
       this.height = 0.0})
       : super(key: key);
@@ -21,17 +21,26 @@ class BackDropState extends State<BackDrop> with TickerProviderStateMixin {
   bool isrun;
   AnimationController _animationController;
   Color _fontBackGroundColor;
+  final ClampingScrollPhysics _clampingScrollPhysics = ClampingScrollPhysics();
+  final NeverScrollableScrollPhysics _neverScrollableScrollPhysics =
+      NeverScrollableScrollPhysics();
+  ScrollController _scrollController;
   Tween<double> topTween;
   GlobalKey key;
   @override
   void initState() {
     key = GlobalKey();
+    _scrollController = ScrollController();
     isrun = false;
     _fontBackGroundColor = widget.frontBackGroundColor ?? Colors.white;
     topTween = Tween<double>(begin: widget.height, end: 0.0);
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300))
           ..addListener(() {
+            if (_animationController.value == 0 &&
+                _scrollController.position.pixels != 0)
+              _scrollController.animateTo(0,
+                  duration: Duration(milliseconds: 300), curve: Curves.ease);
             setState(() {});
           });
     super.initState();
@@ -59,6 +68,7 @@ class BackDropState extends State<BackDrop> with TickerProviderStateMixin {
   @override
   void dispose() {
     _animationController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -83,34 +93,51 @@ class BackDropState extends State<BackDrop> with TickerProviderStateMixin {
           animation: _animationController,
           builder: (ctx, child) {
             return Positioned(
-                left: 0.0,
-                right: 0.0,
-                bottom: 0.0,
-                top: (1 - _animationController.value) * widget.height,
-                child: Column(children: <Widget>[
+              left: 0.0,
+              right: 0.0,
+              bottom: 0.0,
+              top: (1 - _animationController.value) * widget.height,
+              child: Column(
+                children: <Widget>[
                   GestureDetector(
                     onVerticalDragUpdate: _drag,
                     onVerticalDragEnd: _dragEnd,
                     child: Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            color: _fontBackGroundColor,
-                            border: Border.all(
-                                width: 0.0, color: _fontBackGroundColor),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(Adapt.px(40)),
-                                topRight: Radius.circular(Adapt.px(40)))),
-                        width: Adapt.screenW(),
-                        height: Adapt.px(80),
-                        child: Container(
-                            width: Adapt.px(80),
-                            height: Adapt.px(6),
-                            color: Colors.grey[300])),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: _fontBackGroundColor,
+                        border:
+                            Border.all(width: 0.0, color: _fontBackGroundColor),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(Adapt.px(40)),
+                          topRight: Radius.circular(Adapt.px(40)),
+                        ),
+                      ),
+                      width: Adapt.screenW(),
+                      height: Adapt.px(80),
+                      child: Container(
+                        width: Adapt.px(80),
+                        height: Adapt.px(6),
+                        color: const Color(0xFFE0E0E0),
+                      ),
+                    ),
                   ),
                   Expanded(
-                    child: widget.frontChild,
-                  )
-                ]));
+                    child: Container(
+                      color: _fontBackGroundColor,
+                      child: ListView.builder(
+                        controller: _scrollController,
+                        physics: _animationController.value == 0
+                            ? _neverScrollableScrollPhysics
+                            : _clampingScrollPhysics,
+                        itemBuilder: (_, index) => widget.frontChildren[index],
+                        itemCount: widget.frontChildren?.length ?? 0,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
           },
         )
       ],
