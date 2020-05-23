@@ -43,7 +43,8 @@ Paypal: sb-dhwa71528371@personal.example.com   password: o1298098
 
 ## Other
 home page based on https://dribbble.com/shots/6070474--Movie  
-season page based on https://dribbble.com/shots/6379112-TV-Streaming-App
+season page based on https://dribbble.com/shots/6379112-TV-Streaming-App  
+premium page based on https://dribbble.com/shots/10558858--1-UI-Challenge-OTT-Subscription
 
 ## LICENSE
     Copyright 2019 o1298098

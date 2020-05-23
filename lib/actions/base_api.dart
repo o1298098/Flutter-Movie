@@ -442,7 +442,7 @@ class BaseApi {
       Purchase purchase, PremiumType type) async {
     UserPremiumModel _model;
     String _url = '/payment/CreateSubscription';
-    var _r = await _http.request(_url, method: 'POST', data: {
+    var _r = await _http2.request(_url, method: 'POST', data: {
       'userId': purchase.userId,
       'amount': purchase.amount,
       'paymentMethodNonce': purchase.paymentMethodNonce,
@@ -453,6 +453,7 @@ class BaseApi {
     return _model;
   }
 
+  static final _http2 = Request('http://localhost:5000/api');
   static Future<BraintreeSubscription> getPremiumSubscription(String id) async {
     BraintreeSubscription _model;
     String _url = '/Payment/Subscription/$id';

@@ -63,6 +63,6 @@ class UserPremiumData {
 
   @override
   String toString() {
-    return '{"id": $id,"premiumType": $premiumType,"subscription": $subscription,"expireDate": ${expireDate != null ? '${json.encode(expireDate)}' : 'null'},"startDate": ${startDate != null ? '${json.encode(startDate)}' : 'null'},"uid": ${uid != null ? '${json.encode(uid)}' : 'null'},"subscriptionId": ${subscriptionId != null ? '${json.encode(subscriptionId)}' : 'null'}}';
+    return '{"id": $id,"premiumType": $premiumType,"subscription": ${subscription ? '1' : '0'},"expireDate": ${expireDate != null ? '${json.encode(expireDate)}' : 'null'},"startDate": ${startDate != null ? '${json.encode(startDate)}' : 'null'},"uid": ${uid != null ? '${json.encode(uid)}' : 'null'},"subscriptionId": ${subscriptionId != null ? '${json.encode(subscriptionId)}' : 'null'}}';
   }
 }

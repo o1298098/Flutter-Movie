@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/braintree_subscription.dart';
 
-enum PremiumPageAction { action, setSubscription }
+enum PremiumPageAction { action, setSubscription, changePlan }
 
 class PremiumPageActionCreator {
   static Action onAction() {
@@ -10,5 +10,9 @@ class PremiumPageActionCreator {
 
   static Action setSubscription(BraintreeSubscription subscription) {
     return Action(PremiumPageAction.setSubscription, payload: subscription);
+  }
+
+  static Action changePlan() {
+    return Action(PremiumPageAction.changePlan);
   }
 }

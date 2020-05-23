@@ -6,6 +6,7 @@ import 'package:movie/views/premium_page/state.dart';
 class PremiumInfoState implements Cloneable<PremiumInfoState> {
   AppUser user;
   BraintreeSubscription subscription;
+  bool loading;
   @override
   PremiumInfoState clone() {
     return PremiumInfoState()..user = user;
@@ -18,6 +19,7 @@ class PremiumInfoConnector extends ConnOp<PremiumPageState, PremiumInfoState> {
     PremiumInfoState mstate = PremiumInfoState();
     mstate.user = state.user;
     mstate.subscription = state.subscription;
+    mstate.loading = state.loading;
     return mstate;
   }
 }
