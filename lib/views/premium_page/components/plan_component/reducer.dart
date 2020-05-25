@@ -4,11 +4,9 @@ import 'action.dart';
 import 'state.dart';
 
 Reducer<PlanState> buildReducer() {
-  return asReducer(
-    <Object, Reducer<PlanState>>{
-      PlanAction.action: _onAction,
-    },
-  );
+  return asReducer(<Object, Reducer<PlanState>>{
+    PlanAction.action: _onAction,
+  });
 }
 
 PlanState _onAction(PlanState state, Action action) {

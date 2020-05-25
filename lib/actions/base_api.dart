@@ -389,6 +389,7 @@ class BaseApi {
     return model;
   }
 
+  //static final _http2 = Request('http://localhost:5000/api');
   static Future<BraintreeCustomer> getBraintreeCustomer(String userId) async {
     BraintreeCustomer model;
     String _url = '/payment/Customer/$userId';
@@ -442,7 +443,7 @@ class BaseApi {
       Purchase purchase, PremiumType type) async {
     UserPremiumModel _model;
     String _url = '/payment/CreateSubscription';
-    var _r = await _http2.request(_url, method: 'POST', data: {
+    var _r = await _http.request(_url, method: 'POST', data: {
       'userId': purchase.userId,
       'amount': purchase.amount,
       'paymentMethodNonce': purchase.paymentMethodNonce,
@@ -453,12 +454,21 @@ class BaseApi {
     return _model;
   }
 
-  static final _http2 = Request('http://localhost:5000/api');
   static Future<BraintreeSubscription> getPremiumSubscription(String id) async {
     BraintreeSubscription _model;
     String _url = '/Payment/Subscription/$id';
     var _r = await _http.request(_url);
     if (_r != null) _model = BraintreeSubscription(_r);
+    return _model;
+  }
+
+  static Future<UserPremiumData> cancelSubscription(
+      UserPremiumData userPremium) async {
+    UserPremiumData _model;
+    String _url = '/Payment/CancelSubscription';
+    var _r =
+        await _http.request(_url, method: 'POST', data: userPremium.toString());
+    if (_r != null) _model = UserPremiumData(_r);
     return _model;
   }
 }

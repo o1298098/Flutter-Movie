@@ -34,9 +34,15 @@ Widget buildView(
 
 class _HeaderInfo extends StatelessWidget {
   final AppUser user;
-  const _HeaderInfo({this.user});
+  const _HeaderInfo({@required this.user});
   @override
   Widget build(BuildContext context) {
+    final _premiumInfo = {
+      1: '\$ 2.99 / month',
+      2: '\$ 6.99 / 3 months',
+      3: '\$ 9.99 / 6 months',
+      4: '\$ 16.99 / 1 year'
+    };
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -72,7 +78,7 @@ class _HeaderInfo extends StatelessWidget {
             ),
             SizedBox(height: Adapt.px(8)),
             Text(
-              '\$6.99 / 6 months',
+              _premiumInfo[user?.premium?.premiumType ?? 1],
               style: TextStyle(
                   fontSize: Adapt.px(35), fontWeight: FontWeight.bold),
             ),
@@ -86,9 +92,11 @@ class _HeaderInfo extends StatelessWidget {
                         color: const Color(0xFF9E9E9E),
                       )),
                   TextSpan(
-                      text: DateFormat.yMMMd().format(
-                          DateTime.parse(user.premium.expireDate)
-                              .add(Duration(days: 1))),
+                      text: user.premium.subscription
+                          ? DateFormat.yMMMd().format(
+                              DateTime.parse(user.premium.expireDate)
+                                  .add(Duration(days: 1)))
+                          : '-',
                       style: TextStyle(fontWeight: FontWeight.bold))
                 ],
               ),

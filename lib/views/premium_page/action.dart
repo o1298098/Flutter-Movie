@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/braintree_subscription.dart';
 
-enum PremiumPageAction { action, setSubscription, changePlan }
+enum PremiumPageAction { action, setSubscription, changePlan, loading }
 
 class PremiumPageActionCreator {
   static Action onAction() {
@@ -14,5 +14,9 @@ class PremiumPageActionCreator {
 
   static Action changePlan() {
     return Action(PremiumPageAction.changePlan);
+  }
+
+  static Action loading(bool loading) {
+    return Action(PremiumPageAction.loading, payload: loading);
   }
 }

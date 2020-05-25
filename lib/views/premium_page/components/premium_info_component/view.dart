@@ -73,7 +73,7 @@ class _Body extends StatelessWidget {
                     ? subscription.transactions.last
                     : null),
             SizedBox(height: Adapt.px(30)),
-            Padding(
+            /* Padding(
               padding: EdgeInsets.symmetric(vertical: Adapt.px(50)),
               child: Row(
                 children: [
@@ -87,7 +87,7 @@ class _Body extends StatelessWidget {
                       value: user.premium.subscription, onChanged: (e) {}),
                 ],
               ),
-            ),
+            ),*/
             Padding(
               padding: EdgeInsets.symmetric(vertical: Adapt.px(50)),
               child: Row(

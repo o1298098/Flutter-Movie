@@ -16,9 +16,9 @@ class TransactionModel {
           : new TransactionModel.fromJson(jsonStr);
 
   TransactionModel.fromJson(jsonRes) {
-    list = jsonRes['json_list'] == null ? null : [];
+    list = jsonRes == null ? null : [];
 
-    for (var listItem in list == null ? [] : jsonRes['json_list']) {
+    for (var listItem in list == null ? [] : jsonRes) {
       list.add(listItem == null ? null : new Transaction.fromJson(listItem));
     }
   }
