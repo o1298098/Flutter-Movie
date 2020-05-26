@@ -3,9 +3,12 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:movie/actions/adapt.dart';
+import 'package:movie/models/app_user.dart';
 import 'package:movie/models/base_api_model/braintree_creditcard.dart';
 import 'package:movie/style/themestyle.dart';
+import 'package:movie/views/payment_page/action.dart';
 
 import 'state.dart';
 
@@ -13,10 +16,6 @@ Widget buildView(
     PaymentPageState state, Dispatch dispatch, ViewService viewService) {
   return Builder(builder: (context) {
     final _theme = ThemeStyle.getTheme(context);
-    final List<CreditCard> _ccccc = []
-      ..addAll(state.customer?.creditCards ?? [])
-      ..addAll(state.customer?.creditCards ?? [])
-      ..addAll(state.customer?.creditCards ?? []);
     return Scaffold(
       backgroundColor: _theme.primaryColorDark,
       appBar: AppBar(
@@ -31,9 +30,10 @@ Widget buildView(
         ),
       ),
       body: Column(children: [
-        _Header(),
+        _Header(user: state.user),
         _Body(
-          creditCards: _ccccc,
+          creditCards: state.customer?.creditCards,
+          dispatch: dispatch,
         ),
       ]),
     );
@@ -41,19 +41,30 @@ Widget buildView(
 }
 
 class _Header extends StatelessWidget {
+  final AppUser user;
+  const _Header({this.user});
   @override
   Widget build(BuildContext context) {
+    final _premiumType = user.premium?.premiumType ?? 0;
+    final _premiumInfo = {
+      0: ['-', ''],
+      1: ['2.99', ''],
+      2: ['6.99', '3'],
+      3: ['9.99', '6'],
+      4: ['16.99', '12']
+    };
     return Column(children: [
       SizedBox(height: Adapt.px(30)),
       Text.rich(
         TextSpan(children: [
           TextSpan(
-            text: '\$2.99',
+            text: '\$${_premiumInfo[_premiumType][0]}',
             style:
                 TextStyle(fontSize: Adapt.px(60), fontWeight: FontWeight.bold),
           ),
           TextSpan(
-            text: ' / month',
+            text:
+                ' / ${_premiumInfo[_premiumType][1]} month${_premiumType > 1 ? 's' : ''}',
             style: TextStyle(fontSize: Adapt.px(28)),
           )
         ]),
@@ -69,7 +80,12 @@ class _Header extends StatelessWidget {
             ),
           ),
           TextSpan(
-            text: '20th July, 2020',
+            text: _premiumType > 0 && user.premium?.expireDate != null
+                ? DateFormat.yMMMd().format(
+                    DateTime.parse(user.premium.expireDate)
+                        .add(Duration(days: 1)),
+                  )
+                : '-',
             style: TextStyle(
               fontSize: Adapt.px(22),
             ),
@@ -202,9 +218,41 @@ class _OtherPaymentCell extends StatelessWidget {
   }
 }
 
+class _OptionCell extends StatelessWidget {
+  final String title;
+  final Function onTap;
+  const _OptionCell({@required this.title, this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: Adapt.px(60), vertical: Adapt.px(40)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: TextStyle(fontSize: Adapt.px(30)),
+            ),
+            Icon(
+              Icons.arrow_forward_ios,
+              size: Adapt.px(40),
+              color: const Color(0xFF9E9E9E),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _Body extends StatelessWidget {
   final List<CreditCard> creditCards;
-  const _Body({this.creditCards});
+  final SwiperController controller;
+  final Dispatch dispatch;
+  const _Body({this.creditCards, this.controller, this.dispatch});
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
@@ -251,9 +299,16 @@ class _Body extends StatelessWidget {
               ),
             ),
             SizedBox(height: Adapt.px(50)),
-            _CreditCardSwiper(
-              creditCards: creditCards,
-            ),
+            creditCards == null
+                ? _CreditCardSwiperShimmer(
+                    controller: controller,
+                  )
+                : creditCards.length > 0
+                    ? _CreditCardSwiper(
+                        creditCards: creditCards,
+                        controller: controller,
+                      )
+                    : _EmptyCreditCard(),
             Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: Adapt.px(60), vertical: Adapt.px(50)),
@@ -268,7 +323,7 @@ class _Body extends StatelessWidget {
                 children: [
                   _OtherPaymentCell(
                     icon: FontAwesomeIcons.paypal,
-                    title: 'Paypal',
+                    title: 'PayPal',
                   ),
                   Expanded(child: SizedBox()),
                   Platform.isIOS
@@ -283,41 +338,17 @@ class _Body extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: Adapt.px(80)),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: Adapt.px(60)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Payment History',
-                    style: TextStyle(fontSize: Adapt.px(30)),
-                  ),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    size: Adapt.px(40),
-                    color: const Color(0xFF9E9E9E),
-                  )
-                ],
+            SizedBox(height: Adapt.px(40)),
+            _OptionCell(
+              title: 'Payment History',
+              onTap: () => dispatch(
+                PaymentPageActionCreator.showHistory(),
               ),
             ),
-            SizedBox(height: Adapt.px(80)),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: Adapt.px(60)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Bill Address',
-                    style: TextStyle(fontSize: Adapt.px(30)),
-                  ),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    size: Adapt.px(40),
-                    color: const Color(0xFF9E9E9E),
-                  )
-                ],
-              ),
+            _OptionCell(
+              title: 'Billing Address',
+              onTap: () =>
+                  dispatch(PaymentPageActionCreator.showBillingAddress()),
             )
           ],
         ),
@@ -328,7 +359,8 @@ class _Body extends StatelessWidget {
 
 class _CreditCardSwiper extends StatelessWidget {
   final List<CreditCard> creditCards;
-  const _CreditCardSwiper({this.creditCards});
+  final SwiperController controller;
+  const _CreditCardSwiper({this.creditCards, this.controller});
   @override
   Widget build(BuildContext context) {
     final int lenght = creditCards?.length ?? 0;
@@ -370,7 +402,7 @@ class _CreditCardSwiper extends StatelessWidget {
       ];
     } else if (lenght > 4) {
       _opacitys = [1.0, 1.0, 1.0, 0.0, 0.0];
-      _rotates = [0, 0, 0, 25 / 180, 0];
+      _rotates = [0.0, 0.0, 0.0, 25 / 180, 0.0];
       _scales = [0.8, 0.85, 0.9, 1.0, 1.0, 1.0];
       _offsets = [
         Offset(0.0, -40),
@@ -386,15 +418,11 @@ class _CreditCardSwiper extends StatelessWidget {
         _offsets.insert(0, Offset.zero);
       });
     }
-
-    final _controller = SwiperController();
     return Container(
       height: Adapt.px(480),
       child: Swiper(
-        //scrollDirection: Axis.vertical,
-        controller: _controller,
+        controller: controller,
         itemCount: lenght,
-        //viewportFraction: 0.9,
         layout: SwiperLayout.CUSTOM,
         customLayoutOption:
             CustomLayoutOption(stateCount: lenght, startIndex: 0)
@@ -411,5 +439,86 @@ class _CreditCardSwiper extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+class _CreditCardSwiperShimmer extends StatelessWidget {
+  final SwiperController controller;
+  const _CreditCardSwiperShimmer({this.controller});
+  @override
+  Widget build(BuildContext context) {
+    final _opacitys = [1.0, 1.0, 1.0, 0.0, 0.0];
+    final _rotates = [0.0, 0.0, 0.0, 25 / 180, 0.0];
+    final _scales = [0.8, 0.85, 0.9, 1.0, 1.0, 1.0];
+    final _offsets = [
+      Offset(0.0, -40),
+      Offset(0.0, -20),
+      Offset.zero,
+      Offset(Adapt.screenW(), 0),
+      Offset(Adapt.screenW(), 0),
+    ];
+    final _cardColors = [
+      const Color(0xFF9E92E1),
+      const Color(0xFF556677),
+      const Color(0xFFE3C4C2),
+      const Color(0XFF66AA9E),
+      const Color(0xFF556677),
+    ];
+    return Container(
+        height: Adapt.px(480),
+        child: Swiper(
+          controller: controller,
+          itemCount: 5,
+          layout: SwiperLayout.CUSTOM,
+          customLayoutOption: CustomLayoutOption(stateCount: 5, startIndex: 2)
+              .addOpacity(_opacitys)
+              .addRotate(_rotates)
+              .addScale(_scales, Alignment.center)
+              .addTranslate(_offsets),
+          itemHeight: Adapt.px(420),
+          itemWidth: Adapt.screenW(),
+          itemBuilder: (context, index) {
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Adapt.px(40)),
+                color: const Color(0xFFFFFFFF),
+              ),
+              child: Container(
+                width: Adapt.screenW(),
+                height: Adapt.px(420),
+                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 30),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Adapt.px(40)),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      _cardColors[index].withAlpha(120),
+                      _cardColors[index].withAlpha(200),
+                      _cardColors[index],
+                    ],
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    'Loading',
+                    style: TextStyle(
+                      fontSize: Adapt.px(40),
+                      color: const Color(0xFFFFFFFF),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        ));
+  }
+}
+
+class _EmptyCreditCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: Adapt.px(480), child: Center(child: Text('empty')));
   }
 }
