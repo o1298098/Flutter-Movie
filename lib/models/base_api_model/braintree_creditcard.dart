@@ -5,12 +5,12 @@ import 'dart:convert' show json;
 
 class CreditCard {
   Object accountType;
-  Object cardholderName;
+  String cardholderName;
   Object createdAt;
-  Object customerId;
-  Object imageUrl;
-  Object isDefault;
-  Object isExpired;
+  String customerId;
+  String imageUrl;
+  bool isDefault;
+  bool isExpired;
   Object isVenmoSdk;
   Object updatedAt;
   Object verification;

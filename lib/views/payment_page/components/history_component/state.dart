@@ -22,11 +22,13 @@ class HistoryConnector extends ConnOp<PaymentPageState, HistoryState> {
     HistoryState mstate = HistoryState();
     mstate.transactions = state.transactions;
     mstate.user = state.user;
+    mstate.loading = state.loading;
     return mstate;
   }
 
   @override
   void set(PaymentPageState state, HistoryState subState) {
     state.transactions = subState.transactions;
+    state.loading = subState.loading;
   }
 }

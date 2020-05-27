@@ -10,4 +10,8 @@ class PlanActionCreator {
   static Action unSubscribe() {
     return const Action(PlanAction.unSubscribe);
   }
+
+  static Action loading(bool loading) {
+    return Action(PlanAction.unSubscribe, payload: loading);
+  }
 }

@@ -384,16 +384,16 @@ class BaseApi {
       {DateTime begin, DateTime end}) async {
     TransactionModel model;
     String _url = '/payment/TransactionSearch/$userId';
-    var _r = await _http.request(_url);
+    var _r = await _http2.request(_url);
     if (_r != null) model = TransactionModel(_r);
     return model;
   }
 
-  //static final _http2 = Request('http://localhost:5000/api');
+  static final _http2 = Request('http://localhost:5000/api');
   static Future<BraintreeCustomer> getBraintreeCustomer(String userId) async {
     BraintreeCustomer model;
     String _url = '/payment/Customer/$userId';
-    var _r = await _http.request(_url);
+    var _r = await _http2.request(_url);
     if (_r != null) model = BraintreeCustomer(_r);
     return model;
   }

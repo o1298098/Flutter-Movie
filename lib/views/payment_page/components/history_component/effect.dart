@@ -15,11 +15,13 @@ void _onAction(Action action, Context<HistoryState> ctx) {}
 
 void _onInit(Action action, Context<HistoryState> ctx) async {
   if (ctx.state.transactions == null) {
+    ctx.dispatch(HistoryActionCreator.loading(true));
     final _transaction =
         await BaseApi.transactionSearch(ctx.state.user.firebaseUser.uid);
     print(_transaction.toString());
     if (_transaction != null)
       ctx.dispatch(HistoryActionCreator.setTransactions(_transaction));
+    ctx.dispatch(HistoryActionCreator.loading(false));
   }
 }
 

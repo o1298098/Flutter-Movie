@@ -9,7 +9,10 @@ class PlanState implements Cloneable<PlanState> {
   bool loading;
   @override
   PlanState clone() {
-    return PlanState();
+    return PlanState()
+      ..user = user
+      ..loading = loading
+      ..scrollController = scrollController;
   }
 }
 
