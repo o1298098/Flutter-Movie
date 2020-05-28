@@ -53,6 +53,8 @@ Widget buildView(
                           horizontal: Adapt.px(40), vertical: Adapt.px(40)),
                       itemBuilder: (_, index) => _AddressCell(
                         address: state.addresses[index],
+                        onTap: (a) =>
+                            dispatch(BillingAddressActionCreator.onEdit(a)),
                       ),
                       separatorBuilder: (_, __) => Divider(),
                       itemCount: state.addresses?.length ?? 0,
@@ -92,7 +94,8 @@ class _AddButton extends StatelessWidget {
 
 class _AddressCell extends StatelessWidget {
   final BillingAddress address;
-  const _AddressCell({this.address});
+  final Function(BillingAddress) onTap;
+  const _AddressCell({this.address, this.onTap});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -100,8 +103,9 @@ class _AddressCell extends StatelessWidget {
           horizontal: Adapt.px(30), vertical: Adapt.px(30)),
       //height: Adapt.px(140),
       decoration: BoxDecoration(
-          // color: const Color(0xFFF0F0F0),
-          borderRadius: BorderRadius.circular(Adapt.px(20))),
+        // color: const Color(0xFFF0F0F0),
+        borderRadius: BorderRadius.circular(Adapt.px(20)),
+      ),
       child: Row(
         children: [
           Column(
@@ -120,17 +124,20 @@ class _AddressCell extends StatelessWidget {
             ],
           ),
           Expanded(child: SizedBox()),
-          Container(
-            padding: EdgeInsets.all(Adapt.px(15)),
-            decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xFF9E9E9E)),
-                borderRadius: BorderRadius.circular(Adapt.px(15))),
-            child: Icon(
-              FontAwesomeIcons.pen,
-              size: Adapt.px(20),
-              color: const Color(0xFF9E9E9E),
+          GestureDetector(
+            onTap: () => onTap(address),
+            child: Container(
+              padding: EdgeInsets.all(Adapt.px(15)),
+              decoration: BoxDecoration(
+                  border: Border.all(color: const Color(0xFF9E9E9E)),
+                  borderRadius: BorderRadius.circular(Adapt.px(15))),
+              child: Icon(
+                FontAwesomeIcons.pen,
+                size: Adapt.px(20),
+                color: const Color(0xFF9E9E9E),
+              ),
             ),
-          )
+          ),
         ],
       ),
     );

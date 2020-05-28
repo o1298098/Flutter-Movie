@@ -8,12 +8,16 @@ import 'view.dart';
 class CreateAddressComponent extends Component<CreateAddressState> {
   CreateAddressComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<CreateAddressState>(
-                adapter: null,
-                slots: <String, Dependent<CreateAddressState>>{
-                }),);
-
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          shouldUpdate: (oldState, newState) {
+            return oldState.countries != newState.countries ||
+                oldState.region != newState.region;
+          },
+          view: buildView,
+          dependencies: Dependencies<CreateAddressState>(
+            adapter: null,
+            slots: <String, Dependent<CreateAddressState>>{},
+          ),
+        );
 }

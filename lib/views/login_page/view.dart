@@ -253,7 +253,7 @@ class _PhoneNumberEntry extends StatelessWidget {
                 onTap: () => showDialog(
                     context: context,
                     child: _CountryCodeDialog(
-                      countrys: countryCodes,
+                      countries: countryCodes,
                       onCellTap: countryCodeTap,
                     )),
                 child: SizedBox(
@@ -617,20 +617,20 @@ class _SmsSendCellState extends State<_SmsSendCell> {
 }
 
 class _CountryCodeDialog extends StatefulWidget {
-  final List<CountryPhoneCode> countrys;
+  final List<CountryPhoneCode> countries;
   final Function(String) onCellTap;
-  const _CountryCodeDialog({@required this.countrys, this.onCellTap});
+  const _CountryCodeDialog({@required this.countries, this.onCellTap});
   @override
   _CountryCodeDialogState createState() => _CountryCodeDialogState();
 }
 
 class _CountryCodeDialogState extends State<_CountryCodeDialog> {
   final _width = Adapt.screenW() - Adapt.px(80);
-  List<CountryPhoneCode> _countrys;
+  List<CountryPhoneCode> _countries;
   TextEditingController _controller;
   @override
   void initState() {
-    _countrys = widget.countrys;
+    _countries = widget.countries;
     _controller = TextEditingController();
     super.initState();
   }
@@ -663,7 +663,7 @@ class _CountryCodeDialogState extends State<_CountryCodeDialog> {
             ),
           ),
           onChanged: (str) {
-            _countrys = widget.countrys
+            _countries = widget.countries
                 .where((e) => e.name.toUpperCase().contains(str.toUpperCase()))
                 .toList();
             setState(() {});
@@ -682,9 +682,9 @@ class _CountryCodeDialogState extends State<_CountryCodeDialog> {
             separatorBuilder: (_, __) => Divider(
               height: 25,
             ),
-            itemCount: _countrys.length,
+            itemCount: _countries.length,
             itemBuilder: (_, index) {
-              final d = _countrys[index];
+              final d = _countries[index];
               return _CountryCell(
                 data: d,
                 onTap: widget.onCellTap,

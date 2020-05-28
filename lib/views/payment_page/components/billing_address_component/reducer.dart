@@ -1,5 +1,4 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/base_api_model/braintree_transaction.dart';
 
 import 'action.dart';
 import 'state.dart';

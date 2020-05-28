@@ -1,20 +1,28 @@
+import 'dart:convert' show json;
+
 class BillingAddress {
-  Object company;
-  Object countryCodeAlpha2;
-  Object countryCodeAlpha3;
-  Object countryCodeNumeric;
-  Object countryName;
+  String company;
+  String countryCodeAlpha2;
+  String countryCodeAlpha3;
+  String countryCodeNumeric;
+  String countryName;
   Object createdAt;
-  Object customerId;
-  Object extendedAddress;
-  Object firstName;
-  Object id;
-  Object lastName;
-  Object locality;
-  Object postalCode;
-  Object region;
-  Object streetAddress;
+  String customerId;
+  String extendedAddress;
+  String firstName;
+  String id;
+  String lastName;
+  String locality;
+  String postalCode;
+  String region;
+  String streetAddress;
   Object updatedAt;
+
+  factory BillingAddress(jsonStr) => jsonStr == null
+      ? null
+      : jsonStr is String
+          ? new BillingAddress.fromJson(json.decode(jsonStr))
+          : new BillingAddress.fromJson(jsonStr);
 
   BillingAddress.fromParams(
       {this.company,

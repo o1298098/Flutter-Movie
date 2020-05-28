@@ -30,5 +30,7 @@ PaymentPageState _setCustomer(PaymentPageState state, Action action) {
   final BraintreeCustomer _customer = action.payload;
   final PaymentPageState newState = state.clone();
   newState.customer = _customer;
+  newState.billingAddressState = newState.billingAddressState.clone()
+    ..addresses = _customer.addresses;
   return newState;
 }

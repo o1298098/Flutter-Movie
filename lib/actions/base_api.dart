@@ -2,6 +2,7 @@ import 'package:movie/actions/request.dart';
 import 'package:movie/models/base_api_model/account_state.dart';
 import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/base_api_model/base_tvshow.dart';
+import 'package:movie/models/base_api_model/braintree_billing_address.dart';
 import 'package:movie/models/base_api_model/braintree_customer.dart';
 import 'package:movie/models/base_api_model/braintree_subscription.dart';
 import 'package:movie/models/base_api_model/braintree_transaction.dart';
@@ -384,16 +385,16 @@ class BaseApi {
       {DateTime begin, DateTime end}) async {
     TransactionModel model;
     String _url = '/payment/TransactionSearch/$userId';
-    var _r = await _http2.request(_url);
+    var _r = await _http.request(_url);
     if (_r != null) model = TransactionModel(_r);
     return model;
   }
 
-  static final _http2 = Request('http://localhost:5000/api');
+  //static final _http2 = Request('http://localhost:5000/api');
   static Future<BraintreeCustomer> getBraintreeCustomer(String userId) async {
     BraintreeCustomer model;
     String _url = '/payment/Customer/$userId';
-    var _r = await _http2.request(_url);
+    var _r = await _http.request(_url);
     if (_r != null) model = BraintreeCustomer(_r);
     return model;
   }
@@ -469,6 +470,32 @@ class BaseApi {
     var _r =
         await _http.request(_url, method: 'POST', data: userPremium.toString());
     if (_r != null) _model = UserPremiumData(_r);
+    return _model;
+  }
+
+  static Future<BillingAddress> createBillAddress(
+      BillingAddress address) async {
+    BillingAddress _model;
+    String _url = '/Payment/Customer/BillingAddress';
+    var _r = await _http.request(_url, method: 'POST', data: {
+      'customerID': address.customerId,
+      'addressID': address.id,
+      'address': {'firstName': address.firstName},
+    });
+    if (_r != null) _model = BillingAddress(_r);
+    return _model;
+  }
+
+  static Future<BillingAddress> updateBillAddress(
+      BillingAddress address) async {
+    BillingAddress _model;
+    String _url = '/Payment/Customer/BillingAddress';
+    var _r = await _http.request(_url, method: 'PUT', data: {
+      'customerID': address.customerId,
+      'addressID': address.id,
+      'address': address.toString(),
+    });
+    if (_r != null) _model = BillingAddress(_r);
     return _model;
   }
 }
