@@ -10,6 +10,7 @@ Effect<PaymentPageState> buildEffect() {
     PaymentPageAction.action: _onAction,
     PaymentPageAction.showHistory: _showHistory,
     PaymentPageAction.showBillingAddress: _showBillingAddress,
+    PaymentPageAction.createCard: _createCard,
     Lifecycle.initState: _onInit,
     Lifecycle.dispose: _onDispose,
   });
@@ -39,4 +40,9 @@ void _showHistory(Action action, Context<PaymentPageState> ctx) async {
 void _showBillingAddress(Action action, Context<PaymentPageState> ctx) async {
   await Navigator.of(ctx.context).push(
       MaterialPageRoute(builder: (_) => ctx.buildComponent('billingAddress')));
+}
+
+void _createCard(Action action, Context<PaymentPageState> ctx) async {
+  await Navigator.of(ctx.context).push(
+      MaterialPageRoute(builder: (_) => ctx.buildComponent('createCard')));
 }

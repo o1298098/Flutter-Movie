@@ -277,23 +277,9 @@ class _Body extends StatelessWidget {
                     'Saved Cards',
                     style: TextStyle(fontSize: Adapt.px(30)),
                   ),
-                  Container(
-                    width: Adapt.px(60),
-                    height: Adapt.px(60),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const Color(0xFF9E9E9E),
-                        width: .5,
-                      ),
-                      borderRadius: BorderRadius.circular(
-                        Adapt.px(15),
-                      ),
-                    ),
-                    child: Icon(
-                      Icons.add,
-                      size: Adapt.px(25),
-                      color: const Color(0xFF9E9E9E),
-                    ),
+                  _AddCardButton(
+                    onTap: () =>
+                        dispatch(PaymentPageActionCreator.createCard()),
                   )
                 ],
               ),
@@ -354,6 +340,34 @@ class _Body extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _AddCardButton extends StatelessWidget {
+  final Function onTap;
+  const _AddCardButton({this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: Adapt.px(60),
+          height: Adapt.px(60),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: const Color(0xFF9E9E9E),
+              width: .5,
+            ),
+            borderRadius: BorderRadius.circular(
+              Adapt.px(15),
+            ),
+          ),
+          child: Icon(
+            Icons.add,
+            size: Adapt.px(25),
+            color: const Color(0xFF9E9E9E),
+          ),
+        ));
   }
 }
 

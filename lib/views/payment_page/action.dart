@@ -7,7 +7,8 @@ enum PaymentPageAction {
   setTransactions,
   setCustomer,
   showHistory,
-  showBillingAddress
+  showBillingAddress,
+  createCard,
 }
 
 class PaymentPageActionCreator {
@@ -29,5 +30,9 @@ class PaymentPageActionCreator {
 
   static Action showBillingAddress() {
     return const Action(PaymentPageAction.showBillingAddress);
+  }
+
+  static Action createCard() {
+    return const Action(PaymentPageAction.createCard);
   }
 }

@@ -12,7 +12,8 @@ class CreateAddressComponent extends Component<CreateAddressState> {
           reducer: buildReducer(),
           shouldUpdate: (oldState, newState) {
             return oldState.countries != newState.countries ||
-                oldState.region != newState.region;
+                oldState.region != newState.region ||
+                oldState.loading != newState.loading;
           },
           view: buildView,
           dependencies: Dependencies<CreateAddressState>(

@@ -1,6 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
+import 'package:movie/customwidgets/loading_layout.dart';
 import 'package:movie/models/country_phone_code.dart';
 import 'package:movie/style/themestyle.dart';
 
@@ -12,100 +13,112 @@ Widget buildView(
   return Builder(
     builder: (context) {
       final _theme = ThemeStyle.getTheme(context);
-      return Scaffold(
-        backgroundColor: _theme.primaryColorDark,
-        appBar: AppBar(
+      return Stack(children: [
+        Scaffold(
           backgroundColor: _theme.primaryColorDark,
-          brightness: _theme.brightness,
-          iconTheme: _theme.iconTheme,
-          elevation: 0.0,
-          centerTitle: false,
-          title: Text(
-            'Create Address',
-            style: TextStyle(color: _theme.textTheme.bodyText1.color),
-          ),
-          actions: [
-            _SaveButton(
-              onTap: () => dispatch(CreateAddressActionCreator.onSave()),
-            )
-          ],
-        ),
-        body: Container(
-          margin: EdgeInsets.only(top: Adapt.px(20)),
-          padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
-          decoration: BoxDecoration(
-            color: _theme.backgroundColor,
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(Adapt.px(60)),
+          appBar: AppBar(
+            backgroundColor: _theme.primaryColorDark,
+            brightness: _theme.brightness,
+            iconTheme: _theme.iconTheme,
+            elevation: 0.0,
+            centerTitle: false,
+            title: Text(
+              '${state.billingAddress == null ? 'Create' : 'Edit'} Address',
+              style: TextStyle(color: _theme.textTheme.bodyText1.color),
             ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: Adapt.px(80)),
-              _RegionCell(
-                countries: state.countries ?? [],
-                region: state.region,
-                onTap: (d) => dispatch(CreateAddressActionCreator.setRegion(d)),
-              ),
-              SizedBox(height: Adapt.px(30)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _CustomTextField(
-                    controller: state.firstNameController,
-                    width: Adapt.px(300),
-                    title: 'First Name',
-                  ),
-                  _CustomTextField(
-                    controller: state.lastNameController,
-                    width: Adapt.px(300),
-                    title: 'Last Name',
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _CustomTextField(
-                    controller: state.companyController,
-                    width: Adapt.px(300),
-                    title: 'Company',
-                  ),
-                  _CustomTextField(
-                    controller: state.cityController,
-                    width: Adapt.px(300),
-                    title: 'City',
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _CustomTextField(
-                    controller: state.provinceController,
-                    width: Adapt.px(300),
-                    title: 'State/Province',
-                  ),
-                  _CustomTextField(
-                    controller: state.postalCodeController,
-                    width: Adapt.px(300),
-                    title: 'Postal Code',
-                  ),
-                ],
-              ),
-              _CustomTextField(
-                controller: state.streetAddressController,
-                title: 'Street Address',
-              ),
-              _CustomTextField(
-                controller: state.extendedAddressController,
-                title: 'Extended Address',
-              ),
+            actions: [
+              _SaveButton(
+                onTap: () => dispatch(CreateAddressActionCreator.onSave()),
+              )
             ],
           ),
+          body: Container(
+            margin: EdgeInsets.only(top: Adapt.px(20)),
+            padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
+            decoration: BoxDecoration(
+              color: _theme.backgroundColor,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(Adapt.px(60)),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: Adapt.px(80)),
+                _RegionCell(
+                  countries: state.countries ?? [],
+                  region: state.region,
+                  onTap: (d) =>
+                      dispatch(CreateAddressActionCreator.setRegion(d)),
+                ),
+                SizedBox(height: Adapt.px(30)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _CustomTextField(
+                      controller: state.firstNameController,
+                      width: Adapt.px(300),
+                      title: 'First Name',
+                    ),
+                    _CustomTextField(
+                      controller: state.lastNameController,
+                      width: Adapt.px(300),
+                      title: 'Last Name',
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _CustomTextField(
+                      controller: state.companyController,
+                      width: Adapt.px(300),
+                      title: 'Company',
+                    ),
+                    _CustomTextField(
+                      controller: state.cityController,
+                      width: Adapt.px(300),
+                      title: 'City',
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _CustomTextField(
+                      controller: state.provinceController,
+                      width: Adapt.px(300),
+                      title: 'State/Province',
+                    ),
+                    _CustomTextField(
+                      controller: state.postalCodeController,
+                      width: Adapt.px(300),
+                      title: 'Postal Code',
+                    ),
+                  ],
+                ),
+                _CustomTextField(
+                  controller: state.streetAddressController,
+                  title: 'Street Address',
+                ),
+                _CustomTextField(
+                  controller: state.extendedAddressController,
+                  title: 'Extended Address',
+                ),
+                SizedBox(height: Adapt.px(30)),
+                _DeleteButton(
+                  show: state.billingAddress != null,
+                  onTap: () => dispatch(CreateAddressActionCreator.onDelete()),
+                ),
+              ],
+            ),
+          ),
         ),
-      );
+        LoadingLayout(
+          title: 'Loading',
+          show: state.loading,
+        )
+      ]);
     },
   );
 }
@@ -133,6 +146,34 @@ class _SaveButton extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _DeleteButton extends StatelessWidget {
+  final bool show;
+  final Function onTap;
+  const _DeleteButton({this.onTap, @required this.show});
+  @override
+  Widget build(BuildContext context) {
+    return show
+        ? GestureDetector(
+            onTap: onTap,
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: Adapt.px(25)),
+              decoration: BoxDecoration(
+                  color: Color(0xFFFF0000),
+                  borderRadius: BorderRadius.circular(Adapt.px(20))),
+              child: Center(
+                  child: Text(
+                'DELETE',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: Adapt.px(30),
+                  color: const Color(0xFFFFFFFF),
+                ),
+              )),
+            ))
+        : SizedBox();
   }
 }
 

@@ -7,6 +7,7 @@ import '../state.dart';
 
 class CreateAddressState implements Cloneable<CreateAddressState> {
   List<CountryPhoneCode> countries;
+  bool loading;
   String customerId;
   BillingAddress billingAddress;
   CountryPhoneCode region;
@@ -23,6 +24,7 @@ class CreateAddressState implements Cloneable<CreateAddressState> {
     return CreateAddressState()
       ..customerId = customerId
       ..countries = countries
+      ..loading = loading
       ..billingAddress = billingAddress
       ..region = region
       ..firstNameController = firstNameController

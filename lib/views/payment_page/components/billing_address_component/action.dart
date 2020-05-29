@@ -5,6 +5,9 @@ enum BillingAddressAction {
   action,
   create,
   edit,
+  insert,
+  update,
+  delete,
 }
 
 class BillingAddressActionCreator {
@@ -18,5 +21,17 @@ class BillingAddressActionCreator {
 
   static Action onEdit(BillingAddress address) {
     return Action(BillingAddressAction.edit, payload: address);
+  }
+
+  static Action onInsert(BillingAddress address) {
+    return Action(BillingAddressAction.insert, payload: address);
+  }
+
+  static Action onUpdate(BillingAddress address) {
+    return Action(BillingAddressAction.update, payload: address);
+  }
+
+  static Action onDelete(BillingAddress address) {
+    return Action(BillingAddressAction.delete, payload: address);
   }
 }

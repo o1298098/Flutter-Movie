@@ -479,10 +479,19 @@ class BaseApi {
     String _url = '/Payment/Customer/BillingAddress';
     var _r = await _http.request(_url, method: 'POST', data: {
       'customerID': address.customerId,
-      'addressID': address.id,
-      'address': {'firstName': address.firstName},
+      'address': {
+        'firstName': address.firstName,
+        'lastName': address.lastName,
+        'company': address.company,
+        'countryName': address.countryName,
+        'locality': address.locality,
+        'extendedAddress': address.extendedAddress,
+        'region': address.region,
+        'postalCode': address.postalCode,
+        'streetAddress': address.streetAddress,
+      },
     });
-    if (_r != null) _model = BillingAddress(_r);
+    if (_r != null) if (_r['status']) _model = BillingAddress(_r['data']);
     return _model;
   }
 
@@ -493,9 +502,30 @@ class BaseApi {
     var _r = await _http.request(_url, method: 'PUT', data: {
       'customerID': address.customerId,
       'addressID': address.id,
-      'address': address.toString(),
+      'address': {
+        'firstName': address.firstName,
+        'lastName': address.lastName,
+        'company': address.company,
+        'countryName': address.countryName,
+        'locality': address.locality,
+        'extendedAddress': address.extendedAddress,
+        'region': address.region,
+        'postalCode': address.postalCode,
+        'streetAddress': address.streetAddress,
+      },
     });
-    if (_r != null) _model = BillingAddress(_r);
+    if (_r != null) if (_r['status']) _model = BillingAddress(_r['data']);
+    return _model;
+  }
+
+  static Future<BillingAddress> deleteBillAddress(
+      BillingAddress address) async {
+    BillingAddress _model;
+    String _url = '/Payment/Customer/BillingAddress';
+    var _r = await _http.request(_url,
+        method: 'DELETE',
+        data: {'customerID': address.customerId, 'addressID': address.id});
+    if (_r != null) if (_r['status']) _model = BillingAddress(_r['data']);
     return _model;
   }
 }
