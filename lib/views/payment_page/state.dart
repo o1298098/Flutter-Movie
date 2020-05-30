@@ -7,9 +7,11 @@ import 'package:movie/models/app_user.dart';
 import 'package:movie/models/base_api_model/braintree_transaction.dart';
 
 import 'components/billing_address_component/state.dart';
+import 'components/create_card_component/state.dart';
 
 class PaymentPageState implements GlobalBaseState, Cloneable<PaymentPageState> {
   BillingAddressState billingAddressState;
+  CreateCardState createCardState;
   TransactionModel transactions;
   BraintreeCustomer customer;
   SwiperController swiperController;
@@ -22,7 +24,8 @@ class PaymentPageState implements GlobalBaseState, Cloneable<PaymentPageState> {
       ..swiperController = swiperController
       ..user = user
       ..loading = loading
-      ..billingAddressState = billingAddressState;
+      ..billingAddressState = billingAddressState
+      ..createCardState = createCardState;
   }
 
   @override
@@ -38,5 +41,6 @@ class PaymentPageState implements GlobalBaseState, Cloneable<PaymentPageState> {
 PaymentPageState initState(Map<String, dynamic> args) {
   return PaymentPageState()
     ..loading = false
+    ..createCardState = CreateCardState()
     ..billingAddressState = BillingAddressState();
 }

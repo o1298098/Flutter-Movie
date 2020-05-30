@@ -5,7 +5,8 @@ import 'reducer.dart';
 import 'state.dart';
 import 'view.dart';
 
-class CreateCardComponent extends Component<CreateCardState> {
+class CreateCardComponent extends Component<CreateCardState>
+    with TickerProviderMixin {
   CreateCardComponent()
       : super(
           view: buildView,
