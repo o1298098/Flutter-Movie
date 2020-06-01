@@ -99,7 +99,7 @@ Widget buildView(
     var date = DateTime.parse(d.updateTime ?? '2019-11-25');
     String timeline = TimelineUtil.format(
       date.millisecondsSinceEpoch,
-      locTimeMillis: DateTime.now().millisecondsSinceEpoch,
+      locTimeMs: DateTime.now().millisecondsSinceEpoch,
       locale: ui.window.locale.languageCode,
     );
     return Column(

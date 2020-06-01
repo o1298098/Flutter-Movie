@@ -4,24 +4,28 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:movie/views/payment_page/state.dart';
 
 class CreateCardState implements Cloneable<CreateCardState> {
+  String customerId;
   AnimationController animationController;
   TextEditingController cardNumberController;
-  TextEditingController hosterNameController;
+  TextEditingController holderNameController;
   TextEditingController expriedDateController;
   TextEditingController cvvController;
   SwiperController swiperController;
   int inputIndex;
+  bool loading;
 
   @override
   CreateCardState clone() {
     return CreateCardState()
+      ..customerId = customerId
       ..animationController = animationController
       ..cardNumberController = cardNumberController
-      ..hosterNameController = hosterNameController
+      ..holderNameController = holderNameController
       ..expriedDateController = expriedDateController
       ..cvvController = cvvController
       ..swiperController = swiperController
-      ..inputIndex = inputIndex;
+      ..inputIndex = inputIndex
+      ..loading = loading;
   }
 }
 

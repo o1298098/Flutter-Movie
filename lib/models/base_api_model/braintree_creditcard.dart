@@ -35,7 +35,11 @@ class CreditCard {
   ItemType healthcare;
   ItemType payroll;
   ItemType prepaid;
-
+  factory CreditCard(jsonStr) => jsonStr == null
+      ? null
+      : jsonStr is String
+          ? new CreditCard.fromJson(json.decode(jsonStr))
+          : new CreditCard.fromJson(jsonStr);
   CreditCard.fromParams(
       {this.accountType,
       this.cardholderName,

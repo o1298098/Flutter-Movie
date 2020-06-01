@@ -43,6 +43,10 @@ void _showBillingAddress(Action action, Context<PaymentPageState> ctx) async {
 }
 
 void _createCard(Action action, Context<PaymentPageState> ctx) async {
-  await Navigator.of(ctx.context).push(
-      MaterialPageRoute(builder: (_) => ctx.buildComponent('createCard')));
+  if (ctx.state.customer != null && ctx.state.user?.firebaseUser != null) {
+    ctx.state.createCardState.customerId = ctx.state.user.firebaseUser.uid;
+    ctx.state.createCardState.loading = false;
+    await Navigator.of(ctx.context).push(
+        MaterialPageRoute(builder: (_) => ctx.buildComponent('createCard')));
+  }
 }

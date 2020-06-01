@@ -3,7 +3,9 @@ import 'package:fish_redux/fish_redux.dart';
 enum CreateCardAction {
   action,
   nextTapped,
+  backTapped,
   setInputIndex,
+  loading,
 }
 
 class CreateCardActionCreator {
@@ -15,7 +17,15 @@ class CreateCardActionCreator {
     return const Action(CreateCardAction.nextTapped);
   }
 
-  static Action setInputIndex() {
-    return const Action(CreateCardAction.setInputIndex);
+  static Action backTapped() {
+    return const Action(CreateCardAction.backTapped);
+  }
+
+  static Action setInputIndex(int index) {
+    return Action(CreateCardAction.setInputIndex, payload: index);
+  }
+
+  static Action loading(bool loading) {
+    return Action(CreateCardAction.loading, payload: loading);
   }
 }

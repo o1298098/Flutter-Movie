@@ -104,7 +104,7 @@ Widget buildView(
                           'Updated ' +
                               TimelineUtil.format(
                                 date.millisecondsSinceEpoch,
-                                locTimeMillis:
+                                locTimeMs:
                                     DateTime.now().millisecondsSinceEpoch,
                                 locale: ui.window.locale.languageCode,
                               ),

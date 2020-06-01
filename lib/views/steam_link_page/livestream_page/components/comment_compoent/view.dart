@@ -47,7 +47,7 @@ class _CommentCell extends StatelessWidget {
     final date = DateTime.parse(data.createTime);
     final String timeline = TimelineUtil.format(
       date.millisecondsSinceEpoch,
-      locTimeMillis: DateTime.now().millisecondsSinceEpoch,
+      locTimeMs: DateTime.now().millisecondsSinceEpoch,
       locale: ui.window.locale.languageCode,
     );
     return Column(

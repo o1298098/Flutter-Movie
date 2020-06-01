@@ -14,6 +14,21 @@ class TimelineInfoEN implements TimelineInfo {
   String oneDay(int days) => 'a day';
   String days(int days) => '$days days';
   DayFormat dayFormat() => DayFormat.Common;
+
+  @override
+  String lessThanOneMinute() {
+    return 'one minute ago';
+  }
+
+  @override
+  int maxJustNowSecond() {
+    return 10;
+  }
+
+  @override
+  String weeks(int week) {
+    throw '$week weeks ago';
+  }
 }
 
 class TimelineInfoCN implements TimelineInfo {
@@ -30,9 +45,22 @@ class TimelineInfoCN implements TimelineInfo {
   String oneDay(int days) => '$days天';
   String days(int days) => '$days天';
   DayFormat dayFormat() => DayFormat.Common;
+
+  @override
+  String lessThanOneMinute() {
+    return '1 分钟前';
+  }
+
+  @override
+  int maxJustNowSecond() {
+    return 10;
+  }
+
+  @override
+  String weeks(int week) {
+    return '$week 星期前';
+  }
 }
-
-
 
 class TimelineInfoJA implements TimelineInfo {
   String suffixAgo() => ' ago';
@@ -48,4 +76,19 @@ class TimelineInfoJA implements TimelineInfo {
   String oneDay(int days) => 'a day';
   String days(int days) => '$days days';
   DayFormat dayFormat() => DayFormat.Common;
+
+  @override
+  String lessThanOneMinute() {
+    return 'one minute ago';
+  }
+
+  @override
+  int maxJustNowSecond() {
+    return 10;
+  }
+
+  @override
+  String weeks(int week) {
+    throw '$week weeks ago';
+  }
 }

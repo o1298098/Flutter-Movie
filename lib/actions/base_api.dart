@@ -3,6 +3,7 @@ import 'package:movie/models/base_api_model/account_state.dart';
 import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/base_api_model/base_tvshow.dart';
 import 'package:movie/models/base_api_model/braintree_billing_address.dart';
+import 'package:movie/models/base_api_model/braintree_creditcard.dart';
 import 'package:movie/models/base_api_model/braintree_customer.dart';
 import 'package:movie/models/base_api_model/braintree_subscription.dart';
 import 'package:movie/models/base_api_model/braintree_transaction.dart';
@@ -390,7 +391,6 @@ class BaseApi {
     return model;
   }
 
-  //static final _http2 = Request('http://localhost:5000/api');
   static Future<BraintreeCustomer> getBraintreeCustomer(String userId) async {
     BraintreeCustomer model;
     String _url = '/payment/Customer/$userId';
@@ -527,5 +527,20 @@ class BaseApi {
         data: {'customerID': address.customerId, 'addressID': address.id});
     if (_r != null) if (_r['status']) _model = BillingAddress(_r['data']);
     return _model;
+  }
+
+  // static final _http2 = Request('http://localhost:5000/api');
+
+  static Future<dynamic> createCreditCard(CreditCard card) async {
+    String _url = '/Payment/CreditCard';
+    var _r = await _http.request(_url, method: 'POST', data: {
+      'customerID': card.customerId,
+      'cardholderName': card.cardholderName,
+      'cvv': card.bin,
+      'number': card.maskedNumber,
+      'expirationMonth': card.expirationMonth,
+      'expirationYear': card.expirationYear,
+    });
+    return _r;
   }
 }
