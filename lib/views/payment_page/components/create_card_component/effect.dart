@@ -29,6 +29,7 @@ void _nextTapped(Action action, Context<CreateCardState> ctx) async {
       ctx.state.inputIndex++;
       ctx.dispatch(CreateCardActionCreator.setInputIndex(ctx.state.inputIndex));
       ctx.state.swiperController.next();
+      ctx.state.cardNumberFocusNode.nextFocus();
       break;
     case 1:
       if (ctx.state.holderNameController.text.isEmpty &&
@@ -36,6 +37,7 @@ void _nextTapped(Action action, Context<CreateCardState> ctx) async {
 
       ctx.state.inputIndex++;
       ctx.state.swiperController.next();
+      ctx.state.holderNameFocusNode.nextFocus();
       break;
     case 2:
       if (ctx.state.expriedDateController.text.isEmpty &&
@@ -45,10 +47,12 @@ void _nextTapped(Action action, Context<CreateCardState> ctx) async {
       ctx.dispatch(CreateCardActionCreator.setInputIndex(ctx.state.inputIndex));
       ctx.state.animationController.forward();
       ctx.state.swiperController.next();
+      ctx.state.expriedDaterFocusNode.nextFocus();
       break;
     case 3:
       if (ctx.state.cvvController.text.isEmpty &&
           ctx.state.cvvController.text.length < 2) return;
+      ctx.state.cvvFocusNode.unfocus();
       ctx.dispatch(CreateCardActionCreator.loading(true));
 
       final _r = await BaseApi.createCreditCard(CreditCard.fromParams(
@@ -79,15 +83,19 @@ void _backTapped(Action action, Context<CreateCardState> ctx) async {
       ctx.state.inputIndex--;
       ctx.dispatch(CreateCardActionCreator.setInputIndex(ctx.state.inputIndex));
       ctx.state.swiperController.previous();
+      ctx.state.holderNameFocusNode.previousFocus();
       break;
     case 2:
       ctx.state.inputIndex--;
       ctx.state.swiperController.previous();
+      ctx.state.expriedDaterFocusNode.previousFocus();
       break;
     case 3:
       ctx.state.animationController.reverse();
       ctx.state.inputIndex--;
+      ctx.dispatch(CreateCardActionCreator.setInputIndex(ctx.state.inputIndex));
       ctx.state.swiperController.previous();
+      ctx.state.cvvFocusNode.previousFocus();
       break;
   }
 }
@@ -99,6 +107,10 @@ void _onInit(Action action, Context<CreateCardState> ctx) async {
   ctx.state.holderNameController = TextEditingController();
   ctx.state.expriedDateController = TextEditingController();
   ctx.state.cvvController = TextEditingController();
+  ctx.state.cardNumberFocusNode = FocusNode();
+  ctx.state.holderNameFocusNode = FocusNode();
+  ctx.state.expriedDaterFocusNode = FocusNode();
+  ctx.state.cvvFocusNode = FocusNode();
   final Object _ticker = ctx.stfState;
   ctx.state.animationController = AnimationController(
       vsync: _ticker, duration: Duration(milliseconds: 600));
@@ -111,4 +123,8 @@ void _onDispose(Action action, Context<CreateCardState> ctx) {
   ctx.state.expriedDateController.dispose();
   ctx.state.cvvController.dispose();
   ctx.state.animationController.dispose();
+  ctx.state.cardNumberFocusNode.dispose();
+  ctx.state.expriedDaterFocusNode.dispose();
+  ctx.state.cvvFocusNode.dispose();
+  ctx.state.holderNameFocusNode.dispose();
 }

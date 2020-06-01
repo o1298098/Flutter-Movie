@@ -19,6 +19,7 @@ Widget buildView(
       return Stack(
         children: [
           Scaffold(
+            resizeToAvoidBottomPadding: false,
             backgroundColor: _theme.primaryColorDark,
             appBar: AppBar(
               backgroundColor: _theme.primaryColorDark,
@@ -50,14 +51,7 @@ Widget buildView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: Adapt.px(100)),
-                  _CardCell(
-                    controller: state.animationController,
-                    cardNumberController: state.cardNumberController,
-                    holderNameController: state.holderNameController,
-                    expriedDateController: state.expriedDateController,
-                    cvvController: state.cvvController,
-                  ),
+                  SizedBox(height: Adapt.px(430)),
                   Padding(
                     padding: EdgeInsets.symmetric(
                         horizontal: Adapt.px(40), vertical: Adapt.px(50)),
@@ -73,6 +67,12 @@ Widget buildView(
                     expriedDateController: state.expriedDateController,
                     cvvController: state.cvvController,
                     swiperController: state.swiperController,
+                    cardNumberFocusNode: state.cardNumberFocusNode,
+                    holderNameFocusNode: state.holderNameFocusNode,
+                    expriedDaterFocusNode: state.expriedDaterFocusNode,
+                    cvvFocusNode: state.cvvFocusNode,
+                    onSubmitted: () =>
+                        dispatch(CreateCardActionCreator.nextTapped()),
                   ),
                   SizedBox(height: Adapt.px(10)),
                   _ButtonGroup(
@@ -86,6 +86,18 @@ Widget buildView(
               ),
             ),
           ),
+          Container(
+              padding: EdgeInsets.only(top: Adapt.padTopH() + Adapt.px(180)),
+              child: Material(
+                color: null,
+                child: _CardCell(
+                  controller: state.animationController,
+                  cardNumberController: state.cardNumberController,
+                  holderNameController: state.holderNameController,
+                  expriedDateController: state.expriedDateController,
+                  cvvController: state.cvvController,
+                ),
+              )),
           LoadingLayout(
             title: 'Saving',
             show: state.loading,
@@ -145,11 +157,12 @@ class _CardFrontPanel extends StatefulWidget {
   final TextEditingController cardNumberController;
   final TextEditingController holderNameController;
   final TextEditingController expriedDateController;
-  const _CardFrontPanel(
-      {this.controller,
-      this.cardNumberController,
-      this.expriedDateController,
-      this.holderNameController});
+  const _CardFrontPanel({
+    this.controller,
+    this.cardNumberController,
+    this.expriedDateController,
+    this.holderNameController,
+  });
   @override
   _CardFrontPanelState createState() => _CardFrontPanelState();
 }
@@ -480,13 +493,24 @@ class _InputPanel extends StatelessWidget {
   final TextEditingController holderNameController;
   final TextEditingController expriedDateController;
   final TextEditingController cvvController;
+
+  final FocusNode cardNumberFocusNode;
+  final FocusNode holderNameFocusNode;
+  final FocusNode expriedDaterFocusNode;
+  final FocusNode cvvFocusNode;
   final SwiperController swiperController;
+  final Function onSubmitted;
   const _InputPanel(
       {this.cardNumberController,
       this.cvvController,
       this.expriedDateController,
       this.holderNameController,
-      this.swiperController});
+      this.swiperController,
+      this.cardNumberFocusNode,
+      this.cvvFocusNode,
+      this.expriedDaterFocusNode,
+      this.holderNameFocusNode,
+      this.onSubmitted});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -504,12 +528,18 @@ class _InputPanel extends StatelessWidget {
             case 0:
               _child = _CreditCardTextField(
                 controller: cardNumberController,
+                focusNode: cardNumberFocusNode,
+                textInputAction: TextInputAction.next,
+                onSubmitted: onSubmitted,
               );
               break;
             case 1:
               _child = _CustomTextField(
                 title: 'Holder Name',
                 controller: holderNameController,
+                focusNode: holderNameFocusNode,
+                onSubmitted: onSubmitted,
+                textInputAction: TextInputAction.next,
                 inputFormatters: [
                   WhitelistingTextInputFormatter(RegExp("[a-zA-Z ]"))
                 ],
@@ -519,8 +549,11 @@ class _InputPanel extends StatelessWidget {
               _child = _CustomTextField(
                 title: 'Expried date',
                 maxLength: 4,
-                inputType: TextInputType.datetime,
+                inputType: TextInputType.number,
                 controller: expriedDateController,
+                focusNode: expriedDaterFocusNode,
+                textInputAction: TextInputAction.next,
+                onSubmitted: onSubmitted,
                 inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
               );
               break;
@@ -530,6 +563,9 @@ class _InputPanel extends StatelessWidget {
                 maxLength: 3,
                 inputType: TextInputType.number,
                 controller: cvvController,
+                focusNode: cvvFocusNode,
+                onSubmitted: onSubmitted,
+                textInputAction: TextInputAction.done,
                 inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
               );
               break;
@@ -550,15 +586,21 @@ class _CustomTextField extends StatelessWidget {
   final int maxLength;
   final TextInputType inputType;
   final TextEditingController controller;
+  final FocusNode focusNode;
+  final TextInputAction textInputAction;
   final List<TextInputFormatter> inputFormatters;
   final String errorText;
+  final Function onSubmitted;
   const _CustomTextField(
       {this.title,
       this.width,
       this.controller,
+      this.focusNode,
       this.maxLength,
       this.inputType,
       this.inputFormatters,
+      this.textInputAction,
+      this.onSubmitted,
       this.errorText});
   @override
   Widget build(BuildContext context) {
@@ -580,10 +622,14 @@ class _CustomTextField extends StatelessWidget {
           SizedBox(height: Adapt.px(20)),
           TextField(
             controller: controller,
+            focusNode: focusNode,
             cursorColor: const Color(0xFF9E9E9E),
             maxLength: maxLength,
             keyboardType: inputType,
             inputFormatters: inputFormatters,
+            textInputAction: textInputAction,
+            //onSubmitted: (s) => onSubmitted,
+            onEditingComplete: onSubmitted,
             decoration: InputDecoration(
               counter: SizedBox(),
               errorText: errorText,
@@ -604,7 +650,16 @@ class _CustomTextField extends StatelessWidget {
 
 class _CreditCardTextField extends StatefulWidget {
   final TextEditingController controller;
-  const _CreditCardTextField({this.controller});
+  final FocusNode focusNode;
+  final TextInputAction textInputAction;
+
+  final Function onSubmitted;
+
+  const _CreditCardTextField(
+      {this.controller,
+      this.focusNode,
+      this.textInputAction,
+      this.onSubmitted});
   @override
   _CreditCardTextFieldState createState() => _CreditCardTextFieldState();
 }
@@ -638,6 +693,9 @@ class _CreditCardTextFieldState extends State<_CreditCardTextField> {
       maxLength: 16,
       inputType: TextInputType.number,
       controller: widget.controller,
+      focusNode: widget.focusNode,
+      textInputAction: widget.textInputAction,
+      onSubmitted: widget.onSubmitted,
       inputFormatters: [
         WhitelistingTextInputFormatter.digitsOnly,
       ],

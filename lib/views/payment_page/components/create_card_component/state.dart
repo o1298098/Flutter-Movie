@@ -10,6 +10,10 @@ class CreateCardState implements Cloneable<CreateCardState> {
   TextEditingController holderNameController;
   TextEditingController expriedDateController;
   TextEditingController cvvController;
+  FocusNode cardNumberFocusNode;
+  FocusNode holderNameFocusNode;
+  FocusNode expriedDaterFocusNode;
+  FocusNode cvvFocusNode;
   SwiperController swiperController;
   int inputIndex;
   bool loading;
@@ -23,6 +27,10 @@ class CreateCardState implements Cloneable<CreateCardState> {
       ..holderNameController = holderNameController
       ..expriedDateController = expriedDateController
       ..cvvController = cvvController
+      ..cardNumberFocusNode = cardNumberFocusNode
+      ..holderNameFocusNode = holderNameFocusNode
+      ..expriedDaterFocusNode = expriedDaterFocusNode
+      ..cvvFocusNode = cvvFocusNode
       ..swiperController = swiperController
       ..inputIndex = inputIndex
       ..loading = loading;
