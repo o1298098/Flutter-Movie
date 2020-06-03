@@ -15,6 +15,7 @@ Widget buildView(
       final _theme = ThemeStyle.getTheme(context);
       return Stack(children: [
         Scaffold(
+          //resizeToAvoidBottomPadding: false,
           backgroundColor: _theme.primaryColorDark,
           appBar: AppBar(
             backgroundColor: _theme.primaryColorDark,
@@ -41,8 +42,7 @@ Widget buildView(
                 top: Radius.circular(Adapt.px(60)),
               ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: ListView(
               children: [
                 SizedBox(height: Adapt.px(80)),
                 _RegionCell(

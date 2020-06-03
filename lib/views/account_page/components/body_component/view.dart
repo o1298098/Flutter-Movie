@@ -39,9 +39,9 @@ Widget buildView(BodyState state, Dispatch dispatch, ViewService viewService) {
                 AccountPageActionCreator.navigatorPush('paymentPage'))),
         _GirdCell(
             icon: 'images/c3po.png',
-            title: 'MyRated',
-            onTap: () =>
-                dispatch(AccountPageActionCreator.navigatorPush('testPage'))),
+            title: 'Downloaded',
+            onTap: () => dispatch(
+                AccountPageActionCreator.navigatorPush('downloadPage'))),
         _GirdCell(
           icon: 'images/r2d2.png',
           title: 'Settings',

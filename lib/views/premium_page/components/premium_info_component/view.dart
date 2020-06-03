@@ -14,26 +14,28 @@ import 'state.dart';
 
 Widget buildView(
     PremiumInfoState state, Dispatch dispatch, ViewService viewService) {
-  final _theme = ThemeStyle.getTheme(viewService.context);
-  return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: _theme.brightness == Brightness.light
-          ? SystemUiOverlayStyle.dark
-          : SystemUiOverlayStyle.light,
-      child: Container(
-        color: _theme.brightness == Brightness.light
-            ? const Color(0xFFF0F0F0)
-            : const Color(0xFF505050),
-        child: Column(
-          children: [
-            viewService.buildComponent('header'),
-            _Body(
-              subscription: state.subscription,
-              user: state.user,
-              dispatch: dispatch,
-            )
-          ],
-        ),
-      ));
+  return Builder(builder: (context) {
+    final _theme = ThemeStyle.getTheme(context);
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: _theme.brightness == Brightness.light
+            ? SystemUiOverlayStyle.dark
+            : SystemUiOverlayStyle.light,
+        child: Container(
+          color: _theme.brightness == Brightness.light
+              ? const Color(0xFFF0F0F0)
+              : const Color(0xFF505050),
+          child: Column(
+            children: [
+              viewService.buildComponent('header'),
+              _Body(
+                subscription: state.subscription,
+                user: state.user,
+                dispatch: dispatch,
+              )
+            ],
+          ),
+        ));
+  });
 }
 
 class _Body extends StatelessWidget {

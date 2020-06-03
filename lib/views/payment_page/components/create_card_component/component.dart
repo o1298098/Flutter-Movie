@@ -1,5 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 
+import 'components/scan_component/component.dart';
+import 'components/scan_component/state.dart';
 import 'effect.dart';
 import 'reducer.dart';
 import 'state.dart';
@@ -13,6 +15,9 @@ class CreateCardComponent extends Component<CreateCardState>
           effect: buildEffect(),
           reducer: buildReducer(),
           dependencies: Dependencies<CreateCardState>(
-              adapter: null, slots: <String, Dependent<CreateCardState>>{}),
+              adapter: null,
+              slots: <String, Dependent<CreateCardState>>{
+                'scan': ScanConnector() + ScanComponent()
+              }),
         );
 }

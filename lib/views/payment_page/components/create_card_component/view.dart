@@ -32,12 +32,9 @@ Widget buildView(
                 style: TextStyle(color: _theme.textTheme.bodyText1.color),
               ),
               actions: [
-                IconButton(
-                    icon: Icon(
-                      Icons.camera_alt,
-                      color: const Color(0xFF9E9E9E),
-                    ),
-                    onPressed: () {})
+                _ScanButton(
+                  onTap: () => dispatch(CreateCardActionCreator.scan()),
+                )
               ],
             ),
             body: Container(
@@ -106,6 +103,31 @@ Widget buildView(
       );
     },
   );
+}
+
+class _ScanButton extends StatelessWidget {
+  final Function onTap;
+  const _ScanButton({this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    final _theme = ThemeStyle.getTheme(context);
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: Adapt.px(120),
+        height: Adapt.px(50),
+        decoration: BoxDecoration(
+            color: _theme.backgroundColor,
+            borderRadius: BorderRadius.circular(Adapt.px(25))),
+        margin: EdgeInsets.only(
+            right: Adapt.px(40), top: Adapt.px(15), bottom: Adapt.px(15)),
+        child: Icon(
+          Icons.camera_alt,
+          color: const Color(0xFFA0A0A0),
+        ),
+      ),
+    );
+  }
 }
 
 class _CardCell extends StatelessWidget {
@@ -547,7 +569,7 @@ class _InputPanel extends StatelessWidget {
               break;
             case 2:
               _child = _CustomTextField(
-                title: 'Expried date',
+                title: 'Expried Date',
                 maxLength: 4,
                 inputType: TextInputType.number,
                 controller: expriedDateController,

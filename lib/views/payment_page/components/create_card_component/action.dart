@@ -6,6 +6,7 @@ enum CreateCardAction {
   backTapped,
   setInputIndex,
   loading,
+  scan,
 }
 
 class CreateCardActionCreator {
@@ -27,5 +28,9 @@ class CreateCardActionCreator {
 
   static Action loading(bool loading) {
     return Action(CreateCardAction.loading, payload: loading);
+  }
+
+  static Action scan() {
+    return const Action(CreateCardAction.scan);
   }
 }

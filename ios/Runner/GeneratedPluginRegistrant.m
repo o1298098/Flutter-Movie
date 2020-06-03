@@ -10,6 +10,12 @@
 @import flutter_mdns_plugin;
 #endif
 
+#if __has_include(<camera/CameraPlugin.h>)
+#import <camera/CameraPlugin.h>
+#else
+@import camera;
+#endif
+
 #if __has_include(<cloud_firestore/FLTCloudFirestorePlugin.h>)
 #import <cloud_firestore/FLTCloudFirestorePlugin.h>
 #else
@@ -44,6 +50,12 @@
 #import <firebase_messaging/FLTFirebaseMessagingPlugin.h>
 #else
 @import firebase_messaging;
+#endif
+
+#if __has_include(<firebase_ml_vision/FLTFirebaseMlVisionPlugin.h>)
+#import <firebase_ml_vision/FLTFirebaseMlVisionPlugin.h>
+#else
+@import firebase_ml_vision;
 #endif
 
 #if __has_include(<firebase_storage/FLTFirebaseStoragePlugin.h>)
@@ -146,12 +158,14 @@
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
   [FlutterMdnsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterMdnsPlugin"]];
+  [CameraPlugin registerWithRegistrar:[registry registrarForPlugin:@"CameraPlugin"]];
   [FLTCloudFirestorePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTCloudFirestorePlugin"]];
   [FLTFirebaseAdMobPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseAdMobPlugin"]];
   [FLTFirebaseAnalyticsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseAnalyticsPlugin"]];
   [FLTFirebaseAuthPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseAuthPlugin"]];
   [FLTFirebaseCorePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseCorePlugin"]];
   [FLTFirebaseMessagingPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseMessagingPlugin"]];
+  [FLTFirebaseMlVisionPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseMlVisionPlugin"]];
   [FLTFirebaseStoragePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseStoragePlugin"]];
   [FlutterBraintreePlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterBraintreePlugin"]];
   [FlutterDownloaderPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterDownloaderPlugin"]];

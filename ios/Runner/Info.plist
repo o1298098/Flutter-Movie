@@ -96,5 +96,9 @@
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+    <string>use camera for scan credit card</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>use mic for get sound</string>
 </dict>
 </plist>

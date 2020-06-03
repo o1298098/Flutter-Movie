@@ -66,10 +66,12 @@ dependencies:
   firebase_analytics: ^5.0.11
   firebase_messaging: ^6.0.13
   firebase_admob: ^0.9.3+1
+  firebase_ml_vision: ^0.9.4
   lottie: ^0.3.2
   package_info: ^0.4.0+16
   flutter_downloader: ^1.4.3
   flutter_braintree: ^0.6.0
+  camera: ^0.5.8+2
   
 
 dev_dependencies:

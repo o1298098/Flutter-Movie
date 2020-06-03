@@ -5,6 +5,7 @@ import 'package:movie/actions/base_api.dart';
 import 'package:movie/actions/creditcard_verify.dart';
 import 'package:movie/models/base_api_model/braintree_creditcard.dart';
 import 'package:movie/views/payment_page/action.dart';
+import 'package:movie/views/payment_page/components/create_card_component/components/scan_component/state.dart';
 import 'package:toast/toast.dart';
 import 'action.dart';
 import 'state.dart';
@@ -14,6 +15,7 @@ Effect<CreateCardState> buildEffect() {
     CreateCardAction.action: _onAction,
     CreateCardAction.nextTapped: _nextTapped,
     CreateCardAction.backTapped: _backTapped,
+    CreateCardAction.scan: _onScan,
     Lifecycle.initState: _onInit,
     Lifecycle.dispose: _onDispose,
   });
@@ -28,29 +30,34 @@ void _nextTapped(Action action, Context<CreateCardState> ctx) async {
           ctx.state.cardNumberController.text.length < 16) return;
       ctx.state.inputIndex++;
       ctx.dispatch(CreateCardActionCreator.setInputIndex(ctx.state.inputIndex));
-      ctx.state.swiperController.next();
-      ctx.state.cardNumberFocusNode.nextFocus();
+      ctx.state.swiperController
+          .next()
+          .then((value) => ctx.state.cardNumberFocusNode.nextFocus());
       break;
     case 1:
-      if (ctx.state.holderNameController.text.isEmpty &&
+      if (ctx.state.holderNameController.text.isEmpty ||
           ctx.state.holderNameController.text.length < 4) return;
 
       ctx.state.inputIndex++;
-      ctx.state.swiperController.next();
-      ctx.state.holderNameFocusNode.nextFocus();
+      ctx.state.swiperController
+          .next()
+          .then((value) => ctx.state.holderNameFocusNode.nextFocus());
+
       break;
     case 2:
-      if (ctx.state.expriedDateController.text.isEmpty &&
+      if (ctx.state.expriedDateController.text.isEmpty ||
           ctx.state.expriedDateController.text.length < 3) return;
 
       ctx.state.inputIndex++;
       ctx.dispatch(CreateCardActionCreator.setInputIndex(ctx.state.inputIndex));
       ctx.state.animationController.forward();
-      ctx.state.swiperController.next();
-      ctx.state.expriedDaterFocusNode.nextFocus();
+      ctx.state.swiperController
+          .next()
+          .then((value) => ctx.state.expriedDaterFocusNode.nextFocus());
+
       break;
     case 3:
-      if (ctx.state.cvvController.text.isEmpty &&
+      if (ctx.state.cvvController.text.isEmpty ||
           ctx.state.cvvController.text.length < 2) return;
       ctx.state.cvvFocusNode.unfocus();
       ctx.dispatch(CreateCardActionCreator.loading(true));
@@ -82,22 +89,32 @@ void _backTapped(Action action, Context<CreateCardState> ctx) async {
     case 1:
       ctx.state.inputIndex--;
       ctx.dispatch(CreateCardActionCreator.setInputIndex(ctx.state.inputIndex));
-      ctx.state.swiperController.previous();
-      ctx.state.holderNameFocusNode.previousFocus();
+      ctx.state.swiperController
+          .previous()
+          .then((value) => ctx.state.holderNameFocusNode.previousFocus());
       break;
     case 2:
       ctx.state.inputIndex--;
-      ctx.state.swiperController.previous();
-      ctx.state.expriedDaterFocusNode.previousFocus();
+      ctx.state.swiperController
+          .previous()
+          .then((value) => ctx.state.expriedDaterFocusNode.previousFocus());
+
       break;
     case 3:
       ctx.state.animationController.reverse();
       ctx.state.inputIndex--;
       ctx.dispatch(CreateCardActionCreator.setInputIndex(ctx.state.inputIndex));
-      ctx.state.swiperController.previous();
-      ctx.state.cvvFocusNode.previousFocus();
+      ctx.state.swiperController
+          .previous()
+          .then((value) => ctx.state.cvvFocusNode.previousFocus());
       break;
   }
+}
+
+void _onScan(Action action, Context<CreateCardState> ctx) async {
+  ctx.state.scanState = ScanState();
+  await Navigator.of(ctx.context).push(
+      MaterialPageRoute(builder: (context) => ctx.buildComponent('scan')));
 }
 
 void _onInit(Action action, Context<CreateCardState> ctx) async {

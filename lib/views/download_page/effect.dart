@@ -15,6 +15,7 @@ Effect<DownloadPageState> buildEffect() {
     DownloadPageAction.startAllTasks: _startAllTasks,
     DownloadPageAction.pauseAllTasks: _pauseAllTasks,
     DownloadPageAction.taskCellActionTapped: _taskCellActionTapped,
+    DownloadPageAction.deleteTask: _deleteTask,
     Lifecycle.initState: _onInit,
     Lifecycle.dispose: _onDispose,
   });
@@ -26,7 +27,10 @@ void _onInit(Action action, Context<DownloadPageState> ctx) async {
   Object _ticker = ctx.stfState;
   ctx.state.animationController = AnimationController(
       vsync: _ticker, duration: Duration(milliseconds: 300));
-
+  if (ctx.state.name == null ||
+      ctx.state.posterUrl == null ||
+      ctx.state.streamAddress == null)
+    ctx.state.animationController.value = 1.0;
   final _task = await FlutterDownloader.loadTasks();
   ctx.dispatch(DownloadPageActionCreator.setDownloadTaks(_task));
 }
@@ -58,6 +62,14 @@ void _createTask(Action action, Context<DownloadPageState> ctx) async {
   } on Exception catch (_) {
     print(_);
   }
+}
+
+void _deleteTask(Action action, Context<DownloadPageState> ctx) async {
+  final String _taskId = action.payload;
+  if (_taskId == null) return;
+  await FlutterDownloader.remove(taskId: _taskId, shouldDeleteContent: true);
+  ctx.dispatch(DownloadPageActionCreator.setDownloadTaks(
+      await FlutterDownloader.loadTasks()));
 }
 
 void _startAllTasks(Action action, Context<DownloadPageState> ctx) async {

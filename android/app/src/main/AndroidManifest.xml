@@ -83,5 +83,8 @@
         </intent-filter>
        </activity>
         <meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true"/>
+        <meta-data
+          android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+          android:value="barcode,face,label,ocr" />
     </application>
 </manifest>

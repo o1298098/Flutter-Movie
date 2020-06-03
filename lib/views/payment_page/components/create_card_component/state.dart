@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:movie/views/payment_page/state.dart';
 
+import 'components/scan_component/state.dart';
+
 class CreateCardState implements Cloneable<CreateCardState> {
   String customerId;
   AnimationController animationController;
@@ -17,6 +19,7 @@ class CreateCardState implements Cloneable<CreateCardState> {
   SwiperController swiperController;
   int inputIndex;
   bool loading;
+  ScanState scanState;
 
   @override
   CreateCardState clone() {
@@ -33,7 +36,8 @@ class CreateCardState implements Cloneable<CreateCardState> {
       ..cvvFocusNode = cvvFocusNode
       ..swiperController = swiperController
       ..inputIndex = inputIndex
-      ..loading = loading;
+      ..loading = loading
+      ..scanState = scanState;
   }
 }
 

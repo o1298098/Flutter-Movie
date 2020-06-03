@@ -9,6 +9,7 @@ enum DownloadPageAction {
   startAllTasks,
   pauseAllTasks,
   taskCellActionTapped,
+  deleteTask,
 }
 
 class DownloadPageActionCreator {
@@ -34,5 +35,9 @@ class DownloadPageActionCreator {
 
   static Action taskCellActionTapped(DownloadQueue task) {
     return Action(DownloadPageAction.taskCellActionTapped, payload: task);
+  }
+
+  static Action onDelete(String taskId) {
+    return Action(DownloadPageAction.deleteTask, payload: taskId);
   }
 }

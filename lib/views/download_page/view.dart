@@ -196,7 +196,8 @@ final Map<String, Color> _taskCellColors = {
 class _TaskItem extends StatelessWidget {
   final DownloadQueue task;
   final Function(DownloadQueue) onActionTap;
-  const _TaskItem({this.task, this.onActionTap});
+  final Function(DownloadQueue) onDelete;
+  const _TaskItem({this.task, this.onActionTap, this.onDelete});
   IconData _getIcon() {
     switch (task.status.value) {
       case 1:
@@ -295,6 +296,24 @@ class _TaskItem extends StatelessWidget {
                     size: Adapt.px(35),
                   )),
             ),
+            task.status == DownloadTaskStatus.complete
+                ? Container(
+                    width: Adapt.px(65),
+                    height: Adapt.px(65),
+                    margin: EdgeInsets.only(left: Adapt.px(40)),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Adapt.px(20)),
+                      color: _theme.primaryColorDark,
+                    ),
+                    child: GestureDetector(
+                        onTap: () => onDelete(task),
+                        child: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                          size: Adapt.px(35),
+                        )),
+                  )
+                : SizedBox()
           ],
         ),
       ),
@@ -378,12 +397,14 @@ class _DownLoadTaskListState extends State<_DownLoadTaskList> {
                 task: tasks[index],
                 onActionTap: (_t) => widget.dispatch(
                     DownloadPageActionCreator.taskCellActionTapped(_t)),
+                onDelete: (_t) => widget
+                    .dispatch(DownloadPageActionCreator.onDelete(_t.taskId)),
               ),
             )
           : Container(
-              padding: EdgeInsets.only(top: Adapt.px(300)),
+              padding: EdgeInsets.only(top: Adapt.px(500)),
               child: Text(
-                'empty list',
+                'Empty List',
                 style: TextStyle(fontSize: 18, color: Color(0xFF9E9E9E)),
               ),
             ),

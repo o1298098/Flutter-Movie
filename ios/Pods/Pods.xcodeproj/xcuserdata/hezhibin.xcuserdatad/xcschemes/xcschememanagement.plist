@@ -89,6 +89,26 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>FirebaseMLCommon.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>FirebaseMLVision.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>FirebaseMLVisionTextModel-GoogleMVTextDetectorResources.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>FirebaseMLVisionTextModel.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>FirebaseMessaging.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -119,6 +139,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>GoogleAPIClientForREST.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>GoogleAppMeasurement.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -135,6 +160,11 @@
 			<false/>
 		</dict>
 		<key>GoogleSignIn.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>GoogleToolboxForMac.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -160,6 +190,11 @@
 			<false/>
 		</dict>
 		<key>abseil.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>camera.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -205,6 +240,11 @@
 			<false/>
 		</dict>
 		<key>firebase_messaging.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>firebase_ml_vision.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

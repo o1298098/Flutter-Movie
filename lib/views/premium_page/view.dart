@@ -4,13 +4,9 @@ import 'state.dart';
 
 Widget buildView(
     PremiumPageState state, Dispatch dispatch, ViewService viewService) {
-  return Builder(
-    builder: (context) {
-      return Scaffold(
-        body: state.user.isPremium
-            ? viewService.buildComponent('info')
-            : viewService.buildComponent('plan'),
-      );
-    },
+  return Scaffold(
+    body: state.user.isPremium
+        ? viewService.buildComponent('info')
+        : viewService.buildComponent('plan'),
   );
 }

@@ -200,6 +200,8 @@ PODS:
     - Braintree/UnionPay (~> 4.32)
     - BraintreeDropIn/UIKit
   - BraintreeDropIn/UIKit (8.1.0)
+  - camera (0.0.1):
+    - Flutter
   - cloud_firestore (0.0.1):
     - Firebase/Core
     - Firebase/Firestore (~> 6.0)
@@ -225,6 +227,12 @@ PODS:
   - Firebase/Messaging (6.15.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 4.2.0)
+  - Firebase/MLVision (6.15.0):
+    - Firebase/CoreOnly
+    - FirebaseMLVision (~> 0.19.0)
+  - Firebase/MLVisionTextModel (6.15.0):
+    - Firebase/CoreOnly
+    - FirebaseMLVisionTextModel (~> 0.19.0)
   - Firebase/Storage (6.15.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 3.5.0)
@@ -250,6 +258,10 @@ PODS:
   - firebase_messaging (0.0.1):
     - Firebase/Core
     - Firebase/Messaging
+    - Flutter
+  - firebase_ml_vision (0.1.1):
+    - Firebase/Core
+    - Firebase/MLVision
     - Flutter
   - firebase_storage (0.0.1):
     - Firebase/Storage
@@ -314,6 +326,26 @@ PODS:
     - GoogleUtilities/Reachability (~> 6.5)
     - GoogleUtilities/UserDefaults (~> 6.5)
     - Protobuf (>= 3.9.2, ~> 3.9)
+  - FirebaseMLCommon (0.19.0):
+    - FirebaseCore (~> 6.3)
+    - FirebaseInstanceID (~> 4.2)
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
+    - GoogleUtilities/UserDefaults (~> 6.0)
+    - GTMSessionFetcher/Core (~> 1.1)
+    - Protobuf (~> 3.5)
+  - FirebaseMLVision (0.19.0):
+    - FirebaseCore (~> 6.3)
+    - FirebaseMLCommon (~> 0.19)
+    - GoogleAPIClientForREST/Core (~> 1.3)
+    - GoogleAPIClientForREST/Vision (~> 1.3)
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - GTMSessionFetcher/Core (~> 1.1)
+    - Protobuf (~> 3.5)
+  - FirebaseMLVisionTextModel (0.19.0):
+    - FirebaseMLVision (~> 0.19)
   - FirebaseStorage (3.5.0):
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 6.0)
@@ -341,6 +373,11 @@ PODS:
     - GoogleSignIn (~> 5.0)
   - google_sign_in_web (0.8.1):
     - Flutter
+  - GoogleAPIClientForREST/Core (1.4.1):
+    - GTMSessionFetcher (>= 1.1.7)
+  - GoogleAPIClientForREST/Vision (1.4.1):
+    - GoogleAPIClientForREST/Core
+    - GTMSessionFetcher (>= 1.1.7)
   - GoogleAppMeasurement (6.2.1):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
@@ -355,6 +392,18 @@ PODS:
     - AppAuth (~> 1.2)
     - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
+  - GoogleToolboxForMac/DebugUtils (2.2.2):
+    - GoogleToolboxForMac/Defines (= 2.2.2)
+  - GoogleToolboxForMac/Defines (2.2.2)
+  - GoogleToolboxForMac/Logger (2.2.2):
+    - GoogleToolboxForMac/Defines (= 2.2.2)
+  - "GoogleToolboxForMac/NSData+zlib (2.2.2)":
+    - GoogleToolboxForMac/Defines (= 2.2.2)
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.2.2)":
+    - GoogleToolboxForMac/DebugUtils (= 2.2.2)
+    - GoogleToolboxForMac/Defines (= 2.2.2)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.2)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.2.2)"
   - GoogleUtilities/AppDelegateSwizzler (6.5.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -442,8 +491,10 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - camera (from `.symlinks/plugins/camera/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - cloud_firestore_web (from `.symlinks/plugins/cloud_firestore_web/ios`)
+  - Firebase/MLVisionTextModel
   - firebase_admob (from `.symlinks/plugins/firebase_admob/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
@@ -451,6 +502,7 @@ DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_core_web (from `.symlinks/plugins/firebase_core_web/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
+  - firebase_ml_vision (from `.symlinks/plugins/firebase_ml_vision/ios`)
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
   - flutter_braintree (from `.symlinks/plugins/flutter_braintree/ios`)
@@ -497,13 +549,18 @@ SPEC REPOS:
     - FirebaseInstallations
     - FirebaseInstanceID
     - FirebaseMessaging
+    - FirebaseMLCommon
+    - FirebaseMLVision
+    - FirebaseMLVisionTextModel
     - FirebaseStorage
     - FMDB
     - Google-Mobile-Ads-SDK
+    - GoogleAPIClientForREST
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
     - GoogleSignIn
+    - GoogleToolboxForMac
     - GoogleUtilities
     - "gRPC-C++"
     - gRPC-Core
@@ -515,6 +572,8 @@ SPEC REPOS:
     - Protobuf
 
 EXTERNAL SOURCES:
+  camera:
+    :path: ".symlinks/plugins/camera/ios"
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
   cloud_firestore_web:
@@ -533,6 +592,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core_web/ios"
   firebase_messaging:
     :path: ".symlinks/plugins/firebase_messaging/ios"
+  firebase_ml_vision:
+    :path: ".symlinks/plugins/firebase_ml_vision/ios"
   firebase_storage:
     :path: ".symlinks/plugins/firebase_storage/ios"
   Flutter:
@@ -592,6 +653,7 @@ SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
   Braintree: 586e4d274398fabe9d70ab790eefca41660b8a17
   BraintreeDropIn: fc3e96a8a2b5416e5e3a3beba119f0089713bc1e
+  camera: 38cc83ae9a5667bb5a71c7d9edaf60a91920fd4e
   cloud_firestore: 31454d48df21f3e1a900015e36143c0d46a304b7
   cloud_firestore_web: 9ec3dc7f5f98de5129339802d491c1204462bfec
   Firebase: 5d77105d9740a07ca6b16927ca971db7e860faaf
@@ -602,6 +664,7 @@ SPEC CHECKSUMS:
   firebase_core: 0d8be0e0d14c4902953aeb5ac5d7316d1fe4b978
   firebase_core_web: d501d8b946b60c8af265428ce483b0fff5ad52d1
   firebase_messaging: cffb57ce40958c6204f03fb0c81713e4cd1e240c
+  firebase_ml_vision: 8ad46403728e266021514b939d6d535406505163
   firebase_storage: 1a07bf32f792e2b804803e68fc7b61a81c4b122d
   FirebaseAnalytics: e83e64b1231dedcd9ddd4bdecd9bcfd6ba341679
   FirebaseAnalyticsInterop: 3f86269c38ae41f47afeb43ebf32a001f58fcdae
@@ -614,6 +677,9 @@ SPEC CHECKSUMS:
   FirebaseInstallations: 575cd32f2aec0feeb0e44f5d0110a09e5e60b47b
   FirebaseInstanceID: 6668efc1655a4052c083f287a7141f1ead12f9c2
   FirebaseMessaging: 9e23f9d603b1fb71ccbeb48d79bf0d4ba0272c84
+  FirebaseMLCommon: 074a67e05122b1c9f6401a4e33b2cea3b4efd224
+  FirebaseMLVision: 7a456009787690e3b53436092ae9b635563de8f3
+  FirebaseMLVisionTextModel: c264caa3100ca804580bf2a7c1cb9ff390d1f471
   FirebaseStorage: 6c5263796af3b1be82ed173598aade47535fe125
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_braintree: 101b66de3f3ae397c9ee3593c2e24ed67a41eeab
@@ -625,10 +691,12 @@ SPEC CHECKSUMS:
   Google-Mobile-Ads-SDK: ec897018b9ab9b447e7aa4876e7f75aba13ba2de
   google_sign_in: decaf71f56e22fb1dc179de062177ae6df415716
   google_sign_in_web: 52deb24929ac0992baff65c57956031c44ed44c3
+  GoogleAPIClientForREST: e50dc3267b3131ee3a25e707c10204f6bec15ae9
   GoogleAppMeasurement: a08a43b8677b95ed51fcef880e36737334d804fd
   GoogleDataTransport: 574a983e829327d7c18f2627f65d9e80164ea8a4
   GoogleDataTransportCCTSupport: cad3cd6cdbdbad6b5c2c9206ec413402755faaaa
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
+  GoogleToolboxForMac: 800648f8b3127618c1b59c7f97684427630c5ea3
   GoogleUtilities: f8de7ddf8c706f58e9b405d53e38bbdaa2731e5a
   "gRPC-C++": 9dfe7b44821e7b3e44aacad2af29d2c21f7cde83
   gRPC-Core: c9aef9a261a1247e881b18059b84d597293c9947
@@ -656,6 +724,6 @@ SPEC CHECKSUMS:
   wakelock: 0d4a70faf8950410735e3f61fb15d517c8a6efc4
   webview_media: 33604c2c1805f41bd0c6749c4d7de24b8cb4d81d
 
-PODFILE CHECKSUM: 1b66dae606f75376c5f2135a8290850eeb09ae83
+PODFILE CHECKSUM: a16a2c10df96093d75da6a0a48157a14a8ebf62d
 
-COCOAPODS: 1.9.0.beta.2
+COCOAPODS: 1.9.3
