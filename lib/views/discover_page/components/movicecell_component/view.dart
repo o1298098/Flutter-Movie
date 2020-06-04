@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
-import 'package:movie/actions/votecolorhelper.dart';
+import 'package:movie/models/enums/genres.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:movie/style/themestyle.dart';
@@ -14,155 +14,184 @@ import 'state.dart';
 
 Widget buildView(
     VideoCellState state, Dispatch dispatch, ViewService viewService) {
-  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
   final VideoListResult d = state.videodata;
   if (d == null) return SizedBox();
-  return GestureDetector(
-    key: ValueKey(d.name),
-    child: Container(
-      padding: EdgeInsets.fromLTRB(Adapt.px(20), 0, Adapt.px(20), Adapt.px(30)),
-      child: Card(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              width: Adapt.px(260),
-              height: Adapt.px(400),
-              decoration: BoxDecoration(
-                color: _theme.primaryColorLight,
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: CachedNetworkImageProvider(
-                    ImageUrl.getUrl(d.posterPath, ImageSize.w300),
-                  ),
-                ),
-              ),
-            ),
-            _Info(
-              data: d,
-              isMovie: state.isMovie,
-            ),
-          ],
-        ),
-      ),
-    ),
-    onTap: () => dispatch(
-        DiscoverPageActionCreator.onVideoCellTapped(d.id, d.posterPath)),
+  return _Card(
+    data: d,
+    onTap: (value) => dispatch(DiscoverPageActionCreator.onVideoCellTapped(
+        value.id, value.posterPath)),
   );
-}
-
-class _RateProgressIndicator extends StatelessWidget {
-  final double voteAverage;
-  const _RateProgressIndicator({this.voteAverage});
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: Adapt.px(80),
-      height: Adapt.px(80),
-      child: Stack(
-        children: <Widget>[
-          Center(
-            child: Container(
-              width: Adapt.px(80),
-              height: Adapt.px(80),
-              decoration: BoxDecoration(
-                color: Colors.blueGrey,
-                borderRadius: BorderRadius.circular(
-                  Adapt.px(40),
-                ),
-              ),
-            ),
-          ),
-          Center(
-            child: Container(
-                width: Adapt.px(60),
-                height: Adapt.px(60),
-                child: CircularProgressIndicator(
-                  strokeWidth: 3.0,
-                  valueColor: new AlwaysStoppedAnimation<Color>(
-                      VoteColorHelper.getColor(voteAverage)),
-                  backgroundColor: Colors.grey,
-                  value: voteAverage / 10.0,
-                )),
-          ),
-          Center(
-            child: Container(
-                width: Adapt.px(60),
-                height: Adapt.px(60),
-                child: Center(
-                  child: Text(
-                    (voteAverage * 10.0).floor().toString() + '%',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: Adapt.px(20),
-                        color: Colors.white),
-                  ),
-                )),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class _Info extends StatelessWidget {
-  final VideoListResult data;
-  final bool isMovie;
-  const _Info({this.data, this.isMovie});
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData _theme = ThemeStyle.getTheme(context);
-    return Container(
-      padding: EdgeInsets.all(Adapt.px(20)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              _RateProgressIndicator(voteAverage: data.voteAverage),
-              SizedBox(width: Adapt.px(10)),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    width: Adapt.screenW() - Adapt.px(450),
-                    child: Text(
-                      (isMovie ? data.title : data.name) ?? '',
-                      maxLines: 2,
-                      softWrap: true,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: Adapt.px(26)),
-                    ),
-                  ),
-                  Text(
-                    DateFormat.yMMMd().format(DateTime.tryParse((isMovie
-                        ? _changeDatetime(data.releaseDate)
-                        : _changeDatetime(data.firstAirDate)))),
-                    style: TextStyle(
-                        color: _theme.textTheme.subtitle1.color,
-                        fontSize: Adapt.px(20)),
-                  )
-                ],
-              )
-            ],
-          ),
-          SizedBox(height: Adapt.px(20)),
-          Container(
-            width: Adapt.screenW() - Adapt.px(360),
-            child: Text(
-              data.overview ?? '',
-              softWrap: true,
-              maxLines: 7,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 String _changeDatetime(String s1) {
   return s1 == null || s1 == '' ? '1900-01-01' : s1;
+}
+
+class _Card extends StatelessWidget {
+  final VideoListResult data;
+
+  final Function(VideoListResult) onTap;
+  const _Card({this.data, this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    final bool _isMovie = data.title != null;
+    final _horizontalPadding = Adapt.px(30);
+    final _cardHeight = Adapt.px(400);
+    final _borderRadius = Adapt.px(40);
+    final _imageWidth = Adapt.px(240);
+    final _rightPanelPadding = Adapt.px(20);
+    final _rightPanelWidth = Adapt.screenW() -
+        _imageWidth -
+        _horizontalPadding * 2 -
+        _rightPanelPadding * 2;
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return Container(
+      key: ValueKey('${data.name}${data.id}'),
+      margin: EdgeInsets.symmetric(
+          horizontal: _horizontalPadding, vertical: Adapt.px(20)),
+      height: _cardHeight,
+      decoration: BoxDecoration(
+          color: _theme.cardColor,
+          borderRadius: BorderRadius.circular(_borderRadius),
+          boxShadow: [
+            BoxShadow(
+                offset: Offset(5, 5),
+                color: _theme.brightness == Brightness.light
+                    ? _theme.primaryColorDark
+                    : const Color(0xFF303030),
+                blurRadius: 5)
+          ]),
+      child: Row(children: [
+        ClipRRect(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(_borderRadius),
+              bottomLeft: Radius.circular(_borderRadius),
+              bottomRight: Radius.circular(_imageWidth / 2)),
+          child: Container(
+            width: _imageWidth,
+            height: _cardHeight,
+            color: const Color(0xFFAABBCC),
+            child: CachedNetworkImage(
+              fit: BoxFit.cover,
+              imageUrl: ImageUrl.getUrl(data.posterPath, ImageSize.w300),
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(_rightPanelPadding),
+          child: SizedBox(
+            width: _rightPanelWidth,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  data.title ?? data.name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: Adapt.px(30),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(height: Adapt.px(5)),
+                Text(
+                  DateFormat.yMMMd().format(DateTime.tryParse((_isMovie
+                      ? _changeDatetime(data.releaseDate)
+                      : _changeDatetime(data.firstAirDate)))),
+                  style: TextStyle(
+                      color: const Color(0xFF9E9E9E), fontSize: Adapt.px(18)),
+                ),
+                SizedBox(height: Adapt.px(5)),
+                Text(
+                  data.genreIds
+                      .take(3)
+                      .map((e) =>
+                          _isMovie ? Genres.movieList[e] : Genres.tvList[e])
+                      .join(' / '),
+                  style: TextStyle(
+                      fontSize: Adapt.px(18), color: const Color(0xFF9E9E9E)),
+                ),
+                SizedBox(height: Adapt.px(10)),
+                Row(children: [
+                  _LinearProgressIndicator(
+                    total: 10.0,
+                    vote: data.voteAverage,
+                    width: Adapt.px(150),
+                  ),
+                  SizedBox(width: Adapt.px(10)),
+                  Text(
+                    data.voteAverage.toString(),
+                    style: TextStyle(
+                        fontSize: Adapt.px(20), color: const Color(0xFF9E9E9E)),
+                  )
+                ]),
+                SizedBox(height: Adapt.px(20)),
+                Text(
+                  data.overview,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: Adapt.px(24)),
+                ),
+                Expanded(child: SizedBox()),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () => onTap(data),
+                    child: Container(
+                      width: Adapt.px(80),
+                      height: Adapt.px(60),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF334455),
+                        borderRadius: BorderRadius.circular(Adapt.px(20)),
+                      ),
+                      child: Center(
+                          child: Icon(
+                        Icons.chevron_right,
+                        color: const Color(0xFFFFFFFF),
+                      )),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+      ]),
+    );
+  }
+}
+
+class _LinearProgressIndicator extends StatelessWidget {
+  final double vote;
+  final double total;
+  final double width;
+  const _LinearProgressIndicator({this.vote, this.total, this.width = 80});
+  @override
+  Widget build(BuildContext context) {
+    final _theme = ThemeStyle.getTheme(context);
+    return Container(
+      width: width + Adapt.px(10),
+      height: Adapt.px(22),
+      padding: EdgeInsets.all(Adapt.px(6)),
+      decoration: BoxDecoration(
+          color: _theme.brightness == Brightness.light
+              ? const Color(0xFFF0F0F0)
+              : const Color(0xFF606060),
+          borderRadius: BorderRadius.circular(Adapt.px(11))),
+      child: Row(children: [
+        Container(
+          width: (vote / total) * width,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [
+              Colors.blue[200],
+              Colors.purple[100],
+            ]),
+            borderRadius: BorderRadius.circular(
+              Adapt.px(7.5),
+            ),
+          ),
+        )
+      ]),
+    );
+  }
 }

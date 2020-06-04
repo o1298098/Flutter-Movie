@@ -4,6 +4,7 @@ import 'package:movie/models/videolist.dart';
 enum DiscoverPageAction {
   loadData,
   action,
+  mediaTypeChange,
   sortChanged,
   videoCellTapped,
   refreshData,
@@ -38,5 +39,9 @@ class DiscoverPageActionCreator {
 
   static Action onBusyChanged(bool p) {
     return Action(DiscoverPageAction.busyChanged, payload: p);
+  }
+
+  static Action mediaTypeChange(bool isMovie) {
+    return Action(DiscoverPageAction.mediaTypeChange, payload: isMovie);
   }
 }

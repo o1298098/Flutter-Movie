@@ -1,7 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:movie/actions/adapt.dart';
 import 'action.dart';
 import 'state.dart';
 

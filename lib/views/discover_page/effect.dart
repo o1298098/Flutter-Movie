@@ -12,6 +12,7 @@ Effect<DiscoverPageState> buildEffect() {
     Lifecycle.dispose: _onDispose,
     DiscoverPageAction.videoCellTapped: _onVideoCellTapped,
     DiscoverPageAction.refreshData: _onLoadData,
+    DiscoverPageAction.mediaTypeChange: _mediaTypeChange,
   });
 }
 
@@ -56,6 +57,8 @@ Future _onLoadData(Action action, Context<DiscoverPageState> ctx) async {
         sortBy: ctx.state.selectedSort,
         withGenres: genresIds.length > 0 ? genresIds.join(',') : null);
   if (r != null) ctx.dispatch(DiscoverPageActionCreator.onLoadData(r));
+
+  ctx.dispatch(DiscoverPageActionCreator.onBusyChanged(false));
 }
 
 Future _onVideoCellTapped(Action action, Context<DiscoverPageState> ctx) async {
@@ -68,6 +71,7 @@ Future _onVideoCellTapped(Action action, Context<DiscoverPageState> ctx) async {
 }
 
 Future _onLoadMore(Action action, Context<DiscoverPageState> ctx) async {
+  if (ctx.state.isbusy) return;
   ctx.dispatch(DiscoverPageActionCreator.onBusyChanged(true));
   final _genres = ctx.state.filterState.isMovie
       ? ctx.state.filterState.movieGenres
@@ -89,4 +93,13 @@ Future _onLoadMore(Action action, Context<DiscoverPageState> ctx) async {
         withGenres: genresIds.length > 0 ? genresIds.join(',') : null,
         withKeywords: ctx.state.filterState.keywords);
   if (r != null) ctx.dispatch(DiscoverPageActionCreator.onLoadMore(r.results));
+  ctx.dispatch(DiscoverPageActionCreator.onBusyChanged(false));
+}
+
+Future _mediaTypeChange(Action action, Context<DiscoverPageState> ctx) async {
+  final bool _isMovie = action.payload ?? true;
+  if (ctx.state.filterState.isMovie == _isMovie) return;
+  ctx.state.filterState.isMovie = _isMovie;
+  await _onLoadData(action, ctx);
+  ctx.state.scrollController.jumpTo(0);
 }
