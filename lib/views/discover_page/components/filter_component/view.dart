@@ -17,7 +17,7 @@ Widget buildView(
         physics: BouncingScrollPhysics(),
         padding: EdgeInsets.symmetric(vertical: Adapt.px(30)),
         children: [
-          _Title(),
+          _Title(dispatch: dispatch),
           _MediaTypePanel(
             isMovie: state.isMovie,
             onTap: (d) => dispatch(FilterActionCreator.mediaTypeChange(d)),
@@ -34,7 +34,12 @@ Widget buildView(
             genres: state.currectGenres,
             onTap: (d) => dispatch(FilterActionCreator.onGenresChanged(d)),
           ),
-          _VoteFilterPanel()
+          _VoteFilterPanel(
+            lvote: state.lVote,
+            rvote: state.rVote,
+            onChange: (l, r) =>
+                dispatch(FilterActionCreator.votefilterChange(l, r)),
+          )
         ],
       )),
     );
@@ -42,22 +47,43 @@ Widget buildView(
 }
 
 class _Title extends StatelessWidget {
-  const _Title();
+  final Dispatch dispatch;
+  const _Title({this.dispatch});
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Text(
             'Filter',
             style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
           ),
+          Spacer(),
+          GestureDetector(
+            onTap: () => dispatch(FilterActionCreator.applyFilter()),
+            child: Container(
+              height: Adapt.px(45),
+              padding: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
+              decoration: BoxDecoration(
+                  color: const Color(0xFF334455),
+                  borderRadius: BorderRadius.circular(Adapt.px(10))),
+              child: Center(
+                child: Text(
+                  'Apply',
+                  style: TextStyle(
+                      fontSize: Adapt.px(20), color: Color(0xFFFFFFFF)),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(width: Adapt.px(20)),
           GestureDetector(
             onTap: () => Navigator.of(context).pop(),
             child: Container(
+              width: Adapt.px(45),
+              height: Adapt.px(45),
               padding: EdgeInsets.all(Adapt.px(8)),
               decoration: BoxDecoration(
                   color: const Color(0xFF334455),
@@ -83,7 +109,7 @@ class _MediaTypePanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: Adapt.px(150),
-      margin: EdgeInsets.only(top: Adapt.px(30)),
+      margin: EdgeInsets.only(top: Adapt.px(30), bottom: Adapt.px(20)),
       padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -169,7 +195,7 @@ class _SortPanel extends StatelessWidget {
       SortCondition(name: 'Asc', value: false)
     ];
     return Container(
-      height: Adapt.px(150),
+      height: Adapt.px(140),
       child: Column(
         children: [
           Padding(
@@ -181,11 +207,19 @@ class _SortPanel extends StatelessWidget {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   Expanded(child: SizedBox()),
-                  Text('${sortDesc ? 'Desc' : 'Asc'}'),
+                  Text(
+                    '${sortDesc ? 'Desc' : 'Asc'}',
+                    style: TextStyle(
+                        fontSize: Adapt.px(20), fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(width: Adapt.px(20)),
                   PopupMenuButton<SortCondition>(
                     padding: EdgeInsets.zero,
                     offset: Offset(0, Adapt.px(100)),
-                    icon: Icon(Icons.sort),
+                    child: Icon(
+                      Icons.sort,
+                      size: Adapt.px(30),
+                    ),
                     onSelected: (selected) => dataSortChange(selected.value),
                     itemBuilder: (ctx) {
                       return _dataSorts.map((s) {
@@ -216,6 +250,7 @@ class _SortPanel extends StatelessWidget {
                   )
                 ],
               )),
+          SizedBox(height: Adapt.px(40)),
           SizedBox(
             height: Adapt.px(60),
             child: ListView.separated(
@@ -277,6 +312,10 @@ class _GenresPanel extends StatelessWidget {
 }
 
 class _VoteFilterPanel extends StatefulWidget {
+  final double lvote;
+  final double rvote;
+  final Function(double, double) onChange;
+  const _VoteFilterPanel({this.onChange, this.lvote, this.rvote});
   @override
   _VoteFilterPanelState createState() => _VoteFilterPanelState();
 }
@@ -297,6 +336,7 @@ class _VoteFilterPanelState extends State<_VoteFilterPanel> {
     else if (_barSpace - _rightMargin - _leftMargin < 0)
       _leftMargin = _barSpace - _rightMargin;
     lvote = (_leftMargin / _totalWidth) * 10;
+    widget.onChange(lvote, rvote);
     setState(() {});
   }
 
@@ -308,12 +348,17 @@ class _VoteFilterPanelState extends State<_VoteFilterPanel> {
       _rightMargin = _barSpace - _leftMargin;
 
     rvote = 10 - (_rightMargin / _totalWidth) * 10;
+    widget.onChange(lvote, rvote);
     setState(() {});
   }
 
   @override
   void initState() {
+    lvote = widget.lvote;
+    rvote = widget.rvote;
     _barSpace = _totalWidth - _pinWidth;
+    _leftMargin = lvote / 10 * _barSpace;
+    _rightMargin = (10 - rvote) / 10 * _barSpace;
     super.initState();
   }
 
@@ -324,9 +369,9 @@ class _VoteFilterPanelState extends State<_VoteFilterPanel> {
       padding: EdgeInsets.symmetric(
           horizontal: Adapt.px(40), vertical: Adapt.px(20)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        _UserScoreTitle(
-          lvote: lvote,
-          rvote: rvote,
+        const Text(
+          'User Score',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
         ),
         SizedBox(height: Adapt.px(30)),
         Container(
@@ -334,9 +379,7 @@ class _VoteFilterPanelState extends State<_VoteFilterPanel> {
             Container(
               height: Adapt.px(15),
               decoration: BoxDecoration(
-                  color: _theme.brightness == Brightness.light
-                      ? const Color(0xFFEFEFEF)
-                      : _theme.primaryColorDark,
+                  color: _theme.primaryColorDark,
                   borderRadius: BorderRadius.circular(Adapt.px(6))),
             ),
             Column(children: [
@@ -345,7 +388,11 @@ class _VoteFilterPanelState extends State<_VoteFilterPanel> {
                 margin: EdgeInsets.only(right: _rightMargin, left: _leftMargin),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Adapt.px(7.5)),
-                  color: Color(0xFF334455),
+                  gradient: LinearGradient(colors: [
+                    const Color(0xFF556677),
+                    const Color(0xFF334455),
+                    const Color(0xFF556677),
+                  ]),
                 ),
                 child: Row(children: [
                   GestureDetector(
@@ -372,39 +419,22 @@ class _VoteFilterPanelState extends State<_VoteFilterPanel> {
                       ))
                 ]),
               ),
-              SizedBox(height: Adapt.px(10)),
+              SizedBox(height: Adapt.px(15)),
               Row(children: [
-                Text('0'),
+                Text(
+                  '${lvote.toStringAsFixed(1)}',
+                  style: TextStyle(color: const Color(0xFF9E9E9E)),
+                ),
                 Spacer(),
-                Text('5'),
-                Spacer(),
-                Text('10'),
+                Text(
+                  '${rvote.toStringAsFixed(1)}',
+                  style: TextStyle(color: const Color(0xFF9E9E9E)),
+                ),
               ])
             ])
           ]),
         )
       ]),
     );
-  }
-}
-
-class _UserScoreTitle extends StatelessWidget {
-  final double lvote;
-  final double rvote;
-  const _UserScoreTitle({this.lvote, this.rvote});
-  @override
-  Widget build(BuildContext context) {
-    return Row(children: [
-      const Text(
-        'User Score',
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-      ),
-      SizedBox(width: Adapt.px(10)),
-      Text(
-        '${lvote.toStringAsFixed(1)}~${rvote.toStringAsFixed(1)}',
-        style:
-            TextStyle(color: const Color(0xFF9E9E9E), fontSize: Adapt.px(20)),
-      ),
-    ]);
   }
 }

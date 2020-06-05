@@ -9,6 +9,8 @@ enum FilterAction {
   keywordschanged,
   mediaTypeChange,
   dataSortChange,
+  votefilterChange,
+  applyFilter
 }
 
 class FilterActionCreator {
@@ -38,5 +40,13 @@ class FilterActionCreator {
 
   static Action updateGenres(List<SortCondition> genres) {
     return Action(FilterAction.updateGenres, payload: genres);
+  }
+
+  static Action votefilterChange(double lvote, double rvote) {
+    return Action(FilterAction.votefilterChange, payload: [lvote, rvote]);
+  }
+
+  static Action applyFilter() {
+    return const Action(FilterAction.applyFilter);
   }
 }

@@ -14,6 +14,7 @@ Effect<DiscoverPageState> buildEffect() {
     DiscoverPageAction.refreshData: _onLoadData,
     DiscoverPageAction.mediaTypeChange: _mediaTypeChange,
     DiscoverPageAction.filterTap: _filterTap,
+    DiscoverPageAction.applyFilter: _applyFilter,
   });
 }
 
@@ -40,27 +41,31 @@ void _onDispose(Action action, Context<DiscoverPageState> ctx) {
 
 Future _onLoadData(Action action, Context<DiscoverPageState> ctx) async {
   ctx.dispatch(DiscoverPageActionCreator.onBusyChanged(true));
-  final _genres = ctx.state.filterState.currectGenres;
+  final _genres = ctx.state.currectGenres;
   var genresIds = _genres.where((e) => e.isSelected).map<int>((e) {
     return e.value;
   }).toList();
   VideoListModel r;
-  String _sortBy = ctx.state.filterState.selectedSort == null
+  String _sortBy = ctx.state.selectedSort == null
       ? null
-      : '${ctx.state.filterState.selectedSort.value}${ctx.state.filterState.sortDesc ? '.desc' : '.asc'}';
+      : '${ctx.state.selectedSort.value}${ctx.state.sortDesc ? '.desc' : '.asc'}';
   if (ctx.state.isMovie)
     r = await ApiHelper.getMovieDiscover(
-        withKeywords: ctx.state.filterState.keyWordController.text,
+        voteAverageGte: ctx.state.lVote,
+        voteAverageLte: ctx.state.rVote,
         sortBy: _sortBy,
         withGenres: genresIds.length > 0 ? genresIds.join(',') : null);
   else
     r = await ApiHelper.getTVDiscover(
+        voteAverageGte: ctx.state.lVote,
+        voteAverageLte: ctx.state.rVote,
         withKeywords: ctx.state.filterState.keyWordController.text,
         sortBy: _sortBy,
         withGenres: genresIds.length > 0 ? genresIds.join(',') : null);
   if (r != null) ctx.dispatch(DiscoverPageActionCreator.onLoadData(r));
 
   ctx.dispatch(DiscoverPageActionCreator.onBusyChanged(false));
+  ctx.state.scrollController.jumpTo(0);
 }
 
 Future _onVideoCellTapped(Action action, Context<DiscoverPageState> ctx) async {
@@ -80,16 +85,21 @@ Future _onLoadMore(Action action, Context<DiscoverPageState> ctx) async {
     return e.value;
   }).toList();
   VideoListModel r;
-  String _sortBy =
-      '${ctx.state.filterState?.selectedSort?.value ?? ''}${ctx.state.filterState.sortDesc ? '.desc' : '.asc'}';
+  String _sortBy = ctx.state.selectedSort == null
+      ? null
+      : '${ctx.state.selectedSort?.value ?? ''}${ctx.state.filterState.sortDesc ? '.desc' : '.asc'}';
   if (ctx.state.isMovie)
     r = await ApiHelper.getMovieDiscover(
-        page: ctx.state.videoListModel.page + 1,
-        sortBy: _sortBy,
-        withGenres: genresIds.length > 0 ? genresIds.join(',') : null,
-        withKeywords: ctx.state.filterState.keywords);
+      voteAverageGte: ctx.state.lVote,
+      voteAverageLte: ctx.state.rVote,
+      page: ctx.state.videoListModel.page + 1,
+      sortBy: _sortBy,
+      withGenres: genresIds.length > 0 ? genresIds.join(',') : null,
+    );
   else
     r = await ApiHelper.getTVDiscover(
+        voteAverageGte: ctx.state.lVote,
+        voteAverageLte: ctx.state.rVote,
         page: ctx.state.videoListModel.page + 1,
         sortBy: _sortBy,
         withGenres: genresIds.length > 0 ? genresIds.join(',') : null,
@@ -102,12 +112,18 @@ Future _mediaTypeChange(Action action, Context<DiscoverPageState> ctx) async {
   final bool _isMovie = action.payload ?? true;
   if (ctx.state.isMovie == _isMovie) return;
   ctx.state.isMovie = _isMovie;
+  ctx.state.currectGenres = _isMovie
+      ? ctx.state.filterState.movieGenres
+      : ctx.state.filterState.tvGenres;
   await _onLoadData(action, ctx);
-  ctx.state.scrollController.jumpTo(0);
 }
 
 void _filterTap(Action action, Context<DiscoverPageState> ctx) async {
   ctx.state.filterState.isMovie = ctx.state.isMovie;
+  ctx.state.filterState.selectedSort = ctx.state.selectedSort;
+  ctx.state.filterState.currectGenres = ctx.state.currectGenres;
+  ctx.state.filterState.lVote = ctx.state.lVote;
+  ctx.state.filterState.rVote = ctx.state.rVote;
   Navigator.of(ctx.context)
       .push(PageRouteBuilder(pageBuilder: (_, animation, ___) {
     return SlideTransition(
@@ -116,4 +132,14 @@ void _filterTap(Action action, Context<DiscoverPageState> ctx) async {
         child: FadeTransition(
             opacity: animation, child: ctx.buildComponent('filter')));
   }));
+}
+
+void _applyFilter(Action action, Context<DiscoverPageState> ctx) {
+  ctx.state.currectGenres = ctx.state.filterState.currectGenres;
+  ctx.state.selectedSort = ctx.state.filterState.selectedSort;
+  ctx.state.sortDesc = ctx.state.filterState.sortDesc;
+  ctx.state.isMovie = ctx.state.filterState.isMovie;
+  ctx.state.lVote = ctx.state.filterState.lVote;
+  ctx.state.rVote = ctx.state.filterState.rVote;
+  _onLoadData(action, ctx);
 }

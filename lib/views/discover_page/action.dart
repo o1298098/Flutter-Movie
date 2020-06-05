@@ -11,6 +11,7 @@ enum DiscoverPageAction {
   loadMore,
   busyChanged,
   filterTap,
+  applyFilter
 }
 
 class DiscoverPageActionCreator {
@@ -48,5 +49,9 @@ class DiscoverPageActionCreator {
 
   static Action filterTap() {
     return const Action(DiscoverPageAction.filterTap);
+  }
+
+  static Action applyFilter() {
+    return const Action(DiscoverPageAction.applyFilter);
   }
 }

@@ -34,6 +34,7 @@ Widget buildView(
                       minHeight: Adapt.px(100),
                       maxHeight: Adapt.px(100),
                       child: _FilterBar(
+                        isMovie: state.isMovie,
                         isBusy: state.isbusy,
                         onFilterPress: () =>
                             dispatch(DiscoverPageActionCreator.filterTap()),
@@ -174,9 +175,11 @@ class _ShimmerList extends StatelessWidget {
 
 class _FilterBar extends StatelessWidget {
   final Function(bool) switchMedia;
+  final bool isMovie;
   final bool isBusy;
   final Function onFilterPress;
-  const _FilterBar({this.switchMedia, this.onFilterPress, this.isBusy});
+  const _FilterBar(
+      {this.switchMedia, this.onFilterPress, this.isBusy, this.isMovie});
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
@@ -200,6 +203,7 @@ class _FilterBar extends StatelessWidget {
           child: Row(
             children: [
               _TapPanel(
+                isMovie: isMovie,
                 onTap: switchMedia,
               ),
               Expanded(child: SizedBox()),
@@ -228,8 +232,9 @@ class _FilterBar extends StatelessWidget {
 }
 
 class _TapPanel extends StatefulWidget {
+  final bool isMovie;
   final Function(bool) onTap;
-  const _TapPanel({this.onTap});
+  const _TapPanel({this.onTap, this.isMovie});
   @override
   _TapPanelState createState() => _TapPanelState();
 }
@@ -244,8 +249,18 @@ class _TapPanelState extends State<_TapPanel> with TickerProviderStateMixin {
 
   Animation<Offset> _position;
   @override
+  void didUpdateWidget(_TapPanel oldWidget) {
+    if (widget.isMovie != _isMovie) {
+      widget.isMovie ? _controller.reverse() : _controller.forward();
+      _isMovie = widget.isMovie;
+      setState(() {});
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   void initState() {
-    _isMovie = true;
+    _isMovie = widget.isMovie ?? true;
     _controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
     _position = Tween<Offset>(begin: Offset.zero, end: Offset(1, 0))
@@ -262,9 +277,9 @@ class _TapPanelState extends State<_TapPanel> with TickerProviderStateMixin {
 
   onTap(bool isMovie) {
     if (_isMovie == isMovie) return;
-    _isMovie = isMovie;
-    isMovie ? _controller.reverse() : _controller.forward();
-    setState(() {});
+    // _isMovie = isMovie;
+    //isMovie ? _controller.reverse() : _controller.forward();
+    // setState(() {});
     if (widget.onTap != null) widget.onTap(isMovie);
   }
 

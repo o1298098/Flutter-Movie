@@ -22,6 +22,9 @@ class DiscoverPageState extends MutableSource
   bool sortDesc;
   bool isMovie;
   bool isbusy;
+  double lVote;
+  double rVote;
+  List<SortCondition> currectGenres = [];
   @override
   DiscoverPageState clone() {
     return DiscoverPageState()
@@ -32,9 +35,12 @@ class DiscoverPageState extends MutableSource
       ..dropdownMenuController = dropdownMenuController
       ..scaffoldKey = scaffoldKey
       ..stackKey = stackKey
+      ..lVote = lVote
+      ..rVote = rVote
       ..sortDesc = sortDesc
       ..isMovie = isMovie
-      ..isbusy = isbusy;
+      ..isbusy = isbusy
+      ..currectGenres = currectGenres;
   }
 
   @override
@@ -64,11 +70,16 @@ class DiscoverPageState extends MutableSource
 DiscoverPageState initState(Map<String, dynamic> args) {
   final DiscoverPageState state = DiscoverPageState();
   state.filterState = new FilterState();
+  state.filterState.selectedSort = state.filterState.sortTypes[0];
+  state.selectedSort = state.filterState.sortTypes[0];
+  state.currectGenres = state.filterState.currectGenres;
   state.scaffoldKey = GlobalKey();
   state.stackKey = GlobalKey();
   state.sortDesc = true;
   state.isMovie = true;
   state.isbusy = false;
+  state.lVote = 0.0;
+  state.rVote = 10.0;
   state.dropdownMenuController = GZXDropdownMenuController();
   state.videoListModel =
       new VideoListModel.fromParams(results: List<VideoListResult>());

@@ -788,6 +788,8 @@ class ApiHelper {
       String airDateLte,
       String firstAirDateGte,
       String firstAirDateLte,
+      double voteAverageGte,
+      double voteAverageLte,
       String timezone = 'America/New_York',
       String withGenres,
       String withKeywords}) async {
@@ -797,6 +799,8 @@ class ApiHelper {
     param += sortBy == null ? '' : '&sort_by=$sortBy';
     param += airDateGte == null ? '' : '&air_ate.gte=$airDateGte';
     param += airDateLte == null ? '' : '&air_ate.lte=$airDateLte';
+    param += voteAverageGte == null ? '' : '&vote_average.gte=$voteAverageGte';
+    param += voteAverageLte == null ? '' : '&vote_average.lte=$voteAverageLte';
     param +=
         firstAirDateGte == null ? '' : '&first_air_ate.gte=$firstAirDateGte';
     param +=
