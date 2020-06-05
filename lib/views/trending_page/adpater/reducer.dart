@@ -1,13 +1,13 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/views/trending_page/state.dart';
-import '../components/fliter_component/action.dart' as fliter_action;
+import '../components/filter_component/action.dart' as fliter_action;
 import 'action.dart';
 
 Reducer<TrendingPageState> buildReducer() {
   return asReducer(
     <Object, Reducer<TrendingPageState>>{
       TrendingAdapterAction.action: _onAction,
-      fliter_action.FliterAction.updateList: _updateList,
+      fliter_action.FilterAction.updateList: _updateList,
     },
   );
 }

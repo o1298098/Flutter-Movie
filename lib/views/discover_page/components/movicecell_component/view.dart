@@ -24,7 +24,7 @@ Widget buildView(
 }
 
 String _changeDatetime(String s1) {
-  return s1 == null || s1 == '' ? '1900-01-01' : s1;
+  return s1 == null || s1 == '' || s1.length < 10 ? '1900-01-01' : s1;
 }
 
 class _Card extends StatelessWidget {
@@ -95,9 +95,13 @@ class _Card extends StatelessWidget {
                 ),
                 SizedBox(height: Adapt.px(5)),
                 Text(
-                  DateFormat.yMMMd().format(DateTime.tryParse((_isMovie
-                      ? _changeDatetime(data.releaseDate)
-                      : _changeDatetime(data.firstAirDate)))),
+                  DateFormat.yMMMd().format(
+                    DateTime?.tryParse(
+                      (_isMovie
+                          ? _changeDatetime(data.releaseDate)
+                          : _changeDatetime(data.firstAirDate)),
+                    ),
+                  ),
                   style: TextStyle(
                       color: const Color(0xFF9E9E9E), fontSize: Adapt.px(18)),
                 ),
@@ -170,7 +174,7 @@ class _LinearProgressIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
     return Container(
-      width: width + Adapt.px(10),
+      width: width + Adapt.px(12),
       height: Adapt.px(22),
       padding: EdgeInsets.all(Adapt.px(6)),
       decoration: BoxDecoration(

@@ -4,7 +4,7 @@ import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/sortcondition.dart';
 import 'package:movie/views/trending_page/state.dart';
 
-class FliterState implements Cloneable<FliterState> {
+class FilterState implements Cloneable<FilterState> {
   AnimationController animationController;
   List<SortCondition> mediaTypes;
 
@@ -12,8 +12,8 @@ class FliterState implements Cloneable<FliterState> {
   MediaType selectMediaType;
   bool isToday;
   @override
-  FliterState clone() {
-    return FliterState()
+  FilterState clone() {
+    return FilterState()
       ..refreshController = refreshController
       ..animationController = animationController
       ..isToday = isToday
@@ -22,10 +22,10 @@ class FliterState implements Cloneable<FliterState> {
   }
 }
 
-class FliterConnector extends ConnOp<TrendingPageState, FliterState> {
+class FilterConnector extends ConnOp<TrendingPageState, FilterState> {
   @override
-  FliterState get(TrendingPageState state) {
-    FliterState mstate = FliterState();
+  FilterState get(TrendingPageState state) {
+    FilterState mstate = FilterState();
     mstate.animationController = state.animationController;
     mstate.isToday = state.isToday;
     mstate.mediaTypes = state.mediaTypes;
@@ -35,7 +35,7 @@ class FliterConnector extends ConnOp<TrendingPageState, FliterState> {
   }
 
   @override
-  void set(TrendingPageState state, FliterState subState) {
+  void set(TrendingPageState state, FilterState subState) {
     state.isToday = subState.isToday;
     state.mediaTypes = subState.mediaTypes;
     state.selectMediaType = subState.selectMediaType;

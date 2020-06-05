@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/customwidgets/sliverappbar_delegate.dart';
-import 'package:movie/models/sortcondition.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -15,47 +14,47 @@ Widget buildView(
     DiscoverPageState state, Dispatch dispatch, ViewService viewService) {
   final _adapter = viewService.buildAdapter();
 
-  return Builder(builder: (context) {
-    final ThemeData _theme = ThemeStyle.getTheme(context);
+  return Builder(
+    builder: (context) {
+      final ThemeData _theme = ThemeStyle.getTheme(context);
 
-    return Scaffold(
-      key: state.scaffoldKey,
-      endDrawer: Drawer(
-        child: viewService.buildComponent('filter'),
-      ),
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: _theme.brightness == Brightness.light
-            ? SystemUiOverlayStyle.dark
-            : SystemUiOverlayStyle.light,
-        child: SafeArea(
-          child: CustomScrollView(
-            controller: state.scrollController,
-            slivers: <Widget>[
-              SliverPersistentHeader(
-                //pinned: true,
-                floating: true,
-                delegate: SliverAppBarDelegate(
-                    minHeight: Adapt.px(100),
-                    maxHeight: Adapt.px(100),
-                    child: _FilterBar(
-                      onFilterPress: () {},
-                      switchMedia: (isMovie) => dispatch(
-                          DiscoverPageActionCreator.mediaTypeChange(isMovie)),
-                    )),
-              ),
-              SliverList(
-                delegate:
-                    SliverChildBuilderDelegate((BuildContext ctx, int index) {
-                  return _adapter.itemBuilder(ctx, index);
-                }, childCount: _adapter.itemCount),
-              ),
-              _ShimmerList(isbusy: state.isbusy)
-            ],
+      return Scaffold(
+        key: state.scaffoldKey,
+        body: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: _theme.brightness == Brightness.light
+              ? SystemUiOverlayStyle.dark
+              : SystemUiOverlayStyle.light,
+          child: SafeArea(
+            child: CustomScrollView(
+              controller: state.scrollController,
+              slivers: <Widget>[
+                SliverPersistentHeader(
+                  floating: true,
+                  delegate: SliverAppBarDelegate(
+                      minHeight: Adapt.px(100),
+                      maxHeight: Adapt.px(100),
+                      child: _FilterBar(
+                        isBusy: state.isbusy,
+                        onFilterPress: () =>
+                            dispatch(DiscoverPageActionCreator.filterTap()),
+                        switchMedia: (isMovie) => dispatch(
+                            DiscoverPageActionCreator.mediaTypeChange(isMovie)),
+                      )),
+                ),
+                SliverList(
+                  delegate:
+                      SliverChildBuilderDelegate((BuildContext ctx, int index) {
+                    return _adapter.itemBuilder(ctx, index);
+                  }, childCount: _adapter.itemCount),
+                ),
+                _ShimmerList(isbusy: state.isbusy)
+              ],
+            ),
           ),
         ),
-      ),
-    );
-  });
+      );
+    },
+  );
 }
 
 class _ShimmerCell extends StatelessWidget {
@@ -141,7 +140,7 @@ class _ShimmerCell extends StatelessWidget {
 
 class _ShimmerList extends StatelessWidget {
   final bool isbusy;
-  _ShimmerList({this.isbusy});
+  const _ShimmerList({this.isbusy});
   @override
   Widget build(BuildContext context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
@@ -173,113 +172,57 @@ class _ShimmerList extends StatelessWidget {
   }
 }
 
-class _ConditionList extends StatelessWidget {
-  final dynamic items;
-  final Function(dynamic) onTap;
-  const _ConditionList({@required this.items, this.onTap});
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData _theme = ThemeStyle.getTheme(context);
-    return ListView.separated(
-      shrinkWrap: true,
-      scrollDirection: Axis.vertical,
-      itemCount: items.length,
-      separatorBuilder: (BuildContext context, int index) =>
-          Divider(height: 1.0),
-      itemBuilder: (BuildContext context, int index) {
-        SortCondition goodsSortCondition = items[index];
-        return GestureDetector(
-          onTap: () {
-            for (var value in items) {
-              value.isSelected = false;
-            }
-            goodsSortCondition.isSelected = true;
-            onTap(goodsSortCondition);
-          },
-          child: Container(
-            color: _theme.backgroundColor,
-            height: 40,
-            child: Row(
-              children: <Widget>[
-                SizedBox(
-                  width: 16,
-                ),
-                Expanded(
-                  child: Text(
-                    goodsSortCondition.name,
-                    style: TextStyle(
-                      color: goodsSortCondition.isSelected
-                          ? _theme.textTheme.bodyText1.color
-                          : Colors.grey,
-                    ),
-                  ),
-                ),
-                goodsSortCondition.isSelected
-                    ? Icon(
-                        Icons.check,
-                        color: _theme.iconTheme.color,
-                        size: 16,
-                      )
-                    : SizedBox(),
-                SizedBox(
-                  width: 16,
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
 class _FilterBar extends StatelessWidget {
   final Function(bool) switchMedia;
+  final bool isBusy;
   final Function onFilterPress;
-  const _FilterBar({this.switchMedia, this.onFilterPress});
+  const _FilterBar({this.switchMedia, this.onFilterPress, this.isBusy});
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
     return Container(
       color: _theme.canvasColor,
-      child: Container(
-        margin: EdgeInsets.symmetric(
-            horizontal: Adapt.px(30), vertical: Adapt.px(10)),
-        padding: EdgeInsets.symmetric(
-            vertical: Adapt.px(5), horizontal: Adapt.px(20)),
-        height: Adapt.px(80),
-        decoration: BoxDecoration(
-          border: Border.all(
-              color: _theme.brightness == Brightness.light
-                  ? const Color(0xFFEFEFEF)
-                  : const Color(0xFF505050)),
-          borderRadius: BorderRadius.circular(Adapt.px(20)),
-          color: _theme.cardColor,
-        ),
-        child: Row(
-          children: [
-            _TapPanel(
-              onTap: switchMedia,
-            ),
-            Expanded(child: SizedBox()),
-            GestureDetector(
-              onTap: onFilterPress,
-              child: Container(
-                padding: EdgeInsets.all(Adapt.px(10)),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF334455),
-                  borderRadius: BorderRadius.circular(Adapt.px(10)),
-                ),
-                child: Icon(
-                  Icons.filter_list,
-                  size: Adapt.px(30),
-                  color: const Color(0xFFFFFFFF),
-                ),
+      child: Stack(children: [
+        Container(
+          margin: EdgeInsets.symmetric(
+              horizontal: Adapt.px(30), vertical: Adapt.px(10)),
+          padding: EdgeInsets.symmetric(
+              vertical: Adapt.px(5), horizontal: Adapt.px(20)),
+          height: Adapt.px(80),
+          decoration: BoxDecoration(
+            border: Border.all(
+                color: _theme.brightness == Brightness.light
+                    ? const Color(0xFFEFEFEF)
+                    : const Color(0xFF505050)),
+            borderRadius: BorderRadius.circular(Adapt.px(20)),
+            color: _theme.cardColor,
+          ),
+          child: Row(
+            children: [
+              _TapPanel(
+                onTap: switchMedia,
               ),
-            )
-          ],
+              Expanded(child: SizedBox()),
+              GestureDetector(
+                onTap: onFilterPress,
+                child: Container(
+                  padding: EdgeInsets.all(Adapt.px(10)),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF334455),
+                    borderRadius: BorderRadius.circular(Adapt.px(10)),
+                  ),
+                  child: Icon(
+                    Icons.filter_list,
+                    size: Adapt.px(30),
+                    color: const Color(0xFFFFFFFF),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
-      ),
+        _Loading(isBusy: isBusy),
+      ]),
     );
   }
 }
@@ -296,7 +239,7 @@ class _TapPanelState extends State<_TapPanel> with TickerProviderStateMixin {
   bool _isMovie;
   final TextStyle _seletedStyle =
       TextStyle(fontWeight: FontWeight.w500, fontSize: Adapt.px(24));
-  final TextStyle _unSelectStyle =
+  final TextStyle _unSelectedStyle =
       TextStyle(color: const Color(0xFF9E9E9E), fontSize: Adapt.px(24));
 
   Animation<Offset> _position;
@@ -332,12 +275,12 @@ class _TapPanelState extends State<_TapPanel> with TickerProviderStateMixin {
         _TapCell(
           onTap: () => onTap(true),
           title: 'Movie',
-          textStyle: _isMovie ? _seletedStyle : _unSelectStyle,
+          textStyle: _isMovie ? _seletedStyle : _unSelectedStyle,
         ),
         _TapCell(
           onTap: () => onTap(false),
           title: 'TvShow',
-          textStyle: _isMovie ? _unSelectStyle : _seletedStyle,
+          textStyle: _isMovie ? _unSelectedStyle : _seletedStyle,
         ),
       ]),
       SlideTransition(
@@ -377,6 +320,33 @@ class _TapCell extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _Loading extends StatelessWidget {
+  final bool isBusy;
+  const _Loading({this.isBusy});
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSwitcher(
+      duration: Duration(milliseconds: 300),
+      child: isBusy
+          ? Container(
+              alignment: Alignment.bottomCenter,
+              margin: EdgeInsets.symmetric(
+                  horizontal: Adapt.px(40), vertical: Adapt.px(10)),
+              padding: EdgeInsets.symmetric(
+                  vertical: Adapt.px(1), horizontal: Adapt.px(20)),
+              height: Adapt.px(80),
+              child: SizedBox(
+                  height: Adapt.px(2),
+                  child: LinearProgressIndicator(
+                    backgroundColor: Color(0xFF334455).withAlpha(100),
+                    valueColor: AlwaysStoppedAnimation(Color(0xFF334455)),
+                  )),
+            )
+          : SizedBox(),
     );
   }
 }

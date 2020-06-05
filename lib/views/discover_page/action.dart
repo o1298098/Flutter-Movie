@@ -10,6 +10,7 @@ enum DiscoverPageAction {
   refreshData,
   loadMore,
   busyChanged,
+  filterTap,
 }
 
 class DiscoverPageActionCreator {
@@ -43,5 +44,9 @@ class DiscoverPageActionCreator {
 
   static Action mediaTypeChange(bool isMovie) {
     return Action(DiscoverPageAction.mediaTypeChange, payload: isMovie);
+  }
+
+  static Action filterTap() {
+    return const Action(DiscoverPageAction.filterTap);
   }
 }

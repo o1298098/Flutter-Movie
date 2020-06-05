@@ -8,9 +8,9 @@ Reducer<DiscoverPageState> buildReducer() {
   return asReducer(
     <Object, Reducer<DiscoverPageState>>{
       DiscoverPageAction.action: _onAction,
-      DiscoverPageAction.sortChanged: _onSortChanged,
       DiscoverPageAction.loadData: _onLoadData,
       DiscoverPageAction.loadMore: _onLoadMore,
+      DiscoverPageAction.busyChanged: _busyChanged,
     },
   );
 }
@@ -20,18 +20,18 @@ DiscoverPageState _onAction(DiscoverPageState state, Action action) {
   return newState;
 }
 
+DiscoverPageState _busyChanged(DiscoverPageState state, Action action) {
+  final bool _isBusy = action.payload;
+  final DiscoverPageState newState = state.clone();
+  newState.isbusy = _isBusy;
+  return newState;
+}
+
 DiscoverPageState _onLoadData(DiscoverPageState state, Action action) {
   VideoListModel m = action.payload ??
       VideoListModel.fromParams(results: List<VideoListResult>());
   final DiscoverPageState newState = state.clone();
   newState.videoListModel = m;
-  return newState;
-}
-
-DiscoverPageState _onSortChanged(DiscoverPageState state, Action action) {
-  final String s = action.payload;
-  final DiscoverPageState newState = state.clone();
-  newState.selectedSort = s;
   return newState;
 }
 

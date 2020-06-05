@@ -1,8 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/views/discover_page/components/filter_component/component.dart';
 
 import 'adapter.dart';
-import 'components/filter_component/state.dart' as filter;
+import 'components/filter_component/component.dart';
+import 'components/filter_component/state.dart';
 import 'effect.dart';
 import 'reducer.dart';
 import 'state.dart';
@@ -14,11 +14,16 @@ class DiscoverPage extends Page<DiscoverPageState, Map<String, dynamic>> {
           initState: initState,
           effect: buildEffect(),
           reducer: buildReducer(),
+          shouldUpdate: (o, n) {
+            return o.filterState.isMovie != n.filterState.isMovie ||
+                o.videoListModel != n.videoListModel ||
+                o.isbusy != n.isbusy;
+          },
           view: buildView,
           dependencies: Dependencies<DiscoverPageState>(
               adapter: NoneConn<DiscoverPageState>() + DiscoverListAdapter(),
               slots: <String, Dependent<DiscoverPageState>>{
-                'filter': filter.FilterConnector() + FilterComponent()
+                'filter': FilterConnector() + FilterComponent()
               }),
           middleware: <Middleware<DiscoverPageState>>[],
         );

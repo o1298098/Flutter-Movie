@@ -1,9 +1,9 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/customwidgets/custom_stfstate.dart';
-import 'package:movie/views/trending_page/components/fliter_component/component.dart';
 
 import 'adpater/adapter.dart';
-import 'components/fliter_component/state.dart';
+import 'components/filter_component/component.dart';
+import 'components/filter_component/state.dart';
 import 'effect.dart';
 import 'reducer.dart';
 import 'state.dart';
@@ -22,7 +22,7 @@ class TrendingPage extends Page<TrendingPageState, Map<String, dynamic>> {
           dependencies: Dependencies<TrendingPageState>(
               adapter: NoneConn<TrendingPageState>() + TrendingAdapter(),
               slots: <String, Dependent<TrendingPageState>>{
-                'fliter': FliterConnector() + FliterComponent()
+                'Filter': FilterConnector() + FilterComponent()
               }),
           middleware: <Middleware<TrendingPageState>>[],
         );

@@ -8,7 +8,7 @@ import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
-    FliterState state, Dispatch dispatch, ViewService viewService) {
+    FilterState state, Dispatch dispatch, ViewService viewService) {
   final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
 
   final TextStyle _selectTS =
@@ -53,7 +53,7 @@ Widget buildView(
           child: Row(
             children: <Widget>[
               InkWell(
-                onTap: () => dispatch(FliterActionCreator.dateChanged(true)),
+                onTap: () => dispatch(FilterActionCreator.dateChanged(true)),
                 child: Text('Today',
                     style: state.isToday ? _selectTS : _unSelectTS),
               ),
@@ -61,7 +61,7 @@ Widget buildView(
                 width: Adapt.px(50),
               ),
               InkWell(
-                  onTap: () => dispatch(FliterActionCreator.dateChanged(false)),
+                  onTap: () => dispatch(FilterActionCreator.dateChanged(false)),
                   child: Text(
                     'This Week',
                     style: state.isToday ? _unSelectTS : _selectTS,
@@ -78,7 +78,7 @@ Widget buildView(
                   offset: Offset(0, Adapt.px(100)),
                   icon: Icon(Icons.apps),
                   onSelected: (selected) =>
-                      dispatch(FliterActionCreator.mediaTypeChanged(selected)),
+                      dispatch(FilterActionCreator.mediaTypeChanged(selected)),
                   itemBuilder: (ctx) {
                     return state.mediaTypes.map(_buildCell).toList();
                   },

@@ -3,7 +3,7 @@ import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/searchresult.dart';
 import 'package:movie/models/sortcondition.dart';
 
-enum FliterAction {
+enum FilterAction {
   action,
   dateChanged,
   mediaTypeChanged,
@@ -12,30 +12,30 @@ enum FliterAction {
   updateMediaType
 }
 
-class FliterActionCreator {
+class FilterActionCreator {
   static Action onAction() {
-    return const Action(FliterAction.action);
+    return const Action(FilterAction.action);
   }
 
   static Action dateChanged(bool b) {
-    return Action(FliterAction.dateChanged, payload: b);
+    return Action(FilterAction.dateChanged, payload: b);
   }
 
   static Action mediaTypeChanged(SortCondition sortCondition) {
-    return Action(FliterAction.mediaTypeChanged, payload: sortCondition);
+    return Action(FilterAction.mediaTypeChanged, payload: sortCondition);
   }
 
   static Action updateList(SearchResultModel d) {
-    return Action(FliterAction.updateList, payload: d);
+    return Action(FilterAction.updateList, payload: d);
   }
 
   static Action updateDate(bool b) {
-    return Action(FliterAction.updateDate, payload: b);
+    return Action(FilterAction.updateDate, payload: b);
   }
 
   static Action updateMediaType(
       List<SortCondition> sortConditions, MediaType selectType) {
-    return Action(FliterAction.updateMediaType,
+    return Action(FilterAction.updateMediaType,
         payload: [sortConditions, selectType]);
   }
 }

@@ -5,8 +5,8 @@ import 'reducer.dart';
 import 'state.dart';
 import 'view.dart';
 
-class FliterComponent extends Component<FliterState> {
-  FliterComponent()
+class FilterComponent extends Component<FilterState> {
+  FilterComponent()
       : super(
           shouldUpdate: (oldState, newState) {
             return oldState.animationController !=
@@ -19,7 +19,7 @@ class FliterComponent extends Component<FliterState> {
           effect: buildEffect(),
           reducer: buildReducer(),
           view: buildView,
-          dependencies: Dependencies<FliterState>(
-              adapter: null, slots: <String, Dependent<FliterState>>{}),
+          dependencies: Dependencies<FilterState>(
+              adapter: null, slots: <String, Dependent<FilterState>>{}),
         );
 }

@@ -6,7 +6,10 @@ import '../../state.dart';
 
 class FilterState implements Cloneable<FilterState> {
   bool isMovie = true;
+  bool sortDesc = true;
+  SortCondition selectedSort;
   TextEditingController keyWordController;
+  List<SortCondition> sortTypes;
   List<SortCondition> movieGenres = new List<SortCondition>()
     ..addAll(Genres.movieList.keys.map((i) {
       return SortCondition(
@@ -16,22 +19,22 @@ class FilterState implements Cloneable<FilterState> {
     ..addAll(Genres.tvList.keys.map((i) {
       return SortCondition(name: Genres.tvList[i], isSelected: false, value: i);
     }).toList());
+  List<SortCondition> currectGenres = [];
   String keywords;
+
   @override
   FilterState clone() {
     return FilterState()
+      ..sortTypes = sortTypes
+      ..selectedSort = selectedSort
       ..isMovie = isMovie
+      ..sortDesc = sortDesc
       ..movieGenres = movieGenres
       ..tvGenres = tvGenres
       ..keywords = keywords
+      ..currectGenres = currectGenres
       ..keyWordController = keyWordController;
   }
-
-  addAll(List<SortCondition> list) {}
-}
-
-FilterState initState(Map<String, dynamic> args) {
-  return FilterState();
 }
 
 class FilterConnector extends ConnOp<DiscoverPageState, FilterState> {

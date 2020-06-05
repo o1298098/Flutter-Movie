@@ -5,17 +5,17 @@ import 'package:movie/models/sortcondition.dart';
 import 'action.dart';
 import 'state.dart';
 
-Effect<FliterState> buildEffect() {
-  return combineEffects(<Object, Effect<FliterState>>{
-    FliterAction.action: _onAction,
-    FliterAction.mediaTypeChanged: _mediaTypeChanged,
-    FliterAction.dateChanged: _dateChanged,
+Effect<FilterState> buildEffect() {
+  return combineEffects(<Object, Effect<FilterState>>{
+    FilterAction.action: _onAction,
+    FilterAction.mediaTypeChanged: _mediaTypeChanged,
+    FilterAction.dateChanged: _dateChanged,
   });
 }
 
-void _onAction(Action action, Context<FliterState> ctx) {}
+void _onAction(Action action, Context<FilterState> ctx) {}
 
-Future _mediaTypeChanged(Action action, Context<FliterState> ctx) async {
+Future _mediaTypeChanged(Action action, Context<FilterState> ctx) async {
   await ctx.state.animationController.reverse();
   final SortCondition model = action.payload;
   var _mt = ctx.state.mediaTypes;
@@ -27,25 +27,25 @@ Future _mediaTypeChanged(Action action, Context<FliterState> ctx) async {
       f.isSelected = false;
     });
     _mt[index].isSelected = true;
-    ctx.dispatch(FliterActionCreator.updateMediaType(_mt, model.value));
+    ctx.dispatch(FilterActionCreator.updateMediaType(_mt, model.value));
     _loadData(ctx);
   }
 }
 
-Future _dateChanged(Action action, Context<FliterState> ctx) async {
+Future _dateChanged(Action action, Context<FilterState> ctx) async {
   await ctx.state.animationController.reverse();
   final bool _b = action.payload ?? true;
   if (_b != ctx.state.isToday) {
     if (!ctx.state.refreshController.isAnimating)
       await ctx.state.refreshController.forward();
-    ctx.dispatch(FliterActionCreator.updateDate(_b));
+    ctx.dispatch(FilterActionCreator.updateDate(_b));
     _loadData(ctx);
   }
 }
 
-Future _loadData(Context<FliterState> ctx) async {
+Future _loadData(Context<FilterState> ctx) async {
   var r = await ApiHelper.getTrending(ctx.state.selectMediaType,
       ctx.state.isToday ? TimeWindow.day : TimeWindow.week);
-  if (r != null) ctx.dispatch(FliterActionCreator.updateList(r));
+  if (r != null) ctx.dispatch(FilterActionCreator.updateList(r));
   ctx.state.refreshController.reset();
 }
