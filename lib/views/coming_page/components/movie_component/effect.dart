@@ -1,5 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
+import 'package:movie/models/videolist.dart';
 import 'package:movie/views/detail_page/page.dart';
 import 'action.dart';
 import 'state.dart';
@@ -13,7 +14,9 @@ Effect<MovieListState> buildEffect() {
 
 void _onAction(Action action, Context<MovieListState> ctx) {}
 Future _cellTapped(Action action, Context<MovieListState> ctx) async {
+  final VideoListResult _d = action.payload;
+  if (_d == null) return;
   await Navigator.of(ctx.context).push(MaterialPageRoute(builder: (context) {
-    return MovieDetailPage().buildPage({'id': action.payload});
+    return MovieDetailPage().buildPage({'id': _d.id, 'bgpic': _d.posterPath});
   }));
 }

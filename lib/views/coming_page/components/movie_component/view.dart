@@ -35,7 +35,7 @@ Widget buildView(
           final d = state.moviecoming.results[index];
           return _MovieCell(
             data: d,
-            onTap: () => dispatch(MovieListActionCreator.cellTapped(d.id)),
+            onTap: () => dispatch(MovieListActionCreator.cellTapped(d)),
           );
         },
       )));

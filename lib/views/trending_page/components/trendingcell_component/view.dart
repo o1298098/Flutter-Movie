@@ -15,7 +15,6 @@ import 'state.dart';
 Widget buildView(
     TrendingCellState state, Dispatch dispatch, ViewService viewService) {
   final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
-
   final SearchResult d = state.cellData;
   return GestureDetector(
     key: ValueKey('trendingCell${d.id}+${d.name}'),
@@ -36,72 +35,18 @@ Widget buildView(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            width: Adapt.px(280),
-            height: Adapt.px(280),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(Adapt.px(30)),
-              child: Container(
-                color: _theme.primaryColorDark,
-                child: ParallaxImage(
-                  extent: Adapt.px(280),
-                  image: CachedNetworkImageProvider(ImageUrl.getUrl(
-                      d.posterPath ?? d.profilePath, ImageSize.w300)),
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            width: Adapt.px(50),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(
-                height: Adapt.px(20),
-              ),
-              Text(
-                '${state.index + 1}',
-                style: TextStyle(
-                    fontSize: Adapt.px(50), fontWeight: FontWeight.w800),
-              ),
-              SizedBox(
-                width: Adapt.screenW() - Adapt.px(490),
-                child: Text(
-                  d.title ?? d.name,
-                  style: TextStyle(
-                      // color: Colors.black,
-                      fontSize: Adapt.px(28),
-                      fontWeight: FontWeight.w700),
-                ),
-              ),
-              SizedBox(
-                height: Adapt.px(10),
-              ),
-              SizedBox(
-                  width: Adapt.screenW() - Adapt.px(490),
-                  child: Text(
-                    (d.genreIds ?? [])
-                        .take(3)
-                        .map((f) {
-                          return d.mediaType == 'movie'
-                              ? Genres.movieList[f]?.replaceAll('_', ' & ')
-                              : Genres.tvList[f]?.replaceAll('_', ' & ');
-                        })
-                        .toList()
-                        .join(' / '),
-                    style: TextStyle(
-                        color: Colors.grey[500], fontSize: Adapt.px(22)),
-                  ))
-            ],
+          _ImageCell(url: d.posterPath ?? d.profilePath),
+          SizedBox(width: Adapt.px(50)),
+          _Info(
+            data: d,
+            index: state.index,
           ),
           Container(
             height: Adapt.px(280),
             child: IconButton(
               padding: EdgeInsets.only(left: Adapt.px(20)),
               iconSize: Adapt.px(40),
-              icon: Icon(Icons.favorite_border),
+              icon: const Icon(Icons.favorite_border),
               onPressed: () {},
             ),
           )
@@ -109,4 +54,75 @@ Widget buildView(
       ),
     ),
   );
+}
+
+class _ImageCell extends StatelessWidget {
+  final String url;
+  const _ImageCell({this.url});
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    return Container(
+      width: Adapt.px(280),
+      height: Adapt.px(280),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(Adapt.px(30)),
+        child: Container(
+          color: _theme.primaryColorDark,
+          child: ParallaxImage(
+            extent: Adapt.px(280),
+            image: CachedNetworkImageProvider(
+              ImageUrl.getUrl(url, ImageSize.w300),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _Info extends StatelessWidget {
+  final int index;
+  final SearchResult data;
+  const _Info({this.data, this.index});
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(
+          height: Adapt.px(20),
+        ),
+        Text(
+          '${index + 1}',
+          style: TextStyle(fontSize: Adapt.px(50), fontWeight: FontWeight.w800),
+        ),
+        SizedBox(
+          width: Adapt.screenW() - Adapt.px(490),
+          child: Text(
+            data.title ?? data.name,
+            style:
+                TextStyle(fontSize: Adapt.px(28), fontWeight: FontWeight.w700),
+          ),
+        ),
+        SizedBox(height: Adapt.px(10)),
+        SizedBox(
+            width: Adapt.screenW() - Adapt.px(490),
+            child: Text(
+              (data.genreIds ?? [])
+                  .take(3)
+                  .map((f) {
+                    return data.mediaType == 'movie'
+                        ? Genres.movieList[f]?.replaceAll('_', ' & ')
+                        : Genres.tvList[f]?.replaceAll('_', ' & ');
+                  })
+                  .toList()
+                  .join(' / '),
+              style: TextStyle(
+                  color: const Color(0xFF9E9E9E), fontSize: Adapt.px(22)),
+            ))
+      ],
+    );
+  }
 }

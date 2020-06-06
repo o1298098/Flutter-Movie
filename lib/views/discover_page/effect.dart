@@ -70,11 +70,17 @@ Future _onLoadData(Action action, Context<DiscoverPageState> ctx) async {
 
 Future _onVideoCellTapped(Action action, Context<DiscoverPageState> ctx) async {
   if (ctx.state.isMovie)
-    await Navigator.of(ctx.context).pushNamed('detailpage',
-        arguments: {'id': action.payload[0], 'bgpic': action.payload[1]});
+    await Navigator.of(ctx.context).pushNamed(
+      'detailpage',
+      arguments: {'id': action.payload[0], 'bgpic': action.payload[1]},
+    );
   else
-    await Navigator.of(ctx.context).pushNamed('tvdetailpage',
-        arguments: {'tvid': action.payload[0], 'bgpic': action.payload[1]});
+    await Navigator.of(ctx.context).pushNamed('tvdetailpage', arguments: {
+      'tvid': action.payload[0],
+      'bgpic': action.payload[1],
+      'posterpic': action.payload[2],
+      'name': action.payload[3]
+    });
 }
 
 Future _onLoadMore(Action action, Context<DiscoverPageState> ctx) async {

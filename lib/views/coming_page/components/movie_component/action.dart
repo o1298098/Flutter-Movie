@@ -1,4 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/videolist.dart';
 
 enum MovieListAction { action, cellTapped }
 
@@ -7,7 +8,7 @@ class MovieListActionCreator {
     return const Action(MovieListAction.action);
   }
 
-  static Action cellTapped(int id) {
-    return Action(MovieListAction.cellTapped, payload: id);
+  static Action cellTapped(VideoListResult d) {
+    return Action(MovieListAction.cellTapped, payload: d);
   }
 }

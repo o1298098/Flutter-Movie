@@ -9,10 +9,10 @@ import 'state.dart';
 Widget buildView(
     TrendingPageState state, Dispatch dispatch, ViewService viewService) {
   final _adapter = viewService.buildAdapter();
-  return Builder(builder: (context) {
-    final ThemeData _theme = ThemeStyle.getTheme(context);
-
-    return Scaffold(
+  return Builder(
+    builder: (context) {
+      final ThemeData _theme = ThemeStyle.getTheme(context);
+      return Scaffold(
         appBar: AppBar(
           brightness: _theme.brightness,
           backgroundColor: _theme.backgroundColor,
@@ -33,28 +33,31 @@ Widget buildView(
           ],
         ),
         body: Container(
-            child: AnimatedSwitcher(
-          duration: Duration(milliseconds: 300),
-          child: CustomScrollView(
-            key: ValueKey(state.trending),
-            physics: BouncingScrollPhysics(),
-            controller: state.controller,
-            slivers: <Widget>[
-              viewService.buildComponent('fliter'),
-              _Refreshing(refreshController: state.refreshController),
-              SliverToBoxAdapter(
-                child: SizedBox(height: Adapt.px(30)),
-              ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate((ctx, index) {
-                  return _adapter.itemBuilder(ctx, index);
-                }, childCount: _adapter.itemCount),
-              ),
-              _Loading(),
-            ],
+          child: AnimatedSwitcher(
+            duration: Duration(milliseconds: 300),
+            child: CustomScrollView(
+              key: ValueKey(state.trending),
+              physics: BouncingScrollPhysics(),
+              controller: state.controller,
+              slivers: <Widget>[
+                viewService.buildComponent('filter'),
+                _Refreshing(refreshController: state.refreshController),
+                SliverToBoxAdapter(
+                  child: SizedBox(height: Adapt.px(30)),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate((ctx, index) {
+                    return _adapter.itemBuilder(ctx, index);
+                  }, childCount: _adapter.itemCount),
+                ),
+                _Loading(),
+              ],
+            ),
           ),
-        )));
-  });
+        ),
+      );
+    },
+  );
 }
 
 class _Refreshing extends StatelessWidget {
@@ -81,6 +84,7 @@ class _Refreshing extends StatelessWidget {
 }
 
 class _Loading extends StatelessWidget {
+  const _Loading();
   @override
   Widget build(BuildContext context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);

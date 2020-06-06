@@ -22,7 +22,7 @@ class TrendingPage extends Page<TrendingPageState, Map<String, dynamic>> {
           dependencies: Dependencies<TrendingPageState>(
               adapter: NoneConn<TrendingPageState>() + TrendingAdapter(),
               slots: <String, Dependent<TrendingPageState>>{
-                'Filter': FilterConnector() + FilterComponent()
+                'filter': FilterConnector() + FilterComponent()
               }),
           middleware: <Middleware<TrendingPageState>>[],
         );

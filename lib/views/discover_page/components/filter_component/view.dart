@@ -57,7 +57,7 @@ class _Title extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Text(
-            'Filter',
+            'Filters',
             style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
           ),
           Spacer(),
@@ -324,7 +324,7 @@ class _VoteFilterPanelState extends State<_VoteFilterPanel> {
   double lvote = 0.0;
   double rvote = 10.0;
   final _totalWidth = Adapt.screenW() - Adapt.px(80);
-  final _pinWidth = Adapt.px(30);
+  final _pinWidth = Adapt.px(25);
   double _barSpace;
   double _leftMargin = 0.0;
   double _rightMargin = 0.0;
@@ -356,7 +356,7 @@ class _VoteFilterPanelState extends State<_VoteFilterPanel> {
   void initState() {
     lvote = widget.lvote;
     rvote = widget.rvote;
-    _barSpace = _totalWidth - _pinWidth;
+    _barSpace = _totalWidth - _pinWidth * 2;
     _leftMargin = lvote / 10 * _barSpace;
     _rightMargin = (10 - rvote) / 10 * _barSpace;
     super.initState();
@@ -378,6 +378,7 @@ class _VoteFilterPanelState extends State<_VoteFilterPanel> {
           child: Stack(children: [
             Container(
               height: Adapt.px(15),
+              margin: EdgeInsets.symmetric(vertical: Adapt.px(5)),
               decoration: BoxDecoration(
                   color: _theme.primaryColorDark,
                   borderRadius: BorderRadius.circular(Adapt.px(6))),
@@ -385,7 +386,11 @@ class _VoteFilterPanelState extends State<_VoteFilterPanel> {
             Column(children: [
               Container(
                 height: Adapt.px(15),
-                margin: EdgeInsets.only(right: _rightMargin, left: _leftMargin),
+                margin: EdgeInsets.only(
+                    right: _rightMargin,
+                    left: _leftMargin,
+                    top: Adapt.px(5),
+                    bottom: Adapt.px(5)),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Adapt.px(7.5)),
                   gradient: LinearGradient(colors: [
@@ -394,30 +399,6 @@ class _VoteFilterPanelState extends State<_VoteFilterPanel> {
                     const Color(0xFF556677),
                   ]),
                 ),
-                child: Row(children: [
-                  GestureDetector(
-                    onHorizontalDragUpdate: _leftPinDrag,
-                    child: Container(
-                      width: Adapt.px(15),
-                      height: Adapt.px(15),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: const Color(0xFFE0E0E0),
-                      ),
-                    ),
-                  ),
-                  Spacer(),
-                  GestureDetector(
-                      onHorizontalDragUpdate: _rightPinDrag,
-                      child: Container(
-                        width: Adapt.px(15),
-                        height: Adapt.px(15),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: const Color(0xFFE0E0E0),
-                        ),
-                      ))
-                ]),
               ),
               SizedBox(height: Adapt.px(15)),
               Row(children: [
@@ -431,7 +412,38 @@ class _VoteFilterPanelState extends State<_VoteFilterPanel> {
                   style: TextStyle(color: const Color(0xFF9E9E9E)),
                 ),
               ])
-            ])
+            ]),
+            Container(
+              height: _pinWidth,
+              margin: EdgeInsets.only(
+                right: _rightMargin,
+                left: _leftMargin,
+              ),
+              child: Row(children: [
+                GestureDetector(
+                  onHorizontalDragUpdate: _leftPinDrag,
+                  child: Container(
+                    width: _pinWidth,
+                    height: _pinWidth,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: const Color(0xFF334455),
+                    ),
+                  ),
+                ),
+                Spacer(),
+                GestureDetector(
+                    onHorizontalDragUpdate: _rightPinDrag,
+                    child: Container(
+                      width: _pinWidth,
+                      height: _pinWidth,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: const Color(0xFF334455),
+                      ),
+                    ))
+              ]),
+            )
           ]),
         )
       ]),

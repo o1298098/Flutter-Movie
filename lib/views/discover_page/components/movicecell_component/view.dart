@@ -19,7 +19,10 @@ Widget buildView(
   return _Card(
     data: d,
     onTap: (value) => dispatch(DiscoverPageActionCreator.onVideoCellTapped(
-        value.id, value.posterPath)),
+        value.id,
+        value.posterPath,
+        value.posterPath,
+        value.title ?? value.name)),
   );
 }
 
