@@ -8,11 +8,7 @@ import 'state.dart';
 
 Widget buildView(
     ShimmerCellState state, Dispatch dispatch, ViewService viewService) {
-  final MediaQueryData _mediaQuery = MediaQuery.of(viewService.context);
-  final ThemeData _theme = _mediaQuery.platformBrightness == Brightness.light
-      ? ThemeStyle.lightTheme
-      : ThemeStyle.darkTheme;
-
+  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
   return Offstage(
       offstage: state.showShimmer,
       child: Shimmer.fromColors(
@@ -20,37 +16,44 @@ Widget buildView(
         highlightColor: _theme.primaryColorLight,
         child: Column(
           children: <Widget>[
-            _ShimmerCell(),
-            _ShimmerCell(),
-            _ShimmerCell(),
-            _ShimmerCell(),
+            const _ShimmerCell(),
+            const _ShimmerCell(),
+            const _ShimmerCell(),
+            const _ShimmerCell(),
           ],
         ),
       ));
 }
 
 class _ShimmerCell extends StatelessWidget {
+  const _ShimmerCell({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final _color = const Color(0xFFFFFFFF);
     return Container(
-      padding: EdgeInsets.all(Adapt.px(20)),
+      padding: EdgeInsets.symmetric(vertical: Adapt.px(25)),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-              width: Adapt.px(120),
-              height: Adapt.px(180),
-              color: Colors.grey[200]),
+            height: Adapt.px(220),
+            width: Adapt.px(160),
+            decoration: BoxDecoration(
+              color: _color,
+              borderRadius: BorderRadius.circular(Adapt.px(25)),
+            ),
+          ),
           SizedBox(
             width: Adapt.px(20),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              SizedBox(height: Adapt.px(10)),
               Container(
                 width: Adapt.px(350),
                 height: Adapt.px(30),
-                color: Colors.grey[200],
+                color: _color,
               ),
               SizedBox(
                 height: 5,
@@ -58,7 +61,7 @@ class _ShimmerCell extends StatelessWidget {
               Container(
                 width: Adapt.px(150),
                 height: Adapt.px(24),
-                color: Colors.grey[200],
+                color: _color,
               ),
               SizedBox(
                 height: Adapt.px(8),
@@ -69,7 +72,7 @@ class _ShimmerCell extends StatelessWidget {
               Container(
                 width: Adapt.screenW() - Adapt.px(300),
                 height: Adapt.px(24),
-                color: Colors.grey[200],
+                color: _color,
               ),
               SizedBox(
                 height: Adapt.px(8),
@@ -77,7 +80,7 @@ class _ShimmerCell extends StatelessWidget {
               Container(
                 width: Adapt.screenW() - Adapt.px(300),
                 height: Adapt.px(24),
-                color: Colors.grey[200],
+                color: _color,
               )
             ],
           )

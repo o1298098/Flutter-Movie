@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/customwidgets/keepalive_widget.dart';
@@ -20,9 +21,10 @@ Widget buildView(
       duration: Duration(milliseconds: 600),
       child: ListView.separated(
         key: ValueKey(state.moviecoming),
+        padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
         controller: state.movieController,
         cacheExtent: Adapt.px(180),
-        separatorBuilder: (_, __) => Divider(),
+        separatorBuilder: (_, __) => const _SeparatorItem(),
         itemCount: _count + 1,
         itemBuilder: (_, index) {
           if (index == _count)
@@ -30,10 +32,10 @@ Widget buildView(
               offstage:
                   state.moviecoming.page == state.moviecoming.totalPages &&
                       _count > 0,
-              child: _ShimmerList(),
+              child: const _ShimmerList(),
             );
           final d = state.moviecoming.results[index];
-          return _MovieCell(
+          return _ItemCell(
             data: d,
             onTap: () => dispatch(MovieListActionCreator.cellTapped(d)),
           );
@@ -41,58 +43,56 @@ Widget buildView(
       )));
 }
 
-class _ShimmerCell extends StatelessWidget {
+class _SeparatorItem extends StatelessWidget {
+  const _SeparatorItem({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.only(left: Adapt.px(190)), child: Divider());
+  }
+}
+
+class _ShimmerCell extends StatelessWidget {
+  const _ShimmerCell({Key key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    final _rightPanelWidth = Adapt.screenW() - Adapt.px(250);
+    final _color = const Color(0xFFFFFFFF);
     return Container(
-      padding: EdgeInsets.all(Adapt.px(20)),
+      padding: EdgeInsets.symmetric(vertical: Adapt.px(25)),
+      height: Adapt.px(280),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           Container(
-              width: Adapt.px(120),
-              height: Adapt.px(180),
-              color: const Color(0xFFEEEEEE)),
-          SizedBox(
-            width: Adapt.px(20),
+            height: Adapt.px(200),
+            width: Adapt.px(160),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Adapt.px(25)),
+                color: _color),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                width: Adapt.px(350),
-                height: Adapt.px(30),
-                color: const Color(0xFFEEEEEE),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Container(
-                width: Adapt.px(150),
-                height: Adapt.px(24),
-                color: const Color(0xFFEEEEEE),
-              ),
-              SizedBox(
-                height: Adapt.px(8),
-              ),
-              SizedBox(
-                height: Adapt.px(8),
-              ),
-              Container(
-                width: Adapt.screenW() - Adapt.px(300),
-                height: Adapt.px(24),
-                color: const Color(0xFFEEEEEE),
-              ),
-              SizedBox(
-                height: Adapt.px(8),
-              ),
-              Container(
-                width: Adapt.screenW() - Adapt.px(300),
-                height: Adapt.px(24),
-                color: const Color(0xFFEEEEEE),
-              )
-            ],
-          )
+          SizedBox(width: Adapt.px(30)),
+          SizedBox(
+            width: _rightPanelWidth,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: Adapt.px(20)),
+                Container(
+                    height: Adapt.px(30), width: Adapt.px(300), color: _color),
+                SizedBox(height: Adapt.px(5)),
+                Container(
+                    height: Adapt.px(15), width: Adapt.px(150), color: _color),
+                SizedBox(height: Adapt.px(5)),
+                Container(
+                    height: Adapt.px(15), width: Adapt.px(150), color: _color),
+                SizedBox(height: Adapt.px(15)),
+                Container(height: Adapt.px(18), color: _color),
+                SizedBox(height: Adapt.px(5)),
+                Container(
+                    height: Adapt.px(18), width: Adapt.px(350), color: _color),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -100,93 +100,105 @@ class _ShimmerCell extends StatelessWidget {
 }
 
 class _ShimmerList extends StatelessWidget {
+  const _ShimmerList({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
     return Shimmer.fromColors(
       baseColor: _theme.primaryColorDark,
       highlightColor: _theme.primaryColorLight,
-      child: Column(children: List(4).map((e) => _ShimmerCell()).toList()),
+      child: Column(
+        children: List(4).map((e) => const _ShimmerCell()).toList(),
+      ),
     );
   }
 }
 
-class _MovieCell extends StatelessWidget {
+class _ItemCell extends StatelessWidget {
   final VideoListResult data;
   final Function onTap;
-  const _MovieCell({@required this.data, this.onTap});
-
-  Widget _buildGenreChip(int id) {
-    return Container(
-      margin: EdgeInsets.only(right: Adapt.px(10)),
-      padding: EdgeInsets.all(Adapt.px(8)),
-      child: Text(
-        Genres.movieList[id],
-        style: TextStyle(fontSize: Adapt.px(24)),
-      ),
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(Adapt.px(20))),
-    );
-  }
-
+  const _ItemCell({@required this.data, this.onTap});
   @override
   Widget build(BuildContext context) {
-    final ThemeData _theme = ThemeStyle.getTheme(context);
-    return InkWell(
+    final _theme = ThemeStyle.getTheme(context);
+    final _rightPanelWidth = Adapt.screenW() - Adapt.px(250);
+    return GestureDetector(
       onTap: onTap,
-      key: ValueKey<int>(data.id),
       child: Container(
-        padding: EdgeInsets.all(Adapt.px(20)),
+        padding: EdgeInsets.symmetric(vertical: Adapt.px(25)),
+        constraints: BoxConstraints(minHeight: Adapt.px(280)),
         child: Row(
-          children: <Widget>[
+          children: [
             Container(
-              width: Adapt.px(120),
-              height: Adapt.px(180),
+              height: Adapt.px(200),
+              width: Adapt.px(160),
               decoration: BoxDecoration(
-                  color: _theme.primaryColorDark,
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: CachedNetworkImageProvider(
-                          ImageUrl.getUrl(data.posterPath, ImageSize.w300)))),
-            ),
-            SizedBox(
-              width: Adapt.px(20),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  width: Adapt.px(500),
-                  child: Text(
-                    data?.title ?? '',
-                    style: TextStyle(
-                        fontSize: Adapt.px(30), fontWeight: FontWeight.bold),
+                color: _theme.primaryColorDark,
+                borderRadius: BorderRadius.circular(Adapt.px(25)),
+                boxShadow: [
+                  BoxShadow(
+                      color: _theme.brightness == Brightness.light
+                          ? const Color(0xFF8E8E8E)
+                          : const Color(0x00000000),
+                      offset: Offset(0, Adapt.px(25)),
+                      blurRadius: Adapt.px(20),
+                      spreadRadius: -Adapt.px(10))
+                ],
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: CachedNetworkImageProvider(
+                    ImageUrl.getUrl(data.posterPath, ImageSize.w300),
                   ),
                 ),
-                Text("Release on: " + data?.releaseDate ?? '-',
+              ),
+            ),
+            SizedBox(width: Adapt.px(30)),
+            SizedBox(
+              width: _rightPanelWidth,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    data.title,
+                    maxLines: 2,
                     style: TextStyle(
-                        color: Colors.grey[700], fontSize: Adapt.px(24))),
-                SizedBox(
-                  height: Adapt.px(8),
-                ),
-                Row(
-                  children: data.genreIds.take(3).map(_buildGenreChip).toList(),
-                ),
-                SizedBox(
-                  height: Adapt.px(8),
-                ),
-                Container(
-                  width: Adapt.screenW() - Adapt.px(200),
-                  child: Text(
-                    data.overview ?? '',
+                        fontWeight: FontWeight.bold, fontSize: Adapt.px(30)),
+                  ),
+                  SizedBox(height: Adapt.px(5)),
+                  data.genreIds.length > 0
+                      ? Text(
+                          data.genreIds
+                              .take(3)
+                              .map((e) => Genres.movieList[e])
+                              .join(', '),
+                          style: TextStyle(
+                            color: const Color(0xFF9E9E9E),
+                            fontSize: Adapt.px(20),
+                          ),
+                        )
+                      : SizedBox(),
+                  SizedBox(height: Adapt.px(5)),
+                  Text.rich(
+                    TextSpan(children: [
+                      TextSpan(
+                          text: 'Release on ',
+                          style: TextStyle(color: const Color(0xFF9E9E9E))),
+                      TextSpan(
+                          text: DateFormat.yMMMd()
+                              .format(DateTime.parse(data.releaseDate)))
+                    ]),
+                    style: TextStyle(fontSize: Adapt.px(20)),
+                  ),
+                  SizedBox(height: Adapt.px(15)),
+                  //Text(data.voteAverage.toString()),
+                  Text(
+                    data.overview,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                  ),
-                )
-              ],
-            )
+                  )
+                ],
+              ),
+            ),
           ],
         ),
       ),
