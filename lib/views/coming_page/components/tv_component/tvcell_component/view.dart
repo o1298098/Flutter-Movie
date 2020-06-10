@@ -85,32 +85,6 @@ class _ItemCell extends StatelessWidget {
                         )
                       : SizedBox(),
                   SizedBox(height: Adapt.px(5)),
-                  Row(children: [
-                    Text.rich(
-                      TextSpan(
-                          style: TextStyle(fontSize: Adapt.px(20)),
-                          children: [
-                            TextSpan(
-                                text: 'Currect Season: ',
-                                style:
-                                    TextStyle(color: const Color(0xFF9E9E9E))),
-                            TextSpan(text: data.season ?? '-')
-                          ]),
-                    ),
-                    SizedBox(width: Adapt.px(10)),
-                    Text.rich(
-                      TextSpan(
-                          style: TextStyle(fontSize: Adapt.px(20)),
-                          children: [
-                            TextSpan(
-                                text: 'Next Episode: ',
-                                style:
-                                    TextStyle(color: const Color(0xFF9E9E9E))),
-                            TextSpan(text: data.nextEpisodeNumber ?? '-')
-                          ]),
-                    ),
-                  ]),
-                  SizedBox(height: Adapt.px(5)),
                   Text.rich(
                     TextSpan(children: [
                       TextSpan(
@@ -124,6 +98,13 @@ class _ItemCell extends StatelessWidget {
                     ]),
                     style: TextStyle(fontSize: Adapt.px(20)),
                   ),
+                  SizedBox(height: Adapt.px(5)),
+                  Text(
+                    'S${data.season ?? '-'} · EP${data.nextEpisodeNumber ?? '-'}',
+                    style: TextStyle(
+                        fontSize: Adapt.px(20), color: const Color(0xFF9E9E9E)),
+                  ),
+
                   SizedBox(height: Adapt.px(15)),
                   //Text(data.voteAverage.toString()),
                   Text(

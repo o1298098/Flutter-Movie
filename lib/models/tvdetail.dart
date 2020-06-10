@@ -240,6 +240,8 @@ class AirData {
     productionCode = jsonRes['production_code'];
   }
 
+  get profilePath => null;
+
   @override
   String toString() {
     return '{"still_path": $stillPath,"episode_number": $episodeNumber,"id": $id,"season_number": $seasonNumber,"show_id": $showId,"vote_average": $voteAverage,"vote_count": $voteCount,"air_date": ${airDate != null ? '${json.encode(airDate)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"overview": ${overview != null ? '${json.encode(overview)}' : 'null'},"production_code": ${productionCode != null ? '${json.encode(productionCode)}' : 'null'}}';

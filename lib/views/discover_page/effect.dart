@@ -36,12 +36,11 @@ Future _onInit(Action action, Context<DiscoverPageState> ctx) async {
 void _onDispose(Action action, Context<DiscoverPageState> ctx) {
   ctx.state.scrollController.dispose();
   ctx.state.filterState.keyWordController.dispose();
-  ctx.state.dropdownMenuController.dispose();
 }
 
 Future _onLoadData(Action action, Context<DiscoverPageState> ctx) async {
   ctx.dispatch(DiscoverPageActionCreator.onBusyChanged(true));
-  final _genres = ctx.state.currectGenres;
+  final _genres = ctx.state.currentGenres;
   var genresIds = _genres.where((e) => e.isSelected).map<int>((e) {
     return e.value;
   }).toList();
@@ -86,7 +85,7 @@ Future _onVideoCellTapped(Action action, Context<DiscoverPageState> ctx) async {
 Future _onLoadMore(Action action, Context<DiscoverPageState> ctx) async {
   if (ctx.state.isbusy) return;
   ctx.dispatch(DiscoverPageActionCreator.onBusyChanged(true));
-  final _genres = ctx.state.filterState.currectGenres;
+  final _genres = ctx.state.filterState.currentGenres;
   var genresIds = _genres.where((e) => e.isSelected).map<int>((e) {
     return e.value;
   }).toList();
@@ -118,7 +117,7 @@ Future _mediaTypeChange(Action action, Context<DiscoverPageState> ctx) async {
   final bool _isMovie = action.payload ?? true;
   if (ctx.state.isMovie == _isMovie) return;
   ctx.state.isMovie = _isMovie;
-  ctx.state.currectGenres = _isMovie
+  ctx.state.currentGenres = _isMovie
       ? ctx.state.filterState.movieGenres
       : ctx.state.filterState.tvGenres;
   await _onLoadData(action, ctx);
@@ -127,7 +126,7 @@ Future _mediaTypeChange(Action action, Context<DiscoverPageState> ctx) async {
 void _filterTap(Action action, Context<DiscoverPageState> ctx) async {
   ctx.state.filterState.isMovie = ctx.state.isMovie;
   ctx.state.filterState.selectedSort = ctx.state.selectedSort;
-  ctx.state.filterState.currectGenres = ctx.state.currectGenres;
+  ctx.state.filterState.currentGenres = ctx.state.currentGenres;
   ctx.state.filterState.lVote = ctx.state.lVote;
   ctx.state.filterState.rVote = ctx.state.rVote;
   Navigator.of(ctx.context)
@@ -141,7 +140,7 @@ void _filterTap(Action action, Context<DiscoverPageState> ctx) async {
 }
 
 void _applyFilter(Action action, Context<DiscoverPageState> ctx) {
-  ctx.state.currectGenres = ctx.state.filterState.currectGenres;
+  ctx.state.currentGenres = ctx.state.filterState.currentGenres;
   ctx.state.selectedSort = ctx.state.filterState.selectedSort;
   ctx.state.sortDesc = ctx.state.filterState.sortDesc;
   ctx.state.isMovie = ctx.state.filterState.isMovie;

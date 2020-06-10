@@ -18,10 +18,10 @@ void _onAction(Action action, Context<FilterState> ctx) {}
 
 void _genresChanged(Action action, Context<FilterState> ctx) async {
   final _genre = action.payload;
-  ctx.state.currectGenres.forEach((e) {
+  ctx.state.currentGenres.forEach((e) {
     if (e == _genre) e.isSelected = !e.isSelected;
   });
-  ctx.dispatch(FilterActionCreator.updateGenres(ctx.state.currectGenres));
+  ctx.dispatch(FilterActionCreator.updateGenres(ctx.state.currentGenres));
 }
 
 void _votefilterChange(Action action, Context<FilterState> ctx) {
@@ -37,6 +37,6 @@ void _applyFilter(Action action, Context<FilterState> ctx) {
 }
 
 void _onInit(Action action, Context<FilterState> ctx) async {
-  ctx.state.currectGenres =
+  ctx.state.currentGenres =
       ctx.state.isMovie ? ctx.state.movieGenres : ctx.state.tvGenres;
 }

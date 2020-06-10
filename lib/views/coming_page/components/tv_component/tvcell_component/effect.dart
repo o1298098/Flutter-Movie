@@ -22,7 +22,7 @@ Future _onLoadSeason(Action action, Context<TVCellState> ctx) async {
 void _cellTapped(Action action, Context<TVCellState> ctx) async {
   VideoListResult _d = action.payload;
   if (_d != null)
-    await Navigator.of(ctx.context).pushNamed('tvdetailpage', arguments: {
+    await Navigator.of(ctx.context).pushNamed('tvShowDetailPage', arguments: {
       'tvid': _d.id,
       'bgpic': _d.backdropPath,
       'name': _d.name,

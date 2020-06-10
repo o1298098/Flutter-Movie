@@ -1,7 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gzx_dropdown_menu/gzx_dropdown_menu.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/app_user.dart';
 import 'package:movie/models/sortcondition.dart';
@@ -17,14 +16,13 @@ class DiscoverPageState extends MutableSource
   ScrollController scrollController;
   GlobalKey stackKey;
   GlobalKey<ScaffoldState> scaffoldKey;
-  GZXDropdownMenuController dropdownMenuController;
   SortCondition selectedSort;
   bool sortDesc;
   bool isMovie;
   bool isbusy;
   double lVote;
   double rVote;
-  List<SortCondition> currectGenres = [];
+  List<SortCondition> currentGenres = [];
   @override
   DiscoverPageState clone() {
     return DiscoverPageState()
@@ -32,7 +30,6 @@ class DiscoverPageState extends MutableSource
       ..videoListModel = videoListModel
       ..selectedSort = selectedSort
       ..scrollController = scrollController
-      ..dropdownMenuController = dropdownMenuController
       ..scaffoldKey = scaffoldKey
       ..stackKey = stackKey
       ..lVote = lVote
@@ -40,7 +37,7 @@ class DiscoverPageState extends MutableSource
       ..sortDesc = sortDesc
       ..isMovie = isMovie
       ..isbusy = isbusy
-      ..currectGenres = currectGenres;
+      ..currentGenres = currentGenres;
   }
 
   @override
@@ -72,7 +69,7 @@ DiscoverPageState initState(Map<String, dynamic> args) {
   state.filterState = new FilterState();
   state.filterState.selectedSort = state.filterState.sortTypes[0];
   state.selectedSort = state.filterState.sortTypes[0];
-  state.currectGenres = state.filterState.currectGenres;
+  state.currentGenres = state.filterState.currentGenres;
   state.scaffoldKey = GlobalKey();
   state.stackKey = GlobalKey();
   state.sortDesc = true;
@@ -80,7 +77,6 @@ DiscoverPageState initState(Map<String, dynamic> args) {
   state.isbusy = false;
   state.lVote = 0.0;
   state.rVote = 10.0;
-  state.dropdownMenuController = GZXDropdownMenuController();
   state.videoListModel =
       new VideoListModel.fromParams(results: List<VideoListResult>());
   return state;

@@ -31,7 +31,7 @@ FilterState _onSortChanged(FilterState state, Action action) {
 FilterState _updateGenres(FilterState state, Action action) {
   final List<SortCondition> _genres = action.payload;
   final FilterState newState = state.clone();
-  newState.currectGenres = _genres;
+  newState.currentGenres = _genres;
   return newState;
 }
 
@@ -46,7 +46,7 @@ FilterState _mediaTypeChanged(FilterState state, Action action) {
   final bool _isMovie = action.payload ?? false;
   final FilterState newState = state.clone();
   newState.isMovie = _isMovie;
-  newState.currectGenres = _isMovie ? state.movieGenres : state.tvGenres;
+  newState.currentGenres = _isMovie ? state.movieGenres : state.tvGenres;
   return newState;
 }
 

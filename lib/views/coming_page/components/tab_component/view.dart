@@ -22,7 +22,7 @@ Widget buildView(TabState state, Dispatch dispatch, ViewService viewService) {
     labelColor: _theme.tabBarTheme.labelColor,
     unselectedLabelColor: _theme.tabBarTheme.unselectedLabelColor,
     labelStyle: TextStyle(fontSize: Adapt.px(35), fontWeight: FontWeight.bold),
-    unselectedLabelStyle: TextStyle(color: Colors.grey),
+    unselectedLabelStyle: TextStyle(color: const Color(0xFF9E9E9E)),
     tabs: <Widget>[
       Tab(
         text: I18n.of(viewService.context).movies,

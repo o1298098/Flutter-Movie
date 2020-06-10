@@ -28,7 +28,7 @@ class FilterState implements Cloneable<FilterState> {
     ..addAll(Genres.tvList.keys.map((i) {
       return SortCondition(name: Genres.tvList[i], isSelected: false, value: i);
     }).toList());
-  List<SortCondition> currectGenres = [];
+  List<SortCondition> currentGenres = [];
   String keywords;
 
   @override
@@ -43,7 +43,7 @@ class FilterState implements Cloneable<FilterState> {
       ..movieGenres = movieGenres
       ..tvGenres = tvGenres
       ..keywords = keywords
-      ..currectGenres = currectGenres
+      ..currentGenres = currentGenres
       ..keyWordController = keyWordController;
   }
 }

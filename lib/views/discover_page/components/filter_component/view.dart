@@ -31,7 +31,7 @@ Widget buildView(
             onSelected: (s) => dispatch(FilterActionCreator.onSortChanged(s)),
           ),
           _GenresPanel(
-            genres: state.currectGenres,
+            genres: state.currentGenres,
             onTap: (d) => dispatch(FilterActionCreator.onGenresChanged(d)),
           ),
           _VoteFilterPanel(

@@ -13,6 +13,7 @@ class TabComponent extends Component<TabState> {
           },
           effect: buildEffect(),
           reducer: buildReducer(),
+          clearOnDependenciesChanged: true,
           view: buildView,
           dependencies: Dependencies<TabState>(
               adapter: null, slots: <String, Dependent<TabState>>{}),

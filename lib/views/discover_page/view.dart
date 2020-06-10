@@ -59,13 +59,14 @@ Widget buildView(
 }
 
 class _ShimmerCell extends StatelessWidget {
-  final _horizontalPadding = Adapt.px(30);
-  final _cardHeight = Adapt.px(400);
-  final _borderRadius = Adapt.px(40);
-  final _imageWidth = Adapt.px(240);
-  final _rightPanelPadding = Adapt.px(20);
+  const _ShimmerCell({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final _horizontalPadding = Adapt.px(30);
+    final _cardHeight = Adapt.px(400);
+    final _borderRadius = Adapt.px(40);
+    final _imageWidth = Adapt.px(240);
+    final _rightPanelPadding = Adapt.px(20);
     final _rightPanelWidth = Adapt.screenW() -
         _imageWidth -
         _horizontalPadding * 2 -
@@ -147,7 +148,7 @@ class _ShimmerList extends StatelessWidget {
     final ThemeData _theme = ThemeStyle.getTheme(context);
     return SliverToBoxAdapter(
       child: Offstage(
-        offstage: isbusy,
+        offstage: !isbusy,
         child: Shimmer.fromColors(
           baseColor: _theme.primaryColorDark,
           highlightColor: _theme.primaryColorLight,
@@ -159,11 +160,11 @@ class _ShimmerList extends StatelessWidget {
                 right: Adapt.px(30)),
             child: Column(
               children: <Widget>[
-                _ShimmerCell(),
+                const _ShimmerCell(),
                 SizedBox(height: Adapt.px(30)),
-                _ShimmerCell(),
+                const _ShimmerCell(),
                 SizedBox(height: Adapt.px(30)),
-                _ShimmerCell(),
+                const _ShimmerCell(),
               ],
             ),
           ),
@@ -204,6 +205,7 @@ class _FilterBar extends StatelessWidget {
             children: [
               _TapPanel(
                 isMovie: isMovie,
+                isBusy: isBusy,
                 onTap: switchMedia,
               ),
               Expanded(child: SizedBox()),
@@ -233,8 +235,9 @@ class _FilterBar extends StatelessWidget {
 
 class _TapPanel extends StatefulWidget {
   final bool isMovie;
+  final bool isBusy;
   final Function(bool) onTap;
-  const _TapPanel({this.onTap, this.isMovie});
+  const _TapPanel({this.onTap, this.isMovie, this.isBusy});
   @override
   _TapPanelState createState() => _TapPanelState();
 }
@@ -250,7 +253,7 @@ class _TapPanelState extends State<_TapPanel> with TickerProviderStateMixin {
   Animation<Offset> _position;
   @override
   void didUpdateWidget(_TapPanel oldWidget) {
-    if (widget.isMovie != _isMovie) {
+    if (widget.isMovie != _isMovie && !widget.isBusy) {
       widget.isMovie ? _controller.reverse() : _controller.forward();
       _isMovie = widget.isMovie;
       setState(() {});
@@ -276,10 +279,7 @@ class _TapPanelState extends State<_TapPanel> with TickerProviderStateMixin {
   }
 
   onTap(bool isMovie) {
-    if (_isMovie == isMovie) return;
-    // _isMovie = isMovie;
-    //isMovie ? _controller.reverse() : _controller.forward();
-    // setState(() {});
+    if (_isMovie == isMovie && widget.isBusy) return;
     if (widget.onTap != null) widget.onTap(isMovie);
   }
 

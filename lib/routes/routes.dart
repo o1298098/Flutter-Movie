@@ -33,6 +33,7 @@ import 'package:movie/views/steam_link_page/steamlinks_page/page.dart';
 import 'package:movie/views/steam_link_page/tvshow_livestream_page/page.dart';
 import 'package:movie/views/test_page/page.dart';
 import 'package:movie/views/tvdetail_page/page.dart';
+import 'package:movie/views/tvshow_detail_page/page.dart';
 import 'package:movie/views/watchlist_page/page.dart';
 import 'package:movie/views/watchlistdetail_page/page.dart';
 
@@ -76,6 +77,7 @@ class Routes {
       'premiumPage': PremiumPage(),
       'checkoutPage': CheckOutPage(),
       'downloadPage': DownloadPage(),
+      'tvShowDetailPage': TvShowDetailPage()
     },
     visitor: (String path, Page<Object, dynamic> page) {
       if (page.isTypeof<GlobalBaseState>()) {
