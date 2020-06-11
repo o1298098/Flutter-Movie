@@ -24,7 +24,7 @@ enum TvShowDetailAction {
   openMenu,
   showSnackBar,
   onImageCellTapped,
-  plyaTapped,
+  moreEpisode,
 }
 
 class TvShowDetailActionCreator {
@@ -87,7 +87,7 @@ class TvShowDetailActionCreator {
     return Action(TvShowDetailAction.onImageCellTapped, payload: [index, data]);
   }
 
-  static Action onPlayTapped() {
-    return Action(TvShowDetailAction.plyaTapped);
+  static Action moreEpisode() {
+    return Action(TvShowDetailAction.moreEpisode);
   }
 }

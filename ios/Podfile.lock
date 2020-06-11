@@ -487,8 +487,6 @@ PODS:
     - Flutter
   - wakelock (0.0.1):
     - Flutter
-  - webview_media (0.0.1):
-    - Flutter
 
 DEPENDENCIES:
   - camera (from `.symlinks/plugins/camera/ios`)
@@ -528,7 +526,6 @@ DEPENDENCIES:
   - video_player (from `.symlinks/plugins/video_player/ios`)
   - video_player_web (from `.symlinks/plugins/video_player_web/ios`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
-  - webview_media (from `.symlinks/plugins/webview_media/ios`)
 
 SPEC REPOS:
   trunk:
@@ -644,8 +641,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/video_player_web/ios"
   wakelock:
     :path: ".symlinks/plugins/wakelock/ios"
-  webview_media:
-    :path: ".symlinks/plugins/webview_media/ios"
 
 SPEC CHECKSUMS:
   abseil: 18063d773f5366ff8736a050fe035a28f635fd27
@@ -684,7 +679,7 @@ SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_braintree: 101b66de3f3ae397c9ee3593c2e24ed67a41eeab
   flutter_downloader: 058b9c41564a90500f67f3e432e3524613a7fd83
-  flutter_inappwebview: 239198123453705522ba6c4f78d3d7468215f248
+  flutter_inappwebview: 69dfbac46157b336ffbec19ca6dfd4638c7bf189
   flutter_mdns_plugin: 3b8fa566cc39005527b515c77243cfdba77b70bc
   flutter_plugin_android_lifecycle: 47de533a02850f070f5696a623995e93eddcdb9b
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
@@ -722,7 +717,6 @@ SPEC CHECKSUMS:
   video_player: 69c5f029fac4ffe4fc8a85ea7f7b793709661549
   video_player_web: da8cadb8274ed4f8dbee8d7171b420dedd437ce7
   wakelock: 0d4a70faf8950410735e3f61fb15d517c8a6efc4
-  webview_media: 33604c2c1805f41bd0c6749c4d7de24b8cb4d81d
 
 PODFILE CHECKSUM: a16a2c10df96093d75da6a0a48157a14a8ebf62d
 

@@ -8,6 +8,7 @@ import 'package:movie/models/videolist.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
+import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
@@ -19,51 +20,60 @@ Widget buildView(
         : state.data.length > 0
             ? _RecommendationPanel(
                 data: state.data,
+                onTap: (d) =>
+                    dispatch(RecommendationActionCreator.cellTapped(d)),
               )
-            : null,
+            : SizedBox(),
   );
 }
 
 class _RecommendationCell extends StatelessWidget {
   final VideoListResult data;
-  const _RecommendationCell({this.data});
+  final Function(VideoListResult) onTap;
+  const _RecommendationCell({this.data, this.onTap});
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
     final _width = Adapt.px(130);
-    return Column(children: [
-      Container(
-        width: _width,
-        height: Adapt.px(200),
-        decoration: BoxDecoration(
-          color: _theme.primaryColorDark,
-          borderRadius: BorderRadius.circular(Adapt.px(20)),
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: CachedNetworkImageProvider(
-              ImageUrl.getUrl(data.posterPath, ImageSize.w300),
+    return GestureDetector(
+      onTap: () => onTap(data),
+      child: Column(
+        children: [
+          Container(
+            width: _width,
+            height: Adapt.px(200),
+            decoration: BoxDecoration(
+              color: _theme.primaryColorDark,
+              borderRadius: BorderRadius.circular(Adapt.px(20)),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: CachedNetworkImageProvider(
+                  ImageUrl.getUrl(data.posterPath, ImageSize.w300),
+                ),
+              ),
             ),
           ),
-        ),
+          SizedBox(height: Adapt.px(20)),
+          SizedBox(
+            width: _width,
+            child: Text(
+              data.name,
+              maxLines: 3,
+              overflow: TextOverflow.fade,
+              style: TextStyle(fontSize: Adapt.px(20)),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
       ),
-      SizedBox(height: Adapt.px(20)),
-      SizedBox(
-        width: _width,
-        child: Text(
-          data.name,
-          maxLines: 3,
-          overflow: TextOverflow.fade,
-          style: TextStyle(fontSize: Adapt.px(20)),
-          textAlign: TextAlign.center,
-        ),
-      ),
-    ]);
+    );
   }
 }
 
 class _RecommendationPanel extends StatelessWidget {
   final List<VideoListResult> data;
-  const _RecommendationPanel({this.data});
+  final Function(VideoListResult) onTap;
+  const _RecommendationPanel({this.data, this.onTap});
   @override
   Widget build(BuildContext context) {
     final _padding = Adapt.px(40);
@@ -92,6 +102,7 @@ class _RecommendationPanel extends StatelessWidget {
             itemCount: data.length,
             itemBuilder: (_, index) => _RecommendationCell(
               data: data[index],
+              onTap: onTap,
             ),
           ),
         ),

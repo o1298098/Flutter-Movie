@@ -5,7 +5,7 @@ import 'package:movie/models/enums/time_window.dart';
 import 'package:movie/models/searchresult.dart';
 import 'package:movie/views/detail_page/page.dart';
 import 'package:movie/views/peopledetail_page/page.dart';
-import 'package:movie/views/tvdetail_page/page.dart';
+import 'package:movie/views/tvshow_detail_page/page.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -81,7 +81,7 @@ Future _cellTapped(Action action, Context<TrendingPageState> ctx) async {
       };
       break;
     case 'tv':
-      _page = TVDetailPage();
+      _page = TvShowDetailPage();
       _data = {
         'tvid': _d.id,
         'bgpic': _d.backdropPath,

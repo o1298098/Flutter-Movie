@@ -50,7 +50,7 @@ Future _cellTapped(Action action, Context<ListDetailPageState> ctx) async {
         'posterpic': d.photoUrl
       });
     else
-      await Navigator.of(ctx.context).pushNamed('tvdetailpage', arguments: {
+      await Navigator.of(ctx.context).pushNamed('tvShowDetailPage', arguments: {
         'tvid': d.mediaid,
         'bgpic': d.photoUrl,
         'name': d.mediaName,

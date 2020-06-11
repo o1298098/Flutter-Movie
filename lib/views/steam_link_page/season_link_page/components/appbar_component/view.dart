@@ -19,6 +19,7 @@ Widget buildView(
     pinned: true,
     centerTitle: true,
     stretch: true,
+    backgroundColor: const Color(0xFFA0BBCC),
     flexibleSpace: Stack(fit: StackFit.expand, children: [
       Container(
         alignment: Alignment.bottomLeft,

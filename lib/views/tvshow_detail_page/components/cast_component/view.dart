@@ -7,6 +7,7 @@ import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/style/themestyle.dart';
+import 'package:movie/views/tvshow_detail_page/components/cast_component/action.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'state.dart';
@@ -16,54 +17,63 @@ Widget buildView(CastState state, Dispatch dispatch, ViewService viewService) {
     duration: Duration(milliseconds: 300),
     child: state.casts == null
         ? _ShimmerList()
-        : state.casts.length > 0 ? _CastPanel(casts: state.casts) : SizedBox(),
+        : state.casts.length > 0
+            ? _CastPanel(
+                casts: state.casts,
+                onTap: (d) => dispatch(CastActionCreator.onCastCellTapped(d)),
+              )
+            : SizedBox(),
   );
 }
 
 class _CastCell extends StatelessWidget {
   final CastData data;
-  const _CastCell({this.data});
+  final Function(CastData) onTap;
+  const _CastCell({this.data, this.onTap});
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
-    return Column(
-      children: [
-        Container(
-          width: Adapt.px(110),
-          height: Adapt.px(110),
-          decoration: BoxDecoration(
-            color: _theme.primaryColorDark,
-            shape: BoxShape.circle,
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              //alignment: Alignment.topCenter,
-              image: CachedNetworkImageProvider(
-                ImageUrl.getUrl(data.profilePath, ImageSize.w300),
+    return GestureDetector(
+      onTap: () => onTap(data),
+      child: Column(
+        children: [
+          Container(
+            width: Adapt.px(110),
+            height: Adapt.px(110),
+            decoration: BoxDecoration(
+              color: _theme.primaryColorDark,
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: CachedNetworkImageProvider(
+                  ImageUrl.getUrl(data.profilePath, ImageSize.w300),
+                ),
               ),
             ),
           ),
-        ),
-        SizedBox(height: Adapt.px(20)),
-        SizedBox(
-          width: Adapt.px(120),
-          child: Text(
-            data.name ?? '',
-            textAlign: TextAlign.center,
-            maxLines: 3,
-            style: TextStyle(
-              fontSize: Adapt.px(22),
-              color: const Color(0xFF717171),
+          SizedBox(height: Adapt.px(20)),
+          SizedBox(
+            width: Adapt.px(120),
+            child: Text(
+              data.name ?? '',
+              textAlign: TextAlign.center,
+              maxLines: 3,
+              style: TextStyle(
+                fontSize: Adapt.px(22),
+                color: const Color(0xFF717171),
+              ),
             ),
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 }
 
 class _CastPanel extends StatelessWidget {
   final List<CastData> casts;
-  const _CastPanel({Key key, @required this.casts})
+  final Function(CastData) onTap;
+  const _CastPanel({Key key, @required this.casts, this.onTap})
       : assert(casts != null),
         super(key: key);
   @override
@@ -95,6 +105,7 @@ class _CastPanel extends StatelessWidget {
               final _d = casts[index];
               return _CastCell(
                 data: _d,
+                onTap: onTap,
               );
             },
           ),

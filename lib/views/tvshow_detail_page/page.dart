@@ -5,6 +5,8 @@ import 'components/keyword_component/component.dart';
 import 'components/keyword_component/state.dart';
 import 'components/last_episode_component/component.dart';
 import 'components/last_episode_component/state.dart';
+import 'components/menu_component/component.dart';
+import 'components/menu_component/state.dart';
 import 'components/recommendation_component/component.dart';
 import 'components/recommendation_component/state.dart';
 import 'components/season_component/component.dart';
@@ -30,6 +32,7 @@ class TvShowDetailPage extends Page<TvShowDetailState, Map<String, dynamic>>
           dependencies: Dependencies<TvShowDetailState>(
               adapter: null,
               slots: <String, Dependent<TvShowDetailState>>{
+                'menu': MenuConnector() + MenuComponent(),
                 'swiper': SwiperConnector() + SwiperComponent(),
                 'title': TitleConnector() + TitleComponent(),
                 'cast': CastConnector() + CastComponent(),

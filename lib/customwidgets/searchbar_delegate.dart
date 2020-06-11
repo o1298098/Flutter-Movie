@@ -383,12 +383,13 @@ Widget _buildResultCell(SearchResult s, BuildContext ctx) {
             'posterpic': s.posterPath
           });
         case 'tv':
-          return await Navigator.of(ctx).pushNamed('tvdetailpage', arguments: {
-            'tvid': s.id,
-            'bgpic': s.backdropPath,
-            'name': s.name,
-            'posterpic': s.posterPath
-          });
+          return await Navigator.of(ctx).pushNamed('tvShowDetailPage',
+              arguments: {
+                'tvid': s.id,
+                'bgpic': s.backdropPath,
+                'name': s.name,
+                'posterpic': s.posterPath
+              });
         case 'person':
           return await Navigator.of(ctx).pushNamed('peopledetailpage',
               arguments: {

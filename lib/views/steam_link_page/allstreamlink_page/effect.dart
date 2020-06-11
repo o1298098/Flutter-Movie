@@ -4,7 +4,7 @@ import 'package:movie/actions/base_api.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/sortcondition.dart';
 import 'package:movie/views/detail_page/page.dart';
-import 'package:movie/views/tvdetail_page/page.dart';
+import 'package:movie/views/tvshow_detail_page/page.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -110,14 +110,14 @@ Future _onCellTapped(Action action, Context<AllStreamLinkPageState> ctx) async {
   final String title = action.payload[2];
   final String posterpic = action.payload[3];
   final String pagename =
-      type == MediaType.movie ? 'detailpage' : 'tvdetailpage';
+      type == MediaType.movie ? 'detailpage' : 'tvShowDetailPage';
   var data = {
     type == MediaType.movie ? 'id' : 'tvid': id,
     'bgpic': type == MediaType.movie ? posterpic : bgpic,
     type == MediaType.tv ? 'name' : 'title': title,
     'posterpic': posterpic
   };
-  Page page = type == MediaType.movie ? MovieDetailPage() : TVDetailPage();
+  Page page = type == MediaType.movie ? MovieDetailPage() : TvShowDetailPage();
   await Navigator.of(ctx.context).push(PageRouteBuilder(
       settings: RouteSettings(name: pagename),
       pageBuilder: (context, animation, secAnimation) {

@@ -6,6 +6,7 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/tvdetail.dart';
 import 'package:movie/style/themestyle.dart';
+import 'package:movie/views/tvshow_detail_page/action.dart';
 
 import 'state.dart';
 
@@ -15,12 +16,14 @@ Widget buildView(
       ? SizedBox()
       : _LastEpisodePanel(
           data: state.lastEpisodeToAir,
+          moreTapped: () => dispatch(TvShowDetailActionCreator.moreEpisode()),
         );
 }
 
 class _LastEpisodePanel extends StatelessWidget {
   final AirData data;
-  const _LastEpisodePanel({this.data});
+  final Function moreTapped;
+  const _LastEpisodePanel({this.data, this.moreTapped});
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
@@ -37,10 +40,13 @@ class _LastEpisodePanel extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            Text(
-              'more',
-              style: TextStyle(
-                  fontSize: Adapt.px(24), color: const Color(0xFF2196F3)),
+            GestureDetector(
+              onTap: moreTapped,
+              child: Text(
+                'more',
+                style: TextStyle(
+                    fontSize: Adapt.px(24), color: const Color(0xFF2196F3)),
+              ),
             )
           ]),
           SizedBox(height: Adapt.px(30)),

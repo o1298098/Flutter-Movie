@@ -14,25 +14,18 @@ class TvShowDetailState implements Cloneable<TvShowDetailState> {
   GlobalKey<ScaffoldState> scaffoldkey;
   TVDetailModel tvDetailModel;
   int tvid;
-  String name;
-  String posterPic;
   CreditsModel creditsModel;
   ImageModel imagesmodel;
   ReviewModel reviewModel;
   VideoListModel recommendations;
   KeyWordModel keywords;
   VideoModel videomodel;
-  String backdropPic;
-  Color mainColor;
-  Color tabTintColor;
   AccountState accountState;
   @override
   TvShowDetailState clone() {
     return TvShowDetailState()
       ..scaffoldkey = scaffoldkey
       ..tvDetailModel = tvDetailModel
-      ..mainColor = mainColor
-      ..tabTintColor = tabTintColor
       ..creditsModel = creditsModel
       ..tvid = tvid
       ..reviewModel = reviewModel
@@ -40,9 +33,6 @@ class TvShowDetailState implements Cloneable<TvShowDetailState> {
       ..recommendations = recommendations
       ..keywords = keywords
       ..videomodel = videomodel
-      ..backdropPic = backdropPic
-      ..posterPic = posterPic
-      ..name = name
       ..accountState = accountState;
   }
 }
@@ -52,9 +42,7 @@ TvShowDetailState initState(Map<String, dynamic> args) {
   state.scaffoldkey =
       GlobalKey<ScaffoldState>(debugLabel: '_TvShowDetailPagekey');
   state.tvid = args['tvid'];
-  if (args['bgpic'] != null) state.backdropPic = args['bgpic'];
-  if (args['posterpic'] != null) state.posterPic = args['posterpic'];
-  if (args['name'] != null) state.name = args['name'];
+
   state.tvDetailModel = new TVDetailModel.fromParams();
   state.creditsModel = new CreditsModel.fromParams(
       cast: List<CastData>(), crew: List<CrewData>());

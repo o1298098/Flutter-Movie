@@ -36,9 +36,6 @@ TvShowDetailState _onInit(TvShowDetailState state, Action action) {
   TVDetailModel model = action.payload ?? new TVDetailModel.fromParams();
   final TvShowDetailState newState = state.clone();
   newState.tvDetailModel = model;
-  newState.backdropPic = model.backdropPath;
-  newState.posterPic = model.posterPath;
-  newState.name = model.name;
   return newState;
 }
 

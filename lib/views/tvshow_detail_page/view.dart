@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/style/themestyle.dart';
 
+import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
@@ -19,10 +20,14 @@ Widget buildView(
           backgroundColor: _theme.backgroundColor,
           brightness: _theme.brightness,
           title: Text(
-            state.name,
+            state?.tvDetailModel?.name ?? '',
             style: TextStyle(color: _theme.textTheme.bodyText1.color),
           ),
-          actions: [IconButton(icon: Icon(Icons.more_vert), onPressed: () {})],
+          actions: [
+            IconButton(
+                icon: Icon(Icons.more_vert),
+                onPressed: () => dispatch(TvShowDetailActionCreator.openMenu()))
+          ],
         ),
         body: ListView(
           padding: EdgeInsets.symmetric(vertical: Adapt.px(30)),

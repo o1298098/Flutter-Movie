@@ -9,6 +9,7 @@ import 'package:movie/models/tvdetail.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
+import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
@@ -16,59 +17,66 @@ Widget buildView(
   return AnimatedSwitcher(
     duration: Duration(milliseconds: 300),
     child: state.seasons == null
-        ? _ShimmerList()
+        ? const _ShimmerList()
         : state.seasons.length > 0
-            ? _SeasonPanel(seasons: state.seasons)
-            : SizedBox(),
+            ? _SeasonPanel(
+                seasons: state.seasons,
+                onTap: (d) => dispatch(SeasonActionCreator.cellTapped(d)),
+              )
+            : const SizedBox(),
   );
 }
 
 class _SeasonCell extends StatelessWidget {
   final Season data;
-  const _SeasonCell({this.data});
+  final Function(Season) onTap;
+  const _SeasonCell({this.data, this.onTap});
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
     final _subStyle =
         TextStyle(fontSize: Adapt.px(16), color: const Color(0xFF717171));
     final _width = Adapt.px(130);
-    return SizedBox(
-      width: _width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: _width,
-            height: Adapt.px(200),
-            decoration: BoxDecoration(
-              color: _theme.primaryColorDark,
-              borderRadius: BorderRadius.circular(Adapt.px(20)),
-              image: data.posterPath == null
-                  ? null
-                  : DecorationImage(
-                      fit: BoxFit.cover,
-                      image: CachedNetworkImageProvider(
-                          ImageUrl.getUrl(data.posterPath, ImageSize.w300)),
-                    ),
+    return GestureDetector(
+      onTap: () => onTap(data),
+      child: SizedBox(
+        width: _width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: _width,
+              height: Adapt.px(200),
+              decoration: BoxDecoration(
+                color: _theme.primaryColorDark,
+                borderRadius: BorderRadius.circular(Adapt.px(20)),
+                image: data.posterPath == null
+                    ? null
+                    : DecorationImage(
+                        fit: BoxFit.cover,
+                        image: CachedNetworkImageProvider(
+                            ImageUrl.getUrl(data.posterPath, ImageSize.w300)),
+                      ),
+              ),
             ),
-          ),
-          SizedBox(height: Adapt.px(20)),
-          Text(
-            data?.name ?? '',
-            maxLines: 1,
-            style: TextStyle(fontSize: Adapt.px(24)),
-          ),
-          Text(
-            data.airDate == null
-                ? '-'
-                : DateFormat.yMMMd().format(DateTime.parse(data?.airDate)),
-            style: _subStyle,
-          ),
-          Text(
-            '${data.episodeCount} Episodes',
-            style: _subStyle,
-          )
-        ],
+            SizedBox(height: Adapt.px(20)),
+            Text(
+              data?.name ?? '',
+              maxLines: 1,
+              style: TextStyle(fontSize: Adapt.px(24)),
+            ),
+            Text(
+              data.airDate == null
+                  ? '-'
+                  : DateFormat.yMMMd().format(DateTime.parse(data?.airDate)),
+              style: _subStyle,
+            ),
+            Text(
+              '${data.episodeCount} Episodes',
+              style: _subStyle,
+            )
+          ],
+        ),
       ),
     );
   }
@@ -76,7 +84,9 @@ class _SeasonCell extends StatelessWidget {
 
 class _SeasonPanel extends StatelessWidget {
   final List<Season> seasons;
-  const _SeasonPanel({this.seasons});
+
+  final Function(Season) onTap;
+  const _SeasonPanel({this.seasons, this.onTap});
   @override
   Widget build(BuildContext context) {
     final _padding = Adapt.px(40);
@@ -96,23 +106,26 @@ class _SeasonPanel extends StatelessWidget {
         ),
         SizedBox(height: Adapt.px(30)),
         SizedBox(
-            height: _listViewHeight,
-            child: ListView.separated(
-              physics: BouncingScrollPhysics(),
-              padding: EdgeInsets.symmetric(horizontal: _padding),
-              scrollDirection: Axis.horizontal,
-              separatorBuilder: (_, __) => SizedBox(width: Adapt.px(40)),
-              itemCount: seasons.length,
-              itemBuilder: (_, index) => _SeasonCell(
-                data: seasons[(seasons.length - 1) - index],
-              ),
-            )),
+          height: _listViewHeight,
+          child: ListView.separated(
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: _padding),
+            scrollDirection: Axis.horizontal,
+            separatorBuilder: (_, __) => SizedBox(width: Adapt.px(40)),
+            itemCount: seasons.length,
+            itemBuilder: (_, index) => _SeasonCell(
+              data: seasons[(seasons.length - 1) - index],
+              onTap: onTap,
+            ),
+          ),
+        ),
       ],
     );
   }
 }
 
 class _ShimmerCell extends StatelessWidget {
+  const _ShimmerCell();
   @override
   Widget build(BuildContext context) {
     final _width = Adapt.px(130);
@@ -154,6 +167,7 @@ class _ShimmerCell extends StatelessWidget {
 }
 
 class _ShimmerList extends StatelessWidget {
+  const _ShimmerList();
   @override
   Widget build(BuildContext context) {
     final _padding = Adapt.px(40);
@@ -184,7 +198,7 @@ class _ShimmerList extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               separatorBuilder: (_, __) => SizedBox(width: Adapt.px(40)),
               itemCount: 5,
-              itemBuilder: (_, index) => _ShimmerCell(),
+              itemBuilder: (_, index) => const _ShimmerCell(),
             ),
           ),
         ),

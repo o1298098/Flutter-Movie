@@ -21,7 +21,7 @@ Future _onCellTapped(Action action, Context<PopularPosterState> ctx) async {
       'posterpic': action.payload[3]
     });
   else
-    await Navigator.of(ctx.context).pushNamed('tvdetailpage', arguments: {
+    await Navigator.of(ctx.context).pushNamed('tvShowDetailPage', arguments: {
       'tvid': action.payload[0],
       'bgpic': action.payload[1],
       'name': action.payload[2],

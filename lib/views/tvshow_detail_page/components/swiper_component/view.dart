@@ -10,6 +10,7 @@ import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/videomodel.dart';
 import 'package:movie/style/themestyle.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import 'state.dart';
 
@@ -150,13 +151,61 @@ class _BackDropCell extends StatelessWidget {
   }
 }
 
-class _VideoCell extends StatelessWidget {
+class _VideoCell extends StatefulWidget {
   final List<VideoResult> videos;
   const _VideoCell({this.videos});
   @override
+  _VideoCellState createState() => _VideoCellState();
+}
+
+class _VideoCellState extends State<_VideoCell> {
+  YoutubePlayerController _youtubePlayerController;
+  String _videoId = '';
+  bool _playVideo = false;
+
+  @override
+  void didUpdateWidget(_VideoCell oldWidget) {
+    if (oldWidget.videos != widget.videos) _updateYoutubeController();
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    _youtubePlayerController?.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    _updateYoutubeController();
+    _youtubePlayerController = YoutubePlayerController(
+      initialVideoId: _videoId,
+    );
+    super.initState();
+  }
+
+  _updateYoutubeController() {
+    if ((widget.videos?.length ?? 0) > 0) {
+      _videoId = widget.videos[0].key;
+      setState(() {});
+    }
+  }
+
+  _startPlayVideo(bool play) {
+    if (!play) {
+      _youtubePlayerController.reset();
+      _youtubePlayerController.reload();
+    } else
+      _youtubePlayerController.play();
+    setState(() {
+      _playVideo = play;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
-    final _padding = Adapt.px(40);
+    final double _padding = Adapt.px(40);
     final _width = Adapt.screenW() - _padding * 2;
     final _height = _width * 9 / 16;
     return Stack(
@@ -168,39 +217,48 @@ class _VideoCell extends StatelessWidget {
           decoration: BoxDecoration(
             color: _theme.primaryColorDark,
             borderRadius: BorderRadius.circular(Adapt.px(25)),
-            image: (videos.length ?? 0) > 0
+            image: (widget.videos.length ?? 0) > 0
                 ? DecorationImage(
                     fit: BoxFit.cover,
                     image: CachedNetworkImageProvider(
-                        'https://i.ytimg.com/vi/${videos[0]?.key ?? ''}/hqdefault.jpg'),
+                        'https://i.ytimg.com/vi/${widget.videos[0]?.key ?? ''}/hqdefault.jpg'),
                   )
                 : null,
           ),
           child: Container(
-              decoration: BoxDecoration(
-            color: const Color(0x55000000),
-            borderRadius: BorderRadius.circular(Adapt.px(25)),
-          )),
+            decoration: BoxDecoration(
+              color: const Color(0x55000000),
+              borderRadius: BorderRadius.circular(Adapt.px(25)),
+            ),
+          ),
         ),
-        Container(
-          height: _height,
-          alignment: Alignment.center,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(Adapt.px(50)),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-              child: Container(
-                color: const Color(0x40FFFFFF),
-                width: Adapt.px(100),
-                height: Adapt.px(100),
-                child: Icon(
-                  Icons.play_arrow,
-                  size: 25,
-                  color: const Color(0xFFFFFFFF),
+        GestureDetector(
+          onTap: () => _startPlayVideo(true),
+          child: Container(
+            height: _height,
+            alignment: Alignment.center,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(Adapt.px(50)),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                child: Container(
+                  color: const Color(0x40FFFFFF),
+                  width: Adapt.px(100),
+                  height: Adapt.px(100),
+                  child: Icon(
+                    Icons.play_arrow,
+                    size: 25,
+                    color: const Color(0xFFFFFFFF),
+                  ),
                 ),
               ),
             ),
           ),
+        ),
+        _VideoPlayer(
+          controller: _youtubePlayerController,
+          play: _playVideo,
+          onEnd: () => _startPlayVideo(false),
         )
       ],
     );
@@ -208,8 +266,33 @@ class _VideoCell extends StatelessWidget {
 }
 
 class _VideoPlayer extends StatelessWidget {
+  final YoutubePlayerController controller;
+  final bool play;
+  final Function onEnd;
+  const _VideoPlayer({this.controller, this.play, this.onEnd});
   @override
   Widget build(BuildContext context) {
-    return Container();
+    final double _padding = Adapt.px(40);
+    final _width = Adapt.screenW() - _padding * 2;
+    final _height = _width * 9 / 16;
+    return play
+        ? Container(
+            margin: EdgeInsets.symmetric(horizontal: _padding),
+            height: _height,
+            width: _width,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(Adapt.px(25)),
+              child: YoutubePlayer(
+                controller: controller,
+                onEnded: (d) => onEnd(),
+                progressColors: ProgressBarColors(
+                  playedColor: const Color(0xFFFFFFFF),
+                  handleColor: const Color(0xFFFFFFFF),
+                  bufferedColor: const Color(0xFFE0E0E0),
+                ),
+              ),
+            ),
+          )
+        : SizedBox();
   }
 }

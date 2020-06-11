@@ -18,7 +18,7 @@ Effect<TvShowDetailState> buildEffect() {
     TvShowDetailAction.openMenu: _openMenu,
     TvShowDetailAction.showSnackBar: _showSnackBar,
     TvShowDetailAction.onImageCellTapped: _onImageCellTapped,
-    TvShowDetailAction.plyaTapped: _onPlayTapped,
+    TvShowDetailAction.moreEpisode: _moreEpisode,
     Lifecycle.initState: _onInit,
     Lifecycle.dispose: _onDispose,
   });
@@ -55,7 +55,7 @@ Future _onInit(Action action, Context<TvShowDetailState> ctx) async {
 
 void _onDispose(Action action, Context<TvShowDetailState> ctx) {}
 
-void _onPlayTapped(Action action, Context<TvShowDetailState> ctx) async {
+void _moreEpisode(Action action, Context<TvShowDetailState> ctx) async {
   if (ctx.state.tvDetailModel != null)
     await Navigator.of(ctx.context).pushNamed('seasonLinkPage', arguments: {
       'tvid': ctx.state.tvid,

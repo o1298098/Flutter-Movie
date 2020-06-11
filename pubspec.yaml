@@ -40,7 +40,7 @@ dependencies:
   url_launcher: ^5.2.5
   chewie: ^0.9.10
   video_player: ^0.10.5+2
-  youtube_player_flutter: ^6.0.3+2
+  youtube_player_flutter: ^7.0.0+3
   intl: ^0.16.0
   cached_network_image: ^2.0.0
   parallax_image: ^0.3.1+1
