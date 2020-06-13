@@ -1,7 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/user_info_operate.dart';
-import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/views/setting_page/page.dart';
 import 'action.dart';
 import 'state.dart';
@@ -34,7 +33,7 @@ Future _onLogin(Action action, Context<AccountPageState> ctx) async {
 
 Future _onInit(Action action, Context<AccountPageState> ctx) async {
   if (ctx.state.animationController == null) {
-    final CustomstfState ticker = ctx.stfState as CustomstfState;
+    final Object ticker = ctx.stfState;
     ctx.state.animationController = AnimationController(
         vsync: ticker, duration: Duration(milliseconds: 1000));
   }

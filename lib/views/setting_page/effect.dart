@@ -9,7 +9,7 @@ import 'package:movie/actions/apihelper.dart';
 import 'package:movie/actions/github_api.dart';
 import 'package:movie/actions/user_info_operate.dart';
 import 'package:movie/actions/version_comparison.dart';
-import 'package:movie/customwidgets/update_info_dialog.dart';
+import 'package:movie/widgets/update_info_dialog.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
@@ -124,14 +124,16 @@ void _profileEdit(Action action, Context<SettingPageState> ctx) {
 }
 
 Future _openPhotoPicker(Action action, Context<SettingPageState> ctx) async {
-  final _image = await ImagePicker.pickImage(
+  final ImagePicker _imagePicker = ImagePicker();
+  final _image = await _imagePicker.getImage(
       source: ImageSource.gallery, maxHeight: 100, maxWidth: 100);
   if (_image != null) {
     ctx.dispatch(SettingPageActionCreator.onUploading(true));
     StorageReference storageReference = FirebaseStorage.instance
         .ref()
         .child('avatar/${Path.basename(_image.path)}');
-    StorageUploadTask uploadTask = storageReference.putFile(_image);
+    StorageUploadTask uploadTask =
+        storageReference.putData(await _image.readAsBytes());
     await uploadTask.onComplete;
     print('File Uploaded');
     storageReference.getDownloadURL().then((fileURL) {

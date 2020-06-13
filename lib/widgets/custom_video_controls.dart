@@ -10,8 +10,8 @@ import 'package:dart_chromecast/casting/cast_media.dart';
 import 'package:dart_chromecast/casting/cast_sender.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/customwidgets/device_picker.dart';
-import 'package:movie/customwidgets/service_discovery.dart';
+import 'package:movie/widgets/device_picker.dart';
+import 'package:movie/widgets/service_discovery.dart';
 import 'package:open_iconic_flutter/open_iconic_flutter.dart';
 import 'package:video_player/video_player.dart';
 

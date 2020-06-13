@@ -3,8 +3,8 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/customwidgets/sliverappbar_delegate.dart';
-import 'package:movie/customwidgets/web_torrent_player.dart';
+import 'package:movie/widgets/sliverappbar_delegate.dart';
+import 'package:movie/widgets/web_torrent_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import 'state.dart';

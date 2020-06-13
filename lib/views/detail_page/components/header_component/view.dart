@@ -5,7 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
-import 'package:movie/customwidgets/scrollview_background.dart';
+import 'package:movie/widgets/scrollview_background.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/externalidsmodel.dart';
 import 'package:movie/models/moviedetail.dart';

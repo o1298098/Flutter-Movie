@@ -1,6 +1,4 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/customwidgets/custom_stfstate.dart';
-
 import 'components/body_component/component.dart';
 import 'components/body_component/state.dart';
 import 'components/header_component/component.dart';
@@ -10,11 +8,8 @@ import 'reducer.dart';
 import 'state.dart';
 import 'view.dart';
 
-class AccountPage extends Page<AccountPageState, Map<String, dynamic>> {
-  @override
-  CustomstfState<AccountPageState> createState() =>
-      CustomstfState<AccountPageState>();
-
+class AccountPage extends Page<AccountPageState, Map<String, dynamic>>
+    with TickerProviderMixin {
   AccountPage()
       : super(
           initState: initState,

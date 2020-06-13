@@ -3,7 +3,6 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/base_api.dart';
 import 'package:movie/actions/imageurl.dart';
-import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'action.dart';
@@ -21,7 +20,7 @@ Effect<FavoritesPageState> buildEffect() {
 void _onAction(Action action, Context<FavoritesPageState> ctx) {}
 
 Future _onInit(Action action, Context<FavoritesPageState> ctx) async {
-  final ticker = ctx.stfState as CustomstfState;
+  final Object ticker = ctx.stfState;
   ctx.state.animationController =
       AnimationController(vsync: ticker, duration: Duration(milliseconds: 600));
 

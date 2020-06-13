@@ -542,7 +542,8 @@ class ApiHelper {
     VideoListModel model;
     String param =
         '/movie/upcoming?api_key=$_apikey&language=$language&page=$page&region=$region';
-    var r = await _http.request(param);
+    var r = await _http.request(param,
+        cached: true, cacheDuration: Duration(seconds: 0));
     if (r != null) model = VideoListModel(r);
     return model;
   }
@@ -611,7 +612,8 @@ class ApiHelper {
     VideoListModel model;
     String param =
         '/tv/on_the_air?api_key=$_apikey&language=$language&page=$page&region=$region';
-    var r = await _http.request(param, cached: true);
+    var r = await _http.request(param,
+        cached: true, cacheDuration: Duration(seconds: 0));
     if (r != null) model = VideoListModel(r);
     return model;
   }

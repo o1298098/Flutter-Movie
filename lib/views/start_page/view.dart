@@ -3,7 +3,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/customwidgets/keepalive_widget.dart';
+import 'package:movie/widgets/keepalive_widget.dart';
 import 'package:movie/models/enums/genres.dart';
 import 'package:movie/models/item.dart';
 import 'package:shared_preferences/shared_preferences.dart';

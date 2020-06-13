@@ -1,18 +1,20 @@
 {
   "name": "path_provider",
   "version": "0.0.1",
-  "summary": "A Flutter plugin for getting commonly used locations on the filesystem.",
-  "description": "A Flutter plugin for getting commonly used locations on the filesystem.",
-  "homepage": "https://github.com/flutter/plugins/tree/master/packages/path_provider",
+  "summary": "Flutter Path Provider",
+  "description": "A Flutter plugin for getting commonly used locations on the filesystem.\nDownloaded by pub (not CocoaPods).",
+  "homepage": "https://github.com/flutter/plugins",
   "license": {
+    "type": "BSD",
     "file": "../LICENSE"
   },
   "authors": {
-    "Flutter Team": "flutter-dev@googlegroups.com"
+    "Flutter Dev Team": "flutter-dev@googlegroups.com"
   },
   "source": {
-    "path": "."
+    "http": "https://github.com/flutter/plugins/tree/master/packages/path_provider/path_provider"
   },
+  "documentation_url": "https://pub.dev/packages/path_provider",
   "source_files": "Classes/**/*",
   "public_header_files": "Classes/**/*.h",
   "dependencies": {

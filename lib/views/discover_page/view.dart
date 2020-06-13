@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/customwidgets/sliverappbar_delegate.dart';
+import 'package:movie/widgets/sliverappbar_delegate.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -285,6 +285,7 @@ class _TapPanelState extends State<_TapPanel> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final _theme = ThemeStyle.getTheme(context);
     return Stack(children: [
       Row(children: [
         _TapCell(
@@ -308,7 +309,9 @@ class _TapPanelState extends State<_TapPanel> with TickerProviderStateMixin {
             height: Adapt.px(8),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: const Color(0xFF334455),
+              color: _theme.brightness == Brightness.light
+                  ? const Color(0xFF334455)
+                  : const Color(0xFFFFFFFF),
             ),
           ),
         ),
@@ -344,6 +347,8 @@ class _Loading extends StatelessWidget {
   const _Loading({this.isBusy});
   @override
   Widget build(BuildContext context) {
+    final _theme = ThemeStyle.getTheme(context);
+    final _brightness = _theme.brightness == Brightness.light;
     return AnimatedSwitcher(
       duration: Duration(milliseconds: 300),
       child: isBusy
@@ -355,11 +360,18 @@ class _Loading extends StatelessWidget {
                   vertical: Adapt.px(1), horizontal: Adapt.px(20)),
               height: Adapt.px(80),
               child: SizedBox(
-                  height: Adapt.px(2),
-                  child: LinearProgressIndicator(
-                    backgroundColor: Color(0xFF334455).withAlpha(100),
-                    valueColor: AlwaysStoppedAnimation(Color(0xFF334455)),
-                  )),
+                height: Adapt.px(2),
+                child: LinearProgressIndicator(
+                  backgroundColor: _brightness
+                      ? const Color(0xFFEFEFEF)
+                      : const Color(0xFF505050),
+                  valueColor: AlwaysStoppedAnimation(
+                    _brightness
+                        ? const Color(0xFF334455)
+                        : const Color(0xFFFFFFFF),
+                  ),
+                ),
+              ),
             )
           : SizedBox(),
     );

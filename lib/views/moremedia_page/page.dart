@@ -1,15 +1,12 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/customwidgets/custom_stfstate.dart';
 
 import 'effect.dart';
 import 'reducer.dart';
 import 'state.dart';
 import 'view.dart';
 
-class MoreMediaPage extends Page<MoreMediaPageState, Map<String, dynamic>> {
-  @override
-  CustomstfState<MoreMediaPageState> createState() =>
-      CustomstfState<MoreMediaPageState>();
+class MoreMediaPage extends Page<MoreMediaPageState, Map<String, dynamic>>
+    with TickerProviderMixin {
   MoreMediaPage()
       : super(
           initState: initState,

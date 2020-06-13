@@ -1,7 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/apihelper.dart';
-import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/videolist.dart';
 import 'action.dart';
@@ -12,8 +11,8 @@ Effect<MoreMediaPageState> buildEffect() {
     MoreMediaPageAction.action: _onAction,
     MoreMediaPageAction.cellTapped: _cellTapped,
     Lifecycle.initState: _onInit,
-    Lifecycle.build:_onBuild,
-    Lifecycle.dispose:_onDispose
+    Lifecycle.build: _onBuild,
+    Lifecycle.dispose: _onDispose
   });
 }
 
@@ -26,20 +25,24 @@ void _onInit(Action action, Context<MoreMediaPageState> ctx) {
         _loadMore(action, ctx);
       }
     });
-    final TickerProvider tickerProvider = ctx.stfState as CustomstfState;
-    ctx.state.animationController=AnimationController(
-      vsync: tickerProvider, duration: Duration(milliseconds: 300*ctx.state.videoList.results.length)
-    );
+  final Object tickerProvider = ctx.stfState;
+  ctx.state.animationController = AnimationController(
+      vsync: tickerProvider,
+      duration:
+          Duration(milliseconds: 300 * ctx.state.videoList.results.length));
 }
 
 void _onBuild(Action action, Context<MoreMediaPageState> ctx) {
- Future.delayed(const Duration(milliseconds: 200),()=> ctx.state.animationController.forward());
+  Future.delayed(const Duration(milliseconds: 200),
+      () => ctx.state.animationController.forward());
 }
+
 void _onDispose(Action action, Context<MoreMediaPageState> ctx) {
   ctx.state.animationController.stop(canceled: false);
   ctx.state.animationController.dispose();
   ctx.state.scrollController.dispose();
 }
+
 void _onAction(Action action, Context<MoreMediaPageState> ctx) {}
 
 Future _loadMore(Action action, Context<MoreMediaPageState> ctx) async {

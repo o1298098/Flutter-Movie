@@ -334,6 +334,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>path_provider_linux.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>path_provider_macos.xcscheme</key>
 		<dict>
 			<key>isShown</key>

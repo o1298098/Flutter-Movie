@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/customwidgets/customcliper_path.dart';
+import 'package:movie/widgets/customcliper_path.dart';
 import 'state.dart';
 
 Widget buildView(

@@ -2,8 +2,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action, Page;
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/actions/base_api.dart';
-import 'package:movie/customwidgets/custom_stfstate.dart';
-import 'package:movie/customwidgets/searchbar_delegate.dart';
+import 'package:movie/widgets/searchbar_delegate.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/enums/time_window.dart';
 import 'package:movie/views/detail_page/page.dart';
@@ -29,7 +28,7 @@ Effect<HomePageState> buildEffect() {
 void _onAction(Action action, Context<HomePageState> ctx) {}
 
 Future _onInit(Action action, Context<HomePageState> ctx) async {
-  final ticker = ctx.stfState as CustomstfState;
+  final Object ticker = ctx.stfState;
   ctx.state.animatedController =
       AnimationController(vsync: ticker, duration: Duration(milliseconds: 600));
   ctx.state.scrollController = new ScrollController();

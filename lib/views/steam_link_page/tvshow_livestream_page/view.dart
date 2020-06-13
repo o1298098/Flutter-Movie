@@ -2,8 +2,8 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/customwidgets/keepalive_widget.dart';
-import 'package:movie/customwidgets/sliverappbar_delegate.dart';
+import 'package:movie/widgets/keepalive_widget.dart';
+import 'package:movie/widgets/sliverappbar_delegate.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/style/themestyle.dart';
 

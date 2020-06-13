@@ -2,7 +2,6 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter/widgets.dart' hide Action;
 import 'package:movie/actions/apihelper.dart';
-import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -21,7 +20,7 @@ void _onAction(Action action, Context<MovieDetailPageState> ctx) {}
 
 Future _onInit(Action action, Context<MovieDetailPageState> ctx) async {
   try {
-    final ticker = ctx.stfState as CustomstfState;
+    final Object ticker = ctx.stfState;
     ctx.state.animationController = AnimationController(
         vsync: ticker, duration: Duration(milliseconds: 1000));
     ctx.state.scrollController = new ScrollController();

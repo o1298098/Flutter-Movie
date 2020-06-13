@@ -1,6 +1,4 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/customwidgets/custom_stfstate.dart';
-
 import 'components/header_component/component.dart';
 import 'components/header_component/state.dart';
 import 'components/info_component/component.dart';
@@ -12,10 +10,8 @@ import 'reducer.dart';
 import 'state.dart';
 import 'view.dart';
 
-class WatchlistPage extends Page<WatchlistPageState, Map<String, dynamic>> {
-  @override
-  CustomstfState<WatchlistPageState> createState() =>
-      CustomstfState<WatchlistPageState>();
+class WatchlistPage extends Page<WatchlistPageState, Map<String, dynamic>>
+    with TickerProviderMixin {
   WatchlistPage()
       : super(
           initState: initState,

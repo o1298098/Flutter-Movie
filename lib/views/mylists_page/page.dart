@@ -1,5 +1,4 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/views/mylists_page/addcell_component/component.dart';
 import 'package:movie/views/mylists_page/addcell_component/state.dart';
 
@@ -9,10 +8,8 @@ import 'reducer.dart';
 import 'state.dart';
 import 'view.dart';
 
-class MyListsPage extends Page<MyListsPageState, Map<String, dynamic>> {
-  @override
-  CustomstfState<MyListsPageState> createState() =>
-      CustomstfState<MyListsPageState>();
+class MyListsPage extends Page<MyListsPageState, Map<String, dynamic>>
+    with TickerProviderMixin {
   MyListsPage()
       : super(
           initState: initState,

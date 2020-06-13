@@ -4,7 +4,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/customwidgets/customcliper_path.dart';
+import 'package:movie/widgets/customcliper_path.dart';
 import 'action.dart';
 import 'state.dart';
 

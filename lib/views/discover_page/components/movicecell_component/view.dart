@@ -64,86 +64,87 @@ class _Card extends StatelessWidget {
                     : const Color(0xFF303030),
                 blurRadius: 5)
           ]),
-      child: Row(children: [
-        ClipRRect(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(_borderRadius),
-              bottomLeft: Radius.circular(_borderRadius),
-              bottomRight: Radius.circular(_imageWidth / 2)),
-          child: Container(
-            width: _imageWidth,
-            height: _cardHeight,
-            color: const Color(0xFFAABBCC),
-            child: CachedNetworkImage(
-              fit: BoxFit.cover,
-              imageUrl: ImageUrl.getUrl(data.posterPath, ImageSize.w300),
+      child: GestureDetector(
+        onTap: () => onTap(data),
+        child: Row(children: [
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(_borderRadius),
+                bottomLeft: Radius.circular(_borderRadius),
+                bottomRight: Radius.circular(_imageWidth / 2)),
+            child: Container(
+              width: _imageWidth,
+              height: _cardHeight,
+              color: const Color(0xFFAABBCC),
+              child: CachedNetworkImage(
+                fit: BoxFit.cover,
+                imageUrl: ImageUrl.getUrl(data.posterPath, ImageSize.w300),
+              ),
             ),
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(_rightPanelPadding),
-          child: SizedBox(
-            width: _rightPanelWidth,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  data.title ?? data.name,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: Adapt.px(30),
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(height: Adapt.px(5)),
-                Text(
-                  DateFormat.yMMMd().format(
-                    DateTime?.tryParse(
-                      (_isMovie
-                          ? _changeDatetime(data.releaseDate)
-                          : _changeDatetime(data.firstAirDate)),
+          Padding(
+            padding: EdgeInsets.all(_rightPanelPadding),
+            child: SizedBox(
+              width: _rightPanelWidth,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    data.title ?? data.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: Adapt.px(30),
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                  style: TextStyle(
-                      color: const Color(0xFF9E9E9E), fontSize: Adapt.px(18)),
-                ),
-                SizedBox(height: Adapt.px(5)),
-                Text(
-                  data.genreIds
-                      .take(3)
-                      .map((e) =>
-                          _isMovie ? Genres.movieList[e] : Genres.tvList[e])
-                      .join(' / '),
-                  style: TextStyle(
-                      fontSize: Adapt.px(18), color: const Color(0xFF9E9E9E)),
-                ),
-                SizedBox(height: Adapt.px(10)),
-                Row(children: [
-                  _LinearProgressIndicator(
-                    total: 10.0,
-                    vote: data.voteAverage,
-                    width: Adapt.px(150),
-                  ),
-                  SizedBox(width: Adapt.px(10)),
+                  SizedBox(height: Adapt.px(5)),
                   Text(
-                    data.voteAverage.toString(),
+                    DateFormat.yMMMd().format(
+                      DateTime?.tryParse(
+                        (_isMovie
+                            ? _changeDatetime(data.releaseDate)
+                            : _changeDatetime(data.firstAirDate)),
+                      ),
+                    ),
                     style: TextStyle(
-                        fontSize: Adapt.px(20), color: const Color(0xFF9E9E9E)),
-                  )
-                ]),
-                SizedBox(height: Adapt.px(20)),
-                Text(
-                  data.overview,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: Adapt.px(24)),
-                ),
-                Expanded(child: SizedBox()),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                    onTap: () => onTap(data),
+                        color: const Color(0xFF9E9E9E), fontSize: Adapt.px(18)),
+                  ),
+                  SizedBox(height: Adapt.px(5)),
+                  Text(
+                    data.genreIds
+                        .take(3)
+                        .map((e) =>
+                            _isMovie ? Genres.movieList[e] : Genres.tvList[e])
+                        .join(' / '),
+                    style: TextStyle(
+                        fontSize: Adapt.px(18), color: const Color(0xFF9E9E9E)),
+                  ),
+                  SizedBox(height: Adapt.px(10)),
+                  Row(children: [
+                    _LinearProgressIndicator(
+                      total: 10.0,
+                      vote: data.voteAverage,
+                      width: Adapt.px(150),
+                    ),
+                    SizedBox(width: Adapt.px(10)),
+                    Text(
+                      data.voteAverage.toString(),
+                      style: TextStyle(
+                          fontSize: Adapt.px(20),
+                          color: const Color(0xFF9E9E9E)),
+                    )
+                  ]),
+                  SizedBox(height: Adapt.px(20)),
+                  Text(
+                    data.overview,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: Adapt.px(24)),
+                  ),
+                  Expanded(child: SizedBox()),
+                  Align(
+                    alignment: Alignment.centerRight,
                     child: Container(
                       width: Adapt.px(80),
                       height: Adapt.px(60),
@@ -152,18 +153,19 @@ class _Card extends StatelessWidget {
                         borderRadius: BorderRadius.circular(Adapt.px(20)),
                       ),
                       child: Center(
-                          child: Icon(
-                        Icons.chevron_right,
-                        color: const Color(0xFFFFFFFF),
-                      )),
+                        child: Icon(
+                          Icons.chevron_right,
+                          color: const Color(0xFFFFFFFF),
+                        ),
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
-          ),
-        )
-      ]),
+          )
+        ]),
+      ),
     );
   }
 }

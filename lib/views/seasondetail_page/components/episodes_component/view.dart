@@ -17,40 +17,47 @@ import 'state.dart';
 Widget buildView(
     EpisodesState state, Dispatch dispatch, ViewService viewService) {
   return Column(
-      key: ValueKey(state.episodes),
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.all(Adapt.px(30)),
-          child: Text.rich(TextSpan(children: [
-            TextSpan(
-                text: I18n.of(viewService.context).episodes,
-                style: TextStyle(
-                    fontSize: Adapt.px(35), fontWeight: FontWeight.bold)),
-            TextSpan(
-                text:
-                    ' ${state.episodes != null ? state.episodes.length.toString() : ''}',
-                style: TextStyle(color: Colors.grey, fontSize: Adapt.px(26)))
-          ])),
+    key: ValueKey(state.episodes),
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      SizedBox(height: Adapt.px(30)),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
+        child: Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                  text: I18n.of(viewService.context).episodes,
+                  style: TextStyle(
+                      fontSize: Adapt.px(30), fontWeight: FontWeight.w600)),
+              TextSpan(
+                  text:
+                      ' ${state.episodes != null ? state.episodes.length.toString() : ''}',
+                  style: TextStyle(color: Colors.grey, fontSize: Adapt.px(26)))
+            ],
+          ),
         ),
-        state.episodes.length > 0
-            ? ListView.separated(
-                shrinkWrap: true,
-                physics: PageScrollPhysics(),
-                padding: EdgeInsets.symmetric(
-                    horizontal: Adapt.px(20), vertical: Adapt.px(30)),
-                separatorBuilder: (_, __) => SizedBox(height: Adapt.px(30)),
-                itemCount: state.episodes.length,
-                itemBuilder: (_, i) => _EpisodeCell(
-                  data: state.episodes[i],
-                  onTap: (d) => dispatch(EpisodesActionCreator.onCellTapped(d)),
-                ),
-              )
-            : _ShimmerList()
-      ]);
+      ),
+      state.episodes.length > 0
+          ? ListView.separated(
+              shrinkWrap: true,
+              physics: PageScrollPhysics(),
+              padding: EdgeInsets.symmetric(
+                  horizontal: Adapt.px(40), vertical: Adapt.px(30)),
+              separatorBuilder: (_, __) => SizedBox(height: Adapt.px(30)),
+              itemCount: state.episodes.length,
+              itemBuilder: (_, i) => _EpisodeCell2(
+                data: state.episodes[i],
+                onTap: (d) => dispatch(EpisodesActionCreator.onCellTapped(d)),
+              ),
+            )
+          : const _ShimmerList()
+    ],
+  );
 }
 
 class _ShimmerCell extends StatelessWidget {
+  const _ShimmerCell();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -123,6 +130,7 @@ class _ShimmerCell extends StatelessWidget {
 }
 
 class _ShimmerList extends StatelessWidget {
+  const _ShimmerList();
   @override
   Widget build(BuildContext context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
@@ -135,7 +143,7 @@ class _ShimmerList extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
           separatorBuilder: (_, __) => SizedBox(height: Adapt.px(30)),
           itemCount: 3,
-          itemBuilder: (_, __) => _ShimmerCell(),
+          itemBuilder: (_, __) => const _ShimmerCell(),
         ),
       ),
     );
@@ -256,6 +264,71 @@ class _EpisodeCell extends StatelessWidget {
                 ),
               ],
             )),
+      ),
+    );
+  }
+}
+
+class _EpisodeCell2 extends StatelessWidget {
+  final Episode data;
+  final Function(Episode) onTap;
+  const _EpisodeCell2({this.data, this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    final _theme = ThemeStyle.getTheme(context);
+    final _shadowColor = _theme.brightness == Brightness.light
+        ? const Color(0xFFE0E0E0)
+        : const Color(0x00000000);
+    return Container(
+      //height: Adapt.px(400),
+      margin: EdgeInsets.only(
+        top: Adapt.px(50),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+      decoration: BoxDecoration(
+          color: _theme.cardColor,
+          borderRadius: BorderRadius.circular(Adapt.px(20)),
+          boxShadow: [
+            BoxShadow(
+              color: _shadowColor,
+              offset: Offset(Adapt.px(10), Adapt.px(20)),
+              blurRadius: Adapt.px(30),
+            )
+          ]),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: Adapt.px(220),
+            width: Adapt.px(400),
+            transform:
+                Matrix4.translationValues(-Adapt.px(40), -Adapt.px(40), 0),
+            decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(Adapt.px(20)),
+                boxShadow: [
+                  BoxShadow(
+                      color: _shadowColor,
+                      offset: Offset(Adapt.px(10), Adapt.px(20)),
+                      blurRadius: Adapt.px(30),
+                      spreadRadius: -Adapt.px(10))
+                ],
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: CachedNetworkImageProvider(
+                    ImageUrl.getUrl(data.stillPath, ImageSize.w300),
+                  ),
+                )),
+          ),
+          Text(
+            data.name,
+            style:
+                TextStyle(fontSize: Adapt.px(26), fontWeight: FontWeight.w600),
+          ),
+          SizedBox(height: Adapt.px(10)),
+          Text(data.overview),
+          SizedBox(height: Adapt.px(50)),
+        ],
       ),
     );
   }

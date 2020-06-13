@@ -3,8 +3,7 @@ import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/actions/base_api.dart';
-import 'package:movie/customwidgets/custom_stfstate.dart';
-import 'package:movie/customwidgets/gallery_photoview_wrapper.dart';
+import 'package:movie/widgets/gallery_photoview_wrapper.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/media_type.dart';
@@ -32,7 +31,7 @@ void _onAction(Action action, Context<MovieDetailPageState> ctx) {}
 
 Future _onInit(Action action, Context<MovieDetailPageState> ctx) async {
   final _id = ctx.state.mediaId;
-  final ticker = ctx.stfState as CustomstfState;
+  final Object ticker = ctx.stfState;
   ctx.state.animationController = AnimationController(
       vsync: ticker, duration: Duration(milliseconds: 2000));
   ctx.state.scrollController = ScrollController();

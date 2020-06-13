@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/customwidgets/customcliper_path.dart';
+import 'package:movie/widgets/customcliper_path.dart';
 import 'package:movie/models/country_phone_code.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:toast/toast.dart';

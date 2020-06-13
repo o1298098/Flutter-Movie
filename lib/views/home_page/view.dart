@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/customwidgets/backdrop.dart';
+import 'package:movie/widgets/backdrop.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/style/themestyle.dart';
 

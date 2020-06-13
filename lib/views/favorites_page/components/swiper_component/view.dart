@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
-import 'package:movie/customwidgets/shimmercell.dart';
+import 'package:movie/widgets/shimmercell.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/base_api_model/user_media.dart';
 import 'package:movie/models/enums/imagesize.dart';

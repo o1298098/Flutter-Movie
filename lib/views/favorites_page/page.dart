@@ -1,6 +1,4 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/customwidgets/custom_stfstate.dart';
-
 import 'components/background_component/component.dart';
 import 'components/background_component/state.dart';
 import 'components/header_component/component.dart';
@@ -12,10 +10,8 @@ import 'reducer.dart';
 import 'state.dart';
 import 'view.dart';
 
-class FavoritesPage extends Page<FavoritesPageState, Map<String, dynamic>> {
-  @override
-  CustomstfState<FavoritesPageState> createState() =>
-      CustomstfState<FavoritesPageState>();
+class FavoritesPage extends Page<FavoritesPageState, Map<String, dynamic>>
+    with TickerProviderMixin {
   FavoritesPage()
       : super(
           initState: initState,

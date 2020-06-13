@@ -2,7 +2,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/videourl.dart';
-import 'package:movie/customwidgets/videoplayeritem.dart';
+import 'package:movie/widgets/videoplayeritem.dart';
 import 'package:movie/models/videomodel.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';

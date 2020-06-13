@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/customwidgets/loading_layout.dart';
+import 'package:movie/widgets/loading_layout.dart';
 import 'package:movie/models/country_phone_code.dart';
 import 'package:movie/style/themestyle.dart';
 

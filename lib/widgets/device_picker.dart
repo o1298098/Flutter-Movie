@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mdns_plugin/flutter_mdns_plugin.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/customwidgets/service_discovery.dart';
+import 'package:movie/widgets/service_discovery.dart';
 import 'package:observable/observable.dart';
 import 'package:video_player/video_player.dart';
 

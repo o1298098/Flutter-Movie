@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/customwidgets/sliverappbar_delegate.dart';
+import 'package:movie/widgets/sliverappbar_delegate.dart';
 import 'package:movie/style/themestyle.dart';
 
 import 'state.dart';

@@ -11,7 +11,7 @@ import 'package:movie/actions/downloader_callback.dart';
 import 'package:movie/actions/github_api.dart';
 import 'package:movie/actions/user_info_operate.dart';
 import 'package:movie/actions/version_comparison.dart';
-import 'package:movie/customwidgets/update_info_dialog.dart';
+import 'package:movie/widgets/update_info_dialog.dart';
 import 'package:movie/views/detail_page/page.dart';
 import 'package:movie/views/tvdetail_page/page.dart';
 import 'package:package_info/package_info.dart';

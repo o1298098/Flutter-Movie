@@ -1,5 +1,4 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/views/detail_page/components/trailer_component/component.dart';
 import 'package:movie/views/detail_page/components/trailer_component/state.dart';
 
@@ -26,10 +25,8 @@ import 'reducer.dart';
 import 'state.dart';
 import 'view.dart';
 
-class MovieDetailPage extends Page<MovieDetailPageState, Map<String, dynamic>> {
-  @override
-  CustomstfState<MovieDetailPageState> createState() =>
-      CustomstfState<MovieDetailPageState>();
+class MovieDetailPage extends Page<MovieDetailPageState, Map<String, dynamic>>
+    with TickerProviderMixin {
   MovieDetailPage()
       : super(
           initState: initState,

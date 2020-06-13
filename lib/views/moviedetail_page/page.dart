@@ -1,5 +1,4 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/views/moviedetail_page/components/info_component/component.dart';
 import 'package:movie/views/moviedetail_page/components/keywords_component/component.dart';
 import 'package:movie/views/moviedetail_page/components/keywords_component/state.dart';
@@ -12,22 +11,21 @@ import 'reducer.dart';
 import 'state.dart';
 import 'view.dart';
 
-class MovieDetailPage extends Page<MovieDetailPageState, Map<String, dynamic>> {
-   @override
-  CustomstfState<MovieDetailPageState> createState()=>CustomstfState<MovieDetailPageState> ();
+class MovieDetailPage extends Page<MovieDetailPageState, Map<String, dynamic>>
+    with TickerProviderMixin {
   MovieDetailPage()
       : super(
-            initState: initState,
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<MovieDetailPageState>(
-                adapter: null,
-                slots: <String, Dependent<MovieDetailPageState>>{
-                  'keywords':KeyWordsConnector()+KeyWordsComponent(),
-                  'info':InfoConnector()+InfoComponent(),
-                  'menu':MenuConnector()+MenuComponent()
-                }),
-            middleware: <Middleware<MovieDetailPageState>>[
-            ],);
+          initState: initState,
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<MovieDetailPageState>(
+              adapter: null,
+              slots: <String, Dependent<MovieDetailPageState>>{
+                'keywords': KeyWordsConnector() + KeyWordsComponent(),
+                'info': InfoConnector() + InfoComponent(),
+                'menu': MenuConnector() + MenuComponent()
+              }),
+          middleware: <Middleware<MovieDetailPageState>>[],
+        );
 }

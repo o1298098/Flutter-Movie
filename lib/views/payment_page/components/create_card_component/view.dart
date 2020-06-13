@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/creditcard_verify.dart';
-import 'package:movie/customwidgets/loading_layout.dart';
+import 'package:movie/widgets/loading_layout.dart';
 import 'package:movie/style/themestyle.dart';
 import 'dart:math' as math;
 

@@ -10,8 +10,8 @@ class Request {
       dynamic queryParameters,
       bool cached = false,
       Map<String, Object> headers,
-      cacheDuration = const Duration(days: 1),
-      maxStale = const Duration(days: 30)}) async {
+      Duration cacheDuration = const Duration(days: 1),
+      Duration maxStale = const Duration(days: 30)}) async {
     try {
       var dio = new Dio(BaseOptions(method: method, baseUrl: baseurl));
       if (cached)

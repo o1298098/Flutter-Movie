@@ -1,7 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/base_api.dart';
-import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -15,7 +14,7 @@ Effect<MyListsPageState> buildEffect() {
 }
 
 Future _onInit(Action action, Context<MyListsPageState> ctx) async {
-  final ticker = ctx.stfState as CustomstfState;
+  final Object ticker = ctx.stfState;
   ctx.state.animationController =
       AnimationController(vsync: ticker, duration: Duration(milliseconds: 300));
   ctx.state.cellAnimationController = AnimationController(

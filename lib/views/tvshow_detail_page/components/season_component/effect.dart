@@ -20,7 +20,8 @@ void _cellTapped(Action action, Context<SeasonState> ctx) async {
   await Navigator.of(ctx.context).pushNamed('seasondetailpage', arguments: {
     'tvid': ctx.state.tvid,
     'seasonNumber': _season.seasonNumber,
-    'name': _season.name,
+    'tvShowName': ctx.state.name,
+    'seasonName': _season.name,
     'posterpic': _season.posterPath
   });
 }

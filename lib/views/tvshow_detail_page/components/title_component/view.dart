@@ -2,7 +2,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/votecolorhelper.dart';
-import 'package:movie/customwidgets/expandable_text.dart';
+import 'package:movie/widgets/expandable_text.dart';
 import 'package:movie/models/tvdetail.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
@@ -155,6 +155,7 @@ class _Title extends StatelessWidget {
             overview ?? '',
             maxLines: 3,
             style: TextStyle(
+              fontSize: Adapt.px(26),
               color: const Color(0xFF717171),
             ),
           )

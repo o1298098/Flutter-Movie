@@ -7,7 +7,6 @@ import 'package:flutter/widgets.dart' hide Action;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:movie/actions/pop_result.dart';
 import 'package:movie/actions/user_info_operate.dart';
-import 'package:movie/customwidgets/custom_stfstate.dart';
 import 'package:movie/models/country_phone_code.dart';
 import 'package:movie/views/register_page/page.dart';
 import 'action.dart';
@@ -32,7 +31,7 @@ void _onInit(Action action, Context<LoginPageState> ctx) async {
   ctx.state..emailLogin = true;
   ctx.state.accountFocusNode = FocusNode();
   ctx.state.pwdFocusNode = FocusNode();
-  final ticker = ctx.stfState as CustomstfState;
+  final Object ticker = ctx.stfState;
   ctx.state.animationController = AnimationController(
       vsync: ticker, duration: Duration(milliseconds: 2000));
   ctx.state.submitAnimationController = AnimationController(

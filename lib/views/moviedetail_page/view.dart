@@ -11,7 +11,7 @@ import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/actions/videourl.dart';
 import 'package:movie/actions/votecolorhelper.dart';
-import 'package:movie/customwidgets/videoplayeritem.dart';
+import 'package:movie/widgets/videoplayeritem.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/creditsmodel.dart';
 import 'package:movie/models/enums/imagesize.dart';

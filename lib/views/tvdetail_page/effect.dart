@@ -3,8 +3,7 @@ import 'package:flutter/material.dart' hide Action;
 import 'package:flutter/widgets.dart' hide Action;
 import 'package:movie/actions/apihelper.dart';
 import 'package:movie/actions/base_api.dart';
-import 'package:movie/customwidgets/custom_stfstate.dart';
-import 'package:movie/customwidgets/gallery_photoview_wrapper.dart';
+import 'package:movie/widgets/gallery_photoview_wrapper.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/media_type.dart';
@@ -30,7 +29,7 @@ void _onAction(Action action, Context<TVDetailPageState> ctx) {}
 
 Future _onInit(Action action, Context<TVDetailPageState> ctx) async {
   try {
-    final ticker = ctx.stfState as CustomstfState;
+    final Object ticker = ctx.stfState;
     ctx.state.animationController = AnimationController(
         vsync: ticker, duration: Duration(milliseconds: 1000));
     /*var paletteGenerator = await PaletteGenerator.fromImageProvider(

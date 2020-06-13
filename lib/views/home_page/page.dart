@@ -1,6 +1,4 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/customwidgets/custom_stfstate.dart';
-
 import 'components/header_component/component.dart';
 import 'components/header_component/state.dart';
 import 'components/popularposter_cpmponent/component.dart';
@@ -16,10 +14,8 @@ import 'reducer.dart';
 import 'state.dart';
 import 'view.dart';
 
-class HomePage extends Page<HomePageState, Map<String, dynamic>> {
-  @override
-  CustomstfState<HomePageState> createState() =>
-      CustomstfState<HomePageState>();
+class HomePage extends Page<HomePageState, Map<String, dynamic>>
+    with TickerProviderMixin {
   HomePage()
       : super(
           initState: initState,
