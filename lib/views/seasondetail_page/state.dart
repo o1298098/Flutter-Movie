@@ -5,7 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/app_user.dart';
+import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/seasondetail.dart';
+import 'package:movie/models/videomodel.dart';
 
 import 'components/episodes_component/state.dart';
 import 'components/header_component/state.dart';
@@ -15,6 +17,8 @@ class SeasonDetailPageState extends MutableSource
     implements GlobalBaseState, Cloneable<SeasonDetailPageState> {
   SeasonDetailModel seasonDetailModel;
   SeasonCastState seasonCastState;
+  VideoModel videos;
+  ImageModel images;
   ScrollController scrollController;
   String tvShowName;
   String name;
@@ -30,6 +34,8 @@ class SeasonDetailPageState extends MutableSource
       ..seasonNumber = seasonNumber
       ..seasonCastState = seasonCastState
       ..name = name
+      ..images = images
+      ..videos = videos
       ..tvShowName = tvShowName
       ..seasonpic = seasonpic
       ..scrollController;
@@ -49,12 +55,15 @@ class SeasonDetailPageState extends MutableSource
     switch (index) {
       case 0:
         return HeaderState(
-            name: tvShowName,
-            seasonName: name,
-            posterurl: seasonpic,
-            airDate: seasonDetailModel.airDate,
-            overwatch: seasonDetailModel.overview,
-            seasonNumber: seasonNumber);
+          name: tvShowName,
+          seasonName: name,
+          posterurl: seasonpic,
+          airDate: seasonDetailModel.airDate,
+          overwatch: seasonDetailModel.overview,
+          seasonNumber: seasonNumber,
+          videos: videos,
+          images: images,
+        );
       case 1:
         return seasonCastState;
       case 2:

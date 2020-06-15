@@ -76,6 +76,7 @@ class _Player extends StatelessWidget {
         return AspectRatio(
           aspectRatio: 16 / 9,
           child: InAppWebView(
+            initialUrl: streamAddress,
             key: ValueKey(streamAddress),
             initialHeaders: {},
             initialOptions: InAppWebViewGroupOptions(
@@ -86,9 +87,6 @@ class _Player extends StatelessWidget {
                   useShouldOverrideUrlLoading: true,
                   debuggingEnabled: true,
                 )),
-            onWebViewCreated: (controller) {
-              controller.loadUrl(url: streamAddress);
-            },
             shouldOverrideUrlLoading:
                 (controller, shouldOverrideUrlLoadingRequest) {
               if (shouldOverrideUrlLoadingRequest.url != streamAddress) {

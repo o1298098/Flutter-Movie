@@ -9,6 +9,8 @@ import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/style/themestyle.dart';
+import 'package:movie/widgets/expandable_text.dart';
+import 'package:movie/widgets/linear_progress_Indicator.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'action.dart';
@@ -46,7 +48,7 @@ Widget buildView(
                   horizontal: Adapt.px(40), vertical: Adapt.px(30)),
               separatorBuilder: (_, __) => SizedBox(height: Adapt.px(30)),
               itemCount: state.episodes.length,
-              itemBuilder: (_, i) => _EpisodeCell2(
+              itemBuilder: (_, i) => _EpisodeCell(
                 data: state.episodes[i],
                 onTap: (d) => dispatch(EpisodesActionCreator.onCellTapped(d)),
               ),
@@ -60,71 +62,72 @@ class _ShimmerCell extends StatelessWidget {
   const _ShimmerCell();
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          width: Adapt.screenW() - Adapt.px(60),
-          height: (Adapt.screenW() - Adapt.px(60)) * 9 / 16,
-          color: Colors.grey[200],
-        ),
-        Container(
-          margin: EdgeInsets.only(left: Adapt.px(20), top: Adapt.px(20)),
-          width: Adapt.px(150),
-          height: Adapt.px(24),
-          color: Colors.grey[200],
-        ),
-        SizedBox(
-          height: Adapt.px(20),
-        ),
-        Row(
-          children: <Widget>[
-            SizedBox(
-              width: Adapt.px(20),
-            ),
-            Container(
-              width: Adapt.px(90),
-              height: Adapt.px(45),
-              decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(Adapt.px(25))),
-            ),
-            SizedBox(
-              width: Adapt.px(20),
-            ),
-            Container(
-              color: Colors.grey[200],
-              width: Adapt.px(400),
-              height: Adapt.px(30),
-            )
-          ],
-        ),
-        Container(
-          margin: EdgeInsets.only(
-              left: Adapt.px(20), bottom: Adapt.px(8), top: Adapt.px(20)),
-          color: Colors.grey[200],
-          width: Adapt.screenW() - Adapt.px(100),
-          height: Adapt.px(24),
-        ),
-        Container(
-          margin: EdgeInsets.only(left: Adapt.px(20), bottom: Adapt.px(8)),
-          color: Colors.grey[200],
-          width: Adapt.screenW() - Adapt.px(100),
-          height: Adapt.px(24),
-        ),
-        Container(
-          margin: EdgeInsets.only(left: Adapt.px(20), bottom: Adapt.px(8)),
-          color: Colors.grey[200],
-          width: Adapt.screenW() - Adapt.px(100),
-          height: Adapt.px(24),
-        ),
-        Container(
-          margin: EdgeInsets.only(left: Adapt.px(20), bottom: Adapt.px(8)),
-          color: Colors.grey[200],
-          width: Adapt.screenW() - Adapt.px(300),
-          height: Adapt.px(24),
-        )
-      ],
+    final _color = const Color(0xFFFFFFFF);
+    return Container(
+      //height: Adapt.px(400),
+      margin: EdgeInsets.only(
+        top: Adapt.px(50),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                height: Adapt.px(220),
+                width: Adapt.px(380),
+                transform:
+                    Matrix4.translationValues(-Adapt.px(40), -Adapt.px(40), 0),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(Adapt.px(20)),
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: Adapt.px(20),
+                    width: Adapt.px(200),
+                    color: _color,
+                  ),
+                  SizedBox(height: Adapt.px(5)),
+                  Container(
+                    height: Adapt.px(20),
+                    width: Adapt.px(100),
+                    color: _color,
+                  ),
+                  SizedBox(height: Adapt.px(10)),
+                ],
+              )
+            ],
+          ),
+          Container(
+            height: Adapt.px(20),
+            width: Adapt.px(120),
+            color: _color,
+          ),
+          SizedBox(height: Adapt.px(10)),
+          Container(
+            height: Adapt.px(18),
+            color: _color,
+          ),
+          SizedBox(height: Adapt.px(8)),
+          Container(
+            height: Adapt.px(18),
+            color: _color,
+          ),
+          SizedBox(height: Adapt.px(8)),
+          Container(
+            height: Adapt.px(18),
+            width: Adapt.px(320),
+            color: _color,
+          ),
+          SizedBox(height: Adapt.px(10)),
+        ],
+      ),
     );
   }
 }
@@ -140,8 +143,10 @@ class _ShimmerList extends StatelessWidget {
       child: SizedBox(
         child: ListView.separated(
           shrinkWrap: true,
-          padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-          separatorBuilder: (_, __) => SizedBox(height: Adapt.px(30)),
+          physics: NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.symmetric(
+              horizontal: Adapt.px(40), vertical: Adapt.px(30)),
+          separatorBuilder: (_, __) => SizedBox(height: Adapt.px(60)),
           itemCount: 3,
           itemBuilder: (_, __) => const _ShimmerCell(),
         ),
@@ -154,125 +159,6 @@ class _EpisodeCell extends StatelessWidget {
   final Episode data;
   final Function(Episode) onTap;
   const _EpisodeCell({this.data, this.onTap});
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData _theme = ThemeStyle.getTheme(context);
-    return Container(
-      key: ValueKey(data.id),
-      child: GestureDetector(
-        onTap: () => onTap(data),
-        child: Card(
-            elevation: 0.0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Hero(
-                  tag: 'pic' + data.episodeNumber.toString(),
-                  child: Container(
-                    width: Adapt.screenW() - Adapt.px(40),
-                    height: (Adapt.screenW() - Adapt.px(40)) * 9 / 16,
-                    decoration: BoxDecoration(
-                      color: _theme.primaryColorDark,
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: CachedNetworkImageProvider(
-                          data.stillPath == null
-                              ? ImageUrl.emptyimage
-                              : ImageUrl.getUrl(data.stillPath, ImageSize.w300),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Hero(
-                  tag: 'episodeDate' + data.episodeNumber.toString(),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: Container(
-                        alignment: Alignment.centerLeft,
-                        height: Adapt.px(50),
-                        padding: EdgeInsets.fromLTRB(Adapt.px(20), Adapt.px(10),
-                            Adapt.px(20), Adapt.px(10)),
-                        child: Text(
-                          DateFormat.yMMMd().format(
-                              DateTime.parse(data.airDate ?? '1990-01-01')),
-                          style: TextStyle(fontSize: Adapt.px(24)),
-                        )),
-                  ),
-                ),
-                Hero(
-                  tag: 'episodetitle' + data.episodeNumber.toString(),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: Row(
-                      children: <Widget>[
-                        SizedBox(
-                          width: Adapt.px(20),
-                        ),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(Adapt.px(10),
-                              Adapt.px(5), Adapt.px(15), Adapt.px(5)),
-                          height: Adapt.px(45),
-                          decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius:
-                                  BorderRadius.circular(Adapt.px(25))),
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.star,
-                                color: Colors.white,
-                                size: Adapt.px(25),
-                              ),
-                              SizedBox(
-                                width: Adapt.px(5),
-                              ),
-                              Text(
-                                data.voteAverage.toStringAsFixed(1),
-                                style: TextStyle(color: Colors.white),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: Adapt.px(20),
-                        ),
-                        Container(
-                          width: Adapt.screenW() - Adapt.px(230),
-                          child: Text(
-                            '${data.episodeNumber}  ${data.name}',
-                            maxLines: 2,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: Adapt.px(30)),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Hero(
-                  tag: 'episodeoverWatch' + data.episodeNumber.toString(),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: Container(
-                      padding: EdgeInsets.fromLTRB(Adapt.px(20), Adapt.px(10),
-                          Adapt.px(20), Adapt.px(20)),
-                      child: Text(data.overview ?? '-'),
-                    ),
-                  ),
-                ),
-              ],
-            )),
-      ),
-    );
-  }
-}
-
-class _EpisodeCell2 extends StatelessWidget {
-  final Episode data;
-  final Function(Episode) onTap;
-  const _EpisodeCell2({this.data, this.onTap});
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
@@ -298,27 +184,69 @@ class _EpisodeCell2 extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: Adapt.px(220),
-            width: Adapt.px(400),
-            transform:
-                Matrix4.translationValues(-Adapt.px(40), -Adapt.px(40), 0),
-            decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(Adapt.px(20)),
-                boxShadow: [
-                  BoxShadow(
-                      color: _shadowColor,
-                      offset: Offset(Adapt.px(10), Adapt.px(20)),
-                      blurRadius: Adapt.px(30),
-                      spreadRadius: -Adapt.px(10))
-                ],
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: CachedNetworkImageProvider(
-                    ImageUrl.getUrl(data.stillPath, ImageSize.w300),
+          Row(
+            children: [
+              Container(
+                height: Adapt.px(220),
+                width: Adapt.px(380),
+                transform:
+                    Matrix4.translationValues(-Adapt.px(40), -Adapt.px(40), 0),
+                decoration: BoxDecoration(
+                    color: _theme.primaryColorDark,
+                    borderRadius: BorderRadius.circular(Adapt.px(20)),
+                    boxShadow: [
+                      BoxShadow(
+                          color: _shadowColor,
+                          offset: Offset(Adapt.px(10), Adapt.px(20)),
+                          blurRadius: Adapt.px(20),
+                          spreadRadius: -Adapt.px(10))
+                    ],
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: CachedNetworkImageProvider(
+                        ImageUrl.getUrl(data.stillPath, ImageSize.w300),
+                      ),
+                    )),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'EP ${data.episodeNumber}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: Adapt.px(30),
+                    ),
                   ),
-                )),
+                  SizedBox(height: Adapt.px(5)),
+                  Text(
+                    data.airDate == null
+                        ? '-'
+                        : DateFormat.yMMMd()
+                            .format(DateTime.parse(data.airDate)),
+                    style: TextStyle(
+                      fontSize: Adapt.px(20),
+                      color: const Color(0xFF717171),
+                    ),
+                  ),
+                  SizedBox(height: Adapt.px(10)),
+                  Row(children: [
+                    LinearGradientProgressIndicator(
+                      value: data.voteAverage / 10,
+                      width: Adapt.px(120),
+                    ),
+                    SizedBox(width: Adapt.px(10)),
+                    Text(
+                      data.voteAverage.toStringAsFixed(1),
+                      style: TextStyle(
+                        fontSize: Adapt.px(18),
+                        color: const Color(0xFF717171),
+                      ),
+                    )
+                  ])
+                ],
+              )
+            ],
           ),
           Text(
             data.name,
@@ -326,8 +254,14 @@ class _EpisodeCell2 extends StatelessWidget {
                 TextStyle(fontSize: Adapt.px(26), fontWeight: FontWeight.w600),
           ),
           SizedBox(height: Adapt.px(10)),
-          Text(data.overview),
-          SizedBox(height: Adapt.px(50)),
+          ExpandableText(
+            data.overview,
+            maxLines: 3,
+            style: TextStyle(
+              color: const Color(0xFF717171),
+            ),
+          ),
+          SizedBox(height: Adapt.px(40)),
         ],
       ),
     );

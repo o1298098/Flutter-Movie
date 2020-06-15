@@ -1,4 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/imagemodel.dart';
+import 'package:movie/models/videomodel.dart';
 
 class HeaderState implements Cloneable<HeaderState> {
   String posterurl;
@@ -7,6 +9,8 @@ class HeaderState implements Cloneable<HeaderState> {
   String overwatch;
   String airDate;
   int seasonNumber;
+  VideoModel videos;
+  ImageModel images;
 
   HeaderState(
       {this.name,
@@ -14,7 +18,9 @@ class HeaderState implements Cloneable<HeaderState> {
       this.posterurl,
       this.airDate,
       this.seasonNumber,
-      this.seasonName});
+      this.seasonName,
+      this.images,
+      this.videos});
 
   @override
   HeaderState clone() {
@@ -23,7 +29,9 @@ class HeaderState implements Cloneable<HeaderState> {
       ..name = name
       ..overwatch
       ..seasonName = seasonName
-      ..seasonNumber = seasonNumber;
+      ..seasonNumber = seasonNumber
+      ..videos = videos
+      ..images = images;
   }
 }
 

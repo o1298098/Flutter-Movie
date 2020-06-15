@@ -887,4 +887,22 @@ class ApiHelper {
     if (r != null) model = CombinedCreditsModel(r);
     return model;
   }
+
+  static Future<VideoModel> getTvShowSeasonVideo(
+      int tvid, int seasonNumber) async {
+    VideoModel model;
+    String param = '/tv/$tvid/season/$seasonNumber/videos?api_key=$_apikey';
+    var r = await _http.request(param, cached: true);
+    if (r != null) model = VideoModel(r);
+    return model;
+  }
+
+  static Future<ImageModel> getTvShowSeasonImages(
+      int tvid, int seasonNumber) async {
+    ImageModel model;
+    String param = '/tv/$tvid/season/$seasonNumber/images?api_key=$_apikey';
+    var r = await _http.request(param, cached: true);
+    if (r != null) model = ImageModel(r);
+    return model;
+  }
 }

@@ -11,7 +11,8 @@ class HeaderComponent extends Component<HeaderState> {
                 oldState.name != newState.name ||
                 oldState.overwatch != newState.overwatch ||
                 oldState.posterurl != newState.posterurl ||
-                oldState.seasonNumber != newState.seasonNumber;
+                oldState.seasonNumber != newState.seasonNumber ||
+                oldState.images != newState.images;
           },
           view: buildView,
           dependencies: Dependencies<HeaderState>(

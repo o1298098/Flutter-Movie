@@ -23,7 +23,7 @@ Widget buildView(
               style: _theme.textTheme.bodyText1,
             ),
           ),
-          //backgroundColor: _theme.backgroundColor,
+          backgroundColor: _theme.backgroundColor,
           body: ListView.builder(
             padding: EdgeInsets.zero,
             itemBuilder: adapter.itemBuilder,

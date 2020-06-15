@@ -9,6 +9,7 @@ import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/discover_page/action.dart';
+import 'package:movie/widgets/linear_progress_Indicator.dart';
 
 import 'state.dart';
 
@@ -122,9 +123,8 @@ class _Card extends StatelessWidget {
                   ),
                   SizedBox(height: Adapt.px(10)),
                   Row(children: [
-                    _LinearProgressIndicator(
-                      total: 10.0,
-                      vote: data.voteAverage,
+                    LinearGradientProgressIndicator(
+                      value: data.voteAverage / 10,
                       width: Adapt.px(150),
                     ),
                     SizedBox(width: Adapt.px(10)),
@@ -166,41 +166,6 @@ class _Card extends StatelessWidget {
           )
         ]),
       ),
-    );
-  }
-}
-
-class _LinearProgressIndicator extends StatelessWidget {
-  final double vote;
-  final double total;
-  final double width;
-  const _LinearProgressIndicator({this.vote, this.total, this.width = 80});
-  @override
-  Widget build(BuildContext context) {
-    final _theme = ThemeStyle.getTheme(context);
-    return Container(
-      width: width + Adapt.px(12),
-      height: Adapt.px(22),
-      padding: EdgeInsets.all(Adapt.px(6)),
-      decoration: BoxDecoration(
-          color: _theme.brightness == Brightness.light
-              ? const Color(0xFFF0F0F0)
-              : const Color(0xFF606060),
-          borderRadius: BorderRadius.circular(Adapt.px(11))),
-      child: Row(children: [
-        Container(
-          width: (vote / total) * width,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [
-              Colors.blue[200],
-              Colors.purple[100],
-            ]),
-            borderRadius: BorderRadius.circular(
-              Adapt.px(7.5),
-            ),
-          ),
-        )
-      ]),
     );
   }
 }

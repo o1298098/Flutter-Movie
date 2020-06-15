@@ -55,7 +55,7 @@ dependencies:
   flutter_rating_bar: ^3.0.0
   flutter_swiper: ^1.1.6
   font_awesome_flutter: ^8.5.0
-  flutter_inappwebview: ^3.1.0
+  flutter_inappwebview: ^3.3.0
   flutter_cache_manager: ^1.1.3
   image_picker: ^0.6.3+1
   cloud_firestore: ^0.13.4+2
