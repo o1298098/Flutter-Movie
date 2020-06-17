@@ -71,7 +71,9 @@ Widget buildView(
                         color: Colors.black38),
                   ],
                   color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(Adapt.px(50)),
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(Adapt.px(50)),
+                  ),
                   image: DecorationImage(
                     fit: BoxFit.cover,
                     image: CachedNetworkImageProvider(

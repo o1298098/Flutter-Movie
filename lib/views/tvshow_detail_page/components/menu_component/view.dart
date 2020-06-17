@@ -135,10 +135,9 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
 
   return Container(
     decoration: BoxDecoration(
-        color: _theme.backgroundColor,
-        borderRadius:
-            BorderRadius.vertical(top: Radius.circular(Adapt.px(50)))),
-    //padding: EdgeInsets.only(top:Adapt.px(30)),
+      color: _theme.backgroundColor,
+      borderRadius: BorderRadius.vertical(top: Radius.circular(Adapt.px(50))),
+    ),
     child: ListView(
       physics: BouncingScrollPhysics(),
       children: <Widget>[
@@ -151,23 +150,26 @@ Widget buildView(MenuState state, Dispatch dispatch, ViewService viewService) {
                 height: Adapt.px(100),
                 width: Adapt.px(100),
                 decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(Adapt.px(50)),
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: CachedNetworkImageProvider(
-                            ImageUrl.getUrl(state.posterPic, ImageSize.w300)))),
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(Adapt.px(50)),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(
+                        ImageUrl.getUrl(state.posterPic, ImageSize.w300)),
+                  ),
+                ),
               ),
               SizedBox(
                 width: Adapt.px(30),
               ),
               SizedBox(
-                  width: Adapt.screenW() - Adapt.px(170),
-                  child: Text(
-                    state.name,
-                    style: TextStyle(
-                        fontSize: Adapt.px(40), fontWeight: FontWeight.bold),
-                  )),
+                width: Adapt.screenW() - Adapt.px(170),
+                child: Text(
+                  state.name ?? '',
+                  style: TextStyle(
+                      fontSize: Adapt.px(40), fontWeight: FontWeight.bold),
+                ),
+              ),
             ],
           ),
         ),

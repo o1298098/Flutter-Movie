@@ -296,24 +296,23 @@ class _TaskItem extends StatelessWidget {
                     size: Adapt.px(35),
                   )),
             ),
-            task.status == DownloadTaskStatus.complete
-                ? Container(
-                    width: Adapt.px(65),
-                    height: Adapt.px(65),
-                    margin: EdgeInsets.only(left: Adapt.px(40)),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(Adapt.px(20)),
-                      color: _theme.primaryColorDark,
-                    ),
-                    child: GestureDetector(
-                        onTap: () => onDelete(task),
-                        child: Icon(
-                          Icons.delete,
-                          color: Colors.red,
-                          size: Adapt.px(35),
-                        )),
-                  )
-                : SizedBox()
+            Container(
+              width: Adapt.px(65),
+              height: Adapt.px(65),
+              margin: EdgeInsets.only(left: Adapt.px(40)),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Adapt.px(20)),
+                color: _theme.primaryColorDark,
+              ),
+              child: GestureDetector(
+                onTap: () => onDelete(task),
+                child: Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                  size: Adapt.px(35),
+                ),
+              ),
+            )
           ],
         ),
       ),

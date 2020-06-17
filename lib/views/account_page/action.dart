@@ -7,6 +7,7 @@ enum AccountPageAction {
   logout,
   navigatorPush,
   settingCellTapped,
+  notificationsTapped
 }
 
 class AccountPageActionCreator {
@@ -33,5 +34,9 @@ class AccountPageActionCreator {
 
   static Action settingCellTapped() {
     return const Action(AccountPageAction.settingCellTapped);
+  }
+
+  static Action notificationsTapped() {
+    return const Action(AccountPageAction.notificationsTapped);
   }
 }

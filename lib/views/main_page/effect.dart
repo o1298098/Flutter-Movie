@@ -11,9 +11,10 @@ import 'package:movie/actions/downloader_callback.dart';
 import 'package:movie/actions/github_api.dart';
 import 'package:movie/actions/user_info_operate.dart';
 import 'package:movie/actions/version_comparison.dart';
+import 'package:movie/models/notification_model.dart';
+import 'package:movie/views/tvshow_detail_page/page.dart';
 import 'package:movie/widgets/update_info_dialog.dart';
 import 'package:movie/views/detail_page/page.dart';
-import 'package:movie/views/tvdetail_page/page.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'action.dart';
@@ -32,14 +33,22 @@ void _onAction(Action action, Context<MainPageState> ctx) {}
 void _onInit(Action action, Context<MainPageState> ctx) async {
   await ApiHelper.init();
   await UserInfoOperate.whenAppStart();
-  FirebaseMessaging().configure(
-      onMessage: (_) async => print('233333'),
-      onResume: (message) async {
-        _push(message, ctx);
-      },
-      onLaunch: (message) async {
-        _push(message, ctx);
-      });
+  final _preferences = await SharedPreferences.getInstance();
+  FirebaseMessaging().configure(onMessage: (message) async {
+    NotificationList _list;
+    if (_preferences.containsKey('notifications')) {
+      final String _notifications = _preferences.getString('notifications');
+      _list = NotificationList(_notifications);
+    }
+    if (_list == null) _list = NotificationList.fromParams(notifications: []);
+    _list.notifications.add(NotificationModel.fromMap(message));
+    _preferences.setString('notifications', _list.toString());
+    print(_list.toString());
+  }, onResume: (message) async {
+    _push(message, ctx);
+  }, onLaunch: (message) async {
+    _push(message, ctx);
+  });
   if (Platform.isAndroid) _bindBackgroundIsolate();
 
   FlutterDownloader.registerCallback(DownloaderCallBack.callback);
@@ -63,8 +72,9 @@ Future _push(Map<String, dynamic> message, Context<MainPageState> ctx) async {
       _messageData['type'] == 'movie' ? 'title' : 'name': _messageData['name'],
       'posterpic': _messageData['posterPic']
     };
-    Page page =
-        _messageData['type'] == 'movie' ? MovieDetailPage() : TVDetailPage();
+    Page page = _messageData['type'] == 'movie'
+        ? MovieDetailPage()
+        : TvShowDetailPage();
     await Navigator.of(ctx.state.scaffoldKey.currentContext)
         .push(PageRouteBuilder(pageBuilder: (context, animation, secAnimation) {
       return FadeTransition(

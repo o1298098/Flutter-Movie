@@ -113,22 +113,25 @@ Widget buildView(
               ),
               onSelected: (selected) {
                 switch (selected) {
-                  case 'Sign Out':
+                  case 'signOut':
                     dispatch(AccountPageActionCreator.onLogout());
+                    break;
+                  case 'notifications':
+                    dispatch(AccountPageActionCreator.notificationsTapped());
                     break;
                 }
               },
               itemBuilder: (ctx) {
                 return [
                   PopupMenuItem<String>(
-                    value: 'Notifications',
+                    value: 'notifications',
                     child: const _DropDownItem(
                       title: 'Notifications',
                       icon: Icons.notifications_none,
                     ),
                   ),
                   PopupMenuItem<String>(
-                    value: 'Sign Out',
+                    value: 'signOut',
                     child: const _DropDownItem(
                       title: 'Sign Out',
                       icon: Icons.exit_to_app,

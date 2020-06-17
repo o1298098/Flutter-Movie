@@ -17,6 +17,7 @@ import 'package:movie/views/main_page/page.dart';
 import 'package:movie/views/moremedia_page/page.dart';
 import 'package:movie/views/moviedetail_page/page.dart';
 import 'package:movie/views/mylists_page/page.dart';
+import 'package:movie/views/notification_page/page.dart';
 import 'package:movie/views/payment_page/page.dart';
 import 'package:movie/views/peopledetail_page/page.dart';
 import 'package:movie/views/premium_page/page.dart';
@@ -77,7 +78,8 @@ class Routes {
       'premiumPage': PremiumPage(),
       'checkoutPage': CheckOutPage(),
       'downloadPage': DownloadPage(),
-      'tvShowDetailPage': TvShowDetailPage()
+      'tvShowDetailPage': TvShowDetailPage(),
+      'notificationPage': NotificationPage(),
     },
     visitor: (String path, Page<Object, dynamic> page) {
       if (page.isTypeof<GlobalBaseState>()) {

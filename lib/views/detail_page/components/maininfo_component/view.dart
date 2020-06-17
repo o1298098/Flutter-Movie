@@ -64,6 +64,7 @@ class _FrontPanel extends StatelessWidget {
           genres: detail?.genres ?? [],
           voteAverage: detail?.voteAverage ?? 0,
           voteCount: detail?.voteCount ?? 0,
+          runtime: detail?.runtime ?? 0,
         ),
         _PlayButton(
           dispatch: dispatch,

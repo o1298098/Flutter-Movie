@@ -15,6 +15,7 @@ Effect<AccountPageState> buildEffect() {
     AccountPageAction.logout: _onLogout,
     AccountPageAction.navigatorPush: _navigatorPush,
     AccountPageAction.settingCellTapped: _settingCellTapped,
+    AccountPageAction.notificationsTapped: _notificationsTapped,
   });
 }
 
@@ -70,4 +71,8 @@ void _settingCellTapped(Action action, Context<AccountPageState> ctx) async {
   Navigator.of(ctx.context).push(PageRouteBuilder(pageBuilder: (_, __, ___) {
     return SettingPage().buildPage(null);
   }));
+}
+
+void _notificationsTapped(Action action, Context<AccountPageState> ctx) async {
+  await Navigator.of(ctx.context).pushNamed('notificationPage');
 }

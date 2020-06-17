@@ -48,6 +48,7 @@ Widget buildView(
                 genres: state.detail?.genres ?? [],
                 voteAverage: state.detail?.voteAverage ?? 0,
                 voteCount: state.detail?.voteCount ?? 0,
+                runtime: state.detail?.runtime ?? 0,
               ),
               _PlayButton(
                 dispatch: dispatch,
@@ -243,9 +244,7 @@ class _BackGround extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return imgUrl == null
-        ? Container(
-            key: ValueKey('bgEmpty'),
-          )
+        ? Container(key: ValueKey('bgEmpty'))
         : Container(
             width: Adapt.screenW(),
             key: ValueKey(imgUrl),
@@ -276,7 +275,9 @@ class _ExternalShimmerCell extends StatelessWidget {
               width: Adapt.px(60),
               height: Adapt.px(60),
               decoration: BoxDecoration(
-                  shape: BoxShape.circle, color: const Color(0xFFFFFFFF)),
+                shape: BoxShape.circle,
+                color: const Color(0xFFFFFFFF),
+              ),
             ),
             SizedBox(width: Adapt.px(20)),
             Container(
