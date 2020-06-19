@@ -1,7 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/apihelper.dart';
+import 'package:movie/actions/http/apihelper.dart';
 import 'package:movie/models/enums/media_type.dart';
+import 'package:movie/models/response_model.dart';
 import 'package:movie/models/videolist.dart';
 import 'action.dart';
 import 'state.dart';
@@ -46,7 +47,7 @@ void _onDispose(Action action, Context<MoreMediaPageState> ctx) {
 void _onAction(Action action, Context<MoreMediaPageState> ctx) {}
 
 Future _loadMore(Action action, Context<MoreMediaPageState> ctx) async {
-  VideoListModel model;
+  ResponseModel<VideoListModel> model;
   int page = ctx.state.videoList.page + 1;
   if (page <= ctx.state.videoList.totalPages) {
     if (ctx.state.mediaType == MediaType.movie)
@@ -54,7 +55,8 @@ Future _loadMore(Action action, Context<MoreMediaPageState> ctx) async {
     else
       model = await ApiHelper.getTVOnTheAir(page: page);
   }
-  if (model != null) ctx.dispatch(MoreMediaPageActionCreator.loadMore(model));
+  if (model.success)
+    ctx.dispatch(MoreMediaPageActionCreator.loadMore(model.result));
 }
 
 Future _cellTapped(Action action, Context<MoreMediaPageState> ctx) async {

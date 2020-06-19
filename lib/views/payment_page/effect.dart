@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:movie/actions/base_api.dart';
+import 'package:movie/actions/http/base_api.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -24,8 +24,8 @@ void _onInit(Action action, Context<PaymentPageState> ctx) async {
   ctx.state.billingAddressState.customerId = ctx.state.user.firebaseUser.uid;
   final _customer =
       await BaseApi.getBraintreeCustomer(ctx.state.user.firebaseUser.uid);
-  if (_customer != null)
-    ctx.dispatch(PaymentPageActionCreator.setCustomer(_customer));
+  if (_customer.success)
+    ctx.dispatch(PaymentPageActionCreator.setCustomer(_customer.result));
 }
 
 void _onDispose(Action action, Context<PaymentPageState> ctx) {

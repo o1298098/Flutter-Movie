@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/apihelper.dart';
-import 'package:movie/actions/base_api.dart';
+import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/widgets/gallery_photoview_wrapper.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/enums/imagesize.dart';
@@ -29,25 +29,27 @@ void _onAction(Action action, Context<TvShowDetailState> ctx) {}
 Future _onInit(Action action, Context<TvShowDetailState> ctx) async {
   try {
     Future.delayed(Duration(milliseconds: 300), () async {
-      var r = await ApiHelper.getTVDetail(ctx.state.tvid,
+      final _tvDetail = await ApiHelper.getTVDetail(ctx.state.tvid,
           appendtoresponse:
               'keywords,recommendations,credits,external_ids,content_ratings');
-      if (r != null) {
-        ctx.dispatch(TvShowDetailActionCreator.onInit(r));
+      if (_tvDetail.success) {
+        ctx.dispatch(TvShowDetailActionCreator.onInit(_tvDetail.result));
       }
 
-      var f = await ApiHelper.getTVVideo(ctx.state.tvid);
-      if (f != null) ctx.dispatch(TvShowDetailActionCreator.onSetVideos(f));
-      var k = await ApiHelper.getTVImages(ctx.state.tvid);
-      if (k != null) ctx.dispatch(TvShowDetailActionCreator.onSetImages(k));
+      final _tvVideo = await ApiHelper.getTVVideo(ctx.state.tvid);
+      if (_tvVideo.success)
+        ctx.dispatch(TvShowDetailActionCreator.onSetVideos(_tvVideo.result));
+      final _tvImages = await ApiHelper.getTVImages(ctx.state.tvid);
+      if (_tvImages.success)
+        ctx.dispatch(TvShowDetailActionCreator.onSetImages(_tvImages.result));
 
       final _user = GlobalStore.store.getState().user;
       if (_user != null) {
-        var accountstate = await BaseApi.getAccountState(
+        final _accountstate = await BaseApi.getAccountState(
             _user.firebaseUser.uid, ctx.state.tvid, MediaType.tv);
-        if (accountstate != null)
-          ctx.dispatch(
-              TvShowDetailActionCreator.onSetAccountState(accountstate));
+        if (_accountstate.success)
+          ctx.dispatch(TvShowDetailActionCreator.onSetAccountState(
+              _accountstate.result));
       }
     });
   } on Exception catch (_) {}

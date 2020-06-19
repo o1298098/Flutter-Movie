@@ -1,6 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/apihelper.dart';
+import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/models/response_model.dart';
 import 'package:movie/models/videolist.dart';
 import 'action.dart';
 import 'state.dart';
@@ -33,9 +34,11 @@ Future _onInit(Action action, Context<ComingPageState> ctx) async {
       }
     });
   var q = await ApiHelper.getMovieUpComing();
-  if (q != null) ctx.dispatch(ComingPageActionCreator.onInitMoviesComing(q));
+  if (q.result != null)
+    ctx.dispatch(ComingPageActionCreator.onInitMoviesComing(q.result));
   var t = await ApiHelper.getTVOnTheAir();
-  if (t != null) ctx.dispatch(ComingPageActionCreator.onInitTVComing(t));
+  if (t.result != null)
+    ctx.dispatch(ComingPageActionCreator.onInitTVComing(t.result));
 }
 
 void _onDispose(Action action, Context<ComingPageState> ctx) {
@@ -44,7 +47,7 @@ void _onDispose(Action action, Context<ComingPageState> ctx) {
 }
 
 Future _onLoadMore(Action action, Context<ComingPageState> ctx) async {
-  VideoListModel q;
+  ResponseModel<VideoListModel> q;
   if (ctx.state.showmovie) {
     if (ctx.state.moviecoming.page == ctx.state.moviecoming.totalPages) return;
     q = await ApiHelper.getMovieUpComing(page: ctx.state.moviecoming.page + 1);
@@ -52,5 +55,6 @@ Future _onLoadMore(Action action, Context<ComingPageState> ctx) async {
     if (ctx.state.tvcoming.page == ctx.state.tvcoming.totalPages) return;
     q = await ApiHelper.getTVOnTheAir(page: ctx.state.tvcoming.page + 1);
   }
-  if (q != null) ctx.dispatch(ComingPageActionCreator.onLoadMore(q));
+  if (q.result != null)
+    ctx.dispatch(ComingPageActionCreator.onLoadMore(q.result));
 }

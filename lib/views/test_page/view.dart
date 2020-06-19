@@ -3,7 +3,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_braintree/flutter_braintree.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/actions/request.dart';
+import 'package:movie/actions/http/request.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'state.dart';
@@ -44,8 +44,8 @@ Widget buildView(
                   if (_clientNonce == null) {
                     var r = await _http
                         .request('/ClientToken/${state.user.firebaseUser.uid}');
-                    if (r != null) _clientNonce = r;
-                    preferences.setString('PaymentToken', r);
+                    if (r.success) _clientNonce = r.result;
+                    preferences.setString('PaymentToken', r.result);
                   }
                   final request = BraintreeDropInRequest(
                     vaultManagerEnabled: true,

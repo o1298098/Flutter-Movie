@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/actions/base_api.dart';
+import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/base_api_model/user_list.dart';
@@ -9,6 +9,7 @@ import 'package:movie/models/base_api_model/user_list_detail.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/mylistmodel.dart';
+import 'package:movie/models/response_model.dart';
 
 class MediaListCardDialog extends StatefulWidget {
   final MediaType type;
@@ -35,7 +36,7 @@ class MediaListCardDialog extends StatefulWidget {
 class MediaListCardDialogState extends State<MediaListCardDialog> {
   Future<MyListModel> lists;
   ScrollController scrollController;
-  Future<UserListModel> _userList;
+  Future<ResponseModel<UserListModel>> _userList;
 
   final _user = GlobalStore.store.getState().user;
 
@@ -67,7 +68,7 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
     Navigator.of(context).pop();
     String _mediaType = widget.type == MediaType.movie ? 'movie' : 'tv';
     if (_user != null && _list != null) {
-      var d = _list.data.singleWhere((f) => f.selected == 1);
+      var d = _list.result.data.singleWhere((f) => f.selected == 1);
       if (d != null) {
         var item = await BaseApi.getUserListDetailItem(
             d.id, _mediaType, widget.mediaId);
@@ -168,7 +169,7 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
           trailing: _selected ? Icon(Icons.check) : SizedBox(),
           onTap: () async {
             final l = await _userList;
-            l.data.forEach((f) {
+            l.result.data.forEach((f) {
               if (f.selected == 1) f.selected = 0;
             });
             d.selected = 1;
@@ -225,10 +226,10 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
           Container(
             width: Adapt.screenW() - Adapt.px(60),
             height: Adapt.px(600),
-            child: FutureBuilder<UserListModel>(
+            child: FutureBuilder<ResponseModel<UserListModel>>(
               future: _userList,
               builder: (BuildContext context,
-                  AsyncSnapshot<UserListModel> snapshot) {
+                  AsyncSnapshot<ResponseModel<UserListModel>> snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.none:
                   case ConnectionState.active:
@@ -241,10 +242,11 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
                       ),
                     );
                   case ConnectionState.done:
-                    if (snapshot.hasData)
+                    if (snapshot.hasData && snapshot.data.success)
                       return ListView(
-                        children:
-                            snapshot.data.data.map(_buildListCell).toList(),
+                        children: snapshot.data.result.data
+                            .map(_buildListCell)
+                            .toList(),
                       );
                     else
                       return SizedBox();

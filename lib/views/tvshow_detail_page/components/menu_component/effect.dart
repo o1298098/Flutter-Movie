@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/actions/apihelper.dart';
-import 'package:movie/actions/base_api.dart';
+import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/base_api_model/user_media.dart';
 import 'package:movie/models/enums/media_type.dart';

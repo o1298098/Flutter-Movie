@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart' hide Action, Page;
-import 'package:movie/actions/apihelper.dart';
+import 'package:movie/actions/http/apihelper.dart';
 import 'package:movie/models/enums/time_window.dart';
 import 'package:movie/models/searchresult.dart';
 import 'package:movie/views/detail_page/page.dart';
@@ -61,7 +61,7 @@ Future _loadMore(Context<TrendingPageState> ctx) async {
     var r = await ApiHelper.getTrending(ctx.state.selectMediaType,
         ctx.state.isToday ? TimeWindow.day : TimeWindow.week,
         page: _page);
-    if (r != null) ctx.dispatch(TrendingPageActionCreator.loadMore(r));
+    if (r.success) ctx.dispatch(TrendingPageActionCreator.loadMore(r.result));
   }
 }
 

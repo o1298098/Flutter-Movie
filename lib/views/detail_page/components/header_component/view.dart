@@ -244,7 +244,10 @@ class _BackGround extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return imgUrl == null
-        ? Container(key: ValueKey('bgEmpty'))
+        ? Container(
+            key: ValueKey('bgEmpty'),
+            width: Adapt.screenW(),
+          )
         : Container(
             width: Adapt.screenW(),
             key: ValueKey(imgUrl),

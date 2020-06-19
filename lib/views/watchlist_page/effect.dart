@@ -2,7 +2,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:movie/actions/base_api.dart';
+import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/views/watchlistdetail_page/page.dart';
 import 'action.dart';
 import 'state.dart';
@@ -26,10 +26,12 @@ Future _onInit(Action action, Context<WatchlistPageState> ctx) async {
   if (ctx.state.user != null) {
     final movie =
         await BaseApi.getWatchlist(ctx.state.user.firebaseUser.uid, 'movie');
-    if (movie != null) ctx.dispatch(WatchlistPageActionCreator.setMovie(movie));
+    if (movie.success)
+      ctx.dispatch(WatchlistPageActionCreator.setMovie(movie.result));
     final tv =
         await BaseApi.getWatchlist(ctx.state.user.firebaseUser.uid, 'tv');
-    if (tv != null) ctx.dispatch(WatchlistPageActionCreator.setTVShow(tv));
+    if (tv.success)
+      ctx.dispatch(WatchlistPageActionCreator.setTVShow(tv.result));
   }
 }
 

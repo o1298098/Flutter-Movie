@@ -34,8 +34,8 @@ class I18n implements WidgetsLocalizations {
 
   /// "Movie"
   String get appname => "Movie";
-  /// "Search for a movie,tv show,person"
-  String get searchbartxt => "Search for a movie,tv show,person";
+  /// "Search for a movie, tv show, person"
+  String get searchbartxt => "Search for a movie, tv show, person";
   /// "Home"
   String get home => "Home";
   /// "Discover"

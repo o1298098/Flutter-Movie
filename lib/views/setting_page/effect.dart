@@ -5,8 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:movie/actions/apihelper.dart';
-import 'package:movie/actions/github_api.dart';
+import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/actions/http/github_api.dart';
 import 'package:movie/actions/user_info_operate.dart';
 import 'package:movie/actions/version_comparison.dart';
 import 'package:movie/widgets/update_info_dialog.dart';
@@ -14,6 +14,7 @@ import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as Path;
+import 'package:toast/toast.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -152,22 +153,23 @@ Future _checkUpdate(Action action, Context<SettingPageState> ctx) async {
   ctx.dispatch(SettingPageActionCreator.onLoading(true));
   final _github = GithubApi();
   final _result = await _github.checkUpdate();
-  if (_result != null) {
+  if (_result.success) {
     final _shouldUpdate =
-        VersionComparison().compare(ctx.state.version, _result.tagName);
-    final _apk = _result.assets.singleWhere(
+        VersionComparison().compare(ctx.state.version, _result.result.tagName);
+    final _apk = _result.result.assets.singleWhere(
         (e) => e.contentType == 'application/vnd.android.package-archive');
 
     if (_apk != null && _shouldUpdate) {
       await showDialog(
           context: ctx.context,
           child: UpdateInfoDialog(
-            version: _result.tagName,
-            describe: _result.body,
+            version: _result.result.tagName,
+            describe: _result.result.body,
             packageSize: (_apk.size / 1048576),
             downloadUrl: _apk.browserDownloadUrl,
           ));
     }
-    ctx.dispatch(SettingPageActionCreator.onLoading(false));
-  }
+  } else
+    Toast.show(_result.message, ctx.context);
+  ctx.dispatch(SettingPageActionCreator.onLoading(false));
 }

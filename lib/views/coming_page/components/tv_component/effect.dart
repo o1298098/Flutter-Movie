@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/actions/apihelper.dart';
+import 'package:movie/actions/http/apihelper.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -16,7 +16,8 @@ Future _onLoadSeason(Action action, Context<TVListState> ctx) async {
   if (ctx.state.tvcoming.results[action.payload].nextAirDate == null) {
     var r = await ApiHelper.getTVDetail(
         ctx.state.tvcoming.results[action.payload].id);
-    if (r != null)
-      ctx.dispatch(TVListActionCreator.onUpdateSeason(action.payload, r));
+    if (r.success)
+      ctx.dispatch(
+          TVListActionCreator.onUpdateSeason(action.payload, r.result));
   }
 }

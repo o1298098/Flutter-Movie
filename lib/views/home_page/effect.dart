@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action, Page;
-import 'package:movie/actions/apihelper.dart';
-import 'package:movie/actions/base_api.dart';
+import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/widgets/searchbar_delegate.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/enums/time_window.dart';
@@ -33,24 +33,25 @@ Future _onInit(Action action, Context<HomePageState> ctx) async {
       AnimationController(vsync: ticker, duration: Duration(milliseconds: 600));
   ctx.state.scrollController = new ScrollController();
   final _movies = await ApiHelper.getNowPlayingMovie();
-  if (_movies != null) ctx.dispatch(HomePageActionCreator.onInitMovie(_movies));
+  if (_movies.success)
+    ctx.dispatch(HomePageActionCreator.onInitMovie(_movies.result));
   final _tv = await ApiHelper.getTVOnTheAir();
-  if (_tv != null) ctx.dispatch(HomePageActionCreator.onInitTV(_tv));
+  if (_tv.success) ctx.dispatch(HomePageActionCreator.onInitTV(_tv.result));
   final _trending = await ApiHelper.getTrending(MediaType.all, TimeWindow.day);
-  if (_trending != null)
-    ctx.dispatch(HomePageActionCreator.initTrending(_trending));
+  if (_trending.success)
+    ctx.dispatch(HomePageActionCreator.initTrending(_trending.result));
   final _shareMovie = await BaseApi.getMovies(pageSize: 10);
-  if (_shareMovie != null)
-    ctx.dispatch(HomePageActionCreator.initShareMovies(_shareMovie));
+  if (_shareMovie.success)
+    ctx.dispatch(HomePageActionCreator.initShareMovies(_shareMovie.result));
   final _sharetv = await BaseApi.getTvShows(pageSize: 10);
-  if (_sharetv != null)
-    ctx.dispatch(HomePageActionCreator.initShareTvShows(_sharetv));
+  if (_sharetv.success)
+    ctx.dispatch(HomePageActionCreator.initShareTvShows(_sharetv.result));
   final _popMovie = await ApiHelper.getPopularMovies();
-  if (_popMovie != null)
-    ctx.dispatch(HomePageActionCreator.onInitPopularMovie(_popMovie));
+  if (_popMovie.success)
+    ctx.dispatch(HomePageActionCreator.onInitPopularMovie(_popMovie.result));
   final _popTv = await ApiHelper.getPopularTVShows();
-  if (_popTv != null)
-    ctx.dispatch(HomePageActionCreator.onInitPopularTV(_popTv));
+  if (_popTv.success)
+    ctx.dispatch(HomePageActionCreator.onInitPopularTV(_popTv.result));
 }
 
 void _onDispose(Action action, Context<HomePageState> ctx) {

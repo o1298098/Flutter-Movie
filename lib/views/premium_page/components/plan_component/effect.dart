@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/actions/base_api.dart';
+import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/globalbasestate/action.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/views/premium_page/action.dart';
@@ -19,8 +19,9 @@ Future _unSubscribe(Action action, Context<PlanState> ctx) async {
   ctx.dispatch(PremiumPageActionCreator.loading(true));
   if (ctx.state?.user?.premium != null) {
     final _result = await BaseApi.cancelSubscription(ctx.state.user.premium);
-    if (_result != null)
-      GlobalStore.store.dispatch(GlobalActionCreator.setUserPremium(_result));
+    if (_result.success)
+      GlobalStore.store
+          .dispatch(GlobalActionCreator.setUserPremium(_result.result));
   }
   ctx.dispatch(PremiumPageActionCreator.loading(false));
 }

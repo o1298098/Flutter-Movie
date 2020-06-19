@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/actions/base_api.dart';
+import 'package:movie/actions/http/base_api.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -19,8 +19,8 @@ void _onInit(Action action, Context<HistoryState> ctx) async {
     final _transaction =
         await BaseApi.transactionSearch(ctx.state.user.firebaseUser.uid);
     print(_transaction.toString());
-    if (_transaction != null)
-      ctx.dispatch(HistoryActionCreator.setTransactions(_transaction));
+    if (_transaction.success)
+      ctx.dispatch(HistoryActionCreator.setTransactions(_transaction.result));
     ctx.dispatch(HistoryActionCreator.loading(false));
   }
 }

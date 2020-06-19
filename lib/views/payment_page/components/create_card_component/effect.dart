@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:movie/actions/base_api.dart';
+import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/actions/creditcard_verify.dart';
 import 'package:movie/models/base_api_model/braintree_creditcard.dart';
 import 'package:movie/views/payment_page/action.dart';
@@ -70,13 +70,13 @@ void _nextTapped(Action action, Context<CreateCardState> ctx) async {
         cardholderName: ctx.state.holderNameController.text,
         bin: ctx.state.cvvController.text,
       ));
-      if (_r != null) {
-        if (_r['status']) {
-          final _card = CreditCard(_r['data']);
+      if (_r.success) {
+        if (_r.result['status']) {
+          final _card = CreditCard(_r.result['data']);
           ctx.dispatch(PaymentPageActionCreator.insertCreditCard(_card));
           Navigator.of(ctx.context).pop();
         } else
-          Toast.show(_r['message'], ctx.context, duration: 5);
+          Toast.show(_r.result['message'], ctx.context, duration: 5);
       }
 
       ctx.dispatch(CreateCardActionCreator.loading(false));

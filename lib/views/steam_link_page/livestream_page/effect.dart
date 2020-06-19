@@ -2,7 +2,7 @@ import 'package:chewie/chewie.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/base_api.dart';
+import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/widgets/custom_video_controls.dart';
 import 'package:movie/widgets/stream_link_report_dialog.dart';
 import 'package:movie/models/ad_target_info.dart';
@@ -134,8 +134,8 @@ void _onInit(Action action, Context<LiveStreamPageState> ctx) {
     }
   };
   BaseApi.getMovieStreamLinks(ctx.state.id).then((d) {
-    if (d != null) {
-      final _list = d.list;
+    if (d.success) {
+      final _list = d.result.list;
       if (_list.length > 0) {
         ctx.state.videoControllers = _list
             .map((f) => VideoPlayerController.network(f.streamLink))
@@ -159,7 +159,8 @@ void _onInit(Action action, Context<LiveStreamPageState> ctx) {
     }
   });
   BaseApi.getMovieComments(ctx.state.id).then((d) {
-    if (d != null) ctx.dispatch(LiveStreamPageActionCreator.setComment(d));
+    if (d.success)
+      ctx.dispatch(LiveStreamPageActionCreator.setComment(d.result));
   });
 }
 

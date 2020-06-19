@@ -50,61 +50,63 @@ class _LastEpisodePanel extends StatelessWidget {
             )
           ]),
           SizedBox(height: Adapt.px(30)),
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                  color: _theme.primaryColorLight, width: Adapt.px(3)),
-              borderRadius: BorderRadius.circular(Adapt.px(20)),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: Adapt.px(200),
-                  height: Adapt.px(160),
-                  decoration: BoxDecoration(
-                    color: _theme.primaryColorDark,
-                    borderRadius: BorderRadius.horizontal(
-                        left: Radius.circular(Adapt.px(20))),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: CachedNetworkImageProvider(
-                        ImageUrl.getUrl(data.stillPath, ImageSize.w300),
-                      ),
-                    ),
-                  ),
+          GestureDetector(
+              onTap: moreTapped,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color: _theme.primaryColorLight, width: Adapt.px(3)),
+                  borderRadius: BorderRadius.circular(Adapt.px(20)),
                 ),
-                SizedBox(width: Adapt.px(30)),
-                SizedBox(
-                  width: Adapt.screenW() - Adapt.px(346),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        data.name ?? '',
-                        style: TextStyle(fontSize: Adapt.px(24)),
-                      ),
-                      SizedBox(height: Adapt.px(5)),
-                      Text(
-                        'S${data.seasonNumber} · E${data.episodeNumber}',
-                        style: TextStyle(fontSize: Adapt.px(18)),
-                      ),
-                      SizedBox(height: Adapt.px(5)),
-                      Text(
-                        data?.overview ?? '',
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: Adapt.px(18),
-                          color: const Color(0xFF717171),
+                child: Row(
+                  children: [
+                    Container(
+                      width: Adapt.px(200),
+                      height: Adapt.px(160),
+                      decoration: BoxDecoration(
+                        color: _theme.primaryColorDark,
+                        borderRadius: BorderRadius.horizontal(
+                            left: Radius.circular(Adapt.px(20))),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: CachedNetworkImageProvider(
+                            ImageUrl.getUrl(data.stillPath, ImageSize.w300),
+                          ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(width: Adapt.px(30)),
+                    SizedBox(
+                      width: Adapt.screenW() - Adapt.px(346),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            data.name ?? '',
+                            style: TextStyle(fontSize: Adapt.px(24)),
+                          ),
+                          SizedBox(height: Adapt.px(5)),
+                          Text(
+                            'S${data.seasonNumber} · E${data.episodeNumber}',
+                            style: TextStyle(fontSize: Adapt.px(18)),
+                          ),
+                          SizedBox(height: Adapt.px(5)),
+                          Text(
+                            data?.overview ?? '',
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: Adapt.px(18),
+                              color: const Color(0xFF717171),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: Adapt.px(30)),
+                  ],
                 ),
-                SizedBox(width: Adapt.px(30)),
-              ],
-            ),
-          ),
+              )),
           SizedBox(height: Adapt.px(30)),
         ],
       ),

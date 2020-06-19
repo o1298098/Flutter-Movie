@@ -282,8 +282,10 @@ class _HeaderBackgroundState extends State<_HeaderBackground> {
   @override
   Widget build(BuildContext context) {
     return widget.imgUrl == null
-        ? SizedBox(
+        ? Container(
             key: ValueKey('bgEmpty'),
+            color: const Color(0xFF607D8B),
+            width: Adapt.screenW(),
           )
         : Stack(
             children: [
@@ -293,7 +295,7 @@ class _HeaderBackgroundState extends State<_HeaderBackground> {
                 transform: Matrix4.translationValues(0, postion, 0),
                 height: _height - postion,
                 decoration: BoxDecoration(
-                  color: Colors.blueGrey,
+                  color: const Color(0xFF607D8B),
                   image: DecorationImage(
                     fit: BoxFit.cover,
                     image: CachedNetworkImageProvider(

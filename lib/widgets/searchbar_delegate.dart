@@ -3,9 +3,10 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/actions/apihelper.dart';
+import 'package:movie/actions/http/apihelper.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
+import 'package:movie/models/response_model.dart';
 import 'package:movie/models/searchresult.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -37,7 +38,7 @@ class SearchBarDelegate extends SearchDelegate<SearchResult> {
     );
   }
 
-  Future<SearchResultModel> _getData() {
+  Future<ResponseModel<SearchResultModel>> _getData() {
     if (query != '' && query != null)
       return ApiHelper.searchMulit(query);
     else
@@ -59,10 +60,10 @@ class SearchBarDelegate extends SearchDelegate<SearchResult> {
         prefs.setStringList('searchHistory', searchHistory);
       }
     }
-    return FutureBuilder<SearchResultModel>(
+    return FutureBuilder<ResponseModel<SearchResultModel>>(
       future: _getData(), // a previously-obtained Future<String> or null
-      builder:
-          (BuildContext context, AsyncSnapshot<SearchResultModel> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<ResponseModel<SearchResultModel>> snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
             return Container(
@@ -83,7 +84,7 @@ class SearchBarDelegate extends SearchDelegate<SearchResult> {
             if (snapshot.hasError) return Text('Error: ${snapshot.error}');
             return _ResultList(
               query: query,
-              results: snapshot.data?.results ?? [],
+              results: snapshot.data?.result?.results ?? [],
             );
         }
         return null;
@@ -182,10 +183,10 @@ class SearchBarDelegate extends SearchDelegate<SearchResult> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return FutureBuilder<SearchResultModel>(
+    return FutureBuilder<ResponseModel<SearchResultModel>>(
       future: _getData(), // a previously-obtained Future<String> or null
-      builder:
-          (BuildContext context, AsyncSnapshot<SearchResultModel> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<ResponseModel<SearchResultModel>> snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
             return _buildHistoryList();
@@ -201,7 +202,7 @@ class SearchBarDelegate extends SearchDelegate<SearchResult> {
             if (snapshot.hasError) return Text('Error: ${snapshot.error}');
             return _SuggestionList(
               query: query,
-              suggestions: snapshot.data?.results ?? [],
+              suggestions: snapshot.data?.result?.results ?? [],
               onSelected: (String suggestion) {
                 query = suggestion;
                 showResults(context);
@@ -430,12 +431,14 @@ class _ResultListState extends State<_ResultList> {
         isloading = true;
       });
       pageindex++;
-      var r = await ApiHelper.searchMulit(query, page: pageindex);
+      final r = await ApiHelper.searchMulit(query, page: pageindex);
       if (r != null) {
         setState(() {
-          pageindex = r.page;
-          totalpage = r.totalPages;
-          results.addAll(r.results);
+          if (r.success) {
+            pageindex = r.result.page;
+            totalpage = r.result.totalPages;
+            results.addAll(r.result.results);
+          }
           isloading = false;
         });
       }

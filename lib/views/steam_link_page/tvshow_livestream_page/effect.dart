@@ -3,7 +3,7 @@ import 'package:firebase_admob/firebase_admob.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/actions/base_api.dart';
+import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/widgets/custom_video_controls.dart';
 import 'package:movie/widgets/stream_link_report_dialog.dart';
 import 'package:movie/models/ad_target_info.dart';
@@ -75,14 +75,14 @@ void _onInit(Action action, Context<TvShowLiveStreamPageState> ctx) async {
   final _streamLinks = await BaseApi.getTvSeasonStreamLinks(
       ctx.state.tvid, ctx.state.season.seasonNumber);
 
-  if (_streamLinks != null) {
-    initVideoPlayer(ctx, _streamLinks);
+  if (_streamLinks.success) {
+    initVideoPlayer(ctx, _streamLinks.result);
     ctx.dispatch(
-        TvShowLiveStreamPageActionCreator.setStreamLinks(_streamLinks));
+        TvShowLiveStreamPageActionCreator.setStreamLinks(_streamLinks.result));
     Future.delayed(
         Duration(milliseconds: 300),
         () => ctx.dispatch(TvShowLiveStreamPageActionCreator.episodeCellTapped(
-            _streamLinks.list
+            _streamLinks.result.list
                 .firstWhere((d) => d.episode == ctx.state.episodeNumber))));
   }
 }
@@ -120,8 +120,7 @@ void _addComment(Action action, Context<TvShowLiveStreamPageState> ctx) async {
     ctx.state.commentController.clear();
     ctx.dispatch(TvShowLiveStreamPageActionCreator.insertComment(_comment));
     BaseApi.createTvShowComment(_comment).then((r) {
-      if (r != null) _comment.id = r.id;
-      print(ctx.state.comments.data);
+      if (r.success) _comment.id = r.result.id;
     });
   }
 }
@@ -167,8 +166,8 @@ Future _startPlayer(
   final comment = await BaseApi.getTvShowComments(
       ctx.state.tvid, ctx.state.season.seasonNumber, link.episode);
 
-  if (comment != null)
-    ctx.dispatch(TvShowLiveStreamPageActionCreator.setComments(comment));
+  if (comment.success)
+    ctx.dispatch(TvShowLiveStreamPageActionCreator.setComments(comment.result));
 }
 
 void _streamLinkReport(Action action, Context<TvShowLiveStreamPageState> ctx) {

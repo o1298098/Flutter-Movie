@@ -6,9 +6,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action, Page;
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:movie/actions/apihelper.dart';
+import 'package:movie/actions/http/apihelper.dart';
 import 'package:movie/actions/downloader_callback.dart';
-import 'package:movie/actions/github_api.dart';
+import 'package:movie/actions/http/github_api.dart';
 import 'package:movie/actions/user_info_operate.dart';
 import 'package:movie/actions/version_comparison.dart';
 import 'package:movie/models/notification_model.dart';
@@ -94,22 +94,22 @@ Future _checkAppUpdate(Context<MainPageState> ctx) async {
   final _packageInfo = await PackageInfo.fromPlatform();
   final _github = GithubApi();
   final _result = await _github.checkUpdate();
-  if (_result != null) {
-    if (_ignoreVersion == _result.tagName) return;
-    final _shouldUpdate =
-        VersionComparison().compare(_packageInfo.version, _result.tagName);
-    final _apk = _result.assets.singleWhere(
+  if (_result.success) {
+    if (_ignoreVersion == _result.result.tagName) return;
+    final _shouldUpdate = VersionComparison()
+        .compare(_packageInfo.version, _result.result.tagName);
+    final _apk = _result.result.assets.singleWhere(
         (e) => e.contentType == 'application/vnd.android.package-archive');
-
     if (_apk != null && _shouldUpdate) {
       await showDialog(
-          context: ctx.context,
-          child: UpdateInfoDialog(
-            version: _result.tagName,
-            describe: _result.body,
-            packageSize: (_apk.size / 1048576),
-            downloadUrl: _apk.browserDownloadUrl,
-          ));
+        context: ctx.context,
+        child: UpdateInfoDialog(
+          version: _result.result.tagName,
+          describe: _result.result.body,
+          packageSize: (_apk.size / 1048576),
+          downloadUrl: _apk.browserDownloadUrl,
+        ),
+      );
     }
   }
 }

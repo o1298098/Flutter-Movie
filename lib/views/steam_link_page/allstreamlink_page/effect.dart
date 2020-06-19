@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action, Page;
-import 'package:movie/actions/base_api.dart';
+import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/sortcondition.dart';
 import 'package:movie/views/detail_page/page.dart';
@@ -64,14 +64,15 @@ void _loadMore(Context<AllStreamLinkPageState> ctx) async {
     if (ctx.state.mediaType == MediaType.movie)
       BaseApi.getMovies(page: ctx.state.movieList.page + 1).then((d) {
         ctx.state.loading = false;
-        if (d != null)
-          ctx.dispatch(AllStreamLinkPageActionCreator.loadMoreMovie(d));
+        if (d.success)
+          ctx.dispatch(AllStreamLinkPageActionCreator.loadMoreMovie(d.result));
       });
     else
       BaseApi.getTvShows(page: ctx.state.tvList.page + 1).then((d) {
         ctx.state.loading = false;
-        if (d != null)
-          ctx.dispatch(AllStreamLinkPageActionCreator.loadMoreTvShows(d));
+        if (d.success)
+          ctx.dispatch(
+              AllStreamLinkPageActionCreator.loadMoreTvShows(d.result));
       });
   }
 }
@@ -79,13 +80,13 @@ void _loadMore(Context<AllStreamLinkPageState> ctx) async {
 void _initlist(Context<AllStreamLinkPageState> ctx) {
   if (ctx.state.mediaType == MediaType.movie)
     BaseApi.getMovies().then((d) {
-      if (d != null)
-        ctx.dispatch(AllStreamLinkPageActionCreator.initMovieList(d));
+      if (d.success)
+        ctx.dispatch(AllStreamLinkPageActionCreator.initMovieList(d.result));
     });
   else
     BaseApi.getTvShows().then((d) {
-      if (d != null)
-        ctx.dispatch(AllStreamLinkPageActionCreator.initTvShowList(d));
+      if (d.success)
+        ctx.dispatch(AllStreamLinkPageActionCreator.initTvShowList(d.result));
     });
 }
 
@@ -93,13 +94,13 @@ void _onSearch(Action action, Context<AllStreamLinkPageState> ctx) {
   final String query = action.payload ?? '';
   if (query != '') if (ctx.state.mediaType == MediaType.movie)
     BaseApi.searchMovies(query).then((d) {
-      if (d != null)
-        ctx.dispatch(AllStreamLinkPageActionCreator.initMovieList(d));
+      if (d.success)
+        ctx.dispatch(AllStreamLinkPageActionCreator.initMovieList(d.result));
     });
   else
     BaseApi.searchTvShows(query).then((d) {
-      if (d != null)
-        ctx.dispatch(AllStreamLinkPageActionCreator.initTvShowList(d));
+      if (d.success)
+        ctx.dispatch(AllStreamLinkPageActionCreator.initTvShowList(d.result));
     });
 }
 

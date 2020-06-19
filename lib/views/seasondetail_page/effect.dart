@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/apihelper.dart';
+import 'package:movie/actions/http/apihelper.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -19,16 +19,16 @@ Future _onInit(Action action, Context<SeasonDetailPageState> ctx) async {
     final _detail = await ApiHelper.getTVSeasonDetail(
         ctx.state.tvid, ctx.state.seasonNumber,
         appendToResponse: 'credits');
-    if (_detail != null)
+    if (_detail.success)
       ctx.dispatch(
-          SeasonDetailPageActionCreator.onSeasonDetailChanged(_detail));
+          SeasonDetailPageActionCreator.onSeasonDetailChanged(_detail.result));
     final _videos = await ApiHelper.getTvShowSeasonVideo(
         ctx.state.tvid, ctx.state.seasonNumber);
-    if (_videos != null)
-      ctx.dispatch(SeasonDetailPageActionCreator.setVideos(_videos));
+    if (_videos.success)
+      ctx.dispatch(SeasonDetailPageActionCreator.setVideos(_videos.result));
     final _images = await ApiHelper.getTvShowSeasonImages(
         ctx.state.tvid, ctx.state.seasonNumber);
-    if (_images != null)
-      ctx.dispatch(SeasonDetailPageActionCreator.setImages(_images));
+    if (_images.success)
+      ctx.dispatch(SeasonDetailPageActionCreator.setImages(_images.result));
   }
 }

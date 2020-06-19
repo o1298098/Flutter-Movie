@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_braintree/flutter_braintree.dart';
-import 'package:movie/actions/base_api.dart';
+import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/actions/user_info_operate.dart';
 import 'package:movie/models/base_api_model/payment_client_token.dart';
 import 'package:movie/models/base_api_model/purchase.dart';
@@ -68,13 +68,13 @@ void _onPay(Action action, Context<CheckOutPageState> ctx) async {
     ctx.state.checkoutData.premiumType,
   );
   ctx.dispatch(CheckOutPageActionCreator.loading(false));
-  if (_r == null)
+  if (!_r.success)
     return Toast.show('Something wrong', ctx.context,
         gravity: Toast.CENTER, duration: 5);
-  if (_r.status) {
-    if (_r.data == null) return;
-    if (_r.data.expireDate == null) return;
-    UserInfoOperate.setPremium(_r.data);
+  if (_r.result.status) {
+    if (_r.result.data == null) return;
+    if (_r.result.data.expireDate == null) return;
+    UserInfoOperate.setPremium(_r.result.data);
     await Navigator.of(ctx.context).pushAndRemoveUntil(
         MaterialPageRoute(
           builder: (context) => Scaffold(
@@ -94,7 +94,7 @@ void _onPay(Action action, Context<CheckOutPageState> ctx) async {
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 40),
-                      Text('Premium expire date: ${_r.data.expireDate}')
+                      Text('Premium expire date: ${_r.result.data.expireDate}')
                     ]),
               ),
             ),
@@ -114,9 +114,9 @@ Future<PaymentClientToken> _getToken(String uid) async {
   if (_token != null) _clientNonce = PaymentClientToken(_token);
   if (_token == null || _clientNonce.isExpired()) {
     var r = await BaseApi.getPaymentToken(uid);
-    if (r != null) {
+    if (r.success) {
       _clientNonce = PaymentClientToken.fromParams(
-          token: r, expiredTime: DateTime.now().millisecondsSinceEpoch);
+          token: r.result, expiredTime: DateTime.now().millisecondsSinceEpoch);
       preferences.setString('PaymentToken', _clientNonce.toString());
     } else
       _clientNonce = PaymentClientToken.fromParams(

@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/apihelper.dart';
-import 'package:movie/actions/base_api.dart';
+import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/tvdetail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -61,22 +61,23 @@ void _getSeasonDetail(Action action, Context<SeasonLinkPageState> ctx) async {
     final _episode = await ApiHelper.getTVSeasonDetail(
         ctx.state.detail.id, season.seasonNumber,
         appendToResponse: 'credits');
-    if (_episode != null) {
+    if (_episode.success) {
       List<String> _playState =
           ctx.state.preferences.getStringList('TvSeason${season.id}');
       season.playStates =
-          _playState ?? _episode.episodes.map((f) => '0').toList();
-      season.episodes = _episode.episodes;
-      season.credits = _episode.credits;
+          _playState ?? _episode.result.episodes.map((f) => '0').toList();
+      season.episodes = _episode.result.episodes;
+      season.credits = _episode.result.credits;
       final _streamLinks = await BaseApi.getTvSeasonStreamLinks(
           ctx.state.detail.id, season.seasonNumber);
-      season.episodes.forEach((f) {
-        final index = season.episodes.indexOf(f);
-        f.streamLink = _streamLinks.list.firstWhere((d) {
-          return d.episode == f.episodeNumber;
-        }, orElse: () => null);
-        f.playState = season.playStates[index] == '0' ? false : true;
-      });
+      if (_streamLinks.success)
+        season.episodes.forEach((f) {
+          final index = season.episodes.indexOf(f);
+          f.streamLink = _streamLinks.result.list.firstWhere((d) {
+            return d.episode == f.episodeNumber;
+          }, orElse: () => null);
+          f.playState = season.playStates[index] == '0' ? false : true;
+        });
       ctx.dispatch(SeasonLinkPageActionCreator.updateSeason(ctx.state.detail));
     }
   }

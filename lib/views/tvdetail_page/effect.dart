@@ -1,8 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter/widgets.dart' hide Action;
-import 'package:movie/actions/apihelper.dart';
-import 'package:movie/actions/base_api.dart';
+import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/widgets/gallery_photoview_wrapper.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/enums/imagesize.dart';
@@ -36,28 +36,31 @@ Future _onInit(Action action, Context<TVDetailPageState> ctx) async {
           CachedNetworkImageProvider(ImageUrl.getUrl(ctx.state.posterPic, ImageSize.w300)));
       ctx.dispatch(TVDetailPageActionCreator.onsetColor(paletteGenerator));*/
     Future.delayed(Duration(milliseconds: 300), () async {
-      var r = await ApiHelper.getTVDetail(ctx.state.tvid,
+      final _detail = await ApiHelper.getTVDetail(ctx.state.tvid,
           appendtoresponse:
               'keywords,recommendations,credits,external_ids,content_ratings');
-      if (r != null) {
-        ctx.dispatch(TVDetailPageActionCreator.onInit(r));
+      if (_detail.success) {
+        ctx.dispatch(TVDetailPageActionCreator.onInit(_detail.result));
         ctx.state.animationController.forward();
       }
-      var l = await ApiHelper.getTVReviews(ctx.state.tvid);
-      if (l != null) ctx.dispatch(TVDetailPageActionCreator.onSetReviews(l));
+      final _tvReviews = await ApiHelper.getTVReviews(ctx.state.tvid);
+      if (_tvReviews.success)
+        ctx.dispatch(TVDetailPageActionCreator.onSetReviews(_tvReviews.result));
 
-      var k = await ApiHelper.getTVImages(ctx.state.tvid);
-      if (k != null) ctx.dispatch(TVDetailPageActionCreator.onSetImages(k));
-      var f = await ApiHelper.getTVVideo(ctx.state.tvid);
-      if (f != null) ctx.dispatch(TVDetailPageActionCreator.onSetVideos(f));
+      final _tvImages = await ApiHelper.getTVImages(ctx.state.tvid);
+      if (_tvImages.success)
+        ctx.dispatch(TVDetailPageActionCreator.onSetImages(_tvImages.result));
+      final _tvVideo = await ApiHelper.getTVVideo(ctx.state.tvid);
+      if (_tvVideo.success)
+        ctx.dispatch(TVDetailPageActionCreator.onSetVideos(_tvVideo.result));
 
       final _user = GlobalStore.store.getState().user;
       if (_user != null) {
-        var accountstate = await BaseApi.getAccountState(
+        final _accountstate = await BaseApi.getAccountState(
             _user.firebaseUser.uid, ctx.state.tvid, MediaType.tv);
-        if (accountstate != null)
-          ctx.dispatch(
-              TVDetailPageActionCreator.onSetAccountState(accountstate));
+        if (_accountstate.success)
+          ctx.dispatch(TVDetailPageActionCreator.onSetAccountState(
+              _accountstate.result));
       }
     });
   } on Exception catch (_) {}

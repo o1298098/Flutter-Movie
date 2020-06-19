@@ -1,6 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/apihelper.dart';
+import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/models/response_model.dart';
 import 'package:movie/models/videolist.dart';
 import 'action.dart';
 import 'state.dart';
@@ -44,7 +45,7 @@ Future _onLoadData(Action action, Context<DiscoverPageState> ctx) async {
   var genresIds = _genres.where((e) => e.isSelected).map<int>((e) {
     return e.value;
   }).toList();
-  VideoListModel r;
+  ResponseModel<VideoListModel> r;
   String _sortBy = ctx.state.selectedSort == null
       ? null
       : '${ctx.state.selectedSort.value}${ctx.state.sortDesc ? '.desc' : '.asc'}';
@@ -61,7 +62,7 @@ Future _onLoadData(Action action, Context<DiscoverPageState> ctx) async {
         withKeywords: ctx.state.filterState.keyWordController.text,
         sortBy: _sortBy,
         withGenres: genresIds.length > 0 ? genresIds.join(',') : null);
-  if (r != null) ctx.dispatch(DiscoverPageActionCreator.onLoadData(r));
+  if (r.success) ctx.dispatch(DiscoverPageActionCreator.onLoadData(r.result));
 
   ctx.dispatch(DiscoverPageActionCreator.onBusyChanged(false));
   ctx.state.scrollController.jumpTo(0);
@@ -89,7 +90,7 @@ Future _onLoadMore(Action action, Context<DiscoverPageState> ctx) async {
   var genresIds = _genres.where((e) => e.isSelected).map<int>((e) {
     return e.value;
   }).toList();
-  VideoListModel r;
+  ResponseModel<VideoListModel> r;
   String _sortBy = ctx.state.selectedSort == null
       ? null
       : '${ctx.state.selectedSort?.value ?? ''}${ctx.state.filterState.sortDesc ? '.desc' : '.asc'}';
@@ -109,7 +110,8 @@ Future _onLoadMore(Action action, Context<DiscoverPageState> ctx) async {
         sortBy: _sortBy,
         withGenres: genresIds.length > 0 ? genresIds.join(',') : null,
         withKeywords: ctx.state.filterState.keywords);
-  if (r != null) ctx.dispatch(DiscoverPageActionCreator.onLoadMore(r.results));
+  if (r.success)
+    ctx.dispatch(DiscoverPageActionCreator.onLoadMore(r.result.results));
   ctx.dispatch(DiscoverPageActionCreator.onBusyChanged(false));
 }
 

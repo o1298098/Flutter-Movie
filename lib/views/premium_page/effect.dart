@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/base_api.dart';
+import 'package:movie/actions/http/base_api.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -21,8 +21,9 @@ Future _onInit(Action action, Context<PremiumPageState> ctx) async {
     if (ctx.state.user.premium.subscriptionId == null) return;
     var _subscription = await BaseApi.getPremiumSubscription(
         ctx.state.user.premium.subscriptionId);
-    if (_subscription != null)
-      ctx.dispatch(PremiumPageActionCreator.setSubscription(_subscription));
+    if (_subscription.success)
+      ctx.dispatch(
+          PremiumPageActionCreator.setSubscription(_subscription.result));
   }
 }
 

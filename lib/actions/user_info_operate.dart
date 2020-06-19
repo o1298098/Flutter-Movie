@@ -5,7 +5,7 @@ import 'package:movie/models/app_user.dart';
 import 'package:movie/models/base_api_model/user_premium_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'base_api.dart';
+import 'http/base_api.dart';
 
 class UserInfoOperate {
   static bool isPremium = false;
@@ -18,9 +18,10 @@ class UserInfoOperate {
     GlobalStore.store.dispatch(GlobalActionCreator.setUser(
         AppUser(firebaseUser: user, premium: null)));
     final _r = await BaseApi.getUserPremium(user.uid);
-    if (_r != null) {
-      if (_r.status) {
-        if (_r.data != null) if (_r.data != null) await setPremium(_r.data);
+    if (_r.success) {
+      if (_r.result.status) {
+        if (_r.result.data != null) if (_r.result.data != null)
+          await setPremium(_r.result.data);
       }
     }
     print(_r);

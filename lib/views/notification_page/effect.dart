@@ -44,9 +44,7 @@ void _cellTapped(Action action, Context<NotificationState> ctx) async {
 
   var data = {
     _model.type == 'movie' ? 'id' : 'tvid': int.parse(_model.id.toString()),
-    //'bgpic': _model.posterPic,
     _model.type == 'movie' ? 'title' : 'name': _model.name,
-    'posterpic': _model.posterPic
   };
   Page page = _model.type == 'movie' ? MovieDetailPage() : TvShowDetailPage();
   await Navigator.of(ctx.context)

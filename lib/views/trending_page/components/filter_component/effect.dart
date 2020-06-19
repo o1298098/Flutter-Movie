@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/actions/apihelper.dart';
+import 'package:movie/actions/http/apihelper.dart';
 import 'package:movie/models/enums/time_window.dart';
 import 'package:movie/models/sortcondition.dart';
 import 'action.dart';
@@ -46,6 +46,6 @@ Future _dateChanged(Action action, Context<FilterState> ctx) async {
 Future _loadData(Context<FilterState> ctx) async {
   var r = await ApiHelper.getTrending(ctx.state.selectMediaType,
       ctx.state.isToday ? TimeWindow.day : TimeWindow.week);
-  if (r != null) ctx.dispatch(FilterActionCreator.updateList(r));
+  if (r.success) ctx.dispatch(FilterActionCreator.updateList(r.result));
   ctx.state.refreshController.reset();
 }

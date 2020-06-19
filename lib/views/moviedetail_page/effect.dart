@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter/widgets.dart' hide Action;
-import 'package:movie/actions/apihelper.dart';
+import 'package:movie/actions/http/apihelper.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -27,23 +27,27 @@ Future _onInit(Action action, Context<MovieDetailPageState> ctx) async {
     /*var paletteGenerator = await PaletteGenerator.fromImageProvider(
          CachedNetworkImageProvider(ImageUrl.getUrl(ctx.state.posterPic, ImageSize.w300)));
       ctx.dispatch(MovieDetailPageActionCreator.onsetColor(paletteGenerator));*/
-    var r = await ApiHelper.getMovieDetail(ctx.state.movieid,
+    final r = await ApiHelper.getMovieDetail(ctx.state.movieid,
         appendtoresponse:
             'keywords,recommendations,credits,external_ids,release_dates');
-    if (r != null) {
-      ctx.dispatch(MovieDetailPageActionCreator.onInit(r));
+    if (r.success) {
+      ctx.dispatch(MovieDetailPageActionCreator.onInit(r.result));
       ctx.state.animationController.forward();
     }
-    var accountstate = await ApiHelper.getMovieAccountState(ctx.state.movieid);
-    if (accountstate != null)
+    final accountstate =
+        await ApiHelper.getMovieAccountState(ctx.state.movieid);
+    if (accountstate.success)
       ctx.dispatch(
-          MovieDetailPageActionCreator.onSetAccountState(accountstate));
-    var l = await ApiHelper.getMovieReviews(ctx.state.movieid);
-    if (l != null) ctx.dispatch(MovieDetailPageActionCreator.onSetReviews(l));
-    var k = await ApiHelper.getMovieImages(ctx.state.movieid);
-    if (k != null) ctx.dispatch(MovieDetailPageActionCreator.onSetImages(k));
-    var f = await ApiHelper.getMovieVideo(ctx.state.movieid);
-    if (f != null) ctx.dispatch(MovieDetailPageActionCreator.onSetVideos(f));
+          MovieDetailPageActionCreator.onSetAccountState(accountstate.result));
+    final l = await ApiHelper.getMovieReviews(ctx.state.movieid);
+    if (l.success)
+      ctx.dispatch(MovieDetailPageActionCreator.onSetReviews(l.result));
+    final k = await ApiHelper.getMovieImages(ctx.state.movieid);
+    if (k.success)
+      ctx.dispatch(MovieDetailPageActionCreator.onSetImages(k.result));
+    final f = await ApiHelper.getMovieVideo(ctx.state.movieid);
+    if (f.success)
+      ctx.dispatch(MovieDetailPageActionCreator.onSetVideos(f.result));
   } on Exception catch (_) {}
 }
 
