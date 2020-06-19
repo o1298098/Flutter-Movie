@@ -1,7 +1,6 @@
 import 'dart:convert' show json;
 import 'dart:ui' as ui;
 import 'package:dio/dio.dart';
-import 'package:movie/actions/request.dart';
 import 'package:movie/models/accountdetail.dart';
 import 'package:movie/models/certification.dart';
 import 'package:movie/models/combinedcredits.dart';
@@ -18,6 +17,7 @@ import 'package:movie/models/moviechange.dart';
 import 'package:movie/models/moviedetail.dart';
 import 'package:movie/models/mylistmodel.dart';
 import 'package:movie/models/peopledetail.dart';
+import 'package:movie/models/response_model.dart';
 import 'package:movie/models/seasondetail.dart';
 import 'package:movie/models/videolist.dart';
 import 'package:movie/models/review.dart';
@@ -25,6 +25,8 @@ import 'package:movie/models/searchresult.dart';
 import 'package:movie/models/tvdetail.dart';
 import 'package:movie/models/videomodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'request.dart';
 
 class ApiHelper {
   static final String _apikey = 'd7ff494718186ed94ee75cf73c1a3214';
@@ -47,12 +49,13 @@ class ApiHelper {
 
   static Future createGuestSession() async {
     String param = '/authentication/guest_session/new?api_key=$_apikey';
-    dynamic r = await _http.request(param);
-    if (r != null) {
-      if (r['success']) {
-        session = r['guest_session_id'];
-        _sessionExpiresTime = DateTime.parse(
-            r['expires_at'].toString().replaceFirst(new RegExp(' UTC'), ''));
+    final r = await _http.request(param);
+    if (r.success) {
+      if (r.result['success']) {
+        session = r.result['guest_session_id'];
+        _sessionExpiresTime = DateTime.parse(r.result['expires_at']
+            .toString()
+            .replaceFirst(new RegExp(' UTC'), ''));
         var date = DateTime.utc(
             _sessionExpiresTime.year,
             _sessionExpiresTime.month,
@@ -175,7 +178,7 @@ class ApiHelper {
         data: formData,
         headers: {'Authorization': 'Bearer $_apikeyV4'});
     if (r != null) {
-      var jsonobject = json.decode(r);
+      var jsonobject = json.decode(r.result);
       if (jsonobject['success']) {
         result = jsonobject['request_token'];
       }
@@ -192,8 +195,8 @@ class ApiHelper {
         method: "POST",
         data: formData,
         headers: {'Authorization': 'Bearer $_apikeyV4'});
-    if (r != null) {
-      var jsonobject = json.decode(r);
+    if (r.success) {
+      var jsonobject = json.decode(r.result);
       if (jsonobject['success']) {
         String _accountid = jsonobject['account_id'];
         accessTokenV4 = jsonobject['access_token'];
@@ -205,37 +208,33 @@ class ApiHelper {
     return result;
   }
 
-  static Future<MyListModel> getAccountListsV4(String acountid,
+  static Future<ResponseModel<MyListModel>> getAccountListsV4(String acountid,
       {int page = 1}) async {
-    MyListModel model;
     String param = '/account/$acountid/lists?page=$page';
-    var r = await _httpV4
-        .request(param, headers: {'Authorization': 'Bearer $_apikeyV4'});
-    if (r != null) model = MyListModel(r);
-    return model;
+    final r = await _httpV4.request<MyListModel>(param,
+        headers: {'Authorization': 'Bearer $_apikeyV4'});
+    return r;
   }
 
-  static Future<ListDetailModel> getListDetailV4(int listId,
+  static Future<ResponseModel<ListDetailModel>> getListDetailV4(int listId,
       {int page = 1, String sortBy}) async {
-    ListDetailModel model;
     String param = '/list/$listId?page=$page&language=$language';
     if (sortBy != null) param += '&sort_by=$sortBy';
-    var r = await _httpV4
-        .request(param, headers: {'Authorization': 'Bearer $_apikeyV4'});
-    if (r != null) model = ListDetailModel(r);
-    return model;
+    final r = await _httpV4.request<ListDetailModel>(param,
+        headers: {'Authorization': 'Bearer $_apikeyV4'});
+    return r;
   }
 
   static Future<bool> deleteAccessTokenV4() async {
     String param = '/auth/access_token';
     if (session != null) {
       var formData = {"access_token": accessTokenV4};
-      dynamic r = await _httpV4.request(param,
+      final r = await _httpV4.request(param,
           method: 'DELETE',
           headers: {'Authorization': 'Bearer $_apikeyV4'},
           queryParameters: formData);
-      if (r != null) {
-        if (r['success']) {
+      if (r.success) {
+        if (r.result['success']) {
           prefs.remove('accountIdV4');
           prefs.remove('accessTokenV4');
         } else
@@ -257,11 +256,11 @@ class ApiHelper {
       "media_id": id,
       "favorite": isFavorite
     };
-    dynamic r = await _http.request(param, method: "POST", data: formData);
-    if (r != null) {
-      if (r['status_code'] == 1 ||
-          r['status_code'] == 12 ||
-          r['status_code'] == 13) result = true;
+    final r = await _http.request(param, method: "POST", data: formData);
+    if (r.success) {
+      if (r.result['status_code'] == 1 ||
+          r.result['status_code'] == 12 ||
+          r.result['status_code'] == 13) result = true;
     }
     return result;
   }
@@ -277,11 +276,11 @@ class ApiHelper {
       "media_id": id,
       "watchlist": isAdd
     };
-    dynamic r = await _http.request(param, method: "POST", data: formData);
-    if (r != null) {
-      if (r['status_code'] == 1 ||
-          r['status_code'] == 12 ||
-          r['status_code'] == 13) result = true;
+    final r = await _http.request(param, method: "POST", data: formData);
+    if (r.success) {
+      if (r.result['status_code'] == 1 ||
+          r.result['status_code'] == 12 ||
+          r.result['status_code'] == 13) result = true;
     }
     return result;
   }
@@ -290,82 +289,72 @@ class ApiHelper {
     bool result = false;
     String param = '/list/$listid/items';
     var data = {"items": items};
-    dynamic r = await _httpV4.request(param,
+    final r = await _httpV4.request(param,
         method: "POST",
         data: data,
         headers: {'Authorization': 'Bearer $accessTokenV4'});
-    if (r != null) {
-      if (r['status_code'] == 1) result = true;
+    if (r.success) {
+      if (r.result['status_code'] == 1) result = true;
     }
     return result;
   }
 
   ///Get the list of your favorite Movies.sortBy allowed values: created_at.asc, created_at.desc
-  static Future<VideoListModel> getFavoriteMovies(int accountid,
+  static Future<ResponseModel<VideoListModel>> getFavoriteMovies(int accountid,
       {int page = 1, String sortBy = 'created_at.asc'}) async {
-    VideoListModel model;
     String param =
         '/account/$accountid/favorite/movies?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
-    var r = await _http.request(param);
-    if (r != null) model = VideoListModel(r);
-    return model;
+    final r = await _http.request<VideoListModel>(param);
+    return r;
   }
 
   ///Get the list of your favorite TV shows.
-  static Future<VideoListModel> getFavoriteTVShows(int accountid,
+  static Future<ResponseModel<VideoListModel>> getFavoriteTVShows(int accountid,
       {int page = 1, String sortBy = 'created_at.asc'}) async {
-    VideoListModel model;
-    String param =
+    final String param =
         '/account/$accountid/favorite/tv?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
-    var r = await _http.request(param);
-    if (r != null) model = VideoListModel(r);
-    return model;
+    final r = await _http.request<VideoListModel>(param);
+    return r;
   }
 
-  static Future<VideoListModel> getMoviesWatchlist(int accountid,
+  static Future<ResponseModel<VideoListModel>> getMoviesWatchlist(int accountid,
       {int page = 1, String sortBy = 'created_at.asc'}) async {
-    VideoListModel model;
     String param =
         '/account/$accountid/watchlist/movies?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
-    var r = await _http.request(param);
-    if (r != null) model = VideoListModel(r);
-    return model;
+    final r = await _http.request<VideoListModel>(param);
+    return r;
   }
 
-  static Future<VideoListModel> getTVShowsWacthlist(int accountid,
-      {int page = 1, String sortBy = 'created_at.asc'}) async {
-    VideoListModel model;
+  static Future<ResponseModel<VideoListModel>> getTVShowsWacthlist(
+      int accountid,
+      {int page = 1,
+      String sortBy = 'created_at.asc'}) async {
     String param =
         '/account/$accountid/watchlist/tv?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
-    var r = await _http.request(param);
-    if (r != null) model = VideoListModel(r);
-    return model;
+    final r = await _http.request<VideoListModel>(param);
+    return r;
   }
 
   ///Get a list of all the movies you have rated.
-  static Future<VideoListModel> getRatedMovies(
+  static Future<ResponseModel<VideoListModel>> getRatedMovies(
       {int page = 1, String sortBy = 'created_at.asc'}) async {
     int accountid = prefs.getInt('accountid');
     if (accountid == null) return null;
-    VideoListModel model;
-    String param =
+    final String param =
         '/account/$accountid/rated/movies?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
-    var r = await _http.request(param);
-    if (r != null) model = VideoListModel(r);
-    return model;
+    final r = await _http.request<VideoListModel>(param);
+    return r;
   }
 
   ///Get a list of all the movies you have rated.
-  static Future<VideoListModel> getRatedTVShows(
+  static Future<ResponseModel<VideoListModel>> getRatedTVShows(
       {int page = 1, String sortBy = 'created_at.asc'}) async {
-    int accountid = prefs.getInt('accountid');
+    final int accountid = prefs.getInt('accountid');
     if (accountid == null) return null;
-    VideoListModel model;
-    String param =
+    final String param =
         '/account/$accountid/rated/tv?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
-    var r = await _http.request(param);
-    if (r != null) model = VideoListModel(r);
-    return model;
+    final r = await _http.request<VideoListModel>(param);
+    return r;
   }
 
   static Future<bool> rateTVShow(int tvid, double rating) async {
@@ -379,8 +368,8 @@ class ApiHelper {
       param += '&session_id=$session';
     FormData formData = new FormData.fromMap({"value": rating});
     var r = await _http.request(param, method: "POST", data: formData);
-    if (r != null) {
-      var jsonobject = json.decode(r);
+    if (r.success) {
+      var jsonobject = json.decode(r.result);
       if (jsonobject['status_code'] == 1) result = true;
     }
     return result;
@@ -397,8 +386,8 @@ class ApiHelper {
       param += '&session_id=$session';
     FormData formData = new FormData.fromMap({"value": rating});
     var r = await _http.request(param, method: "POST", data: formData);
-    if (r != null) {
-      var jsonobject = json.decode(r);
+    if (r.success) {
+      var jsonobject = json.decode(r.result);
       if (jsonobject['status_code'] == 1) result = true;
     }
     return result;
@@ -411,108 +400,88 @@ class ApiHelper {
         '/tv/$tvid/season/$seasonid/episode/$episodeid/rating?api_key=$_apikey&session_id=$seasonid';
     var data = {"value": rating};
     var r = await _http.request(param, method: "POST", data: data);
-    if (r != null) {
-      var jsonobject = json.decode(r);
+    if (r.success) {
+      var jsonobject = json.decode(r.result);
       if (jsonobject['status_code'] == 1) result = true;
     }
     return result;
   }
 
-  static Future<CertificationModel> getMovieCertifications() async {
-    CertificationModel certificationModel;
-    String param = '/certification/movie/list';
-    var r = await _http.request(param);
-    if (r != null) {
-      certificationModel = CertificationModel(r);
-    }
-    return certificationModel;
+  static Future<ResponseModel<CertificationModel>>
+      getMovieCertifications() async {
+    final String param = '/certification/movie/list';
+    final r = await _http.request<CertificationModel>(param);
+    return r;
   }
 
-  static Future<CertificationModel> getTVCertifications() async {
-    CertificationModel certificationModel;
+  static Future<ResponseModel<CertificationModel>> getTVCertifications() async {
     String param = '/certification/tv/list';
-    var r = await _http.request(param);
-    if (r != null) {
-      certificationModel = CertificationModel(r);
-    }
-    return certificationModel;
+    final r = await _http.request<CertificationModel>(param);
+    return r;
   }
 
-  static Future<VideoListResult> getLastMovies() async {
-    VideoListResult model;
-    String param = "/movie/latest?api_key=$_apikey&language=$language";
-    var r = await _http.request(param);
-    if (r != null) model = VideoListResult.fromJson(r);
-    return model;
+  static Future<ResponseModel<VideoListResult>> getLastMovies() async {
+    final String param = "/movie/latest?api_key=$_apikey&language=$language";
+    final r = await _http.request<VideoListResult>(param);
+    return r;
   }
 
-  static Future<VideoListResult> getLastTVShows() async {
-    VideoListResult model;
-    String param = "/tv/latest?api_key=$_apikey&language=$language";
-    var r = await _http.request(param);
-    if (r != null) model = VideoListResult.fromJson(r);
-    return model;
+  static Future<ResponseModel<VideoListResult>> getLastTVShows() async {
+    final String param = "/tv/latest?api_key=$_apikey&language=$language";
+    final r = await _http.request<VideoListResult>(param);
+    return r;
   }
 
-  static Future<VideoListModel> getPopularMovies({int page = 1}) async {
-    VideoListModel model;
-    String param =
+  static Future<ResponseModel<VideoListModel>> getPopularMovies(
+      {int page = 1}) async {
+    final String param =
         "/movie/popular?api_key=$_apikey&language=$language&page=$page&region=$region";
-    var r = await _http.request(param);
-    if (r != null) model = VideoListModel(r);
-    return model;
+    final r = await _http.request<VideoListModel>(param);
+    return r;
   }
 
-  static Future<VideoListModel> getPopularTVShows({int page = 1}) async {
-    VideoListModel model;
-    String param =
+  static Future<ResponseModel<VideoListModel>> getPopularTVShows(
+      {int page = 1}) async {
+    final String param =
         "/tv/popular?api_key=$_apikey&language=$language&page=$page&region=$region";
-    var r = await _http.request(param);
-    if (r != null) model = VideoListModel(r);
-    return model;
+    final r = await _http.request<VideoListModel>(param);
+    return r;
   }
 
-  static Future<MovieDetailModel> getMovieDetail(int mvid,
+  static Future<ResponseModel<MovieDetailModel>> getMovieDetail(int mvid,
       {String appendtoresponse}) async {
-    MovieDetailModel model;
     String param = '/movie/$mvid?api_key=$_apikey&language=$language';
     if (appendtoresponse != null)
       param = param + '&append_to_response=$appendtoresponse';
-    var r = await _http.request(param,
+    final r = await _http.request<MovieDetailModel>(param,
         cached: true, cacheDuration: Duration(hours: 1));
-    if (r != null) model = MovieDetailModel(r);
-    return model;
+    return r;
   }
 
-  static Future<TVDetailModel> getTVDetail(int tvid,
+  static Future<ResponseModel<TVDetailModel>> getTVDetail(int tvid,
       {String appendtoresponse}) async {
-    TVDetailModel model;
     String param = '/tv/$tvid?api_key=$_apikey&language=$language';
     if (appendtoresponse != null)
       param = param + '&append_to_response=$appendtoresponse';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = TVDetailModel(r);
-    return model;
+    final r = await _http.request<TVDetailModel>(param, cached: true);
+    return r;
   }
 
-  static Future<MediaAccountStateModel> getTVAccountState(int tvid) async {
-    MediaAccountStateModel model;
+  static Future<ResponseModel<MediaAccountStateModel>> getTVAccountState(
+      int tvid) async {
     String param =
         '/tv/$tvid/account_states?api_key=$_apikey&language=$language';
-    int accountid = prefs.getInt('accountid');
+    final int accountid = prefs.getInt('accountid');
     if (accountid != null)
       param += '&session_id=$session';
     else
-      //param += '&guest_session_id=$session';
       return null;
-    var r = await _http.request(param);
-    if (r != null) model = MediaAccountStateModel(r);
-    return model;
+    final r = await _http.request<MediaAccountStateModel>(param);
+    return r;
   }
 
-  static Future<MediaAccountStateModel> getMovieAccountState(
+  static Future<ResponseModel<MediaAccountStateModel>> getMovieAccountState(
       int movieid) async {
-    MediaAccountStateModel model;
     String param =
         '/movie/$movieid/account_states?api_key=$_apikey&language=$language';
     int accountid = prefs.getInt('accountid');
@@ -520,189 +489,162 @@ class ApiHelper {
       param += '&session_id=$session';
     else
       param += '&guest_session_id=$session';
-    var r = await _http.request(param);
-    if (r != null) model = MediaAccountStateModel(r);
-    return model;
+    final r = await _http.request<MediaAccountStateModel>(param);
+    return r;
   }
 
   ///Get a list of all of the movie ids that have been changed in the past 24 hours.You can query it for up to 14 days worth of changed IDs at a time with the start_date and end_date query parameters. 100 items are returned per page.
-  static Future<MovieChangeModel> getMovieChange(
+  static Future<ResponseModel<MovieChangeModel>> getMovieChange(
       {int page = 1, String startdate, String enddate}) async {
-    MovieChangeModel model;
     String param = '/movie/changes?api_key=$_apikey&page=$page';
     if (startdate != null && enddate == null)
       param = param + '&start_date=$enddate&start_date=$startdate';
-    var r = await _http.request(param);
-    if (r != null) model = MovieChangeModel(r);
-    return model;
+    final r = await _http.request<MovieChangeModel>(param);
+    return r;
   }
 
   ///Get a list of upcoming movies in theatres. This is a release type query that looks for all movies that have a release type of 2 or 3 within the specified date range.You can optionally specify a region prameter which will narrow the search to only look for theatrical release dates within the specified country.
-  static Future<VideoListModel> getMovieUpComing({int page = 1}) async {
-    VideoListModel model;
-    String param =
+  static Future<ResponseModel<VideoListModel>> getMovieUpComing(
+      {int page = 1}) async {
+    final String param =
         '/movie/upcoming?api_key=$_apikey&language=$language&page=$page&region=$region';
-    var r = await _http.request(param,
+    final r = await _http.request<VideoListModel>(param,
         cached: true, cacheDuration: Duration(seconds: 0));
-    if (r != null) model = VideoListModel(r);
-    return model;
+
+    return r;
   }
 
   ///Get the daily or weekly trending items. The daily trending list tracks items over the period of a day while items have a 24 hour half life. The weekly list tracks items over a 7 day period, with a 7 day half life.
-  static Future<SearchResultModel> getTrending(MediaType type, TimeWindow time,
+  static Future<ResponseModel<SearchResultModel>> getTrending(
+      MediaType type, TimeWindow time,
       {int page = 1}) async {
-    SearchResultModel model;
-    String param =
+    final String param =
         '/trending/${type.toString().split('.').last}/${time.toString().split('.').last}?api_key=$_apikey&language=$language&page=$page';
-    var r = await _http.request(param,
+    final r = await _http.request<SearchResultModel>(param,
         cached: true, cacheDuration: Duration(hours: 1));
-    if (r != null) model = SearchResultModel(r);
-    return model;
+    return r;
   }
 
   ///Get a list of movies in theatres. This is a release type query that looks for all movies that have a release type of 2 or 3 within the specified date range.You can optionally specify a region prameter which will narrow the search to only look for theatrical release dates within the specified country.
-  static Future<VideoListModel> getNowPlayingMovie({int page = 1}) async {
-    VideoListModel model;
-    String param =
+  static Future<ResponseModel<VideoListModel>> getNowPlayingMovie(
+      {int page = 1}) async {
+    final String param =
         '/movie/now_playing?api_key=$_apikey&language=$language&page=$page&region=$region';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = VideoListModel(r);
-    return model;
+    final r = await _http.request<VideoListModel>(param, cached: true);
+    return r;
   }
 
-  static Future<VideoListModel> getRecommendationsMovie(int movieid,
+  static Future<ResponseModel<VideoListModel>> getRecommendationsMovie(
+      int movieid,
       {int page = 1}) async {
-    VideoListModel model;
-    String param =
+    final String param =
         '/movie/$movieid/recommendations?api_key=$_apikey&language=$language&page=$page';
-    var r = await _http.request(param);
-    if (r != null) model = VideoListModel(r);
-    return model;
+    final r = await _http.request<VideoListModel>(param);
+    return r;
   }
 
-  static Future<VideoListModel> getRecommendationsTV(int tvid,
+  static Future<ResponseModel<VideoListModel>> getRecommendationsTV(int tvid,
       {int page = 1}) async {
-    VideoListModel model;
-    String param =
+    final String param =
         '/tv/$tvid/recommendations?api_key=$_apikey&language=$language&page=$page';
-    var r = await _http.request(param);
-    if (r != null) model = VideoListModel(r);
-    return model;
+    final r = await _http.request<VideoListModel>(param);
+    return r;
   }
 
   ///Get the videos that have been added to a movie.
-  static Future<VideoModel> getMovieVideo(int movieid) async {
-    VideoModel model;
-    String param = '/movie/$movieid/videos?api_key=$_apikey';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = VideoModel(r);
-    return model;
+  static Future<ResponseModel<VideoModel>> getMovieVideo(int movieid) async {
+    final String param = '/movie/$movieid/videos?api_key=$_apikey';
+    final r = await _http.request<VideoModel>(param, cached: true);
+    return r;
   }
 
-  static Future<VideoModel> getTVVideo(int tvid) async {
-    VideoModel model;
-    String param = '/tv/$tvid/videos?api_key=$_apikey';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = VideoModel(r);
-    return model;
+  static Future<ResponseModel<VideoModel>> getTVVideo(int tvid) async {
+    final String param = '/tv/$tvid/videos?api_key=$_apikey';
+    final r = await _http.request<VideoModel>(param, cached: true);
+    return r;
   }
 
   ///Get a list of shows that are currently on the air.This query looks for any TV show that has an episode with an air date in the next 7 days.
-  static Future<VideoListModel> getTVOnTheAir({int page = 1}) async {
-    VideoListModel model;
+  static Future<ResponseModel<VideoListModel>> getTVOnTheAir(
+      {int page = 1}) async {
     String param =
         '/tv/on_the_air?api_key=$_apikey&language=$language&page=$page&region=$region';
-    var r = await _http.request(param,
+    final r = await _http.request<VideoListModel>(param,
         cached: true, cacheDuration: Duration(seconds: 0));
-    if (r != null) model = VideoListModel(r);
-    return model;
+    return r;
   }
 
   ///Search multiple models in a single request. Multi search currently supports searching for movies, tv shows and people in a single request.
-  static Future<SearchResultModel> searchMulit(String query,
+  static Future<ResponseModel<SearchResultModel>> searchMulit(String query,
       {int page = 1, bool searchadult = false}) async {
-    SearchResultModel model;
-    String param =
+    final String param =
         '/search/multi?api_key=$_apikey&query=$query&page=$page&include_adult=$includeAdult&language=$language';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = SearchResultModel(r);
-    return model;
+    final r = await _http.request<SearchResultModel>(param, cached: true);
+    return r;
   }
 
   ///Get the cast and crew for a movie.
-  static Future<CreditsModel> getMovieCredits(int movieid) async {
-    CreditsModel model;
-    String param =
+  static Future<ResponseModel<CreditsModel>> getMovieCredits(
+      int movieid) async {
+    final String param =
         '/movie/$movieid/credits?api_key=$_apikey&language=$language';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = CreditsModel(r);
-    return model;
+    final r = await _http.request<CreditsModel>(param, cached: true);
+    return r;
   }
 
-  static Future<CreditsModel> getTVCredits(int tvid) async {
-    CreditsModel model;
-    String param = '/tv/$tvid/credits?api_key=$_apikey&language=$language';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = CreditsModel(r);
-    return model;
+  static Future<ResponseModel<CreditsModel>> getTVCredits(int tvid) async {
+    final String param =
+        '/tv/$tvid/credits?api_key=$_apikey&language=$language';
+    final r = await _http.request<CreditsModel>(param, cached: true);
+    return r;
   }
 
   ///Get the user reviews for a movie.
-  static Future<ReviewModel> getMovieReviews(int movieid,
+  static Future<ResponseModel<ReviewModel>> getMovieReviews(int movieid,
       {int page = 1}) async {
-    ReviewModel model;
-    String param = '/movie/$movieid/reviews?api_key=$_apikey&page=$page';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = ReviewModel(r);
-    return model;
+    final String param = '/movie/$movieid/reviews?api_key=$_apikey&page=$page';
+    final r = await _http.request<ReviewModel>(param, cached: true);
+    return r;
   }
 
-  static Future<ReviewModel> getTVReviews(int tvid, {int page = 1}) async {
-    ReviewModel model;
-    String param = '/tv/$tvid/reviews?api_key=$_apikey&page=$page';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = ReviewModel(r);
-    return model;
+  static Future<ResponseModel<ReviewModel>> getTVReviews(int tvid,
+      {int page = 1}) async {
+    final String param = '/tv/$tvid/reviews?api_key=$_apikey&page=$page';
+    final r = await _http.request<ReviewModel>(param, cached: true);
+    return r;
   }
 
   ///Get the images that belong to a movie.Querying images with a language parameter will filter the results. If you want to include a fallback language (especially useful for backdrops) you can use the include_image_language parameter. This should be a comma seperated value like so: include_image_language=en,null.
-  static Future<ImageModel> getMovieImages(int movieid,
+  static Future<ResponseModel<ImageModel>> getMovieImages(int movieid,
       {String includelan = 'en,cn,jp'}) async {
-    ImageModel model;
-    String param = '/movie/$movieid/images?api_key=$_apikey';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = ImageModel(r);
-    return model;
+    final String param = '/movie/$movieid/images?api_key=$_apikey';
+    final r = await _http.request<ImageModel>(param, cached: true);
+    return r;
   }
 
-  static Future<ImageModel> getTVImages(int tvid,
+  static Future<ResponseModel<ImageModel>> getTVImages(int tvid,
       {String includelan = 'en,cn,jp'}) async {
-    ImageModel model;
-    String param = '/tv/$tvid/images?api_key=$_apikey';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = ImageModel(r);
-    return model;
+    final String param = '/tv/$tvid/images?api_key=$_apikey';
+    final r = await _http.request<ImageModel>(param, cached: true);
+    return r;
   }
 
   ///Get the keywords that have been added to a movie.
-  static Future<KeyWordModel> getMovieKeyWords(int moiveid) async {
-    KeyWordModel model;
-    String param = '/movie/$moiveid/keywords?api_key=$_apikey';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = KeyWordModel(r);
-    return model;
+  static Future<ResponseModel<KeyWordModel>> getMovieKeyWords(
+      int moiveid) async {
+    final String param = '/movie/$moiveid/keywords?api_key=$_apikey';
+    final r = await _http.request<KeyWordModel>(param, cached: true);
+    return r;
   }
 
-  static Future<KeyWordModel> getTVKeyWords(int tvid) async {
-    KeyWordModel model;
-    String param = '/tv/$tvid/keywords?api_key=$_apikey';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = KeyWordModel(r);
-    return model;
+  static Future<ResponseModel<KeyWordModel>> getTVKeyWords(int tvid) async {
+    final String param = '/tv/$tvid/keywords?api_key=$_apikey';
+    final r = await _http.request<KeyWordModel>(param, cached: true);
+    return r;
   }
 
   ///Discover movies by different types of data like average rating, number of votes, genres and certifications. You can get a valid list of certifications from the certifications list method.Discover also supports a nice list of sort options. See below for all of the available options.Please note, when using certification \ certification.lte you must also specify certification_country. These two parameters work together in order to filter the results. You can only filter results with the countries we have added to our certifications list.If you specify the region parameter, the regional release date will be used instead of the primary release date. The date returned will be the first date based on your query (ie. if a with_release_type is specified). It's important to note the order of the release types that are used. Specifying "2|3" would return the limited theatrical release date as opposed to "3|2" which would return the theatrical date.Also note that a number of filters support being comma (,) or pipe (|) separated. Comma's are treated like an AND and query while pipe's are an OR.
-  static Future<VideoListModel> getMovieDiscover(
+  static Future<ResponseModel<VideoListModel>> getMovieDiscover(
       {String lan,
       String region,
       String sortBy,
@@ -733,7 +675,6 @@ class ApiHelper {
       int withReleaseType,
       String withOriginalLanguage,
       String withoutKeywords}) async {
-    VideoListModel model;
     String param =
         '/discover/movie?api_key=$_apikey&page=$page&language=$language';
     param += sortBy == null ? '' : '&sort_by=$sortBy';
@@ -777,12 +718,11 @@ class ApiHelper {
         : '&with_original_language=$withOriginalLanguage';
     param +=
         withoutKeywords == null ? '' : '&without_keywords=$withoutKeywords';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = VideoListModel(r);
-    return model;
+    final r = await _http.request<VideoListModel>(param, cached: true);
+    return r;
   }
 
-  static Future<VideoListModel> getTVDiscover(
+  static Future<ResponseModel<VideoListModel>> getTVDiscover(
       {String lan,
       int page,
       String sortBy,
@@ -795,7 +735,6 @@ class ApiHelper {
       String timezone = 'America/New_York',
       String withGenres,
       String withKeywords}) async {
-    VideoListModel model;
     String param =
         '/discover/tv?api_key=$_apikey&page=$page&timezone=$timezone&language=$language';
     param += sortBy == null ? '' : '&sort_by=$sortBy';
@@ -809,19 +748,17 @@ class ApiHelper {
         firstAirDateLte == null ? '' : '&first_air_ate.lte=$firstAirDateLte';
     param += withGenres == null ? '' : '&with_genres=$withGenres';
     param += withKeywords == null ? '' : '&with_keywords=$withKeywords';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = VideoListModel(r);
-    return model;
+    final r = await _http.request<VideoListModel>(param, cached: true);
+    return r;
   }
 
   ///Search for movies.
-  static Future<VideoListModel> searchMovie(String keyword,
+  static Future<ResponseModel<VideoListModel>> searchMovie(String keyword,
       {String lan,
       int page = 1,
       String region,
       int year,
       int primaryReleaseYear}) async {
-    VideoListModel model;
     String param =
         '/search/movie?api_key=$_apikey&page=$page&include_adult=$includeAdult';
     param += region == null ? '' : '&region=$region';
@@ -829,80 +766,70 @@ class ApiHelper {
     param += primaryReleaseYear == null
         ? ''
         : '&primary_release_year=$primaryReleaseYear';
-    var r = _http.request(param, cached: true);
-    if (r != null) model = VideoListModel(r);
-    return model;
+    final r = _http.request<VideoListModel>(param, cached: true);
+    return r;
   }
 
-  static Future<SeasonDetailModel> getTVSeasonDetail(int tvid, int seasonNumber,
+  static Future<ResponseModel<SeasonDetailModel>> getTVSeasonDetail(
+      int tvid, int seasonNumber,
       {String appendToResponse}) async {
-    SeasonDetailModel model;
     String param =
         '/tv/$tvid/season/$seasonNumber?api_key=$_apikey&language=$language';
     if (appendToResponse != null)
       param += "&append_to_response=$appendToResponse";
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = SeasonDetailModel(r);
-    return model;
+    final r = await _http.request<SeasonDetailModel>(param, cached: true);
+    return r;
   }
 
-  static Future<Episode> getTVEpisodeDetail(
+  static Future<ResponseModel<Episode>> getTVEpisodeDetail(
       int tvid, int seasonNumber, int episodeNumber,
       {String appendToResponse}) async {
-    Episode model;
     String param =
         '/tv/$tvid/season/$seasonNumber/episode/$episodeNumber?api_key=$_apikey&language=$language';
     if (appendToResponse != null)
       param += '&append_to_response=$appendToResponse';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = Episode(r);
-    return model;
+    final r = await _http.request<Episode>(param, cached: true);
+    return r;
   }
 
-  static Future<PeopleDetailModel> getPeopleDetail(int peopleid,
+  static Future<ResponseModel<PeopleDetailModel>> getPeopleDetail(int peopleid,
       {String appendToResponse}) async {
-    PeopleDetailModel model;
     String param = '/person/$peopleid?api_key=$_apikey&language=$language';
     if (appendToResponse != null)
       param += '&append_to_response=$appendToResponse';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = PeopleDetailModel(r);
-    return model;
+    final r = await _http.request<PeopleDetailModel>(param, cached: true);
+    return r;
   }
 
-  static Future<CreditsModel> getPeopleMovieCredits(int peopleid) async {
-    CreditsModel model;
-    String param =
+  static Future<ResponseModel<CreditsModel>> getPeopleMovieCredits(
+      int peopleid) async {
+    final String param =
         '/person/$peopleid/movie_credits?api_key=$_apikey&language=$language';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = CreditsModel(r);
-    return model;
+    final r = await _http.request<CreditsModel>(param, cached: true);
+    return r;
   }
 
-  static Future<CombinedCreditsModel> getCombinedCredits(int peopleid) async {
-    CombinedCreditsModel model;
-    String param =
+  static Future<ResponseModel<CombinedCreditsModel>> getCombinedCredits(
+      int peopleid) async {
+    final String param =
         '/person/$peopleid/combined_credits?api_key=$_apikey&language=$language';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = CombinedCreditsModel(r);
-    return model;
+    final r = await _http.request<CombinedCreditsModel>(param, cached: true);
+    return r;
   }
 
-  static Future<VideoModel> getTvShowSeasonVideo(
+  static Future<ResponseModel<VideoModel>> getTvShowSeasonVideo(
       int tvid, int seasonNumber) async {
-    VideoModel model;
-    String param = '/tv/$tvid/season/$seasonNumber/videos?api_key=$_apikey';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = VideoModel(r);
-    return model;
+    final String param =
+        '/tv/$tvid/season/$seasonNumber/videos?api_key=$_apikey';
+    final r = await _http.request<VideoModel>(param, cached: true);
+    return r;
   }
 
-  static Future<ImageModel> getTvShowSeasonImages(
+  static Future<ResponseModel<ImageModel>> getTvShowSeasonImages(
       int tvid, int seasonNumber) async {
-    ImageModel model;
-    String param = '/tv/$tvid/season/$seasonNumber/images?api_key=$_apikey';
-    var r = await _http.request(param, cached: true);
-    if (r != null) model = ImageModel(r);
-    return model;
+    final String param =
+        '/tv/$tvid/season/$seasonNumber/images?api_key=$_apikey';
+    final r = await _http.request<ImageModel>(param, cached: true);
+    return r;
   }
 }

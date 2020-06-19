@@ -1,4 +1,3 @@
-import 'package:movie/actions/request.dart';
 import 'package:movie/models/base_api_model/account_state.dart';
 import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/base_api_model/base_tvshow.dart';
@@ -19,6 +18,8 @@ import 'package:movie/models/base_api_model/user_media.dart';
 import 'package:movie/models/base_api_model/user_premium_model.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/enums/premium_type.dart';
+
+import 'http/request.dart';
 
 class BaseApi {
   static Request _http = Request('https://www.fluttermovie.top/api');

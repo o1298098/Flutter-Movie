@@ -1,5 +1,6 @@
-import 'package:movie/actions/request.dart';
 import 'package:movie/models/github_release.dart';
+
+import 'http/request.dart';
 
 class GithubApi {
   Request _http = Request('https://api.github.com');
