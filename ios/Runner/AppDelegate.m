@@ -16,6 +16,9 @@ void registerPlugins(NSObject<FlutterPluginRegistry>* registry) {
   [FlutterDownloaderPlugin setPluginRegistrantCallback:registerPlugins];
   // Override point for customization after application launch.
   [BTAppSwitch setReturnURLScheme:@"com.o1298098.movies.payments"];
+  if (@available(iOS 10.0, *)) {
+  [UNUserNotificationCenter currentNotificationCenter].delegate = (id<UNUserNotificationCenterDelegate>) self;
+    }
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 

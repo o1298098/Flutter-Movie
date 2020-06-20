@@ -3,6 +3,7 @@ import 'package:common_utils/common_utils.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
+import 'package:movie/actions/local_notification.dart';
 import 'package:movie/models/notification_model.dart';
 import 'package:movie/style/themestyle.dart';
 
@@ -28,7 +29,14 @@ Widget buildView(
           backgroundColor: _theme.backgroundColor,
           iconTheme: _theme.iconTheme,
           brightness: _theme.brightness,
-          actions: [_SearchButton()],
+          actions: [
+            _SearchButton(
+              onTap: () async {
+                await LocalNotification.instance
+                    .sendNotification('title', 'body');
+              },
+            )
+          ],
         ),
         body: _lenght > 0
             ? ListView.separated(
@@ -129,7 +137,7 @@ class _ItemCellState extends State<_ItemCell> {
                     ),
                     SizedBox(height: Adapt.px(15)),
                     Text(
-                      widget.data.notification.body,
+                      widget.data.notification?.body ?? '',
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(

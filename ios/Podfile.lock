@@ -414,6 +414,8 @@ PODS:
     - Flutter
   - flutter_inappwebview (0.0.1):
     - Flutter
+  - flutter_local_notifications (0.0.1):
+    - Flutter
   - flutter_mdns_plugin (0.0.1):
     - Flutter
   - flutter_plugin_android_lifecycle (0.0.1):
@@ -572,6 +574,7 @@ DEPENDENCIES:
   - flutter_braintree (from `.symlinks/plugins/flutter_braintree/ios`)
   - flutter_downloader (from `.symlinks/plugins/flutter_downloader/ios`)
   - flutter_inappwebview (from `.symlinks/plugins/flutter_inappwebview/ios`)
+  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_mdns_plugin (from `.symlinks/plugins/flutter_mdns_plugin/ios`)
   - flutter_plugin_android_lifecycle (from `.symlinks/plugins/flutter_plugin_android_lifecycle/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
@@ -668,6 +671,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_downloader/ios"
   flutter_inappwebview:
     :path: ".symlinks/plugins/flutter_inappwebview/ios"
+  flutter_local_notifications:
+    :path: ".symlinks/plugins/flutter_local_notifications/ios"
   flutter_mdns_plugin:
     :path: ".symlinks/plugins/flutter_mdns_plugin/ios"
   flutter_plugin_android_lifecycle:
@@ -749,6 +754,7 @@ SPEC CHECKSUMS:
   flutter_braintree: 101b66de3f3ae397c9ee3593c2e24ed67a41eeab
   flutter_downloader: 058b9c41564a90500f67f3e432e3524613a7fd83
   flutter_inappwebview: 69dfbac46157b336ffbec19ca6dfd4638c7bf189
+  flutter_local_notifications: 9e4738ce2471c5af910d961a6b7eadcf57c50186
   flutter_mdns_plugin: 3b8fa566cc39005527b515c77243cfdba77b70bc
   flutter_plugin_android_lifecycle: dc0b544e129eebb77a6bfb1239d4d1c673a60a35
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a

@@ -71,6 +71,7 @@ dependencies:
   flutter_downloader: ^1.4.3
   flutter_braintree: ^0.6.0
   camera: ^0.5.8+2
+  flutter_local_notifications: ^1.4.4+1
   
 
 dev_dependencies:

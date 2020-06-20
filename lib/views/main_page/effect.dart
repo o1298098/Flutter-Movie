@@ -9,6 +9,7 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:movie/actions/http/apihelper.dart';
 import 'package:movie/actions/downloader_callback.dart';
 import 'package:movie/actions/http/github_api.dart';
+import 'package:movie/actions/local_notification.dart';
 import 'package:movie/actions/user_info_operate.dart';
 import 'package:movie/actions/version_comparison.dart';
 import 'package:movie/models/notification_model.dart';
@@ -32,8 +33,17 @@ ReceivePort _port = ReceivePort();
 void _onAction(Action action, Context<MainPageState> ctx) {}
 void _onInit(Action action, Context<MainPageState> ctx) async {
   await ApiHelper.init();
+
   await UserInfoOperate.whenAppStart();
   final _preferences = await SharedPreferences.getInstance();
+
+  final _localNotification = LocalNotification.instance;
+
+  await _localNotification.init();
+
+  _localNotification.didReceiveLocalNotification = (id, title, body, payload) =>
+      _didReceiveLocalNotification(id, title, body, payload, ctx);
+
   FirebaseMessaging().configure(onMessage: (message) async {
     NotificationList _list;
     if (_preferences.containsKey('notifications')) {
@@ -41,14 +51,20 @@ void _onInit(Action action, Context<MainPageState> ctx) async {
       _list = NotificationList(_notifications);
     }
     if (_list == null) _list = NotificationList.fromParams(notifications: []);
-    _list.notifications.add(NotificationModel.fromMap(message));
+    final _notificationMessage = NotificationModel.fromMap(message);
+    _list.notifications.add(_notificationMessage);
     _preferences.setString('notifications', _list.toString());
+    _localNotification.sendNotification(_notificationMessage.notification.title,
+        _notificationMessage.notification?.body ?? '',
+        id: int.parse(_notificationMessage.id),
+        payload: _notificationMessage.type);
     print(_list.toString());
   }, onResume: (message) async {
     _push(message, ctx);
   }, onLaunch: (message) async {
     _push(message, ctx);
   });
+
   if (Platform.isAndroid) _bindBackgroundIsolate();
 
   FlutterDownloader.registerCallback(DownloaderCallBack.callback);
@@ -125,7 +141,6 @@ void _bindBackgroundIsolate() {
   _port.listen((dynamic data) async {
     String id = data[0];
     DownloadTaskStatus status = data[1];
-    //int progress = data[2];
     if (status == DownloadTaskStatus.complete) {
       List<DownloadTask> _tasks = await FlutterDownloader.loadTasks();
       final _file = _tasks.singleWhere((e) => e.taskId == id, orElse: null);
@@ -138,4 +153,23 @@ void _bindBackgroundIsolate() {
 
 void _unbindBackgroundIsolate() {
   IsolateNameServer.removePortNameMapping('downloader_send_port');
+}
+
+Future _didReceiveLocalNotification(int id, String title, String body,
+    String payload, Context<MainPageState> ctx) async {
+  Page page = payload == 'movie' ? MovieDetailPage() : TvShowDetailPage();
+  var data = {
+    payload == 'movie' ? 'id' : 'tvid': id,
+    payload == 'movie' ? 'title' : 'name': title,
+  };
+  await Navigator.of(ctx.state.scaffoldKey.currentContext).push(
+    PageRouteBuilder(
+      pageBuilder: (context, animation, secAnimation) {
+        return FadeTransition(
+          opacity: animation,
+          child: page.buildPage(data),
+        );
+      },
+    ),
+  );
 }
