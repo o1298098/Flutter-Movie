@@ -48,7 +48,8 @@ void _deleteList(Action action, Context<ListCellState> ctx) {
             FlatButton(
               child: Text('Submit'),
               onPressed: () {
-                BaseApi.deleteUserList(d.id).then((d) {});
+                final _baseApi = BaseApi.instance;
+                _baseApi.deleteUserList(d.id).then((d) {});
                 ctx.dispatch(ListCellActionCreator.onDeleteList(d));
                 Navigator.of(context).pop();
               },

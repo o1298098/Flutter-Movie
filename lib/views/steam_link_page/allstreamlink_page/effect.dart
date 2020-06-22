@@ -59,16 +59,17 @@ Future _sortChanged(Action action, Context<AllStreamLinkPageState> ctx) async {
 
 void _loadMore(Context<AllStreamLinkPageState> ctx) async {
   final _loading = ctx.state.loading;
+  final _baseApi = BaseApi.instance;
   if (!_loading) {
     ctx.state.loading = true;
     if (ctx.state.mediaType == MediaType.movie)
-      BaseApi.getMovies(page: ctx.state.movieList.page + 1).then((d) {
+      _baseApi.getMovies(page: ctx.state.movieList.page + 1).then((d) {
         ctx.state.loading = false;
         if (d.success)
           ctx.dispatch(AllStreamLinkPageActionCreator.loadMoreMovie(d.result));
       });
     else
-      BaseApi.getTvShows(page: ctx.state.tvList.page + 1).then((d) {
+      _baseApi.getTvShows(page: ctx.state.tvList.page + 1).then((d) {
         ctx.state.loading = false;
         if (d.success)
           ctx.dispatch(
@@ -78,13 +79,14 @@ void _loadMore(Context<AllStreamLinkPageState> ctx) async {
 }
 
 void _initlist(Context<AllStreamLinkPageState> ctx) {
+  final _baseApi = BaseApi.instance;
   if (ctx.state.mediaType == MediaType.movie)
-    BaseApi.getMovies().then((d) {
+    _baseApi.getMovies().then((d) {
       if (d.success)
         ctx.dispatch(AllStreamLinkPageActionCreator.initMovieList(d.result));
     });
   else
-    BaseApi.getTvShows().then((d) {
+    _baseApi.getTvShows().then((d) {
       if (d.success)
         ctx.dispatch(AllStreamLinkPageActionCreator.initTvShowList(d.result));
     });
@@ -92,13 +94,14 @@ void _initlist(Context<AllStreamLinkPageState> ctx) {
 
 void _onSearch(Action action, Context<AllStreamLinkPageState> ctx) {
   final String query = action.payload ?? '';
+  final _baseApi = BaseApi.instance;
   if (query != '') if (ctx.state.mediaType == MediaType.movie)
-    BaseApi.searchMovies(query).then((d) {
+    _baseApi.searchMovies(query).then((d) {
       if (d.success)
         ctx.dispatch(AllStreamLinkPageActionCreator.initMovieList(d.result));
     });
   else
-    BaseApi.searchTvShows(query).then((d) {
+    _baseApi.searchTvShows(query).then((d) {
       if (d.success)
         ctx.dispatch(AllStreamLinkPageActionCreator.initTvShowList(d.result));
     });

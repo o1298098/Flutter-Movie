@@ -90,7 +90,9 @@ void _addComment(Action action, Context<LiveStreamPageState> ctx) {
             photoUrl: ctx.state.user.firebaseUser.photoUrl),
         comment: comment);
     ctx.dispatch(LiveStreamPageActionCreator.insertComment(commentModel));
-    BaseApi.createMovieComment(commentModel).then((d) {
+
+    final _baseApi = BaseApi.instance;
+    _baseApi.createMovieComment(commentModel).then((d) {
       ctx.state.comment = null;
       if (d != null) commentModel.id = d.id;
     });
@@ -104,6 +106,7 @@ bool _isRewarded = false;
 MovieStreamLink _streamLink;
 
 void _onInit(Action action, Context<LiveStreamPageState> ctx) {
+  final _baseApi = BaseApi.instance;
   ctx.state.commentFocusNode = FocusNode();
   ctx.state.commentController = TextEditingController();
   _rewardedVideoAd.listener =
@@ -133,7 +136,7 @@ void _onInit(Action action, Context<LiveStreamPageState> ctx) {
         break;
     }
   };
-  BaseApi.getMovieStreamLinks(ctx.state.id).then((d) {
+  _baseApi.getMovieStreamLinks(ctx.state.id).then((d) {
     if (d.success) {
       final _list = d.result.list;
       if (_list.length > 0) {
@@ -158,7 +161,7 @@ void _onInit(Action action, Context<LiveStreamPageState> ctx) {
       }
     }
   });
-  BaseApi.getMovieComments(ctx.state.id).then((d) {
+  _baseApi.getMovieComments(ctx.state.id).then((d) {
     if (d.success)
       ctx.dispatch(LiveStreamPageActionCreator.setComment(d.result));
   });

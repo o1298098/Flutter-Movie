@@ -20,16 +20,17 @@ void _onAction(Action action, Context<WatchlistPageState> ctx) {}
 
 Future _onInit(Action action, Context<WatchlistPageState> ctx) async {
   final Object ticker = ctx.stfState;
+  final _baseApi = BaseApi.instance;
   ctx.state.animationController =
       AnimationController(vsync: ticker, duration: Duration(milliseconds: 300));
   ctx.state.swiperController = SwiperController();
   if (ctx.state.user != null) {
     final movie =
-        await BaseApi.getWatchlist(ctx.state.user.firebaseUser.uid, 'movie');
+        await _baseApi.getWatchlist(ctx.state.user.firebaseUser.uid, 'movie');
     if (movie.success)
       ctx.dispatch(WatchlistPageActionCreator.setMovie(movie.result));
     final tv =
-        await BaseApi.getWatchlist(ctx.state.user.firebaseUser.uid, 'tv');
+        await _baseApi.getWatchlist(ctx.state.user.firebaseUser.uid, 'tv');
     if (tv.success)
       ctx.dispatch(WatchlistPageActionCreator.setTVShow(tv.result));
   }

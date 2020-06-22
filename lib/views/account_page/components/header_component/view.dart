@@ -75,6 +75,7 @@ Widget buildView(
                     child: Text(
                       'Get Premium >',
                       style: TextStyle(
+                        color: const Color(0xFF000000),
                         fontSize: Adapt.px(20),
                       ),
                     ),

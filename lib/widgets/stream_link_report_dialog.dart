@@ -14,6 +14,7 @@ class _StreamLinkReportDialogState extends State<StreamLinkReportDialog> {
   String _radioGroup;
   TextEditingController _textEditingController;
   FocusNode _textFoucsNode;
+  final _baseApi = BaseApi.instance;
   final List<String> _radioValues = [
     'this video can\'t play',
     'content doesn\'t match',
@@ -53,7 +54,7 @@ class _StreamLinkReportDialogState extends State<StreamLinkReportDialog> {
         widget.report.content = _textEditingController.text;
       else
         widget.report.content = _radioGroup;
-      BaseApi.sendStreamLinkReport(widget.report);
+      _baseApi.sendStreamLinkReport(widget.report);
     }
     Navigator.of(context).pop();
   }

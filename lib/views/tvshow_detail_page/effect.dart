@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/widgets/gallery_photoview_wrapper.dart';
 import 'package:movie/globalbasestate/store.dart';
@@ -29,23 +29,25 @@ void _onAction(Action action, Context<TvShowDetailState> ctx) {}
 Future _onInit(Action action, Context<TvShowDetailState> ctx) async {
   try {
     Future.delayed(Duration(milliseconds: 300), () async {
-      final _tvDetail = await ApiHelper.getTVDetail(ctx.state.tvid,
+      final _tmdb = TMDBApi.instance;
+      final _tvDetail = await _tmdb.getTVDetail(ctx.state.tvid,
           appendtoresponse:
               'keywords,recommendations,credits,external_ids,content_ratings');
       if (_tvDetail.success) {
         ctx.dispatch(TvShowDetailActionCreator.onInit(_tvDetail.result));
       }
 
-      final _tvVideo = await ApiHelper.getTVVideo(ctx.state.tvid);
+      final _tvVideo = await _tmdb.getTVVideo(ctx.state.tvid);
       if (_tvVideo.success)
         ctx.dispatch(TvShowDetailActionCreator.onSetVideos(_tvVideo.result));
-      final _tvImages = await ApiHelper.getTVImages(ctx.state.tvid);
+      final _tvImages = await _tmdb.getTVImages(ctx.state.tvid);
       if (_tvImages.success)
         ctx.dispatch(TvShowDetailActionCreator.onSetImages(_tvImages.result));
 
       final _user = GlobalStore.store.getState().user;
       if (_user != null) {
-        final _accountstate = await BaseApi.getAccountState(
+        final _baseApi = BaseApi.instance;
+        final _accountstate = await _baseApi.getAccountState(
             _user.firebaseUser.uid, ctx.state.tvid, MediaType.tv);
         if (_accountstate.success)
           ctx.dispatch(TvShowDetailActionCreator.onSetAccountState(

@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/models/response_model.dart';
 import 'package:movie/models/videolist.dart';
 import 'action.dart';
@@ -49,14 +49,15 @@ Future _onLoadData(Action action, Context<DiscoverPageState> ctx) async {
   String _sortBy = ctx.state.selectedSort == null
       ? null
       : '${ctx.state.selectedSort.value}${ctx.state.sortDesc ? '.desc' : '.asc'}';
+  final _tmdb = TMDBApi.instance;
   if (ctx.state.isMovie)
-    r = await ApiHelper.getMovieDiscover(
+    r = await _tmdb.getMovieDiscover(
         voteAverageGte: ctx.state.lVote,
         voteAverageLte: ctx.state.rVote,
         sortBy: _sortBy,
         withGenres: genresIds.length > 0 ? genresIds.join(',') : null);
   else
-    r = await ApiHelper.getTVDiscover(
+    r = await _tmdb.getTVDiscover(
         voteAverageGte: ctx.state.lVote,
         voteAverageLte: ctx.state.rVote,
         withKeywords: ctx.state.filterState.keyWordController.text,
@@ -94,8 +95,9 @@ Future _onLoadMore(Action action, Context<DiscoverPageState> ctx) async {
   String _sortBy = ctx.state.selectedSort == null
       ? null
       : '${ctx.state.selectedSort?.value ?? ''}${ctx.state.filterState.sortDesc ? '.desc' : '.asc'}';
+  final _tmdb = TMDBApi.instance;
   if (ctx.state.isMovie)
-    r = await ApiHelper.getMovieDiscover(
+    r = await _tmdb.getMovieDiscover(
       voteAverageGte: ctx.state.lVote,
       voteAverageLte: ctx.state.rVote,
       page: ctx.state.videoListModel.page + 1,
@@ -103,7 +105,7 @@ Future _onLoadMore(Action action, Context<DiscoverPageState> ctx) async {
       withGenres: genresIds.length > 0 ? genresIds.join(',') : null,
     );
   else
-    r = await ApiHelper.getTVDiscover(
+    r = await _tmdb.getTVDiscover(
         voteAverageGte: ctx.state.lVote,
         voteAverageLte: ctx.state.rVote,
         page: ctx.state.videoListModel.page + 1,

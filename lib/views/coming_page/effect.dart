@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/models/response_model.dart';
 import 'package:movie/models/videolist.dart';
 import 'action.dart';
@@ -17,6 +17,7 @@ Effect<ComingPageState> buildEffect() {
 void _onAction(Action action, Context<ComingPageState> ctx) {}
 
 Future _onInit(Action action, Context<ComingPageState> ctx) async {
+  final _tmdb = TMDBApi.instance;
   ctx.state.movieController = new ScrollController()
     ..addListener(() async {
       bool isBottom = ctx.state.movieController.position.pixels ==
@@ -33,10 +34,10 @@ Future _onInit(Action action, Context<ComingPageState> ctx) async {
         await _onLoadMore(action, ctx);
       }
     });
-  var q = await ApiHelper.getMovieUpComing();
+  var q = await _tmdb.getMovieUpComing();
   if (q.result != null)
     ctx.dispatch(ComingPageActionCreator.onInitMoviesComing(q.result));
-  var t = await ApiHelper.getTVOnTheAir();
+  var t = await _tmdb.getTVOnTheAir();
   if (t.result != null)
     ctx.dispatch(ComingPageActionCreator.onInitTVComing(t.result));
 }
@@ -48,12 +49,13 @@ void _onDispose(Action action, Context<ComingPageState> ctx) {
 
 Future _onLoadMore(Action action, Context<ComingPageState> ctx) async {
   ResponseModel<VideoListModel> q;
+  final _tmdb = TMDBApi.instance;
   if (ctx.state.showmovie) {
     if (ctx.state.moviecoming.page == ctx.state.moviecoming.totalPages) return;
-    q = await ApiHelper.getMovieUpComing(page: ctx.state.moviecoming.page + 1);
+    q = await _tmdb.getMovieUpComing(page: ctx.state.moviecoming.page + 1);
   } else {
     if (ctx.state.tvcoming.page == ctx.state.tvcoming.totalPages) return;
-    q = await ApiHelper.getTVOnTheAir(page: ctx.state.tvcoming.page + 1);
+    q = await _tmdb.getTVOnTheAir(page: ctx.state.tvcoming.page + 1);
   }
   if (q.result != null)
     ctx.dispatch(ComingPageActionCreator.onLoadMore(q.result));

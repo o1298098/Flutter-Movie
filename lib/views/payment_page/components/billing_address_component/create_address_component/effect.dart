@@ -66,13 +66,14 @@ void _onSave(Action action, Context<CreateAddressState> ctx) async {
       postalCode: ctx.state.postalCodeController.text,
       region: ctx.state.provinceController.text,
       streetAddress: ctx.state.streetAddressController.text);
+  final _baseApi = BaseApi.instance;
   if (ctx.state.billingAddress != null) {
     _address.id = ctx.state.billingAddress.id;
-    var _r = await BaseApi.updateBillAddress(_address);
+    var _r = await _baseApi.updateBillAddress(_address);
     if (_r != null) ctx.dispatch(BillingAddressActionCreator.onUpdate(_r));
     Navigator.of(ctx.context).pop();
   } else {
-    var _r = await BaseApi.createBillAddress(_address);
+    var _r = await _baseApi.createBillAddress(_address);
     if (_r != null) ctx.dispatch(BillingAddressActionCreator.onInsert(_r));
     Navigator.of(ctx.context).pop();
   }
@@ -82,8 +83,9 @@ void _onSave(Action action, Context<CreateAddressState> ctx) async {
 
 void _onDelete(Action action, Context<CreateAddressState> ctx) async {
   if (ctx.state.billingAddress != null && ctx.state.customerId != null) {
+    final _baseApi = BaseApi.instance;
     ctx.dispatch(CreateAddressActionCreator.onLoading(true));
-    final _r = await BaseApi.deleteBillAddress(ctx.state.billingAddress);
+    final _r = await _baseApi.deleteBillAddress(ctx.state.billingAddress);
     if (_r != null) {
       ctx.dispatch(
           BillingAddressActionCreator.onDelete(ctx.state.billingAddress));

@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/tvdetail.dart';
@@ -58,7 +58,8 @@ void _onDispose(Action action, Context<SeasonLinkPageState> ctx) {
 void _getSeasonDetail(Action action, Context<SeasonLinkPageState> ctx) async {
   final Season season = action.payload;
   if (season != null && season?.episodes == null) {
-    final _episode = await ApiHelper.getTVSeasonDetail(
+    final _tmdb = TMDBApi.instance;
+    final _episode = await _tmdb.getTVSeasonDetail(
         ctx.state.detail.id, season.seasonNumber,
         appendToResponse: 'credits');
     if (_episode.success) {
@@ -68,7 +69,9 @@ void _getSeasonDetail(Action action, Context<SeasonLinkPageState> ctx) async {
           _playState ?? _episode.result.episodes.map((f) => '0').toList();
       season.episodes = _episode.result.episodes;
       season.credits = _episode.result.credits;
-      final _streamLinks = await BaseApi.getTvSeasonStreamLinks(
+
+      final _baseApi = BaseApi.instance;
+      final _streamLinks = await _baseApi.getTvSeasonStreamLinks(
           ctx.state.detail.id, season.seasonNumber);
       if (_streamLinks.success)
         season.episodes.forEach((f) {

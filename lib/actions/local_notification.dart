@@ -31,8 +31,6 @@ class LocalNotification {
 
   Future sendNotification(String title, String body,
       {int id = 0, String payload = ''}) async {
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         '1128', 'flutterMovieNotification', 'for loacl Notification',
         importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
@@ -40,7 +38,7 @@ class LocalNotification {
         IOSNotificationDetails(presentAlert: true, presentBadge: true);
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin
+    await _flutterLocalNotificationsPlugin
         .show(id, title, body, platformChannelSpecifics, payload: payload);
   }
 }

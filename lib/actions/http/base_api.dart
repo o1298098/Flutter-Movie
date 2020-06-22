@@ -23,12 +23,15 @@ import 'package:movie/models/response_model.dart';
 import 'request.dart';
 
 class BaseApi {
-  static Request _http = Request('https://www.fluttermovie.top/api');
+  BaseApi._();
+  static final BaseApi instance = BaseApi._();
 
-  static Future<ResponseModel<dynamic>> updateUser(String uid, String email,
+  final Request _http = Request('https://www.fluttermovie.top/api');
+
+  Future<ResponseModel<dynamic>> updateUser(String uid, String email,
       String photoUrl, String userName, String phone) async {
     final String _url = '/Users';
-    var _data = {
+    final _data = {
       "phone": phone,
       "email": email,
       "photoUrl": photoUrl,
@@ -38,14 +41,14 @@ class BaseApi {
     return await _http.request(_url, method: "POST", data: _data);
   }
 
-  static Future<ResponseModel<UserListModel>> getUserList(String uid,
+  Future<ResponseModel<UserListModel>> getUserList(String uid,
       {int page = 1, int pageSize = 20}) async {
     final String _url = '/UserLists/User/$uid?page=$page&pageSize=$pageSize';
     final r = await _http.request<UserListModel>(_url);
     return r;
   }
 
-  static Future<ResponseModel<dynamic>> createUserList(UserList d) async {
+  Future<ResponseModel<dynamic>> createUserList(UserList d) async {
     final String _url = '/UserLists';
     final data = {
       "id": 0,
@@ -64,13 +67,12 @@ class BaseApi {
     return await _http.request(_url, method: 'POST', data: data);
   }
 
-  static Future<ResponseModel<dynamic>> deleteUserList(int listid) async {
+  Future<ResponseModel<dynamic>> deleteUserList(int listid) async {
     final String _url = '/UserLists/$listid';
     return await _http.request(_url, method: 'DELETE');
   }
 
-  static Future<ResponseModel<dynamic>> addUserListDetail(
-      UserListDetail d) async {
+  Future<ResponseModel<dynamic>> addUserListDetail(UserListDetail d) async {
     final String _url = '/UserListDetails';
     final data = {
       "id": 0,
@@ -86,24 +88,22 @@ class BaseApi {
     return await _http.request(_url, method: 'POST', data: data);
   }
 
-  static Future<ResponseModel<UserListDetail>> getUserListDetailItem(
+  Future<ResponseModel<UserListDetail>> getUserListDetailItem(
       int listid, String mediaType, int mediaid) async {
     final String _url = '/UserListDetails/$listid/$mediaType/$mediaid';
     final r = await _http.request<UserListDetail>(_url);
     return r;
   }
 
-  static Future<ResponseModel<UserListDetailModel>> getUserListDetailItems(
-      int listid,
-      {int page = 1,
-      int pageSize = 20}) async {
+  Future<ResponseModel<UserListDetailModel>> getUserListDetailItems(int listid,
+      {int page = 1, int pageSize = 20}) async {
     final String _url =
         '/UserListDetails/List/$listid?page=$page&pageSize=$pageSize';
     final r = await _http.request<UserListDetailModel>(_url);
     return r;
   }
 
-  static Future<ResponseModel<dynamic>> updateUserList(UserList list) async {
+  Future<ResponseModel<dynamic>> updateUserList(UserList list) async {
     final String _url = '/UserLists/${list.id}';
     final data = {
       "id": list.id,
@@ -122,7 +122,7 @@ class BaseApi {
     return await _http.request(_url, method: 'PUT', data: data);
   }
 
-  static Future<ResponseModel<AccountState>> getAccountState(
+  Future<ResponseModel<AccountState>> getAccountState(
       String uid, int mediaId, MediaType type) async {
     final String _url =
         '/UserAccountStates/$uid/${type.toString().split('.').last}/$mediaId';
@@ -130,8 +130,7 @@ class BaseApi {
     return r;
   }
 
-  static Future<ResponseModel<AccountState>> updateAccountState(
-      AccountState d) async {
+  Future<ResponseModel<AccountState>> updateAccountState(AccountState d) async {
     final String _url = '/UserAccountStates';
     final data = {
       'id': d.id,
@@ -147,7 +146,7 @@ class BaseApi {
     return r;
   }
 
-  static Future<ResponseModel<dynamic>> setFavorite(UserMedia d) async {
+  Future<ResponseModel<dynamic>> setFavorite(UserMedia d) async {
     final String _url = '/UserFavorite';
     final _data = {
       'id': 0,
@@ -168,7 +167,7 @@ class BaseApi {
     return r;
   }
 
-  static Future<ResponseModel<UserMediaModel>> getFavorite(
+  Future<ResponseModel<UserMediaModel>> getFavorite(
       String uid, String mediaType,
       {int page = 1, int pageSize = 20}) async {
     final String _url =
@@ -178,7 +177,7 @@ class BaseApi {
     return r;
   }
 
-  static Future<ResponseModel<dynamic>> deleteFavorite(
+  Future<ResponseModel<dynamic>> deleteFavorite(
       String uid, MediaType type, int mediaId) async {
     final String _url =
         '/UserFavorite/$uid/${type.toString().split('.').last}/$mediaId';
@@ -186,7 +185,7 @@ class BaseApi {
     return r;
   }
 
-  static Future<ResponseModel<dynamic>> setWatchlist(UserMedia d) async {
+  Future<ResponseModel<dynamic>> setWatchlist(UserMedia d) async {
     final String _url = '/UserWatchlist';
     final _data = {
       'id': 0,
@@ -207,7 +206,7 @@ class BaseApi {
     return r;
   }
 
-  static Future<ResponseModel<UserMediaModel>> getWatchlist(
+  Future<ResponseModel<UserMediaModel>> getWatchlist(
       String uid, String mediaType,
       {int page = 1, int pageSize = 20}) async {
     final String _url =
@@ -216,7 +215,7 @@ class BaseApi {
     return r;
   }
 
-  static Future<ResponseModel<dynamic>> deleteWatchlist(
+  Future<ResponseModel<dynamic>> deleteWatchlist(
       String uid, MediaType type, int mediaId) async {
     final String _url =
         '/UserWatchlist/$uid/${type.toString().split('.').last}/$mediaId';
@@ -224,7 +223,7 @@ class BaseApi {
     return r;
   }
 
-  static Future<ResponseModel<BaseMovieModel>> getMovies(
+  Future<ResponseModel<BaseMovieModel>> getMovies(
       {int page = 1, int pageSize = 20}) async {
     final String _url = '/Movies?page=$page&pageSize=$pageSize';
     final r = await _http.request<BaseMovieModel>(_url,
@@ -232,7 +231,7 @@ class BaseApi {
     return r;
   }
 
-  static Future<ResponseModel<BaseMovieModel>> searchMovies(String query,
+  Future<ResponseModel<BaseMovieModel>> searchMovies(String query,
       {int page = 1, int pageSize = 20}) async {
     final String _url =
         '/Movies/Search?name=$query&page=$page&pageSize=$pageSize';
@@ -240,20 +239,20 @@ class BaseApi {
     return r;
   }
 
-  static Future<ResponseModel<MovieStreamLinks>> getMovieStreamLinks(
+  Future<ResponseModel<MovieStreamLinks>> getMovieStreamLinks(
       int movieid) async {
     final String _url = '/MovieStreamLinks/MovieId/$movieid';
     final r = await _http.request<MovieStreamLinks>(_url);
     return r;
   }
 
-  static Future<ResponseModel<bool>> hasMovieStreamLinks(int movieid) async {
+  Future<ResponseModel<bool>> hasMovieStreamLinks(int movieid) async {
     String _url = '/MovieStreamLinks/Exist/$movieid';
     final _r = _http.request<bool>(_url);
     return _r;
   }
 
-  static Future<ResponseModel<BaseTvShowModel>> getTvShows(
+  Future<ResponseModel<BaseTvShowModel>> getTvShows(
       {int page = 1, int pageSize = 20}) async {
     final String _url = '/TvShows?page=$page&pageSize=$pageSize';
     final r = await _http.request<BaseTvShowModel>(_url,
@@ -261,14 +260,14 @@ class BaseApi {
     return r;
   }
 
-  static Future<ResponseModel<BaseTvShowModel>> searchTvShows(String query,
+  Future<ResponseModel<BaseTvShowModel>> searchTvShows(String query,
       {int page = 1, int pageSize = 20}) async {
     final String _url = '/TvShows/Search/$query&page=$page&pageSize=$pageSize';
     final r = await _http.request<BaseTvShowModel>(_url);
     return r;
   }
 
-  static Future<ResponseModel<TvShowStreamLinks>> getTvSeasonStreamLinks(
+  Future<ResponseModel<TvShowStreamLinks>> getTvSeasonStreamLinks(
       int tvid, int season) async {
     final String _url = '/TvShowStreamLinks/$tvid/$season';
     final r = await _http.request<TvShowStreamLinks>(_url,
@@ -276,20 +275,20 @@ class BaseApi {
     return r;
   }
 
-  static Future<ResponseModel<bool>> hasTvShowStreamLinks(int tvid) async {
+  Future<ResponseModel<bool>> hasTvShowStreamLinks(int tvid) async {
     String _url = '/TvShowStreamLinks/Exist/$tvid';
     final _r = await _http.request<bool>(_url);
     return _r;
   }
 
-  static Future<ResponseModel<bool>> hasTvSeasonStreamLinks(
+  Future<ResponseModel<bool>> hasTvSeasonStreamLinks(
       int tvid, int season) async {
     final String _url = '/TvShowStreamLinks/Exist/$tvid/$season';
     final _r = await _http.request<bool>(_url);
     return _r;
   }
 
-  static Future createMovieComment(MovieComment comment) async {
+  Future createMovieComment(MovieComment comment) async {
     String _url = '/MovieComments';
     var _data = {
       'mediaId': comment.mediaId,
@@ -302,7 +301,7 @@ class BaseApi {
     await _http.request(_url, method: 'POST', data: _data);
   }
 
-  static Future<ResponseModel<TvShowComment>> createTvShowComment(
+  Future<ResponseModel<TvShowComment>> createTvShowComment(
       TvShowComment comment) async {
     final String _url = '/TvShowComments';
     final _data = {
@@ -320,7 +319,7 @@ class BaseApi {
     return r;
   }
 
-  static Future<ResponseModel<TvShowComments>> getTvShowComments(
+  Future<ResponseModel<TvShowComments>> getTvShowComments(
       int tvid, int season, int episode,
       {int page = 1, int pageSize = 40}) async {
     final String _url = '/TvShowComments/$tvid/$season/$episode';
@@ -328,14 +327,14 @@ class BaseApi {
     return r;
   }
 
-  static Future<ResponseModel<MovieComments>> getMovieComments(int movieid,
+  Future<ResponseModel<MovieComments>> getMovieComments(int movieid,
       {int page = 1, int pageSize = 40}) async {
     final String _url = '/MovieComments/$movieid';
     final r = await _http.request<MovieComments>(_url);
     return r;
   }
 
-  static Future<ResponseModel<String>> sendStreamLinkReport(
+  Future<ResponseModel<String>> sendStreamLinkReport(
       StreamLinkReport report) async {
     final String _url = '/Email/ReportEmail';
     final _data = {
@@ -351,7 +350,7 @@ class BaseApi {
     return r;
   }
 
-  static Future<ResponseModel<String>> sendRequestStreamLink(
+  Future<ResponseModel<String>> sendRequestStreamLink(
       StreamLinkReport report) async {
     final String _url = '/Email/RequestLinkEmail';
     final _data = {
@@ -364,37 +363,34 @@ class BaseApi {
     return r;
   }
 
-  static Future<ResponseModel<String>> getPaymentToken(String userId) async {
+  Future<ResponseModel<String>> getPaymentToken(String userId) async {
     final String _url = '/Payment/ClientToken/$userId';
     final _r = await _http.request<String>(_url);
     return _r;
   }
 
-  static Future<ResponseModel<TransactionModel>> transactionSearch(
-      String userId,
-      {DateTime begin,
-      DateTime end}) async {
+  Future<ResponseModel<TransactionModel>> transactionSearch(String userId,
+      {DateTime begin, DateTime end}) async {
     final String _url = '/payment/TransactionSearch/$userId';
     final _r = await _http.request<TransactionModel>(_url);
     return _r;
   }
 
-  static Future<ResponseModel<BraintreeCustomer>> getBraintreeCustomer(
+  Future<ResponseModel<BraintreeCustomer>> getBraintreeCustomer(
       String userId) async {
     final String _url = '/payment/Customer/$userId';
     final _r = await _http.request<BraintreeCustomer>(_url);
     return _r;
   }
 
-  static Future<ResponseModel<dynamic>> updateCreditCard(
+  Future<ResponseModel<dynamic>> updateCreditCard(
       String token, dynamic creditCardRequest) async {
     String _url = '/payment/CreditCard';
     var _r = await _http.request(_url, method: 'PUT', data: creditCardRequest);
     return _r;
   }
 
-  static Future<ResponseModel<dynamic>> createPurchase(
-      Purchase purchase) async {
+  Future<ResponseModel<dynamic>> createPurchase(Purchase purchase) async {
     String _url = '/payment/CreatePurchase';
     var _r = await _http.request(_url, method: 'POST', data: {
       'userId': purchase.userId,
@@ -405,7 +401,7 @@ class BaseApi {
     return _r;
   }
 
-  static Future<ResponseModel<UserPremiumModel>> createPremiumPurchase(
+  Future<ResponseModel<UserPremiumModel>> createPremiumPurchase(
       Purchase purchase, PremiumType type) async {
     final String _url = '/payment/CreatePremiumPurchase';
     final _r =
@@ -419,14 +415,13 @@ class BaseApi {
     return _r;
   }
 
-  static Future<ResponseModel<UserPremiumModel>> getUserPremium(
-      String uid) async {
+  Future<ResponseModel<UserPremiumModel>> getUserPremium(String uid) async {
     final String _url = '/users/UserPremium/$uid';
     final _r = await _http.request<UserPremiumModel>(_url);
     return _r;
   }
 
-  static Future<ResponseModel<UserPremiumModel>> createPremiumSubscription(
+  Future<ResponseModel<UserPremiumModel>> createPremiumSubscription(
       Purchase purchase, PremiumType type) async {
     final String _url = '/payment/CreateSubscription';
     final _r =
@@ -440,14 +435,14 @@ class BaseApi {
     return _r;
   }
 
-  static Future<ResponseModel<BraintreeSubscription>> getPremiumSubscription(
+  Future<ResponseModel<BraintreeSubscription>> getPremiumSubscription(
       String id) async {
     final String _url = '/Payment/Subscription/$id';
     final _r = await _http.request<BraintreeSubscription>(_url);
     return _r;
   }
 
-  static Future<ResponseModel<UserPremiumData>> cancelSubscription(
+  Future<ResponseModel<UserPremiumData>> cancelSubscription(
       UserPremiumData userPremium) async {
     final String _url = '/Payment/CancelSubscription';
     final _r = await _http.request<UserPremiumData>(_url,
@@ -455,8 +450,7 @@ class BaseApi {
     return _r;
   }
 
-  static Future<BillingAddress> createBillAddress(
-      BillingAddress address) async {
+  Future<BillingAddress> createBillAddress(BillingAddress address) async {
     BillingAddress _model;
     final String _url = '/Payment/Customer/BillingAddress';
     final _r = await _http.request(_url, method: 'POST', data: {
@@ -478,8 +472,7 @@ class BaseApi {
     return _model;
   }
 
-  static Future<BillingAddress> updateBillAddress(
-      BillingAddress address) async {
+  Future<BillingAddress> updateBillAddress(BillingAddress address) async {
     BillingAddress _model;
     String _url = '/Payment/Customer/BillingAddress';
     var _r = await _http.request(_url, method: 'PUT', data: {
@@ -502,8 +495,7 @@ class BaseApi {
     return _model;
   }
 
-  static Future<BillingAddress> deleteBillAddress(
-      BillingAddress address) async {
+  Future<BillingAddress> deleteBillAddress(BillingAddress address) async {
     BillingAddress _model;
     String _url = '/Payment/Customer/BillingAddress';
     var _r = await _http.request(_url,
@@ -514,10 +506,9 @@ class BaseApi {
     return _model;
   }
 
-  // static final _http2 = Request('http://localhost:5000/api');
+  //  final _http2 = Request('http://localhost:5000/api');
 
-  static Future<ResponseModel<dynamic>> createCreditCard(
-      CreditCard card) async {
+  Future<ResponseModel<dynamic>> createCreditCard(CreditCard card) async {
     final String _url = '/Payment/CreditCard';
     final _r = await _http.request(_url, method: 'POST', data: {
       'customerID': card.customerId,

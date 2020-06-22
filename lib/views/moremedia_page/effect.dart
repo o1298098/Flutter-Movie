@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/response_model.dart';
 import 'package:movie/models/videolist.dart';
@@ -48,12 +48,13 @@ void _onAction(Action action, Context<MoreMediaPageState> ctx) {}
 
 Future _loadMore(Action action, Context<MoreMediaPageState> ctx) async {
   ResponseModel<VideoListModel> model;
+  final _tmdb = TMDBApi.instance;
   int page = ctx.state.videoList.page + 1;
   if (page <= ctx.state.videoList.totalPages) {
     if (ctx.state.mediaType == MediaType.movie)
-      model = await ApiHelper.getNowPlayingMovie(page: page);
+      model = await _tmdb.getNowPlayingMovie(page: page);
     else
-      model = await ApiHelper.getTVOnTheAir(page: page);
+      model = await _tmdb.getTVOnTheAir(page: page);
   }
   if (model.success)
     ctx.dispatch(MoreMediaPageActionCreator.loadMore(model.result));

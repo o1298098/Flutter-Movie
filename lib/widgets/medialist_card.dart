@@ -40,10 +40,12 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
 
   final _user = GlobalStore.store.getState().user;
 
+  final _baseApi = BaseApi.instance;
+
   initUserlist() {
     if (_user != null)
       setState(() {
-        _userList = BaseApi.getUserList(_user.firebaseUser.uid);
+        _userList = _baseApi.getUserList(_user.firebaseUser.uid);
       });
   }
 
@@ -52,7 +54,8 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
       setState(() {
         _userList = null;
       });
-      BaseApi.createUserList(UserList.fromParams(
+      _baseApi
+          .createUserList(UserList.fromParams(
               uid: _user.firebaseUser.uid,
               listName: name,
               description: description,
@@ -70,15 +73,15 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
     if (_user != null && _list != null) {
       var d = _list.result.data.singleWhere((f) => f.selected == 1);
       if (d != null) {
-        var item = await BaseApi.getUserListDetailItem(
+        var item = await _baseApi.getUserListDetailItem(
             d.id, _mediaType, widget.mediaId);
-        if (item == null) {
+        if (!item.success) {
           d.totalRated += widget.rated;
           d.runTime += widget.runtime;
           d.itemCount += 1;
           d.revenue += widget.revenue;
-          await BaseApi.updateUserList(d);
-          await BaseApi.addUserListDetail(UserListDetail.fromParams(
+          await _baseApi.updateUserList(d);
+          await _baseApi.addUserListDetail(UserListDetail.fromParams(
               mediaid: widget.mediaId,
               mediaName: widget.name,
               mediaType: _mediaType,

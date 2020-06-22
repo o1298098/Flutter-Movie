@@ -25,13 +25,15 @@ Future _onInit(Action action, Context<FavoritesPageState> ctx) async {
       AnimationController(vsync: ticker, duration: Duration(milliseconds: 600));
 
   if (ctx.state.user != null) {
+    final _baseApi = BaseApi.instance;
     final movie =
-        await BaseApi.getFavorite(ctx.state.user.firebaseUser.uid, 'movie');
+        await _baseApi.getFavorite(ctx.state.user.firebaseUser.uid, 'movie');
     if (movie.success) ctx.state.animationController.forward(from: 0.0);
     ctx.dispatch(
         FavoritesPageActionCreator.setBackground(movie.result.data[0]));
     ctx.dispatch(FavoritesPageActionCreator.setMovie(movie.result));
-    final tv = await BaseApi.getFavorite(ctx.state.user.firebaseUser.uid, 'tv');
+    final tv =
+        await _baseApi.getFavorite(ctx.state.user.firebaseUser.uid, 'tv');
     if (tv.success)
       ctx.dispatch(FavoritesPageActionCreator.setTVShow(tv.result));
   }

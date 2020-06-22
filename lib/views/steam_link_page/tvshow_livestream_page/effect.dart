@@ -72,7 +72,9 @@ void _onInit(Action action, Context<TvShowLiveStreamPageState> ctx) async {
         break;
     }
   };
-  final _streamLinks = await BaseApi.getTvSeasonStreamLinks(
+
+  final _baseApi = BaseApi.instance;
+  final _streamLinks = await _baseApi.getTvSeasonStreamLinks(
       ctx.state.tvid, ctx.state.season.seasonNumber);
 
   if (_streamLinks.success) {
@@ -104,6 +106,8 @@ void _addComment(Action action, Context<TvShowLiveStreamPageState> ctx) async {
   }
   if (_commentTxt != '' && _commentTxt != null) {
     final String _date = DateTime.now().toString();
+
+    final _baseApi = BaseApi.instance;
     final TvShowComment _comment = TvShowComment.fromParams(
         mediaId: ctx.state.tvid,
         comment: _commentTxt,
@@ -119,7 +123,7 @@ void _addComment(Action action, Context<TvShowLiveStreamPageState> ctx) async {
         like: 0);
     ctx.state.commentController.clear();
     ctx.dispatch(TvShowLiveStreamPageActionCreator.insertComment(_comment));
-    BaseApi.createTvShowComment(_comment).then((r) {
+    _baseApi.createTvShowComment(_comment).then((r) {
       if (r.success) _comment.id = r.result.id;
     });
   }
@@ -163,7 +167,8 @@ Future _startPlayer(
 
   videoSourceChange(ctx, link);
 
-  final comment = await BaseApi.getTvShowComments(
+  final _baseApi = BaseApi.instance;
+  final comment = await _baseApi.getTvShowComments(
       ctx.state.tvid, ctx.state.season.seasonNumber, link.episode);
 
   if (comment.success)

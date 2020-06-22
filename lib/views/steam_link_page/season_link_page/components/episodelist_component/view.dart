@@ -72,19 +72,18 @@ class _ShimmerTabview extends StatelessWidget {
     return Shimmer.fromColors(
       baseColor: _theme.primaryColorDark,
       highlightColor: _theme.primaryColorLight,
-      child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-          child: Column(
-            children: <Widget>[
-              _ShimmerCell(),
-              SizedBox(height: Adapt.px(30)),
-              _ShimmerCell(),
-              SizedBox(height: Adapt.px(30)),
-              _ShimmerCell(),
-              SizedBox(height: Adapt.px(30)),
-              _ShimmerCell()
-            ],
-          )),
+      child: ListView(
+        padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+        children: <Widget>[
+          _ShimmerCell(),
+          SizedBox(height: Adapt.px(30)),
+          _ShimmerCell(),
+          SizedBox(height: Adapt.px(30)),
+          _ShimmerCell(),
+          SizedBox(height: Adapt.px(30)),
+          _ShimmerCell()
+        ],
+      ),
     );
   }
 }

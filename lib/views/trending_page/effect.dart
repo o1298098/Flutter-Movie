@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart' hide Action, Page;
-import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/models/enums/time_window.dart';
 import 'package:movie/models/searchresult.dart';
 import 'package:movie/views/detail_page/page.dart';
@@ -58,7 +58,8 @@ Future _showFilter(Action action, Context<TrendingPageState> ctx) async {
 Future _loadMore(Context<TrendingPageState> ctx) async {
   int _page = ctx.state.trending.page + 1;
   if (_page <= ctx.state.trending.totalPages) {
-    var r = await ApiHelper.getTrending(ctx.state.selectMediaType,
+    final _tmdb = TMDBApi.instance;
+    var r = await _tmdb.getTrending(ctx.state.selectMediaType,
         ctx.state.isToday ? TimeWindow.day : TimeWindow.week,
         page: _page);
     if (r.success) ctx.dispatch(TrendingPageActionCreator.loadMore(r.result));

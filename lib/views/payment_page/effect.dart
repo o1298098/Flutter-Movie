@@ -22,8 +22,9 @@ void _onInit(Action action, Context<PaymentPageState> ctx) async {
   ctx.state.swiperController = SwiperController();
   if (ctx.state.user == null) return;
   ctx.state.billingAddressState.customerId = ctx.state.user.firebaseUser.uid;
+  final _baseApi = BaseApi.instance;
   final _customer =
-      await BaseApi.getBraintreeCustomer(ctx.state.user.firebaseUser.uid);
+      await _baseApi.getBraintreeCustomer(ctx.state.user.firebaseUser.uid);
   if (_customer.success)
     ctx.dispatch(PaymentPageActionCreator.setCustomer(_customer.result));
 }

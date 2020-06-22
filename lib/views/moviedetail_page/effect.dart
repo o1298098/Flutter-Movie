@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter/widgets.dart' hide Action;
-import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/actions/http/tmdb_api.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -27,25 +27,25 @@ Future _onInit(Action action, Context<MovieDetailPageState> ctx) async {
     /*var paletteGenerator = await PaletteGenerator.fromImageProvider(
          CachedNetworkImageProvider(ImageUrl.getUrl(ctx.state.posterPic, ImageSize.w300)));
       ctx.dispatch(MovieDetailPageActionCreator.onsetColor(paletteGenerator));*/
-    final r = await ApiHelper.getMovieDetail(ctx.state.movieid,
+    final _tmdb = TMDBApi.instance;
+    final r = await _tmdb.getMovieDetail(ctx.state.movieid,
         appendtoresponse:
             'keywords,recommendations,credits,external_ids,release_dates');
     if (r.success) {
       ctx.dispatch(MovieDetailPageActionCreator.onInit(r.result));
       ctx.state.animationController.forward();
     }
-    final accountstate =
-        await ApiHelper.getMovieAccountState(ctx.state.movieid);
+    final accountstate = await _tmdb.getMovieAccountState(ctx.state.movieid);
     if (accountstate.success)
       ctx.dispatch(
           MovieDetailPageActionCreator.onSetAccountState(accountstate.result));
-    final l = await ApiHelper.getMovieReviews(ctx.state.movieid);
+    final l = await _tmdb.getMovieReviews(ctx.state.movieid);
     if (l.success)
       ctx.dispatch(MovieDetailPageActionCreator.onSetReviews(l.result));
-    final k = await ApiHelper.getMovieImages(ctx.state.movieid);
+    final k = await _tmdb.getMovieImages(ctx.state.movieid);
     if (k.success)
       ctx.dispatch(MovieDetailPageActionCreator.onSetImages(k.result));
-    final f = await ApiHelper.getMovieVideo(ctx.state.movieid);
+    final f = await _tmdb.getMovieVideo(ctx.state.movieid);
     if (f.success)
       ctx.dispatch(MovieDetailPageActionCreator.onSetVideos(f.result));
   } on Exception catch (_) {}

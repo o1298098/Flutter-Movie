@@ -5,7 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/actions/http/github_api.dart';
 import 'package:movie/actions/user_info_operate.dart';
 import 'package:movie/actions/version_comparison.dart';
@@ -90,7 +90,7 @@ void _adultCellTapped(Action action, Context<SettingPageState> ctx) async {
   ctx.dispatch(SettingPageActionCreator.adultValueUpadte(!_b));
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool('adultItems', !_b);
-  ApiHelper.includeAdult = !_b;
+  TMDBApi.instance.includeAdult = !_b;
 }
 
 void _getCachedSize(Context<SettingPageState> ctx) async {
@@ -151,7 +151,7 @@ Future _checkUpdate(Action action, Context<SettingPageState> ctx) async {
   if (!Platform.isAndroid) return;
 
   ctx.dispatch(SettingPageActionCreator.onLoading(true));
-  final _github = GithubApi();
+  final _github = GithubApi.instance;
   final _result = await _github.checkUpdate();
   if (_result.success) {
     final _shouldUpdate =

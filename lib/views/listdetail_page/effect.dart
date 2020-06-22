@@ -32,8 +32,9 @@ void _showShareCard(Action action, Context<ListDetailPageState> ctx) {
 
 Future _onInit(Action action, Context<ListDetailPageState> ctx) async {
   if (ctx.state.listDetailModel?.id != null) {
+    final _baseApi = BaseApi.instance;
     final _detailItem =
-        await BaseApi.getUserListDetailItems(ctx.state.listDetailModel?.id);
+        await _baseApi.getUserListDetailItems(ctx.state.listDetailModel?.id);
     if (_detailItem.success)
       ctx.dispatch(
           ListDetailPageActionCreator.setListDetail(_detailItem.result));

@@ -12,12 +12,13 @@ class UserInfoOperate {
   static String premiumExpireDate;
 
   static Future whenLogin(FirebaseUser user, String nickName) async {
-    BaseApi.updateUser(
+    final _baseApi = BaseApi.instance;
+    _baseApi.updateUser(
         user.uid, user.email, user.photoUrl, nickName, user.phoneNumber);
 
     GlobalStore.store.dispatch(GlobalActionCreator.setUser(
         AppUser(firebaseUser: user, premium: null)));
-    final _r = await BaseApi.getUserPremium(user.uid);
+    final _r = await _baseApi.getUserPremium(user.uid);
     if (_r.success) {
       if (_r.result.status) {
         if (_r.result.data != null) if (_r.result.data != null)

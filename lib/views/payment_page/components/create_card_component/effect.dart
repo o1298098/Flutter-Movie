@@ -61,8 +61,8 @@ void _nextTapped(Action action, Context<CreateCardState> ctx) async {
           ctx.state.cvvController.text.length < 2) return;
       ctx.state.cvvFocusNode.unfocus();
       ctx.dispatch(CreateCardActionCreator.loading(true));
-
-      final _r = await BaseApi.createCreditCard(CreditCard.fromParams(
+      final _baseApi = BaseApi.instance;
+      final _r = await _baseApi.createCreditCard(CreditCard.fromParams(
         customerId: ctx.state.customerId,
         expirationMonth: ctx.state.expriedDateController.text.substring(0, 2),
         expirationYear: ctx.state.expriedDateController.text.substring(2, 4),

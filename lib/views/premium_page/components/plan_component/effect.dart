@@ -18,7 +18,8 @@ void _onAction(Action action, Context<PlanState> ctx) {}
 Future _unSubscribe(Action action, Context<PlanState> ctx) async {
   ctx.dispatch(PremiumPageActionCreator.loading(true));
   if (ctx.state?.user?.premium != null) {
-    final _result = await BaseApi.cancelSubscription(ctx.state.user.premium);
+    final _baseApi = BaseApi.instance;
+    final _result = await _baseApi.cancelSubscription(ctx.state.user.premium);
     if (_result.success)
       GlobalStore.store
           .dispatch(GlobalActionCreator.setUserPremium(_result.result));

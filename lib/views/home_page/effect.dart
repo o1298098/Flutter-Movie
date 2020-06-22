@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action, Page;
-import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/widgets/searchbar_delegate.dart';
 import 'package:movie/models/enums/media_type.dart';
@@ -32,24 +32,26 @@ Future _onInit(Action action, Context<HomePageState> ctx) async {
   ctx.state.animatedController =
       AnimationController(vsync: ticker, duration: Duration(milliseconds: 600));
   ctx.state.scrollController = new ScrollController();
-  final _movies = await ApiHelper.getNowPlayingMovie();
+  final _tmdb = TMDBApi.instance;
+  final _baseApi = BaseApi.instance;
+  final _movies = await _tmdb.getNowPlayingMovie();
   if (_movies.success)
     ctx.dispatch(HomePageActionCreator.onInitMovie(_movies.result));
-  final _tv = await ApiHelper.getTVOnTheAir();
+  final _tv = await _tmdb.getTVOnTheAir();
   if (_tv.success) ctx.dispatch(HomePageActionCreator.onInitTV(_tv.result));
-  final _trending = await ApiHelper.getTrending(MediaType.all, TimeWindow.day);
+  final _trending = await _tmdb.getTrending(MediaType.all, TimeWindow.day);
   if (_trending.success)
     ctx.dispatch(HomePageActionCreator.initTrending(_trending.result));
-  final _shareMovie = await BaseApi.getMovies(pageSize: 10);
+  final _shareMovie = await _baseApi.getMovies(pageSize: 10);
   if (_shareMovie.success)
     ctx.dispatch(HomePageActionCreator.initShareMovies(_shareMovie.result));
-  final _sharetv = await BaseApi.getTvShows(pageSize: 10);
+  final _sharetv = await _baseApi.getTvShows(pageSize: 10);
   if (_sharetv.success)
     ctx.dispatch(HomePageActionCreator.initShareTvShows(_sharetv.result));
-  final _popMovie = await ApiHelper.getPopularMovies();
+  final _popMovie = await _tmdb.getPopularMovies();
   if (_popMovie.success)
     ctx.dispatch(HomePageActionCreator.onInitPopularMovie(_popMovie.result));
-  final _popTv = await ApiHelper.getPopularTVShows();
+  final _popTv = await _tmdb.getPopularTVShows();
   if (_popTv.success)
     ctx.dispatch(HomePageActionCreator.onInitPopularTV(_popTv.result));
 }

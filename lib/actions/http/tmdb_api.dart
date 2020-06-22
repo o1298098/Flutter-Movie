@@ -28,26 +28,29 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'request.dart';
 
-class ApiHelper {
-  static final String _apikey = 'd7ff494718186ed94ee75cf73c1a3214';
-  static final String _apikeyV4 =
+class TMDBApi {
+  TMDBApi._();
+  static final TMDBApi instance = TMDBApi._();
+
+  final String _apikey = 'd7ff494718186ed94ee75cf73c1a3214';
+  final String _apikeyV4 =
       'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkN2ZmNDk0NzE4MTg2ZWQ5NGVlNzVjZjczYzFhMzIxNCIsInN1YiI6IjVkMDQ1OWM1OTI1MTQxNjNkMWJjNDZjYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.tTDwJEVH88cCWCfTd42zvN4AsMR2pgix0QdzVJQzzDM';
-  static String _requestToken;
-  static String accessTokenV4;
-  static String session;
-  static DateTime _sessionExpiresTime;
-  static SharedPreferences prefs;
-  static String language = ui.window.locale.languageCode;
-  static String region = ui.window.locale.countryCode;
-  static bool includeAdult;
-  static Request _http = Request('https://api.themoviedb.org/3');
-  static Request _httpV4 = Request('https://api.themoviedb.org/4');
-  static Future<void> init() async {
+  String _requestToken;
+  String accessTokenV4;
+  String session;
+  DateTime _sessionExpiresTime;
+  SharedPreferences prefs;
+  final String language = ui.window.locale.languageCode;
+  final String region = ui.window.locale.countryCode;
+  bool includeAdult;
+  final Request _http = Request('https://api.themoviedb.org/3');
+  final Request _httpV4 = Request('https://api.themoviedb.org/4');
+  Future<void> init() async {
     prefs = await SharedPreferences.getInstance();
     includeAdult = prefs.getBool('adultItems') ?? false;
   }
 
-  static Future createGuestSession() async {
+  Future createGuestSession() async {
     String param = '/authentication/guest_session/new?api_key=$_apikey';
     final r = await _http.request(param);
     if (r.success) {
@@ -71,7 +74,7 @@ class ApiHelper {
     }
   }
 
-  static Future createRequestToken() async {
+  Future createRequestToken() async {
     String param = '/authentication/token/new?api_key=$_apikey';
     dynamic r = await _http.request(param);
     if (r != null) {
@@ -81,7 +84,7 @@ class ApiHelper {
     }
   }
 
-  static Future<bool> createSessionWithLogin(String account, String pwd) async {
+  Future<bool> createSessionWithLogin(String account, String pwd) async {
     bool result = false;
     if (_requestToken == null) await createRequestToken();
     String param = '/authentication/token/validate_with_login?api_key=$_apikey';
@@ -96,7 +99,7 @@ class ApiHelper {
     return result;
   }
 
-  static Future<bool> createNewSession(String sessionToken) async {
+  Future<bool> createNewSession(String sessionToken) async {
     bool result = false;
     if (session != null) {
       String param = '/authentication/session/new?api_key=$_apikey';
@@ -114,7 +117,7 @@ class ApiHelper {
     return result;
   }
 
-  static Future createSessionWithV4(String sessionToken) async {
+  Future createSessionWithV4(String sessionToken) async {
     String param = '/authentication/session/convert/4?api_key=$_apikey';
     FormData formData = new FormData.fromMap({"access_token": _apikeyV4});
     dynamic r = await _httpV4.request(param,
@@ -133,7 +136,7 @@ class ApiHelper {
     }
   }
 
-  static Future<AccountDetailModel> getAccountDetail() async {
+  Future<AccountDetailModel> getAccountDetail() async {
     AccountDetailModel accountDetailModel;
     if (session != null) {
       String param = '/account?api_key=$_apikey&session_id=$session';
@@ -148,7 +151,7 @@ class ApiHelper {
     return accountDetailModel;
   }
 
-  static Future<bool> deleteSession() async {
+  Future<bool> deleteSession() async {
     String param = '/authentication/session?api_key=$_apikey';
     if (session != null) {
       FormData formData = new FormData.fromMap({"session_id": session});
@@ -169,7 +172,7 @@ class ApiHelper {
     return true;
   }
 
-  static Future<String> createRequestTokenV4() async {
+  Future<String> createRequestTokenV4() async {
     String result;
     String param = "/auth/request_token";
     FormData formData = new FormData.fromMap({});
@@ -186,7 +189,7 @@ class ApiHelper {
     return result;
   }
 
-  static Future<bool> createAccessTokenV4(String requestTokenV4) async {
+  Future<bool> createAccessTokenV4(String requestTokenV4) async {
     if (requestTokenV4 == null) return false;
     bool result = false;
     String param = "/auth/access_token";
@@ -208,7 +211,7 @@ class ApiHelper {
     return result;
   }
 
-  static Future<ResponseModel<MyListModel>> getAccountListsV4(String acountid,
+  Future<ResponseModel<MyListModel>> getAccountListsV4(String acountid,
       {int page = 1}) async {
     String param = '/account/$acountid/lists?page=$page';
     final r = await _httpV4.request<MyListModel>(param,
@@ -216,7 +219,7 @@ class ApiHelper {
     return r;
   }
 
-  static Future<ResponseModel<ListDetailModel>> getListDetailV4(int listId,
+  Future<ResponseModel<ListDetailModel>> getListDetailV4(int listId,
       {int page = 1, String sortBy}) async {
     String param = '/list/$listId?page=$page&language=$language';
     if (sortBy != null) param += '&sort_by=$sortBy';
@@ -225,7 +228,7 @@ class ApiHelper {
     return r;
   }
 
-  static Future<bool> deleteAccessTokenV4() async {
+  Future<bool> deleteAccessTokenV4() async {
     String param = '/auth/access_token';
     if (session != null) {
       var formData = {"access_token": accessTokenV4};
@@ -244,8 +247,7 @@ class ApiHelper {
     return true;
   }
 
-  static Future<bool> markAsFavorite(
-      int id, MediaType type, bool isFavorite) async {
+  Future<bool> markAsFavorite(int id, MediaType type, bool isFavorite) async {
     bool result = false;
     int accountid = prefs.getInt('accountid');
     if (accountid == null) return result;
@@ -265,7 +267,7 @@ class ApiHelper {
     return result;
   }
 
-  static Future<bool> addToWatchlist(int id, MediaType type, bool isAdd) async {
+  Future<bool> addToWatchlist(int id, MediaType type, bool isAdd) async {
     bool result = false;
     int accountid = prefs.getInt('accountid');
     if (accountid == null) return result;
@@ -285,7 +287,7 @@ class ApiHelper {
     return result;
   }
 
-  static Future<bool> addToList(int listid, List<ListMediaItem> items) async {
+  Future<bool> addToList(int listid, List<ListMediaItem> items) async {
     bool result = false;
     String param = '/list/$listid/items';
     var data = {"items": items};
@@ -300,7 +302,7 @@ class ApiHelper {
   }
 
   ///Get the list of your favorite Movies.sortBy allowed values: created_at.asc, created_at.desc
-  static Future<ResponseModel<VideoListModel>> getFavoriteMovies(int accountid,
+  Future<ResponseModel<VideoListModel>> getFavoriteMovies(int accountid,
       {int page = 1, String sortBy = 'created_at.asc'}) async {
     String param =
         '/account/$accountid/favorite/movies?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
@@ -309,7 +311,7 @@ class ApiHelper {
   }
 
   ///Get the list of your favorite TV shows.
-  static Future<ResponseModel<VideoListModel>> getFavoriteTVShows(int accountid,
+  Future<ResponseModel<VideoListModel>> getFavoriteTVShows(int accountid,
       {int page = 1, String sortBy = 'created_at.asc'}) async {
     final String param =
         '/account/$accountid/favorite/tv?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
@@ -317,7 +319,7 @@ class ApiHelper {
     return r;
   }
 
-  static Future<ResponseModel<VideoListModel>> getMoviesWatchlist(int accountid,
+  Future<ResponseModel<VideoListModel>> getMoviesWatchlist(int accountid,
       {int page = 1, String sortBy = 'created_at.asc'}) async {
     String param =
         '/account/$accountid/watchlist/movies?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
@@ -325,10 +327,8 @@ class ApiHelper {
     return r;
   }
 
-  static Future<ResponseModel<VideoListModel>> getTVShowsWacthlist(
-      int accountid,
-      {int page = 1,
-      String sortBy = 'created_at.asc'}) async {
+  Future<ResponseModel<VideoListModel>> getTVShowsWacthlist(int accountid,
+      {int page = 1, String sortBy = 'created_at.asc'}) async {
     String param =
         '/account/$accountid/watchlist/tv?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
     final r = await _http.request<VideoListModel>(param);
@@ -336,7 +336,7 @@ class ApiHelper {
   }
 
   ///Get a list of all the movies you have rated.
-  static Future<ResponseModel<VideoListModel>> getRatedMovies(
+  Future<ResponseModel<VideoListModel>> getRatedMovies(
       {int page = 1, String sortBy = 'created_at.asc'}) async {
     int accountid = prefs.getInt('accountid');
     if (accountid == null) return null;
@@ -347,7 +347,7 @@ class ApiHelper {
   }
 
   ///Get a list of all the movies you have rated.
-  static Future<ResponseModel<VideoListModel>> getRatedTVShows(
+  Future<ResponseModel<VideoListModel>> getRatedTVShows(
       {int page = 1, String sortBy = 'created_at.asc'}) async {
     final int accountid = prefs.getInt('accountid');
     if (accountid == null) return null;
@@ -357,7 +357,7 @@ class ApiHelper {
     return r;
   }
 
-  static Future<bool> rateTVShow(int tvid, double rating) async {
+  Future<bool> rateTVShow(int tvid, double rating) async {
     bool result = false;
     String param = '/tv/$tvid/rating?api_key=$_apikey';
     int accountid = prefs.getInt('accountid');
@@ -375,7 +375,7 @@ class ApiHelper {
     return result;
   }
 
-  static Future<bool> rateMovie(int movieid, double rating) async {
+  Future<bool> rateMovie(int movieid, double rating) async {
     bool result = false;
     String param = '/movie/$movieid/rating?api_key=$_apikey';
     int accountid = prefs.getInt('accountid');
@@ -393,7 +393,7 @@ class ApiHelper {
     return result;
   }
 
-  static Future<bool> rateTVEpisode(
+  Future<bool> rateTVEpisode(
       int tvid, int seasonid, int episodeid, double rating) async {
     bool result = false;
     String param =
@@ -407,40 +407,38 @@ class ApiHelper {
     return result;
   }
 
-  static Future<ResponseModel<CertificationModel>>
-      getMovieCertifications() async {
+  Future<ResponseModel<CertificationModel>> getMovieCertifications() async {
     final String param = '/certification/movie/list';
     final r = await _http.request<CertificationModel>(param);
     return r;
   }
 
-  static Future<ResponseModel<CertificationModel>> getTVCertifications() async {
+  Future<ResponseModel<CertificationModel>> getTVCertifications() async {
     String param = '/certification/tv/list';
     final r = await _http.request<CertificationModel>(param);
     return r;
   }
 
-  static Future<ResponseModel<VideoListResult>> getLastMovies() async {
+  Future<ResponseModel<VideoListResult>> getLastMovies() async {
     final String param = "/movie/latest?api_key=$_apikey&language=$language";
     final r = await _http.request<VideoListResult>(param);
     return r;
   }
 
-  static Future<ResponseModel<VideoListResult>> getLastTVShows() async {
+  Future<ResponseModel<VideoListResult>> getLastTVShows() async {
     final String param = "/tv/latest?api_key=$_apikey&language=$language";
     final r = await _http.request<VideoListResult>(param);
     return r;
   }
 
-  static Future<ResponseModel<VideoListModel>> getPopularMovies(
-      {int page = 1}) async {
+  Future<ResponseModel<VideoListModel>> getPopularMovies({int page = 1}) async {
     final String param =
         "/movie/popular?api_key=$_apikey&language=$language&page=$page&region=$region";
     final r = await _http.request<VideoListModel>(param);
     return r;
   }
 
-  static Future<ResponseModel<VideoListModel>> getPopularTVShows(
+  Future<ResponseModel<VideoListModel>> getPopularTVShows(
       {int page = 1}) async {
     final String param =
         "/tv/popular?api_key=$_apikey&language=$language&page=$page&region=$region";
@@ -448,7 +446,7 @@ class ApiHelper {
     return r;
   }
 
-  static Future<ResponseModel<MovieDetailModel>> getMovieDetail(int mvid,
+  Future<ResponseModel<MovieDetailModel>> getMovieDetail(int mvid,
       {String appendtoresponse}) async {
     String param = '/movie/$mvid?api_key=$_apikey&language=$language';
     if (appendtoresponse != null)
@@ -458,7 +456,7 @@ class ApiHelper {
     return r;
   }
 
-  static Future<ResponseModel<TVDetailModel>> getTVDetail(int tvid,
+  Future<ResponseModel<TVDetailModel>> getTVDetail(int tvid,
       {String appendtoresponse}) async {
     String param = '/tv/$tvid?api_key=$_apikey&language=$language';
     if (appendtoresponse != null)
@@ -467,7 +465,7 @@ class ApiHelper {
     return r;
   }
 
-  static Future<ResponseModel<MediaAccountStateModel>> getTVAccountState(
+  Future<ResponseModel<MediaAccountStateModel>> getTVAccountState(
       int tvid) async {
     String param =
         '/tv/$tvid/account_states?api_key=$_apikey&language=$language';
@@ -480,7 +478,7 @@ class ApiHelper {
     return r;
   }
 
-  static Future<ResponseModel<MediaAccountStateModel>> getMovieAccountState(
+  Future<ResponseModel<MediaAccountStateModel>> getMovieAccountState(
       int movieid) async {
     String param =
         '/movie/$movieid/account_states?api_key=$_apikey&language=$language';
@@ -494,7 +492,7 @@ class ApiHelper {
   }
 
   ///Get a list of all of the movie ids that have been changed in the past 24 hours.You can query it for up to 14 days worth of changed IDs at a time with the start_date and end_date query parameters. 100 items are returned per page.
-  static Future<ResponseModel<MovieChangeModel>> getMovieChange(
+  Future<ResponseModel<MovieChangeModel>> getMovieChange(
       {int page = 1, String startdate, String enddate}) async {
     String param = '/movie/changes?api_key=$_apikey&page=$page';
     if (startdate != null && enddate == null)
@@ -504,8 +502,7 @@ class ApiHelper {
   }
 
   ///Get a list of upcoming movies in theatres. This is a release type query that looks for all movies that have a release type of 2 or 3 within the specified date range.You can optionally specify a region prameter which will narrow the search to only look for theatrical release dates within the specified country.
-  static Future<ResponseModel<VideoListModel>> getMovieUpComing(
-      {int page = 1}) async {
+  Future<ResponseModel<VideoListModel>> getMovieUpComing({int page = 1}) async {
     final String param =
         '/movie/upcoming?api_key=$_apikey&language=$language&page=$page&region=$region';
     final r = await _http.request<VideoListModel>(param,
@@ -515,7 +512,7 @@ class ApiHelper {
   }
 
   ///Get the daily or weekly trending items. The daily trending list tracks items over the period of a day while items have a 24 hour half life. The weekly list tracks items over a 7 day period, with a 7 day half life.
-  static Future<ResponseModel<SearchResultModel>> getTrending(
+  Future<ResponseModel<SearchResultModel>> getTrending(
       MediaType type, TimeWindow time,
       {int page = 1}) async {
     final String param =
@@ -526,7 +523,7 @@ class ApiHelper {
   }
 
   ///Get a list of movies in theatres. This is a release type query that looks for all movies that have a release type of 2 or 3 within the specified date range.You can optionally specify a region prameter which will narrow the search to only look for theatrical release dates within the specified country.
-  static Future<ResponseModel<VideoListModel>> getNowPlayingMovie(
+  Future<ResponseModel<VideoListModel>> getNowPlayingMovie(
       {int page = 1}) async {
     final String param =
         '/movie/now_playing?api_key=$_apikey&language=$language&page=$page&region=$region';
@@ -534,8 +531,7 @@ class ApiHelper {
     return r;
   }
 
-  static Future<ResponseModel<VideoListModel>> getRecommendationsMovie(
-      int movieid,
+  Future<ResponseModel<VideoListModel>> getRecommendationsMovie(int movieid,
       {int page = 1}) async {
     final String param =
         '/movie/$movieid/recommendations?api_key=$_apikey&language=$language&page=$page';
@@ -543,7 +539,7 @@ class ApiHelper {
     return r;
   }
 
-  static Future<ResponseModel<VideoListModel>> getRecommendationsTV(int tvid,
+  Future<ResponseModel<VideoListModel>> getRecommendationsTV(int tvid,
       {int page = 1}) async {
     final String param =
         '/tv/$tvid/recommendations?api_key=$_apikey&language=$language&page=$page';
@@ -552,21 +548,20 @@ class ApiHelper {
   }
 
   ///Get the videos that have been added to a movie.
-  static Future<ResponseModel<VideoModel>> getMovieVideo(int movieid) async {
+  Future<ResponseModel<VideoModel>> getMovieVideo(int movieid) async {
     final String param = '/movie/$movieid/videos?api_key=$_apikey';
     final r = await _http.request<VideoModel>(param, cached: true);
     return r;
   }
 
-  static Future<ResponseModel<VideoModel>> getTVVideo(int tvid) async {
+  Future<ResponseModel<VideoModel>> getTVVideo(int tvid) async {
     final String param = '/tv/$tvid/videos?api_key=$_apikey';
     final r = await _http.request<VideoModel>(param, cached: true);
     return r;
   }
 
   ///Get a list of shows that are currently on the air.This query looks for any TV show that has an episode with an air date in the next 7 days.
-  static Future<ResponseModel<VideoListModel>> getTVOnTheAir(
-      {int page = 1}) async {
+  Future<ResponseModel<VideoListModel>> getTVOnTheAir({int page = 1}) async {
     String param =
         '/tv/on_the_air?api_key=$_apikey&language=$language&page=$page&region=$region';
     final r = await _http.request<VideoListModel>(param,
@@ -575,7 +570,7 @@ class ApiHelper {
   }
 
   ///Search multiple models in a single request. Multi search currently supports searching for movies, tv shows and people in a single request.
-  static Future<ResponseModel<SearchResultModel>> searchMulit(String query,
+  Future<ResponseModel<SearchResultModel>> searchMulit(String query,
       {int page = 1, bool searchadult = false}) async {
     final String param =
         '/search/multi?api_key=$_apikey&query=$query&page=$page&include_adult=$includeAdult&language=$language';
@@ -584,15 +579,14 @@ class ApiHelper {
   }
 
   ///Get the cast and crew for a movie.
-  static Future<ResponseModel<CreditsModel>> getMovieCredits(
-      int movieid) async {
+  Future<ResponseModel<CreditsModel>> getMovieCredits(int movieid) async {
     final String param =
         '/movie/$movieid/credits?api_key=$_apikey&language=$language';
     final r = await _http.request<CreditsModel>(param, cached: true);
     return r;
   }
 
-  static Future<ResponseModel<CreditsModel>> getTVCredits(int tvid) async {
+  Future<ResponseModel<CreditsModel>> getTVCredits(int tvid) async {
     final String param =
         '/tv/$tvid/credits?api_key=$_apikey&language=$language';
     final r = await _http.request<CreditsModel>(param, cached: true);
@@ -600,14 +594,14 @@ class ApiHelper {
   }
 
   ///Get the user reviews for a movie.
-  static Future<ResponseModel<ReviewModel>> getMovieReviews(int movieid,
+  Future<ResponseModel<ReviewModel>> getMovieReviews(int movieid,
       {int page = 1}) async {
     final String param = '/movie/$movieid/reviews?api_key=$_apikey&page=$page';
     final r = await _http.request<ReviewModel>(param, cached: true);
     return r;
   }
 
-  static Future<ResponseModel<ReviewModel>> getTVReviews(int tvid,
+  Future<ResponseModel<ReviewModel>> getTVReviews(int tvid,
       {int page = 1}) async {
     final String param = '/tv/$tvid/reviews?api_key=$_apikey&page=$page';
     final r = await _http.request<ReviewModel>(param, cached: true);
@@ -615,14 +609,14 @@ class ApiHelper {
   }
 
   ///Get the images that belong to a movie.Querying images with a language parameter will filter the results. If you want to include a fallback language (especially useful for backdrops) you can use the include_image_language parameter. This should be a comma seperated value like so: include_image_language=en,null.
-  static Future<ResponseModel<ImageModel>> getMovieImages(int movieid,
+  Future<ResponseModel<ImageModel>> getMovieImages(int movieid,
       {String includelan = 'en,cn,jp'}) async {
     final String param = '/movie/$movieid/images?api_key=$_apikey';
     final r = await _http.request<ImageModel>(param, cached: true);
     return r;
   }
 
-  static Future<ResponseModel<ImageModel>> getTVImages(int tvid,
+  Future<ResponseModel<ImageModel>> getTVImages(int tvid,
       {String includelan = 'en,cn,jp'}) async {
     final String param = '/tv/$tvid/images?api_key=$_apikey';
     final r = await _http.request<ImageModel>(param, cached: true);
@@ -630,21 +624,20 @@ class ApiHelper {
   }
 
   ///Get the keywords that have been added to a movie.
-  static Future<ResponseModel<KeyWordModel>> getMovieKeyWords(
-      int moiveid) async {
+  Future<ResponseModel<KeyWordModel>> getMovieKeyWords(int moiveid) async {
     final String param = '/movie/$moiveid/keywords?api_key=$_apikey';
     final r = await _http.request<KeyWordModel>(param, cached: true);
     return r;
   }
 
-  static Future<ResponseModel<KeyWordModel>> getTVKeyWords(int tvid) async {
+  Future<ResponseModel<KeyWordModel>> getTVKeyWords(int tvid) async {
     final String param = '/tv/$tvid/keywords?api_key=$_apikey';
     final r = await _http.request<KeyWordModel>(param, cached: true);
     return r;
   }
 
   ///Discover movies by different types of data like average rating, number of votes, genres and certifications. You can get a valid list of certifications from the certifications list method.Discover also supports a nice list of sort options. See below for all of the available options.Please note, when using certification \ certification.lte you must also specify certification_country. These two parameters work together in order to filter the results. You can only filter results with the countries we have added to our certifications list.If you specify the region parameter, the regional release date will be used instead of the primary release date. The date returned will be the first date based on your query (ie. if a with_release_type is specified). It's important to note the order of the release types that are used. Specifying "2|3" would return the limited theatrical release date as opposed to "3|2" which would return the theatrical date.Also note that a number of filters support being comma (,) or pipe (|) separated. Comma's are treated like an AND and query while pipe's are an OR.
-  static Future<ResponseModel<VideoListModel>> getMovieDiscover(
+  Future<ResponseModel<VideoListModel>> getMovieDiscover(
       {String lan,
       String region,
       String sortBy,
@@ -722,7 +715,7 @@ class ApiHelper {
     return r;
   }
 
-  static Future<ResponseModel<VideoListModel>> getTVDiscover(
+  Future<ResponseModel<VideoListModel>> getTVDiscover(
       {String lan,
       int page,
       String sortBy,
@@ -753,7 +746,7 @@ class ApiHelper {
   }
 
   ///Search for movies.
-  static Future<ResponseModel<VideoListModel>> searchMovie(String keyword,
+  Future<ResponseModel<VideoListModel>> searchMovie(String keyword,
       {String lan,
       int page = 1,
       String region,
@@ -770,7 +763,7 @@ class ApiHelper {
     return r;
   }
 
-  static Future<ResponseModel<SeasonDetailModel>> getTVSeasonDetail(
+  Future<ResponseModel<SeasonDetailModel>> getTVSeasonDetail(
       int tvid, int seasonNumber,
       {String appendToResponse}) async {
     String param =
@@ -781,7 +774,7 @@ class ApiHelper {
     return r;
   }
 
-  static Future<ResponseModel<Episode>> getTVEpisodeDetail(
+  Future<ResponseModel<Episode>> getTVEpisodeDetail(
       int tvid, int seasonNumber, int episodeNumber,
       {String appendToResponse}) async {
     String param =
@@ -792,7 +785,7 @@ class ApiHelper {
     return r;
   }
 
-  static Future<ResponseModel<PeopleDetailModel>> getPeopleDetail(int peopleid,
+  Future<ResponseModel<PeopleDetailModel>> getPeopleDetail(int peopleid,
       {String appendToResponse}) async {
     String param = '/person/$peopleid?api_key=$_apikey&language=$language';
     if (appendToResponse != null)
@@ -801,7 +794,7 @@ class ApiHelper {
     return r;
   }
 
-  static Future<ResponseModel<CreditsModel>> getPeopleMovieCredits(
+  Future<ResponseModel<CreditsModel>> getPeopleMovieCredits(
       int peopleid) async {
     final String param =
         '/person/$peopleid/movie_credits?api_key=$_apikey&language=$language';
@@ -809,7 +802,7 @@ class ApiHelper {
     return r;
   }
 
-  static Future<ResponseModel<CombinedCreditsModel>> getCombinedCredits(
+  Future<ResponseModel<CombinedCreditsModel>> getCombinedCredits(
       int peopleid) async {
     final String param =
         '/person/$peopleid/combined_credits?api_key=$_apikey&language=$language';
@@ -817,7 +810,7 @@ class ApiHelper {
     return r;
   }
 
-  static Future<ResponseModel<VideoModel>> getTvShowSeasonVideo(
+  Future<ResponseModel<VideoModel>> getTvShowSeasonVideo(
       int tvid, int seasonNumber) async {
     final String param =
         '/tv/$tvid/season/$seasonNumber/videos?api_key=$_apikey';
@@ -825,7 +818,7 @@ class ApiHelper {
     return r;
   }
 
-  static Future<ResponseModel<ImageModel>> getTvShowSeasonImages(
+  Future<ResponseModel<ImageModel>> getTvShowSeasonImages(
       int tvid, int seasonNumber) async {
     final String param =
         '/tv/$tvid/season/$seasonNumber/images?api_key=$_apikey';

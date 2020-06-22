@@ -23,9 +23,10 @@ void _onInit(Action action, Context<CreateListPageState> ctx) {
 }
 
 void _submit(Action action, Context<CreateListPageState> ctx) {
+  final _baseApi = BaseApi.instance;
   if (ctx.state.user != null) {
     if (ctx.state.listData != null)
-      BaseApi.updateUserList(ctx.state.listData
+      _baseApi.updateUserList(ctx.state.listData
         ..backGroundUrl = ctx.state.backGroundTextController.text
         ..description = ctx.state.descriptionTextController.text);
     else {
@@ -42,7 +43,7 @@ void _submit(Action action, Context<CreateListPageState> ctx) {
         itemCount: 0,
         totalRated: 0,
       );
-      BaseApi.createUserList(ctx.state.listData);
+      _baseApi.createUserList(ctx.state.listData);
     }
 
     Navigator.of(ctx.context).pop(ctx.state.listData);

@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/models/combinedcredits.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'action.dart';
@@ -18,11 +18,12 @@ void _onAction(Action action, Context<PeopleDetailPageState> ctx) {}
 Future _onInit(Action action, Context<PeopleDetailPageState> ctx) async {
   int id = ctx.state.peopleid;
   await Future.delayed(Duration(milliseconds: 200), () async {
+    final _tmdb = TMDBApi.instance;
     final _peopleDetail =
-        await ApiHelper.getPeopleDetail(id, appendToResponse: 'images');
+        await _tmdb.getPeopleDetail(id, appendToResponse: 'images');
     if (_peopleDetail.success)
       ctx.dispatch(PeopleDetailPageActionCreator.onInit(_peopleDetail.result));
-    var _combinedCredits = await ApiHelper.getCombinedCredits(id);
+    var _combinedCredits = await _tmdb.getCombinedCredits(id);
     if (_combinedCredits.success) {
       var cast = List<CastData>();
       cast = new List<CastData>()..addAll(_combinedCredits.result.cast);

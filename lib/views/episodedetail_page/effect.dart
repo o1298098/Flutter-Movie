@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/actions/http/tmdb_api.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -12,7 +12,8 @@ Effect<EpisodeDetailPageState> buildEffect() {
 
 void _onAction(Action action, Context<EpisodeDetailPageState> ctx) {}
 Future _onInit(Action action, Context<EpisodeDetailPageState> ctx) async {
-  final r = await ApiHelper.getTVEpisodeDetail(ctx.state.tvid,
+  final _tmdb = TMDBApi.instance;
+  final r = await _tmdb.getTVEpisodeDetail(ctx.state.tvid,
       ctx.state.episode.seasonNumber, ctx.state.episode.episodeNumber,
       appendToResponse: 'images,credits,videos');
   if (r.success)

@@ -58,7 +58,8 @@ void _onPay(Action action, Context<CheckOutPageState> ctx) async {
     return Toast.show('empty payment method', ctx.context,
         gravity: Toast.CENTER, duration: 5);
   }
-  final _r = await BaseApi.createPremiumSubscription(
+  final _baseApi = BaseApi.instance;
+  final _r = await _baseApi.createPremiumSubscription(
     Purchase(
       userId: ctx.state.user.firebaseUser.uid,
       amount: ctx.state.checkoutData.amount,
@@ -113,7 +114,8 @@ Future<PaymentClientToken> _getToken(String uid) async {
   final _token = preferences.getString('PaymentToken');
   if (_token != null) _clientNonce = PaymentClientToken(_token);
   if (_token == null || _clientNonce.isExpired()) {
-    var r = await BaseApi.getPaymentToken(uid);
+    final _baseApi = BaseApi.instance;
+    var r = await _baseApi.getPaymentToken(uid);
     if (r.success) {
       _clientNonce = PaymentClientToken.fromParams(
           token: r.result, expiredTime: DateTime.now().millisecondsSinceEpoch);

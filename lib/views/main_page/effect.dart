@@ -6,7 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action, Page;
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/actions/downloader_callback.dart';
 import 'package:movie/actions/http/github_api.dart';
 import 'package:movie/actions/local_notification.dart';
@@ -32,9 +32,10 @@ Effect<MainPageState> buildEffect() {
 ReceivePort _port = ReceivePort();
 void _onAction(Action action, Context<MainPageState> ctx) {}
 void _onInit(Action action, Context<MainPageState> ctx) async {
-  await ApiHelper.init();
+  await TMDBApi.instance.init();
 
   await UserInfoOperate.whenAppStart();
+
   final _preferences = await SharedPreferences.getInstance();
 
   final _localNotification = LocalNotification.instance;
@@ -108,7 +109,7 @@ Future _checkAppUpdate(Context<MainPageState> ctx) async {
   String _ignoreVersion = _preferences.getString('IgnoreVersion') ?? '';
 
   final _packageInfo = await PackageInfo.fromPlatform();
-  final _github = GithubApi();
+  final _github = GithubApi.instance;
   final _result = await _github.checkUpdate();
   if (_result.success) {
     if (_ignoreVersion == _result.result.tagName) return;

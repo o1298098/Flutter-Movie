@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/actions/http/apihelper.dart';
+import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/response_model.dart';
@@ -40,7 +40,7 @@ class SearchBarDelegate extends SearchDelegate<SearchResult> {
 
   Future<ResponseModel<SearchResultModel>> _getData() {
     if (query != '' && query != null)
-      return ApiHelper.searchMulit(query);
+      return TMDBApi.instance.searchMulit(query);
     else
       return null;
   }
@@ -431,7 +431,7 @@ class _ResultListState extends State<_ResultList> {
         isloading = true;
       });
       pageindex++;
-      final r = await ApiHelper.searchMulit(query, page: pageindex);
+      final r = await TMDBApi.instance.searchMulit(query, page: pageindex);
       if (r != null) {
         setState(() {
           if (r.success) {
