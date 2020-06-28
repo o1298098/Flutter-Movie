@@ -46,15 +46,15 @@ class NotificationModel {
       ? NotificationModel.fromJson(json.encode(mapRes))
       : NotificationModel.fromMap(mapRes);
 
-  NotificationModel.fromMap(mapRes) {
-    id = mapRes['id'] == null ? null : mapRes['id'];
-    type = mapRes['type'] == null ? null : mapRes['type'];
-    name = mapRes['name'] == null ? null : mapRes['name'];
-    streamLinkId =
-        mapRes['streamLinkId'] == null ? null : mapRes['streamLinkId'];
-    posterPic = mapRes['posterPic'] == null ? null : mapRes['posterPic'];
-    read = mapRes['read'] == null ? false : mapRes['read'];
-    date = mapRes['date'] == null ? DateTime.now().toString() : mapRes['date'];
+  NotificationModel.fromMap(Map mapRes) {
+    final _data = mapRes.containsKey('data') ? mapRes['data'] : mapRes;
+    id = _data['id'] == null ? null : _data['id'];
+    type = _data['type'] == null ? null : _data['type'];
+    name = _data['name'] == null ? null : _data['name'];
+    streamLinkId = _data['streamLinkId'] == null ? null : _data['streamLinkId'];
+    posterPic = _data['posterPic'] == null ? null : _data['posterPic'];
+    read = _data['read'] == null ? false : _data['read'];
+    date = _data['date'] == null ? DateTime.now().toString() : _data['date'];
     notification = mapRes['notification'] == null
         ? null
         : NotificationData(mapRes['notification']);

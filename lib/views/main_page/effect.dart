@@ -78,18 +78,18 @@ void _onDispose(Action action, Context<MainPageState> ctx) {
 }
 
 Future _push(Map<String, dynamic> message, Context<MainPageState> ctx) async {
-  if (message['data'] != null) {
+  if (message != null) {
+    final _notificationMessage = NotificationModel.fromMap(message);
     final _messageData = message['data'];
     var data = {
       _messageData['type'] == 'movie' ? 'id' : 'tvid':
-          int.parse(_messageData['id'].toString()),
-      'bgpic': _messageData['type'] == 'movie'
-          ? _messageData['posterPic']
-          : _messageData['bgPic'],
-      _messageData['type'] == 'movie' ? 'title' : 'name': _messageData['name'],
-      'posterpic': _messageData['posterPic']
+          int.parse(_notificationMessage.id.toString()),
+      'bgpic': _notificationMessage.posterPic,
+      _notificationMessage.type == 'movie' ? 'title' : 'name':
+          _notificationMessage.name,
+      'posterpic': _notificationMessage.posterPic
     };
-    Page page = _messageData['type'] == 'movie'
+    Page page = _notificationMessage.type == 'movie'
         ? MovieDetailPage()
         : TvShowDetailPage();
     await Navigator.of(ctx.state.scaffoldKey.currentContext)

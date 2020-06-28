@@ -563,7 +563,7 @@ class _InputPanel extends StatelessWidget {
                 onSubmitted: onSubmitted,
                 textInputAction: TextInputAction.next,
                 inputFormatters: [
-                  WhitelistingTextInputFormatter(RegExp("[a-zA-Z ]"))
+                  FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]"))
                 ],
               );
               break;

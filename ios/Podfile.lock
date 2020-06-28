@@ -723,7 +723,7 @@ SPEC CHECKSUMS:
   Braintree: 48154e70306eb3e6c81eaa87bbc5c5988c0d2784
   BraintreeDropIn: fc3e96a8a2b5416e5e3a3beba119f0089713bc1e
   camera: 38cc83ae9a5667bb5a71c7d9edaf60a91920fd4e
-  cloud_firestore: 4cc700e236ebfe2d5d980e49cb066d202cfee0e9
+  cloud_firestore: 2a4f8f802fb0b701cf809b283b6bec7477ebaa6f
   cloud_firestore_web: 9ec3dc7f5f98de5129339802d491c1204462bfec
   Firebase: 7cf5f9c67f03cb3b606d1d6535286e1080e57eb6
   firebase_admob: d8c2bc95b5e0069406280ce6adb816cdee6aa595

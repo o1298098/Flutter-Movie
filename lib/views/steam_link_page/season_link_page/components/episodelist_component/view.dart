@@ -22,10 +22,11 @@ Widget buildView(
             ),
             itemBuilder: _adapter.itemBuilder,
           ))
-      : _ShimmerTabview();
+      : const _ShimmerTabview();
 }
 
 class _ShimmerCell extends StatelessWidget {
+  const _ShimmerCell();
   @override
   Widget build(BuildContext context) {
     final _color = Colors.grey[300];
@@ -66,6 +67,7 @@ class _ShimmerCell extends StatelessWidget {
 }
 
 class _ShimmerTabview extends StatelessWidget {
+  const _ShimmerTabview();
   @override
   Widget build(BuildContext context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
@@ -73,15 +75,16 @@ class _ShimmerTabview extends StatelessWidget {
       baseColor: _theme.primaryColorDark,
       highlightColor: _theme.primaryColorLight,
       child: ListView(
+        physics: const NeverScrollableScrollPhysics(),
         padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
         children: <Widget>[
-          _ShimmerCell(),
+          const _ShimmerCell(),
           SizedBox(height: Adapt.px(30)),
-          _ShimmerCell(),
+          const _ShimmerCell(),
           SizedBox(height: Adapt.px(30)),
-          _ShimmerCell(),
+          const _ShimmerCell(),
           SizedBox(height: Adapt.px(30)),
-          _ShimmerCell()
+          const _ShimmerCell()
         ],
       ),
     );

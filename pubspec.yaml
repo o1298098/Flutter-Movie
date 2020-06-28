@@ -57,7 +57,7 @@ dependencies:
   font_awesome_flutter: ^8.5.0
   flutter_inappwebview: ^3.3.0
   flutter_cache_manager: ^1.1.3
-  image_picker: ^0.6.3+1
+  image_picker: ^0.6.7+2
   cloud_firestore: ^0.13.4+2
   firebase_auth: ^0.15.5+3
   google_sign_in: ^4.2.0
@@ -66,7 +66,7 @@ dependencies:
   firebase_messaging: ^6.0.13
   firebase_admob: ^0.9.3+1
   firebase_ml_vision: ^0.9.4
-  lottie: ^0.3.2
+  lottie: ^0.4.0+1
   package_info: ^0.4.0+16
   flutter_downloader: ^1.4.3
   flutter_braintree: ^0.6.0

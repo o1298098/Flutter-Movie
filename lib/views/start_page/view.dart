@@ -54,7 +54,6 @@ Widget buildView(
   }
 
   return Scaffold(
-    // backgroundColor: const Color(0xFFFFFFFF),
     body: FutureBuilder(
         future: _checkContextInit(
           Stream<double>.periodic(Duration(milliseconds: 50),
@@ -76,7 +75,6 @@ Widget buildView(
                 },
               );
           }
-
           return Container();
         }),
   );
@@ -88,6 +86,7 @@ Future<double> _checkContextInit(Stream<double> source) async {
       return value;
     }
   }
+  return 0.0;
 }
 
 class _FirstPage extends StatelessWidget {

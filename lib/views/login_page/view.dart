@@ -159,6 +159,7 @@ class _EmailEntry extends StatelessWidget {
         curve: Curves.ease,
       ),
     );
+    final _theme = ThemeStyle.getTheme(context);
 
     return Column(children: [
       SlideTransition(
@@ -174,14 +175,13 @@ class _EmailEntry extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
                 style: TextStyle(fontSize: Adapt.px(35)),
-                cursorColor: Colors.black,
+                cursorColor: _theme.iconTheme.color,
                 decoration: InputDecoration(
                     fillColor: Colors.transparent,
                     hintText: 'Account',
                     floatingLabelBehavior: FloatingLabelBehavior.auto,
                     filled: true,
-                    prefixStyle:
-                        TextStyle(color: Colors.black, fontSize: Adapt.px(35)),
+                    prefixStyle: TextStyle(fontSize: Adapt.px(35)),
                     focusedBorder: new UnderlineInputBorder(
                         borderSide: new BorderSide(color: Colors.black87))),
                 onSubmitted: (s) {
@@ -200,16 +200,15 @@ class _EmailEntry extends StatelessWidget {
             child: TextField(
               focusNode: pwdFocusNode,
               controller: passWordTextController,
-              style: TextStyle(color: Colors.black, fontSize: Adapt.px(35)),
-              cursorColor: Colors.black,
+              style: TextStyle(fontSize: Adapt.px(35)),
+              cursorColor: _theme.iconTheme.color,
               obscureText: true,
               decoration: InputDecoration(
                   fillColor: Colors.transparent,
                   hintText: 'PassWord',
                   floatingLabelBehavior: FloatingLabelBehavior.auto,
                   filled: true,
-                  prefixStyle:
-                      TextStyle(color: Colors.black, fontSize: Adapt.px(35)),
+                  prefixStyle: TextStyle(fontSize: Adapt.px(35)),
                   focusedBorder: new UnderlineInputBorder(
                       borderSide: new BorderSide(color: Colors.black87))),
               onSubmitted: onSubmit,
