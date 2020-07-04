@@ -1,12 +1,15 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
+import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/actions/http/tmdb_api.dart';
+import 'package:movie/views/steam_link_page/episode_livestream_page/page.dart';
 import 'action.dart';
 import 'state.dart';
 
 Effect<SeasonDetailPageState> buildEffect() {
   return combineEffects(<Object, Effect<SeasonDetailPageState>>{
     SeasonDetailPageAction.action: _onAction,
+    SeasonDetailPageAction.episodeCellTapped: _episodeCellTapped,
     Lifecycle.initState: _onInit,
   });
 }
@@ -31,5 +34,49 @@ Future _onInit(Action action, Context<SeasonDetailPageState> ctx) async {
         ctx.state.tvid, ctx.state.seasonNumber);
     if (_images.success)
       ctx.dispatch(SeasonDetailPageActionCreator.setImages(_images.result));
+    final _baseApi = BaseApi.instance;
+    final _streamLinks = await _baseApi.getTvSeasonStreamLinks(
+        ctx.state.tvid, ctx.state.seasonNumber);
+    if (_streamLinks.success) {
+      for (var e in ctx.state.seasonDetailModel.episodes) {
+        e.streamLink = _streamLinks.result.list.firstWhere((d) {
+          return d.episode == e.episodeNumber;
+        }, orElse: () => null);
+      }
+
+      ctx.dispatch(
+          SeasonDetailPageActionCreator.setStreamLinks(_streamLinks.result));
+    }
   }
+}
+
+Future _episodeCellTapped(
+    Action action, Context<SeasonDetailPageState> ctx) async {
+  await Navigator.of(ctx.context).push(
+    PageRouteBuilder(
+      transitionDuration: Duration(milliseconds: 500),
+      pageBuilder: (BuildContext context, Animation animation,
+          Animation secondaryAnimation) {
+        final _curvedAnimation =
+            CurvedAnimation(parent: animation, curve: Curves.ease);
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: Offset(0, 1),
+            end: Offset.zero,
+          ).animate(_curvedAnimation),
+          child: FadeTransition(
+            opacity: _curvedAnimation,
+            child: EpisodeLiveStreamPage().buildPage(
+              {
+                'tvid': ctx.state.tvid,
+                'selectedEpisode': action.payload,
+                'streamlinks': ctx.state.streamLinks,
+                'season': ctx.state.seasonDetailModel
+              },
+            ),
+          ),
+        );
+      },
+    ),
+  );
 }

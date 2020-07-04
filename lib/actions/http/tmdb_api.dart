@@ -763,14 +763,13 @@ class TMDBApi {
     return r;
   }
 
-  Future<ResponseModel<SeasonDetailModel>> getTVSeasonDetail(
-      int tvid, int seasonNumber,
+  Future<ResponseModel<Season>> getTVSeasonDetail(int tvid, int seasonNumber,
       {String appendToResponse}) async {
     String param =
         '/tv/$tvid/season/$seasonNumber?api_key=$_apikey&language=$language';
     if (appendToResponse != null)
       param += "&append_to_response=$appendToResponse";
-    final r = await _http.request<SeasonDetailModel>(param, cached: true);
+    final r = await _http.request<Season>(param, cached: true);
     return r;
   }
 

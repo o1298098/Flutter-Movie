@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/models/tvdetail.dart';
+import 'package:movie/models/seasondetail.dart';
 
 import 'action.dart';
 import 'state.dart';

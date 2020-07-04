@@ -1,9 +1,9 @@
 import 'dart:convert' show json;
 
 import 'package:movie/models/externalidsmodel.dart';
+import 'package:movie/models/seasondetail.dart';
 
 import 'creditsmodel.dart';
-import 'episodemodel.dart';
 import 'imagemodel.dart';
 import 'keyword.dart';
 import 'review.dart';
@@ -245,45 +245,6 @@ class AirData {
   @override
   String toString() {
     return '{"still_path": $stillPath,"episode_number": $episodeNumber,"id": $id,"season_number": $seasonNumber,"show_id": $showId,"vote_average": $voteAverage,"vote_count": $voteCount,"air_date": ${airDate != null ? '${json.encode(airDate)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"overview": ${overview != null ? '${json.encode(overview)}' : 'null'},"production_code": ${productionCode != null ? '${json.encode(productionCode)}' : 'null'}}';
-  }
-}
-
-class Season {
-  int episodeCount;
-  int id;
-  int seasonNumber;
-  String airDate;
-  String name;
-  String overview;
-  String posterPath;
-  List<Episode> episodes;
-  List<String> playStates;
-  CreditsModel credits;
-
-  Season.fromParams(
-      {this.episodeCount,
-      this.id,
-      this.seasonNumber,
-      this.airDate,
-      this.name,
-      this.overview,
-      this.posterPath,
-      this.episodes,
-      this.credits});
-
-  Season.fromJson(jsonRes) {
-    episodeCount = jsonRes['episode_count'];
-    id = jsonRes['id'];
-    seasonNumber = jsonRes['season_number'];
-    airDate = jsonRes['air_date'];
-    name = jsonRes['name'];
-    overview = jsonRes['overview'];
-    posterPath = jsonRes['poster_path'];
-  }
-
-  @override
-  String toString() {
-    return '{"episode_count": $episodeCount,"id": $id,"season_number": $seasonNumber,"air_date": ${airDate != null ? '${json.encode(airDate)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"overview": ${overview != null ? '${json.encode(overview)}' : 'null'},"poster_path": ${posterPath != null ? '${json.encode(posterPath)}' : 'null'}}';
   }
 }
 

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +11,11 @@ import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/style/themestyle.dart';
+import 'package:movie/views/seasondetail_page/action.dart';
 import 'package:movie/widgets/expandable_text.dart';
 import 'package:movie/widgets/linear_progress_Indicator.dart';
 import 'package:shimmer/shimmer.dart';
 
-import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
@@ -50,7 +52,8 @@ Widget buildView(
               itemCount: state.episodes.length,
               itemBuilder: (_, i) => _EpisodeCell(
                 data: state.episodes[i],
-                onTap: (d) => dispatch(EpisodesActionCreator.onCellTapped(d)),
+                onTap: (d) => dispatch(
+                    SeasonDetailPageActionCreator.episodeCellTapped(d)),
               ),
             )
           : const _ShimmerList()
@@ -161,12 +164,14 @@ class _EpisodeCell extends StatelessWidget {
   const _EpisodeCell({this.data, this.onTap});
   @override
   Widget build(BuildContext context) {
+    final _imageHeight = Adapt.px(220);
     final _theme = ThemeStyle.getTheme(context);
     final _shadowColor = _theme.brightness == Brightness.light
         ? const Color(0xFFE0E0E0)
         : const Color(0x00000000);
+    final DateTime _airDate = DateTime.parse(data.airDate ?? '1990-01-01');
+    final bool _canPlay = DateTime.now().isAfter(_airDate);
     return Container(
-      //height: Adapt.px(400),
       margin: EdgeInsets.only(
         top: Adapt.px(50),
       ),
@@ -186,12 +191,16 @@ class _EpisodeCell extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(
-                height: Adapt.px(220),
-                width: Adapt.px(380),
-                transform:
-                    Matrix4.translationValues(-Adapt.px(40), -Adapt.px(40), 0),
-                decoration: BoxDecoration(
+              GestureDetector(
+                onTap: () {
+                  if (_canPlay) onTap(data);
+                },
+                child: Container(
+                  height: _imageHeight,
+                  width: Adapt.px(380),
+                  transform: Matrix4.translationValues(
+                      -Adapt.px(40), -Adapt.px(40), 0),
+                  decoration: BoxDecoration(
                     color: _theme.primaryColorDark,
                     borderRadius: BorderRadius.circular(Adapt.px(20)),
                     boxShadow: [
@@ -206,7 +215,10 @@ class _EpisodeCell extends StatelessWidget {
                       image: CachedNetworkImageProvider(
                         ImageUrl.getUrl(data.stillPath, ImageSize.w300),
                       ),
-                    )),
+                    ),
+                  ),
+                  child: _canPlay ? _PlayArrow(height: _imageHeight) : null,
+                ),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -265,5 +277,32 @@ class _EpisodeCell extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class _PlayArrow extends StatelessWidget {
+  final double height;
+  const _PlayArrow({this.height});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: height,
+        alignment: Alignment.center,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(Adapt.px(50)),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+            child: Container(
+              color: const Color(0x40FFFFFF),
+              width: Adapt.px(100),
+              height: Adapt.px(100),
+              child: Icon(
+                Icons.play_arrow,
+                size: 25,
+                color: const Color(0xFFFFFFFF),
+              ),
+            ),
+          ),
+        ));
   }
 }

@@ -9,7 +9,7 @@ import 'package:movie/models/base_api_model/tvshow_comment.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/app_user.dart';
-import 'package:movie/models/tvdetail.dart';
+import 'package:movie/models/seasondetail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';

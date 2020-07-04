@@ -9,7 +9,8 @@ class EpisodesComponent extends Component<EpisodesState> {
   EpisodesComponent()
       : super(
           shouldUpdate: (oldState, newState) {
-            return oldState.episodes != newState.episodes;
+            return oldState.episodes != newState.episodes ||
+                oldState.streamLinks != newState.streamLinks;
           },
           effect: buildEffect(),
           reducer: buildReducer(),

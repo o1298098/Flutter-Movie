@@ -1,4 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/imagemodel.dart';
 import 'package:movie/models/seasondetail.dart';
@@ -14,7 +15,8 @@ Reducer<SeasonDetailPageState> buildReducer() {
       SeasonDetailPageAction.action: _onAction,
       SeasonDetailPageAction.seasonDetailChanged: _onSeasonDetailChanged,
       SeasonDetailPageAction.setImages: _setImages,
-      SeasonDetailPageAction.setVideos: _setVideos
+      SeasonDetailPageAction.setVideos: _setVideos,
+      SeasonDetailPageAction.setStreamLinks: _setStreamLinks,
     },
   );
 }
@@ -26,8 +28,8 @@ SeasonDetailPageState _onAction(SeasonDetailPageState state, Action action) {
 
 SeasonDetailPageState _onSeasonDetailChanged(
     SeasonDetailPageState state, Action action) {
-  final SeasonDetailModel model =
-      action.payload ?? SeasonDetailModel.fromParams(episodes: List<Episode>());
+  final Season model =
+      action.payload ?? Season.fromParams(episodes: List<Episode>());
   final SeasonDetailPageState newState = state.clone();
   newState.seasonDetailModel = model;
   newState.seasonCastState = new SeasonCastState(castData: model.credits.cast);
@@ -45,5 +47,13 @@ SeasonDetailPageState _setImages(SeasonDetailPageState state, Action action) {
   final ImageModel _images = action.payload;
   final SeasonDetailPageState newState = state.clone();
   newState.images = _images;
+  return newState;
+}
+
+SeasonDetailPageState _setStreamLinks(
+    SeasonDetailPageState state, Action action) {
+  final TvShowStreamLinks _streamLinks = action.payload;
+  final SeasonDetailPageState newState = state.clone();
+  newState.streamLinks = _streamLinks;
   return newState;
 }

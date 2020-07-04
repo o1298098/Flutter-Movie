@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart' hide Action;
-import 'package:movie/views/episodedetail_page/page.dart';
+import 'package:movie/views/steam_link_page/episode_livestream_page/page.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -15,33 +15,30 @@ Effect<EpisodesState> buildEffect() {
 void _onAction(Action action, Context<EpisodesState> ctx) {}
 void _onInit(Action action, Context<EpisodesState> ctx) {}
 Future _onCellTapped(Action action, Context<EpisodesState> ctx) async {
-  await Navigator.of(ctx.context).push(PageRouteBuilder(
+  await Navigator.of(ctx.context).push(
+    PageRouteBuilder(
       transitionDuration: Duration(milliseconds: 500),
       pageBuilder: (BuildContext context, Animation animation,
           Animation secondaryAnimation) {
-        return new FadeTransition(
-            opacity: animation,
-            child: EpisodeDetailPage().buildPage({
-              'tvid': ctx.state.tvid,
-              'episode': action.payload
-            }));
-            /*SlideTransition(
+        final _curvedAnimation =
+            CurvedAnimation(parent: animation, curve: Curves.ease);
+        return SlideTransition(
           position: Tween<Offset>(
-            begin: Offset.zero,
+            begin: Offset(0, 1),
             end: Offset.zero,
-          ).animate(animation),
-          child: SlideTransition(
-              position: Tween<Offset>(
-                begin: Offset.zero,
-                end: Offset.zero,
-              ).animate(secondaryAnimation),
-              child: EpisodeDetailPage().buildPage(
-                  {'tvid': ctx.state.tvid, 'episode': action.payload})),
-        );*/
-      }));
-  /*await Navigator.of(ctx.context).pushNamed('episodedetailpage', arguments: {
-    'tvid': ctx.state.tvid,
-    'seasonnum': action.payload[0],
-    'episodenum': action.payload[1]
-  });*/
+          ).animate(_curvedAnimation),
+          child: FadeTransition(
+            opacity: _curvedAnimation,
+            child: EpisodeLiveStreamPage().buildPage(
+              {
+                'selectedEpisode': action.payload,
+                'streamlinks': ctx.state.streamLinks,
+                'season': ctx.state.episodes
+              },
+            ),
+          ),
+        );
+      },
+    ),
+  );
 }

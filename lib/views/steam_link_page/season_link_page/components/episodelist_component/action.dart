@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/episodemodel.dart';
-import 'package:movie/models/tvdetail.dart';
+import 'package:movie/models/seasondetail.dart';
 
 enum EpisodeListAction {
   action,

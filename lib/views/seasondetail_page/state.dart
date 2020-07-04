@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:movie/globalbasestate/state.dart';
+import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/app_user.dart';
 import 'package:movie/models/imagemodel.dart';
@@ -15,8 +16,9 @@ import 'components/seasoncast_component/state.dart';
 
 class SeasonDetailPageState extends MutableSource
     implements GlobalBaseState, Cloneable<SeasonDetailPageState> {
-  SeasonDetailModel seasonDetailModel;
+  Season seasonDetailModel;
   SeasonCastState seasonCastState;
+  TvShowStreamLinks streamLinks;
   VideoModel videos;
   ImageModel images;
   ScrollController scrollController;
@@ -38,7 +40,8 @@ class SeasonDetailPageState extends MutableSource
       ..videos = videos
       ..tvShowName = tvShowName
       ..seasonpic = seasonpic
-      ..scrollController;
+      ..scrollController = scrollController
+      ..streamLinks = streamLinks;
   }
 
   @override
@@ -67,7 +70,11 @@ class SeasonDetailPageState extends MutableSource
       case 1:
         return seasonCastState;
       case 2:
-        return EpisodesState(episodes: seasonDetailModel.episodes, tvid: tvid);
+        return EpisodesState(
+          episodes: seasonDetailModel.episodes,
+          tvid: tvid,
+          streamLinks: streamLinks,
+        );
       default:
         return null;
     }
@@ -101,8 +108,7 @@ SeasonDetailPageState initState(Map<String, dynamic> args) {
   state.seasonNumber = args['seasonNumber'];
   state.name = args['seasonName'];
   state.seasonpic = args['posterpic'];
-  state.seasonDetailModel =
-      SeasonDetailModel.fromParams(episodes: List<Episode>());
+  state.seasonDetailModel = Season.fromParams(episodes: List<Episode>());
   state.seasonCastState = SeasonCastState();
   return state;
 }

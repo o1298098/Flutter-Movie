@@ -3,7 +3,7 @@ import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/models/episodemodel.dart';
-import 'package:movie/models/tvdetail.dart';
+import 'package:movie/models/seasondetail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'action.dart';
 import 'state.dart';

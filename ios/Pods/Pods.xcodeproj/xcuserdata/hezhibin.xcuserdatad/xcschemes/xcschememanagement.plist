@@ -204,11 +204,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>cloud_firestore_web.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>firebase_admob.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -224,17 +219,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>firebase_auth_web.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>firebase_core.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>firebase_core_web.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -284,11 +269,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>flutter_plugin_android_lifecycle.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>gRPC-C++-gRPCCertificates-Cpp.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -305,11 +285,6 @@
 			<false/>
 		</dict>
 		<key>google_sign_in.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>google_sign_in_web.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -339,16 +314,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>path_provider_linux.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>path_provider_macos.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>permission_handler.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -364,16 +329,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>shared_preferences_macos.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>shared_preferences_web.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>sqflite.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -384,22 +339,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>url_launcher_macos.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>url_launcher_web.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>video_player.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>video_player_web.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

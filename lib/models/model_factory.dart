@@ -50,8 +50,8 @@ class ModelFactory {
         return ImageModel(json) as T;
       case 'KeyWordModel':
         return KeyWordModel(json) as T;
-      case 'SeasonDetailModel':
-        return SeasonDetailModel(json) as T;
+      case 'Season':
+        return Season(json) as T;
       case 'Episode':
         return Episode(json) as T;
       case 'PeopleDetailModel':
