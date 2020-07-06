@@ -118,8 +118,8 @@
 @import permission_handler;
 #endif
 
-#if __has_include(<share_extend/FLTShareExtendPlugin.h>)
-#import <share_extend/FLTShareExtendPlugin.h>
+#if __has_include(<share_extend/ShareExtendPlugin.h>)
+#import <share_extend/ShareExtendPlugin.h>
 #else
 @import share_extend;
 #endif

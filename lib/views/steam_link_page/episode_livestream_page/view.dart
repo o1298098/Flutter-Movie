@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:intl/intl.dart';
 import 'package:movie/actions/adapt.dart';
@@ -68,16 +69,35 @@ class _Player extends StatefulWidget {
   _PlayerState createState() => _PlayerState();
 }
 
-class _PlayerState extends State<_Player> {
+class _PlayerState extends State<_Player> with AutomaticKeepAliveClientMixin {
   String _streamlink;
   bool _play;
   bool _loadFinsh;
+  bool _fullScreen;
+
+  @override
+  bool get wantKeepAlive => true;
 
   void init() {
     _loadFinsh = false;
+    _fullScreen = false;
     _play = false;
-    _streamlink =
-        'https://moviessources.cf/embed/${widget.tvid}/${widget.episode.seasonNumber}-${widget.episode.episodeNumber}';
+    _streamlink = Uri.dataFromString('''
+            <html>
+            <header>
+            <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+            </header>
+            <body style="margin:0;background-color:#000;">
+            <iframe 
+            frameborder="0"
+            width="100%" 
+            height="100%" 
+            src="https://moviessources.cf/embed/${widget.tvid}/${widget.episode.seasonNumber}-${widget.episode.episodeNumber}" 
+            allowfullscreen>
+            </iframe>
+            </body>
+            </html>
+            ''', mimeType: 'text/html').toString();
   }
 
   @override
@@ -86,9 +106,22 @@ class _PlayerState extends State<_Player> {
     super.initState();
   }
 
-  _playTapped() {
-    _play = true;
-    setState(() {});
+  _playTapped() async {
+    setState(() {
+      _play = true;
+    });
+  }
+
+  _toggleFullScreenMode(bool fullScreen) {
+    _fullScreen = fullScreen;
+    if (_fullScreen) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+    } else {
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    }
   }
 
   @override
@@ -102,6 +135,7 @@ class _PlayerState extends State<_Player> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return AspectRatio(
       aspectRatio: 16 / 9,
       child: ClipRRect(
@@ -117,19 +151,27 @@ class _PlayerState extends State<_Player> {
                     initialOptions: InAppWebViewGroupOptions(
                         android: AndroidInAppWebViewOptions(
                           supportMultipleWindows: false,
-                          forceDark: AndroidForceDark.FORCE_DARK_ON,
                         ),
                         crossPlatform: InAppWebViewOptions(
-                          useShouldOverrideUrlLoading: true,
-                          mediaPlaybackRequiresUserGesture: false,
-                          debuggingEnabled: true,
-                        )),
+                            supportZoom: false,
+                            disableHorizontalScroll: true,
+                            disableVerticalScroll: true,
+                            useShouldOverrideUrlLoading: true,
+                            mediaPlaybackRequiresUserGesture: false,
+                            debuggingEnabled: true,
+                            contentBlockers: [])),
                     onProgressChanged: (controller, progress) {
                       print(progress.toString());
                       if (progress == 100 && !_loadFinsh) {
                         _loadFinsh = true;
                         setState(() {});
                       }
+                    },
+                    onEnterFullscreen: (_) {
+                      _toggleFullScreenMode(true);
+                    },
+                    onExitFullscreen: (_) {
+                      _toggleFullScreenMode(false);
                     },
                     onLoadStop: (controller, url) {
                       controller.evaluateJavascript(source: '''
@@ -139,7 +181,7 @@ class _PlayerState extends State<_Player> {
                       var tags = document.getElementsByTagName("*");
                       for (var i in tags) {
                        if (tags[i].nodeType == 1) {
-                          if (tags[i].getAttribute("class") == classnames) {
+                          if (tags[i].getAttribute("class")==classnames) {
                             classobj[classint] = tags[i];
                             classint++;
                           }
@@ -147,14 +189,14 @@ class _PlayerState extends State<_Player> {
                        }
                       return classobj;
                    }
-                    var a = getElementsClass("server-list-btnx btn btn-warning start-animation btn-lg"); 
-                    a[0].style.display = "none";
+                  var a = getElementsClass("server-list-btnx btn btn-warning start-animation btn-lg mobile-responsive"); 
+                  a[0].style.display = "none";
                   ''');
                     },
                     shouldOverrideUrlLoading:
                         (controller, shouldOverrideUrlLoadingRequest) {
                       if (shouldOverrideUrlLoadingRequest.url
-                              .compareTo('https://moviessources.cf/embed') ==
+                              .compareTo('https://vidsrc.me') ==
                           0) {
                         controller.stopLoading();
                       }
@@ -459,10 +501,12 @@ class _BottomPanel extends StatelessWidget {
             style: TextStyle(color: const Color(0xFFFFFFFF)),
           ),
           Spacer(),
-          Icon(
-            Icons.more_vert,
-            color: const Color(0xFFFFFFFF),
-          ),
+          GestureDetector(
+              onTap: () => Navigator.of(context).pushNamed('testPage'),
+              child: Icon(
+                Icons.more_vert,
+                color: const Color(0xFFFFFFFF),
+              )),
           GestureDetector(
             onTap: () => Navigator.of(context).pop(),
             child: Icon(

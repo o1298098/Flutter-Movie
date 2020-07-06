@@ -520,4 +520,18 @@ class BaseApi {
     });
     return _r;
   }
+
+  Future<ResponseModel<String>> getVideoSpiderMovie(int movieId) async {
+    final String _url = '/videoSpider/movie?movieId=$movieId';
+    final _r = await _http.request<String>(_url);
+    return _r;
+  }
+
+  Future<ResponseModel<String>> getVideoSpiderTvShow(
+      int tvId, int season, int epsiode) async {
+    final String _url =
+        '/videoSpider/tvshow?tvId=$tvId&season=$season&episode=$epsiode';
+    final _r = await _http.request<String>(_url);
+    return _r;
+  }
 }
