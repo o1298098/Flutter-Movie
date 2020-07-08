@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:movie/models/base_api_model/account_state.dart';
 import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/base_api_model/base_tvshow.dart';
@@ -11,6 +12,7 @@ import 'package:movie/models/base_api_model/movie_stream_link.dart';
 import 'package:movie/models/base_api_model/purchase.dart';
 import 'package:movie/models/base_api_model/stream_link_report.dart';
 import 'package:movie/models/base_api_model/tvshow_comment.dart';
+import 'package:movie/models/base_api_model/tvshow_like_model.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/models/base_api_model/user_list.dart';
 import 'package:movie/models/base_api_model/user_list_detail.dart';
@@ -275,6 +277,47 @@ class BaseApi {
     return r;
   }
 
+  Future<ResponseModel<dynamic>> getTvShowLikes(
+      {@required int tvid,
+      int season = 0,
+      int episode = 0,
+      String uid = ''}) async {
+    final String _url =
+        '/TvShows/Like/$tvid?season=$season&episode=$episode&uid=$uid';
+    final r = await _http.request(_url);
+    return r;
+  }
+
+  Future<ResponseModel<TvShowLikeModel>> likeTvShow(
+      TvShowLikeModel like) async {
+    final String _url = '/TvShows/Like';
+    final _data = {
+      'id': 0,
+      'tvId': like.tvId ?? 0,
+      'season': like.season,
+      'episode': like.episode,
+      'uid': like.uid
+    };
+    final r =
+        await _http.request<TvShowLikeModel>(_url, method: "POST", data: _data);
+    return r;
+  }
+
+  Future<ResponseModel<TvShowLikeModel>> unlikeTvShow(
+      TvShowLikeModel like) async {
+    final String _url = '/TvShows/Like';
+    final _data = {
+      'id': 0,
+      'tvId': like.tvId ?? 0,
+      'season': like.season,
+      'episode': like.episode,
+      'uid': like.uid
+    };
+    final r = await _http.request<TvShowLikeModel>(_url,
+        method: "DELETE", data: _data);
+    return r;
+  }
+
   Future<ResponseModel<bool>> hasTvShowStreamLinks(int tvid) async {
     String _url = '/TvShowStreamLinks/Exist/$tvid';
     final _r = await _http.request<bool>(_url);
@@ -322,7 +365,8 @@ class BaseApi {
   Future<ResponseModel<TvShowComments>> getTvShowComments(
       int tvid, int season, int episode,
       {int page = 1, int pageSize = 40}) async {
-    final String _url = '/TvShowComments/$tvid/$season/$episode';
+    final String _url =
+        '/TvShowComments/$tvid/$season/$episode?page=$page&pageSize=$pageSize';
     final r = await _http.request<TvShowComments>(_url);
     return r;
   }

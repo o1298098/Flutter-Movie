@@ -1,3 +1,5 @@
+import 'package:movie/models/base_api_model/tvshow_like_model.dart';
+
 import 'base_api_model/account_state.dart';
 import 'base_api_model/base_movie.dart';
 import 'base_api_model/base_tvshow.dart';
@@ -96,6 +98,8 @@ class ModelFactory {
         return BillingAddress(json) as T;
       case 'GithubReleaseModel':
         return GithubReleaseModel(json) as T;
+      case 'TvShowLikeModel':
+        return TvShowLikeModel(json) as T;
       default:
         return json;
     }

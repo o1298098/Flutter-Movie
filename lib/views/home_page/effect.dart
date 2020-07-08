@@ -6,7 +6,7 @@ import 'package:movie/widgets/searchbar_delegate.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/enums/time_window.dart';
 import 'package:movie/views/detail_page/page.dart';
-import 'package:movie/views/steam_link_page/allstreamlink_page/page.dart';
+import 'package:movie/views/stream_link_page/allstreamlink_page/page.dart';
 import 'package:movie/views/trending_page/page.dart';
 import 'package:movie/views/tvshow_detail_page/page.dart';
 import 'action.dart';

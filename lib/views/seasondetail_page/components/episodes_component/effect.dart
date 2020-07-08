@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart' hide Action;
-import 'package:movie/views/steam_link_page/episode_livestream_page/page.dart';
+import 'package:movie/views/stream_link_page/episode_livestream_page/page.dart';
 import 'action.dart';
 import 'state.dart';
 
