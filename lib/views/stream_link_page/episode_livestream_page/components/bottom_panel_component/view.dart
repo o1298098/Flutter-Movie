@@ -84,7 +84,7 @@ Widget buildView(
           switchOutCurve: Curves.easeOut,
           child: _ItemButton(
             key: ValueKey('LikeIcons$state.userLiked'),
-            onTap: dispatch(EpisodeLiveStreamActionCreator.likeTvShow()),
+            onTap: () => dispatch(EpisodeLiveStreamActionCreator.likeTvShow()),
             icon: state.userLiked ? Icons.favorite : Icons.favorite_border,
             iconColor: state.userLiked
                 ? const Color(0xFFAA222E)
