@@ -12,6 +12,10 @@ class MainPage extends Page<MainPageState, Map<String, dynamic>> {
           effect: buildEffect(),
           reducer: buildReducer(),
           view: buildView,
+          shouldUpdate: (oldState, newState) {
+            return oldState.locale != newState.locale ||
+                oldState.selectedIndex != newState.selectedIndex;
+          },
           dependencies: Dependencies<MainPageState>(
               adapter: null, slots: <String, Dependent<MainPageState>>{}),
           middleware: <Middleware<MainPageState>>[],

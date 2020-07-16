@@ -32,7 +32,6 @@ Future _onCellTapped(Action action, Context<EpisodesState> ctx) async {
             child: EpisodeLiveStreamPage().buildPage(
               {
                 'selectedEpisode': action.payload,
-                'streamlinks': ctx.state.streamLinks,
                 'season': ctx.state.episodes
               },
             ),

@@ -16,6 +16,27 @@ class BottomPanel extends StatelessWidget {
       this.commentTap});
   @override
   Widget build(BuildContext context) {
+    OverlayEntry menuOverlayEntry;
+    void showPopupMenu(Widget menu) {
+      menuOverlayEntry = OverlayEntry(
+        builder: (context) {
+          return Stack(
+            children: <Widget>[
+              Positioned.fill(
+                  child: GestureDetector(
+                onTap: () => menuOverlayEntry.remove(),
+                child: Container(
+                  color: Colors.transparent,
+                ),
+              )),
+              menu,
+            ],
+          );
+        },
+      );
+      Overlay.of(context).insert(menuOverlayEntry);
+    }
+
     final _theme = ThemeStyle.getTheme(context);
     return Positioned(
       left: 0,
@@ -51,11 +72,13 @@ class BottomPanel extends StatelessWidget {
             onTap: commentTap,
             value: _convertString(commentCount),
           ),
-          Icon(
-            Icons.tv,
-            size: Adapt.px(30),
-            color: const Color(0xFFFFFFFF),
-          ),
+          GestureDetector(
+              onTap: () => showPopupMenu(_VideoSourceMenu()),
+              child: Icon(
+                Icons.tv,
+                size: Adapt.px(30),
+                color: const Color(0xFFFFFFFF),
+              )),
           SizedBox(width: Adapt.px(70)),
           Icon(
             Icons.file_download,
@@ -64,7 +87,7 @@ class BottomPanel extends StatelessWidget {
           ),
           Spacer(),
           GestureDetector(
-              onTap: () => Navigator.of(context).pushNamed('testPage'),
+              onTap: () => showPopupMenu(_OptionMenu()),
               child: Icon(
                 Icons.more_vert,
                 color: const Color(0xFFFFFFFF),
@@ -134,4 +157,109 @@ String _convertString(int value) {
   else if (value >= 1000000)
     _result = '${(value / 1000000).toStringAsFixed(0)}m';
   return _result;
+}
+
+class _OptionMenu extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final _backGroundColor = const Color(0xFF25272E);
+    final double _width = 200;
+    final double _arrowSize=20.0;
+    final double _menuHeight=200.0;
+    return Positioned(
+      bottom: 80,
+      right: Adapt.px(40),
+      width: _width,
+      child: Material(
+        color: Colors.transparent,
+        child: Stack(
+          children: [
+           Container(
+              height: _menuHeight+_arrowSize,
+              padding: EdgeInsets.only(right:Adapt.px(75)),
+              alignment: Alignment.bottomRight,
+              child: ClipPath(
+                clipper: _ArrowClipper(),
+                child: Container(
+                  width: _arrowSize,
+                  height: _arrowSize,
+                  color: _backGroundColor,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 15.0),
+              child: Container(
+                height: _menuHeight,
+                decoration: BoxDecoration(
+                  color: _backGroundColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ), 
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _VideoSourceMenu extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final _backGroundColor = const Color(0xFF25272E);
+    final double _width = 160;
+    final double _arrowSize=20.0;
+    final double _menuHeight=200.0;
+    return Positioned(
+      bottom: 80,
+      left: Adapt.px(275) - _width / 2,
+      width: _width,
+      child: Material(
+        color: Colors.transparent,
+        child: Stack(
+          children: [
+            Container(
+              height: _menuHeight+_arrowSize,
+              alignment: Alignment.bottomCenter,
+              child: ClipPath(
+                clipper: _ArrowClipper(),
+                child: Container(
+                  width: _arrowSize,
+                  height: _arrowSize,
+                  color: _backGroundColor,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 15.0),
+              child: Container(
+                height: 200,
+                decoration: BoxDecoration(
+                  color: _backGroundColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ArrowClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.moveTo(0, 0);
+    path.lineTo(size.width, 0);
+    path.lineTo(size.width / 2, size.height / 2);
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return true;
+  }
 }

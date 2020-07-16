@@ -1,5 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/tvshow_comment.dart';
+import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/models/episodemodel.dart';
 
 enum EpisodeLiveStreamAction {
@@ -7,6 +8,8 @@ enum EpisodeLiveStreamAction {
   episodeTapped,
   setSelectedEpisode,
   setComment,
+  setStreamLink,
+  setOption,
   setLike,
   likeTvShow,
   commentTap,
@@ -36,5 +39,14 @@ class EpisodeLiveStreamActionCreator {
 
   static Action commentTap() {
     return const Action(EpisodeLiveStreamAction.commentTap);
+  }
+
+  static Action setStreamLink(TvShowStreamLinks streamLinks) {
+    return Action(EpisodeLiveStreamAction.setStreamLink, payload: streamLinks);
+  }
+
+  static Action setOption(bool useVideoSourceApi, bool streamInBrowser) {
+    return Action(EpisodeLiveStreamAction.setOption,
+        payload: [useVideoSourceApi, streamInBrowser]);
   }
 }

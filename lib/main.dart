@@ -9,5 +9,5 @@ Future main() async {
   await FlutterDownloader.initialize();
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  runApp(await createApp());
+  runApp(App());
 }

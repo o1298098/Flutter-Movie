@@ -10,6 +10,7 @@ import 'components/comment_component/state.dart';
 class EpisodeLiveStreamState implements Cloneable<EpisodeLiveStreamState> {
   int tvid;
   bool useVideoSourceApi;
+  bool streamInBrowser;
   bool userliked;
   int likeCount;
   TvShowStreamLinks streamLinks;
@@ -31,6 +32,7 @@ class EpisodeLiveStreamState implements Cloneable<EpisodeLiveStreamState> {
       ..userliked = userliked
       ..scrollController = scrollController
       ..useVideoSourceApi = useVideoSourceApi
+      ..streamInBrowser = streamInBrowser
       ..commentState = commentState;
   }
 }
@@ -41,7 +43,6 @@ EpisodeLiveStreamState initState(Map<String, dynamic> args) {
   state.season = args['season'];
   state.selectedEpisode = args['selectedEpisode'];
   state.streamLinks = args['streamlinks'];
-  state.useVideoSourceApi = false;
   state.likeCount = 0;
   state.userliked = false;
   state.commentState = CommentState()

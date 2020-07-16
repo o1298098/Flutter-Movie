@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:movie/globalbasestate/state.dart';
-import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/app_user.dart';
 import 'package:movie/models/imagemodel.dart';
@@ -18,7 +17,6 @@ class SeasonDetailPageState extends MutableSource
     implements GlobalBaseState, Cloneable<SeasonDetailPageState> {
   Season seasonDetailModel;
   SeasonCastState seasonCastState;
-  TvShowStreamLinks streamLinks;
   VideoModel videos;
   ImageModel images;
   ScrollController scrollController;
@@ -40,8 +38,7 @@ class SeasonDetailPageState extends MutableSource
       ..videos = videos
       ..tvShowName = tvShowName
       ..seasonpic = seasonpic
-      ..scrollController = scrollController
-      ..streamLinks = streamLinks;
+      ..scrollController = scrollController;
   }
 
   @override
@@ -73,7 +70,6 @@ class SeasonDetailPageState extends MutableSource
         return EpisodesState(
           episodes: seasonDetailModel.episodes,
           tvid: tvid,
-          streamLinks: streamLinks,
         );
       default:
         return null;

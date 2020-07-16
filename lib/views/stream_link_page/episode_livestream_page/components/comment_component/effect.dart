@@ -37,7 +37,7 @@ void _onDispose(Action action, Context<CommentState> ctx) {
 void _addComment(Action action, Context<CommentState> ctx) async {
   final String _commentTxt = action.payload;
   final _user = GlobalStore.store.getState().user;
-  if (_user.firebaseUser == null) {
+  if (_user == null) {
     Toast.show('login before comment', ctx.context, duration: 2);
     return;
   }

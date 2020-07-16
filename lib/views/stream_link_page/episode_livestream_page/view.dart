@@ -63,15 +63,7 @@ Widget buildView(
                 color: _theme.backgroundColor,
                 height: Adapt.padTopH(),
               ),
-              BottomPanel(
-                commentCount: state.comments?.totalCount ?? 0,
-                likeCount: state.likeCount,
-                userLiked: state.userliked,
-                likeTap: () =>
-                    dispatch(EpisodeLiveStreamActionCreator.likeTvShow()),
-                commentTap: () =>
-                    dispatch(EpisodeLiveStreamActionCreator.commentTap()),
-              ),
+              viewService.buildComponent('bottomPanel'),
             ],
           ),
         ),

@@ -147,9 +147,7 @@ class _ShimmerList extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
     return SliverToBoxAdapter(
-      child: Offstage(
-        offstage: !isbusy,
-        child: Shimmer.fromColors(
+      child:  isbusy?Shimmer.fromColors(
           baseColor: _theme.primaryColorDark,
           highlightColor: _theme.primaryColorLight,
           child: Container(
@@ -168,8 +166,7 @@ class _ShimmerList extends StatelessWidget {
               ],
             ),
           ),
-        ),
-      ),
+      ):SizedBox(),
     );
   }
 }

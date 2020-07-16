@@ -22,6 +22,12 @@ class HomePage extends Page<HomePageState, Map<String, dynamic>>
           effect: buildEffect(),
           reducer: buildReducer(),
           view: buildView,
+          shouldUpdate: (oldState, newState) {
+            return oldState.popularMovies != newState.popularMovies ||
+                oldState.shareMovies != newState.shareMovies ||
+                oldState.trending != newState.trending ||
+                oldState.movie != newState.movie;
+          },
           dependencies: Dependencies<HomePageState>(
               adapter: null,
               slots: <String, Dependent<HomePageState>>{

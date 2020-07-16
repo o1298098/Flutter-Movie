@@ -34,9 +34,22 @@ void _episodeTapped(Action action, Context<EpisodeLiveStreamState> ctx) async {
 
 void _onInit(Action action, Context<EpisodeLiveStreamState> ctx) async {
   ctx.state.scrollController = ScrollController();
+  bool _useVideoSourceApi = false;
+  bool _streamInBrowser = false;
   final _pre = await SharedPreferences.getInstance();
   if (_pre.containsKey('useVideoSourceApi'))
-    ctx.state.useVideoSourceApi = _pre.getBool('useVideoSourceApi');
+    _useVideoSourceApi = _pre.getBool('useVideoSourceApi');
+  if (_pre.containsKey('streamInBrowser'))
+    _streamInBrowser = _pre.getBool('streamInBrowser');
+  ctx.dispatch(EpisodeLiveStreamActionCreator.setOption(
+      _useVideoSourceApi, _streamInBrowser));
+  BaseApi.instance
+      .getTvSeasonStreamLinks(
+          ctx.state.tvid, ctx.state.selectedEpisode.seasonNumber)
+      .then((value) {
+    if (value.success) if (value.result.list.length > 0)
+      ctx.dispatch(EpisodeLiveStreamActionCreator.setStreamLink(value.result));
+  });
   await _getLike(action, ctx);
   await _getComment(action, ctx);
 }

@@ -70,7 +70,6 @@ Future _episodeCellTapped(
               {
                 'tvid': ctx.state.tvid,
                 'selectedEpisode': action.payload,
-                'streamlinks': ctx.state.streamLinks,
                 'season': ctx.state.seasonDetailModel
               },
             ),

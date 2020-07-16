@@ -72,16 +72,12 @@ class _Cell extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: Adapt.px(20),
-                ),
+                SizedBox(width: Adapt.px(20)),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    SizedBox(
-                      height: Adapt.px(20),
-                    ),
+                    SizedBox(height: Adapt.px(20)),
                     Row(
                       children: <Widget>[
                         Container(
@@ -117,9 +113,7 @@ class _Cell extends StatelessWidget {
                         )
                       ],
                     ),
-                    SizedBox(
-                      height: Adapt.px(20),
-                    ),
+                    SizedBox(height: Adapt.px(20)),
                     Container(
                       width: Adapt.screenW() - Adapt.px(210),
                       child: Text(
@@ -127,7 +121,6 @@ class _Cell extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                            //color: Colors.grey,
                             fontSize: Adapt.px(24)),
                       ),
                     )
@@ -143,6 +136,7 @@ class _Cell extends StatelessWidget {
 }
 
 class _ShimmerCell extends StatelessWidget {
+  const _ShimmerCell();
   @override
   Widget build(BuildContext context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
@@ -191,7 +185,7 @@ class _Swiper extends StatelessWidget {
                 );
               },
             )
-          : _ShimmerCell(),
+          :const _ShimmerCell(),
     );
   }
 }

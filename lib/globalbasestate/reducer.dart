@@ -35,7 +35,7 @@ GlobalState _onchangeThemeColor(GlobalState state, Action action) {
 
 GlobalState _onChangeLocale(GlobalState state, Action action) {
   final Locale l = action.payload;
-  I18n.locale = l;
+  I18n.onLocaleChanged(l);
   return state.clone()..locale = l;
 }
 

@@ -21,11 +21,11 @@ Widget buildView(
           brightness: _theme.brightness,
           title: Text(
             state?.tvDetailModel?.name ?? '',
-            style: TextStyle(color: _theme.textTheme.bodyText1.color),
+            style:TextStyle(color: _theme.textTheme.bodyText1.color),
           ),
           actions: [
             IconButton(
-                icon: Icon(Icons.more_vert),
+                icon:const Icon(Icons.more_vert),
                 onPressed: () => dispatch(TvShowDetailActionCreator.openMenu()))
           ],
         ),

@@ -1,16 +1,17 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_braintree/flutter_braintree.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/http/request.dart';
+import 'package:movie/generated/i18n.dart';
+import 'package:movie/globalbasestate/action.dart';
+import 'package:movie/globalbasestate/store.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'state.dart';
 
 Widget buildView(
     TestPageState state, Dispatch dispatch, ViewService viewService) {
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   return Scaffold(
       backgroundColor: Color(0xFFF0F0F0),
@@ -27,13 +28,10 @@ Widget buildView(
           Text(Adapt.screenW().toString()),
           RaisedButton(
               onPressed: () {
-                _firebaseMessaging.requestNotificationPermissions();
-                _firebaseMessaging.configure();
-                _firebaseMessaging.autoInitEnabled();
-                _firebaseMessaging.subscribeToTopic('test');
-                _firebaseMessaging.getToken().then((value) => print(value));
+              GlobalStore.store.dispatch(GlobalActionCreator.changeLocale(Locale('zh','CN')));
               },
               child: Text('test')),
+          Text(I18n.of(viewService.context).movies),
           RaisedButton(
               onPressed: () async {
                 try {

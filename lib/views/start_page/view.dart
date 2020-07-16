@@ -118,10 +118,10 @@ class _FirstPage extends StatelessWidget {
             onTap: continueTapped,
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
-              height: Adapt.px(120),
+              height: 60,
               decoration: BoxDecoration(
                   color: const Color(0xFF202F39),
-                  borderRadius: BorderRadius.circular(Adapt.px(60))),
+                  borderRadius: BorderRadius.circular(30)),
               child: Center(
                   child: Text(
                 'Continue',
@@ -246,10 +246,10 @@ class _SubscribeTopicPageState extends State<_SubscribeTopicPage> {
               child: Container(
                 width: Adapt.px(250),
                 margin: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
-                height: Adapt.px(120),
+                height: 60,
                 decoration: BoxDecoration(
                     color: const Color(0xFF202F39),
-                    borderRadius: BorderRadius.circular(Adapt.px(60))),
+                    borderRadius: BorderRadius.circular(30)),
                 child: Center(
                     child: Text(
                   widget.buttonTitle,

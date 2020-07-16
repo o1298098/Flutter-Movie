@@ -293,6 +293,6 @@ class _VideoPlayer extends StatelessWidget {
               ),
             ),
           )
-        : SizedBox();
+        :const SizedBox();
   }
 }

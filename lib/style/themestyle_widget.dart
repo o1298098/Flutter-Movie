@@ -43,8 +43,10 @@ class _ThemeStyleState extends State<ThemeStyleWidget> {
 }
 
 class ThemeStyleData extends InheritedWidget {
-  ThemeStyleData({@required this.theme, Widget child}) : super(child: child);
+  ThemeStyleData({@required this.theme, this.locale, Widget child})
+      : super(child: child);
   final ThemeData theme;
+  final Locale locale;
 
   static ThemeStyleData of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<ThemeStyleData>();
@@ -52,6 +54,6 @@ class ThemeStyleData extends InheritedWidget {
 
   @override
   bool updateShouldNotify(ThemeStyleData oldWidget) {
-    return oldWidget.theme != theme;
+    return oldWidget.theme != theme || oldWidget.locale != locale;
   }
 }

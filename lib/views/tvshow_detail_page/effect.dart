@@ -109,6 +109,9 @@ Future _onImageCellTapped(Action action, Context<TvShowDetailState> ctx) async {
               imageSize: ImageSize.w400,
               galleryItems: _images,
               initialIndex: _index,
-            ));
-      }));
+            ),
+          );
+      },
+    ),
+  );
 }

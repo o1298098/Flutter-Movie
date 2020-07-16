@@ -203,6 +203,7 @@ class _ActingBody extends StatelessWidget {
           padding: EdgeInsets.all(Adapt.px(30)),
           child: data.length > 0
               ? ListView.separated(
+                  padding: EdgeInsets.zero,
                   physics: PageScrollPhysics(),
                   separatorBuilder: (_, __) => Divider(),
                   shrinkWrap: true,

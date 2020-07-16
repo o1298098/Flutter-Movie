@@ -12,6 +12,21 @@ import 'actions/timeline.dart';
 import 'generated/i18n.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+
+class App extends StatefulWidget {
+  App({Key key}) : super(key: key);
+
+  @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  final i18n = I18n.delegate;
+ 
+  final AbstractRoutes routes = Routes.routes;
+  final ThemeData _lightTheme = ThemeData.light();
+  final ThemeData _darkTheme = ThemeData.dark();
+  final FirebaseAnalytics analytics = FirebaseAnalytics();
 Future _init() async {
   if (Platform.isAndroid)
     await PermissionHandler().requestPermissions([PermissionGroup.storage]);
@@ -19,16 +34,22 @@ Future _init() async {
   setLocaleInfo('en', TimelineInfoEN());
   setLocaleInfo('Ja', TimelineInfoJA());
 }
+  @override
+  void initState() {
+    _init();
+    I18n.onLocaleChanged = onLocaleChange;
+    super.initState();
+  }
 
-Future<Widget> createApp() async {
-  final AbstractRoutes routes = Routes.routes;
-  final ThemeData _lightTheme = ThemeData.light();
-  final ThemeData _darkTheme = ThemeData.dark();
-  final FirebaseAnalytics analytics = FirebaseAnalytics();
+  void onLocaleChange(Locale locale) {
+    setState(() {
+      I18n.locale = locale;
+    });
+  }
 
-  await _init();
-
-  return MaterialApp(
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
     title: 'Movie',
     debugShowCheckedModeBanner: false,
     theme: _lightTheme,
@@ -52,4 +73,7 @@ Future<Widget> createApp() async {
       });
     },
   );
+
+  }
+
 }
