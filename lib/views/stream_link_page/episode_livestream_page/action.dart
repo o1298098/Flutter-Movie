@@ -9,10 +9,8 @@ enum EpisodeLiveStreamAction {
   setSelectedEpisode,
   setComment,
   setStreamLink,
-  setOption,
+  selectedStreamLink,
   setLike,
-  likeTvShow,
-  commentTap,
 }
 
 class EpisodeLiveStreamActionCreator {
@@ -20,8 +18,9 @@ class EpisodeLiveStreamActionCreator {
     return Action(EpisodeLiveStreamAction.episodeTapped, payload: episode);
   }
 
-  static Action setSelectedEpisode(Episode episode) {
-    return Action(EpisodeLiveStreamAction.setSelectedEpisode, payload: episode);
+  static Action setSelectedEpisode(Episode episode, TvShowStreamLink link) {
+    return Action(EpisodeLiveStreamAction.setSelectedEpisode,
+        payload: [episode, link]);
   }
 
   static Action setComment(TvShowComments comment) {
@@ -33,20 +32,14 @@ class EpisodeLiveStreamActionCreator {
         payload: [likeCount, userLiked]);
   }
 
-  static Action likeTvShow() {
-    return const Action(EpisodeLiveStreamAction.likeTvShow);
+  static Action setStreamLink(
+      TvShowStreamLinks streamLinks, TvShowStreamLink selectedLink) {
+    return Action(EpisodeLiveStreamAction.setStreamLink,
+        payload: [streamLinks, selectedLink]);
   }
 
-  static Action commentTap() {
-    return const Action(EpisodeLiveStreamAction.commentTap);
-  }
-
-  static Action setStreamLink(TvShowStreamLinks streamLinks) {
-    return Action(EpisodeLiveStreamAction.setStreamLink, payload: streamLinks);
-  }
-
-  static Action setOption(bool useVideoSourceApi, bool streamInBrowser) {
-    return Action(EpisodeLiveStreamAction.setOption,
-        payload: [useVideoSourceApi, streamInBrowser]);
+  static Action selectedStreamLink(TvShowStreamLink streamLink) {
+    return Action(EpisodeLiveStreamAction.selectedStreamLink,
+        payload: streamLink);
   }
 }

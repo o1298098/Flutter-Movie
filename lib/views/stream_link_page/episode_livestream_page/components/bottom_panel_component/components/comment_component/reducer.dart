@@ -25,10 +25,6 @@ CommentState _insertComment(CommentState state, Action action) {
   if (_comment != null) {
     newState.comments.data.insert(0, _comment);
     newState.comments.totalCount++;
-    newState.comments = TvShowComments.fromParams(
-        data: newState.comments.data,
-        page: newState.comments.page,
-        totalCount: newState.comments.totalCount);
   }
   return newState;
 }
@@ -37,11 +33,12 @@ CommentState _loadMore(CommentState state, Action action) {
   final TvShowComments _comments = action.payload;
   final CommentState newState = state.clone();
   if (_comments != null) {
-    newState.comments.data.addAll(_comments.data);
-    newState.comments = TvShowComments.fromParams(
-        data: newState.comments.data,
+    final _newComments = TvShowComments.fromParams(
+        data: state.comments.data,
         page: _comments.page,
         totalCount: _comments.totalCount);
+    _newComments.data.addAll(_comments.data);
+    newState.comments = _newComments;
   }
   return newState;
 }

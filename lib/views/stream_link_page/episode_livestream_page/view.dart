@@ -13,8 +13,6 @@ import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/seasondetail.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/widgets/expandable_text.dart';
-import 'components/bottom_panel.dart';
-import 'components/webview_player.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -41,10 +39,7 @@ Widget buildView(
                     SizedBox(
                       height: Adapt.px(30) + Adapt.padTopH(),
                     ),
-                    WebViewPlayer(
-                      tvid: state.tvid,
-                      episode: state.selectedEpisode,
-                    ),
+                    viewService.buildComponent('player'),
                     _Header(
                       episode: state.selectedEpisode,
                       season: state.season,

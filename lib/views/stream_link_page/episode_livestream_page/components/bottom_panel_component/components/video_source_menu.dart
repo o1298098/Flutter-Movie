@@ -7,8 +7,9 @@ import 'arrow_clipper.dart';
 
 class VideoSourceMenu extends StatelessWidget {
   final List<TvShowStreamLink> links;
+  final int selectedLinkId;
   final Function(TvShowStreamLink) onTap;
-  const VideoSourceMenu({this.links, this.onTap});
+  const VideoSourceMenu({this.links, this.onTap, this.selectedLinkId});
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
@@ -53,13 +54,16 @@ class VideoSourceMenu extends StatelessWidget {
                 child: links.length > 0
                     ? ListView.separated(
                         padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                        separatorBuilder: (_, __) =>
-                            Divider(color: const Color(0xFF505050)),
-                        itemBuilder: (_, index) => _LinkCell(
-                          data: links[index],
-                          onTap: onTap,
-                        ),
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                        separatorBuilder: (_, __) => SizedBox(height: 5),
+                        itemBuilder: (_, index) {
+                          final _link = links[index];
+                          return _LinkCell(
+                            data: _link,
+                            selected: _link.sid == selectedLinkId,
+                            onTap: onTap,
+                          );
+                        },
                         itemCount: links.length,
                       )
                     : Center(
@@ -85,25 +89,34 @@ class VideoSourceMenu extends StatelessWidget {
 }
 
 class _LinkCell extends StatelessWidget {
+  final bool selected;
   final TvShowStreamLink data;
   final Function(TvShowStreamLink) onTap;
-  const _LinkCell({this.data, this.onTap});
+  const _LinkCell({this.data, this.onTap, this.selected});
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    final _textStyle =
+        const TextStyle(color: const Color(0xFFFFFFFF), fontSize: 14);
+    return InkWell(
       onTap: () => onTap(data),
       child: Container(
-        height: Adapt.px(50),
+        padding: EdgeInsets.symmetric(horizontal: 8),
+        decoration: selected
+            ? BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(color: const Color(0xFFFFFFFF)))
+            : null,
+        height: 35,
         child: Row(
           children: [
             Text(
               data.language.name,
-              style: TextStyle(color: const Color(0xFFFFFFFF)),
+              style: _textStyle,
             ),
             Spacer(),
             Text(
               data.quality.name,
-              style: TextStyle(color: const Color(0xFFFFFFFF)),
+              style: _textStyle,
             ),
           ],
         ),

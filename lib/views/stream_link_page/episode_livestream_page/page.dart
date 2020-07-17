@@ -2,8 +2,8 @@ import 'package:fish_redux/fish_redux.dart';
 
 import 'components/bottom_panel_component/component.dart';
 import 'components/bottom_panel_component/state.dart';
-import 'components/comment_component/component.dart';
-import 'components/comment_component/state.dart';
+import 'components/player_component/component.dart';
+import 'components/player_component/state.dart';
 import 'effect.dart';
 import 'reducer.dart';
 import 'state.dart';
@@ -20,8 +20,8 @@ class EpisodeLiveStreamPage
           dependencies: Dependencies<EpisodeLiveStreamState>(
               adapter: null,
               slots: <String, Dependent<EpisodeLiveStreamState>>{
-                'comments': CommentConnector() + CommentComponent(),
-                'bottomPanel':BottomPanelConnector()+BottomPanelComponent(),
+                'player': PlayerConnector() + PlayerComponent(),
+                'bottomPanel': BottomPanelConnector() + BottomPanelComponent(),
               }),
           middleware: <Middleware<EpisodeLiveStreamState>>[],
         );

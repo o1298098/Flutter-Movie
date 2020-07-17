@@ -2,24 +2,34 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/views/stream_link_page/episode_livestream_page/state.dart';
 
+import 'components/comment_component/state.dart';
+
 class BottomPanelState implements Cloneable<BottomPanelState> {
   TvShowStreamLinks streamLinks;
+  TvShowStreamLink selectedLink;
+  CommentState commentState;
   bool useVideoSourceApi;
   bool streamInBrowser;
   bool userLiked;
   int likeCount;
+  int tvId;
+  int season;
   int commentCount;
   int selectEpisode;
   @override
   BottomPanelState clone() {
     return BottomPanelState()
+      ..tvId = tvId
+      ..season = season
       ..userLiked = userLiked
       ..useVideoSourceApi = useVideoSourceApi
       ..streamInBrowser = streamInBrowser
       ..likeCount = likeCount
       ..streamLinks = streamLinks
+      ..selectedLink = selectedLink
       ..commentCount = commentCount
-      ..selectEpisode = selectEpisode;
+      ..selectEpisode = selectEpisode
+      ..commentState = commentState;
   }
 }
 
@@ -27,20 +37,18 @@ class BottomPanelConnector
     extends ConnOp<EpisodeLiveStreamState, BottomPanelState> {
   @override
   BottomPanelState get(EpisodeLiveStreamState state) {
-    BottomPanelState mstate = BottomPanelState();
-    mstate.useVideoSourceApi = state.useVideoSourceApi;
-    mstate.streamInBrowser = state.streamInBrowser;
+    BottomPanelState mstate = state.bottomPanelState.clone();
     mstate.selectEpisode = state.selectedEpisode.episodeNumber;
-    mstate.userLiked = state.userliked ?? false;
-    mstate.likeCount = state.likeCount ?? 0;
     mstate.streamLinks = state.streamLinks;
-    mstate.commentCount = state.comments?.totalCount ?? 0;
+    mstate.selectedLink = state.selectedLink;
+    mstate.commentCount =
+        state.bottomPanelState.commentState.comments?.totalCount ?? 0;
     return mstate;
   }
 
   @override
   void set(EpisodeLiveStreamState state, BottomPanelState subState) {
-    state.useVideoSourceApi = subState.useVideoSourceApi;
-    state.streamInBrowser = subState.streamInBrowser;
+    state.bottomPanelState = subState;
+    state.selectedLink = subState.selectedLink;
   }
 }

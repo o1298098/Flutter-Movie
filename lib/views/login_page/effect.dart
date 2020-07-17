@@ -48,7 +48,8 @@ void _onInit(Action action, Context<LoginPageState> ctx) async {
     ctx.state.countryCodes.add(CountryPhoneCode.fromJson(country));
   }
   ctx.state.countryCode = ctx.state.countryCodes
-          .singleWhere((e) => e.code == ui.window.locale.countryCode)
+          .singleWhere((e) => e.code == ui.window.locale.countryCode,
+              orElse: () => null)
           ?.dialCode ??
       '+1';
 }

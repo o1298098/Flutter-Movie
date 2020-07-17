@@ -13,7 +13,7 @@ class CommentComponent extends Component<CommentState> {
           clearOnDependenciesChanged: true,
           shouldUpdate: (oldState, newState) {
             return oldState.comments != newState.comments ||
-                oldState.comments.totalCount != newState.comments.totalCount;
+                oldState.comments?.totalCount != newState.comments?.totalCount;
           },
           view: buildView,
           dependencies: Dependencies<CommentState>(

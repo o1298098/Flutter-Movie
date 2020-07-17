@@ -31,7 +31,7 @@ void _onInit(Action action, Context<CommentState> ctx) {
 }
 
 void _onDispose(Action action, Context<CommentState> ctx) {
-  ctx.state.scrollController.dispose();
+  ctx.state.scrollController?.dispose();
 }
 
 void _addComment(Action action, Context<CommentState> ctx) async {

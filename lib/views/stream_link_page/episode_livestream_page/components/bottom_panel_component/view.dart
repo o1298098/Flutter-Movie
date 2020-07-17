@@ -48,7 +48,9 @@ Widget buildView(
             VideoSourceMenu(
               onTap: (d) {
                 menuOverlayEntry.remove();
+                dispatch(BottomPanelActionCreator.seletedLink(d));
               },
+              selectedLinkId: state.selectedLink?.sid ?? 0,
               links: state.streamLinks?.list
                       ?.where((e) => e.episode == state.selectEpisode)
                       ?.toList() ??
@@ -84,7 +86,7 @@ Widget buildView(
           switchOutCurve: Curves.easeOut,
           child: _ItemButton(
             key: ValueKey('LikeIcons$state.userLiked'),
-            onTap: () => dispatch(EpisodeLiveStreamActionCreator.likeTvShow()),
+            onTap: () => dispatch(BottomPanelActionCreator.likeTvShow()),
             icon: state.userLiked ? Icons.favorite : Icons.favorite_border,
             iconColor: state.userLiked
                 ? const Color(0xFFAA222E)
@@ -94,7 +96,7 @@ Widget buildView(
         ),
         _ItemButton(
           icon: Icons.comment,
-          onTap: () => dispatch(EpisodeLiveStreamActionCreator.commentTap()),
+          onTap: () => dispatch(BottomPanelActionCreator.commentTap()),
           value: _convertString(state.commentCount),
         ),
         GestureDetector(

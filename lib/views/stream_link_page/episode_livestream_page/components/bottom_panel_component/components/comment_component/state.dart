@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/models/base_api_model/tvshow_comment.dart';
-import 'package:movie/views/stream_link_page/episode_livestream_page/state.dart';
+import 'package:movie/views/stream_link_page/episode_livestream_page/components/bottom_panel_component/state.dart';
 
 class CommentState implements Cloneable<CommentState> {
   TvShowComments comments;
@@ -23,20 +23,18 @@ class CommentState implements Cloneable<CommentState> {
   }
 }
 
-class CommentConnector extends ConnOp<EpisodeLiveStreamState, CommentState> {
+class CommentConnector extends ConnOp<BottomPanelState, CommentState> {
   @override
-  CommentState get(EpisodeLiveStreamState state) {
-    CommentState mstate = CommentState();
-    mstate = state.commentState;
-    mstate.season = state.selectedEpisode.seasonNumber;
-    mstate.episode = state.selectedEpisode.episodeNumber;
-    mstate.tvId = state.tvid;
+  CommentState get(BottomPanelState state) {
+    CommentState mstate = state.commentState;
+    mstate.tvId = state.tvId;
+    mstate.season = state.season;
+    mstate.episode = state.selectEpisode;
     return mstate;
   }
 
   @override
-  void set(EpisodeLiveStreamState state, CommentState subState) {
+  void set(BottomPanelState state, CommentState subState) {
     state.commentState = subState;
-    state.comments = subState.comments;
   }
 }

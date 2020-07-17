@@ -8,12 +8,17 @@ import 'view.dart';
 class PlayerComponent extends Component<PlayerState> {
   PlayerComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<PlayerState>(
-                adapter: null,
-                slots: <String, Dependent<PlayerState>>{
-                }),);
-
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          shouldUpdate: (o, n) {
+            return o.playerType != n.playerType ||
+                o.streamLink != n.streamLink ||
+                o.streamLinkId != n.streamLinkId ||
+                o.streamInBrowser != n.streamInBrowser ||
+                o.background != n.background;
+          },
+          dependencies: Dependencies<PlayerState>(
+              adapter: null, slots: <String, Dependent<PlayerState>>{}),
+        );
 }

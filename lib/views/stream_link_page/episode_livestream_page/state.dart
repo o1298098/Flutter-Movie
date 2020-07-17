@@ -1,24 +1,22 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/models/base_api_model/tvshow_comment.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/seasondetail.dart';
+import 'package:movie/views/stream_link_page/episode_livestream_page/components/bottom_panel_component/components/comment_component/state.dart';
+import 'package:movie/views/stream_link_page/episode_livestream_page/components/bottom_panel_component/state.dart';
 
-import 'components/comment_component/state.dart';
+import 'components/player_component/state.dart';
 
 class EpisodeLiveStreamState implements Cloneable<EpisodeLiveStreamState> {
   int tvid;
-  bool useVideoSourceApi;
-  bool streamInBrowser;
-  bool userliked;
-  int likeCount;
   TvShowStreamLinks streamLinks;
+  TvShowStreamLink selectedLink;
   Episode selectedEpisode;
   Season season;
-  TvShowComments comments;
   ScrollController scrollController;
-  CommentState commentState;
+  PlayerState playerState;
+  BottomPanelState bottomPanelState;
 
   @override
   EpisodeLiveStreamState clone() {
@@ -27,13 +25,10 @@ class EpisodeLiveStreamState implements Cloneable<EpisodeLiveStreamState> {
       ..season = season
       ..streamLinks = streamLinks
       ..selectedEpisode = selectedEpisode
-      ..comments = comments
-      ..likeCount = likeCount
-      ..userliked = userliked
       ..scrollController = scrollController
-      ..useVideoSourceApi = useVideoSourceApi
-      ..streamInBrowser = streamInBrowser
-      ..commentState = commentState;
+      ..playerState = playerState
+      ..bottomPanelState = bottomPanelState
+      ..selectedLink = selectedLink;
   }
 }
 
@@ -42,10 +37,15 @@ EpisodeLiveStreamState initState(Map<String, dynamic> args) {
   state.tvid = args['tvid'];
   state.season = args['season'];
   state.selectedEpisode = args['selectedEpisode'];
-  state.streamLinks = args['streamlinks'];
-  state.likeCount = 0;
-  state.userliked = false;
-  state.commentState = CommentState()
-    ..comments = TvShowComments.fromParams(data: []);
+  state.bottomPanelState = BottomPanelState()
+    ..tvId = state.tvid
+    ..season = state.season.seasonNumber
+    ..useVideoSourceApi = true
+    ..streamInBrowser = false
+    ..commentState = CommentState()
+    ..likeCount = 0
+    ..userLiked = false;
+  state.playerState = PlayerState()
+    ..background = state.selectedEpisode.stillPath;
   return state;
 }

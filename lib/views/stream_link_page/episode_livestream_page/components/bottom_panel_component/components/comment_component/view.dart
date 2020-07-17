@@ -190,8 +190,8 @@ class _CommentInputState extends State<_CommentInputCell> {
 
   @override
   void dispose() {
-    widget.scrollController.removeListener(_scrollListener);
-    _controller.dispose();
+    widget.scrollController?.removeListener(_scrollListener);
+    _controller?.dispose();
     super.dispose();
   }
 
