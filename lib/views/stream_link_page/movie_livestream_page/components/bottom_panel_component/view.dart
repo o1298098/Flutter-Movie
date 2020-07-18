@@ -10,7 +10,7 @@ import 'state.dart';
 
 Widget buildView(
     BottomPanelState state, Dispatch dispatch, ViewService viewService) {
-  void _showPopupMenu(Widget menu) {
+  void _showOptionMenu() {
     OverlayEntry menuOverlayEntry;
     menuOverlayEntry = OverlayEntry(
       builder: (context) {
@@ -23,7 +23,22 @@ Widget buildView(
                 color: Colors.transparent,
               ),
             )),
-            menu,
+            OptionMenu(
+              useVideoSourceApi: state.useVideoSourceApi,
+              streamInBrowser: state.streamInBrowser,
+              reportTap: () {
+                dispatch(BottomPanelActionCreator.reportStreamLink());
+                menuOverlayEntry.remove();
+              },
+              streamLinkRequestTap: () {
+                dispatch(BottomPanelActionCreator.requestStreamLink());
+                menuOverlayEntry.remove();
+              },
+              onUseApiTap: (b) =>
+                  dispatch(BottomPanelActionCreator.useVideoSource(b)),
+              onStreamInBrowserTap: (b) =>
+                  dispatch(BottomPanelActionCreator.streamInBrowser(b)),
+            ),
           ],
         );
       },
@@ -50,10 +65,7 @@ Widget buildView(
                 dispatch(BottomPanelActionCreator.seletedLink(d));
               },
               selectedLinkId: state.selectedLink?.sid ?? 0,
-              links: state.streamLinks?.list
-                      ?.where((e) => e.episode == state.selectEpisode)
-                      ?.toList() ??
-                  [],
+              links: state.streamLinks?.list ?? [],
             ),
           ],
         );
@@ -85,7 +97,7 @@ Widget buildView(
           switchOutCurve: Curves.easeOut,
           child: _ItemButton(
             key: ValueKey('LikeIcons$state.userLiked'),
-            onTap: () => dispatch(BottomPanelActionCreator.likeTvShow()),
+            onTap: () => dispatch(BottomPanelActionCreator.likeMovie()),
             icon: state.userLiked ? Icons.favorite : Icons.favorite_border,
             iconColor: state.userLiked
                 ? const Color(0xFFAA222E)
@@ -113,14 +125,7 @@ Widget buildView(
         ),
         Spacer(),
         GestureDetector(
-            onTap: () => _showPopupMenu(OptionMenu(
-                  useVideoSourceApi: state.useVideoSourceApi,
-                  streamInBrowser: state.streamInBrowser,
-                  onUseApiTap: (b) =>
-                      dispatch(BottomPanelActionCreator.useVideoSource(b)),
-                  onStreamInBrowserTap: (b) =>
-                      dispatch(BottomPanelActionCreator.streamInBrowser(b)),
-                )),
+            onTap: () => _showOptionMenu(),
             child: Icon(
               Icons.more_vert,
               color: const Color(0xFFFFFFFF),

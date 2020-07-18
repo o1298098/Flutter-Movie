@@ -8,6 +8,7 @@ import 'package:movie/models/base_api_model/braintree_customer.dart';
 import 'package:movie/models/base_api_model/braintree_subscription.dart';
 import 'package:movie/models/base_api_model/braintree_transaction.dart';
 import 'package:movie/models/base_api_model/movie_comment.dart';
+import 'package:movie/models/base_api_model/movie_like_model.dart';
 import 'package:movie/models/base_api_model/movie_stream_link.dart';
 import 'package:movie/models/base_api_model/purchase.dart';
 import 'package:movie/models/base_api_model/stream_link_report.dart';
@@ -252,6 +253,29 @@ class BaseApi {
     String _url = '/MovieStreamLinks/Exist/$movieid';
     final _r = _http.request<bool>(_url);
     return _r;
+  }
+
+  Future<ResponseModel<dynamic>> getMovieLikes(
+      {@required int movieid, String uid = ''}) async {
+    final String _url = '/Movies/Like/$movieid?uid=$uid';
+    final r = await _http.request(_url);
+    return r;
+  }
+
+  Future<ResponseModel<MovieLikeModel>> likeMovie(MovieLikeModel like) async {
+    final String _url = '/Movies/Like';
+    final _data = {'id': 0, 'movieId': like.movieId ?? 0, 'uid': like.uid};
+    final r =
+        await _http.request<MovieLikeModel>(_url, method: "POST", data: _data);
+    return r;
+  }
+
+  Future<ResponseModel<MovieLikeModel>> unlikeMovie(MovieLikeModel like) async {
+    final String _url = '/Movies/Like';
+    final _data = {'id': 0, 'movieId': like.movieId ?? 0, 'uid': like.uid};
+    final r = await _http.request<MovieLikeModel>(_url,
+        method: "DELETE", data: _data);
+    return r;
   }
 
   Future<ResponseModel<BaseTvShowModel>> getTvShows(
@@ -549,8 +573,6 @@ class BaseApi {
       _model = BillingAddress(_r.result['data']);
     return _model;
   }
-
-  //  final _http2 = Request('http://localhost:5000/api');
 
   Future<ResponseModel<dynamic>> createCreditCard(CreditCard card) async {
     final String _url = '/Payment/CreditCard';

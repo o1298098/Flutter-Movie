@@ -17,7 +17,6 @@ Widget buildView(
             physics: ClampingScrollPhysics(),
             slivers: <Widget>[
               viewService.buildComponent('mainInfo'),
-              //viewService.buildComponent('header'),
               viewService.buildComponent('overView'),
               viewService.buildComponent('cast'),
               viewService.buildComponent('still'),

@@ -4,9 +4,10 @@ import 'base_user.dart';
 
 class MovieComments {
   int page;
+  int totalCount;
   List<MovieComment> data;
 
-  MovieComments.fromParams({this.page, this.data});
+  MovieComments.fromParams({this.page, this.data, this.totalCount});
 
   factory MovieComments(jsonStr) => jsonStr == null
       ? null
@@ -16,6 +17,7 @@ class MovieComments {
 
   MovieComments.fromJson(jsonRes) {
     page = jsonRes['page'];
+    totalCount = jsonRes['totalCount'];
     data = jsonRes['data'] == null ? null : [];
 
     for (var dataItem in data == null ? [] : jsonRes['data']) {
@@ -25,7 +27,7 @@ class MovieComments {
 
   @override
   String toString() {
-    return '{"page": $page,"data": $data}';
+    return '{"page": $page,"totalCount": $totalCount,"data": $data}';
   }
 }
 

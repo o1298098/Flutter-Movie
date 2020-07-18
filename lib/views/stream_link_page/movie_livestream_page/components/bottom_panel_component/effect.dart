@@ -3,8 +3,8 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/globalbasestate/store.dart';
+import 'package:movie/models/base_api_model/movie_like_model.dart';
 import 'package:movie/models/base_api_model/stream_link_report.dart';
-import 'package:movie/models/base_api_model/tvshow_like_model.dart';
 import 'package:movie/widgets/stream_link_report_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
@@ -18,7 +18,7 @@ Effect<BottomPanelState> buildEffect() {
     BottomPanelAction.useVideoSource: _useVideoSource,
     BottomPanelAction.streamInBrowser: _streamInBrowser,
     BottomPanelAction.commentTap: _commentTap,
-    BottomPanelAction.likeTvShow: _likeTvShow,
+    BottomPanelAction.likeMovie: _likeMovie,
     BottomPanelAction.reportStreamLink: _reportStreamLink,
     BottomPanelAction.requestStreamLink: _requestStreamLink
   });
@@ -70,23 +70,19 @@ void _onInit(Action action, Context<BottomPanelState> ctx) async {
       BottomPanelActionCreator.setOption(_useVideoSourceApi, _streamInBrowser));
 }
 
-Future _likeTvShow(Action action, Context<BottomPanelState> ctx) async {
+Future _likeMovie(Action action, Context<BottomPanelState> ctx) async {
   final user = GlobalStore.store.getState().user;
   int _likeCount = ctx.state.likeCount;
   bool _userLike = ctx.state.userLiked;
   if (user?.firebaseUser == null) return;
   _userLike ? _likeCount-- : _likeCount++;
   ctx.dispatch(BottomPanelActionCreator.setLike(_likeCount, !_userLike));
-  final _likeModel = TvShowLikeModel.fromParams(
-      tvId: ctx.state.tvId,
-      season: ctx.state.season,
-      episode: ctx.state.selectEpisode,
-      id: 0,
-      uid: user.firebaseUser.uid);
+  final _likeModel = MovieLikeModel.fromParams(
+      movieId: ctx.state.movieId, id: 0, uid: user.firebaseUser.uid);
 
   final _result = _userLike
-      ? await BaseApi.instance.unlikeTvShow(_likeModel)
-      : await BaseApi.instance.likeTvShow(_likeModel);
+      ? await BaseApi.instance.unlikeMovie(_likeModel)
+      : await BaseApi.instance.likeMovie(_likeModel);
   print(_result.result);
 }
 
@@ -97,11 +93,11 @@ void _reportStreamLink(Action action, Context<BottomPanelState> ctx) {
       builder: (_) {
         return StreamLinkReportDialog(
             report: StreamLinkReport(
-          mediaId: ctx.state.tvId,
+          mediaId: ctx.state.movieId,
           mediaName: _name,
           linkName: _name,
           streamLink: ctx.state.selectedLink?.streamLink ?? '',
-          type: "tv show",
+          type: "movie",
           streamLinkId: ctx.state.selectedLink?.sid ?? 0,
         ));
       });
@@ -109,12 +105,12 @@ void _reportStreamLink(Action action, Context<BottomPanelState> ctx) {
 
 void _requestStreamLink(Action action, Context<BottomPanelState> ctx) async {
   final _name = 'S${ctx.state.season}E${ctx.state.selectEpisode}';
-  FirebaseMessaging().subscribeToTopic('tvshow_${ctx.state.tvId}_$_name');
+  FirebaseMessaging().subscribeToTopic('movie_${ctx.state.movieId}');
   final _baseApi = BaseApi.instance;
   _baseApi.sendRequestStreamLink(StreamLinkReport()
-    ..mediaId = ctx.state.tvId
+    ..mediaId = ctx.state.movieId
     ..mediaName = _name
-    ..type = 'tvshow'
+    ..type = 'movie'
     ..season = ctx.state.season);
   Toast.show(
       'You will be notified when the stream link has been added', ctx.context,

@@ -37,11 +37,6 @@ Future _onInit(Action action, Context<MovieDetailPageState> ctx) async {
   ctx.state.scrollController = ScrollController();
   final _baseApi = BaseApi.instance;
   Future.delayed(Duration(milliseconds: 300), () async {
-    _baseApi.hasMovieStreamLinks(ctx.state.mediaId).then((d) {
-      bool _t = false;
-      if (d.success) _t = d.result;
-      ctx.dispatch(MovieDetailPageActionCreator.setHasStreamLink(_t));
-    });
     if (_id == null) return;
     final _tmdb = TMDBApi.instance;
     final r = await _tmdb.getMovieDetail(_id,
@@ -70,14 +65,8 @@ void _onDispose(Action action, Context<MovieDetailPageState> ctx) {
 
 Future _playStreamLink(Action action, Context<MovieDetailPageState> ctx) async {
   if (ctx.state.hasStreamLink)
-    await Navigator.of(ctx.context).pushNamed('liveStreamPage', arguments: {
-      'id': ctx.state.mediaId,
-      'name': ctx.state.detail.title,
-      'rated': ctx.state.detail.voteAverage,
-      'rateCount': ctx.state.detail.voteCount,
-      'releaseDate': ctx.state.detail.releaseDate,
-      'posterUrl': ctx.state.detail.posterPath
-    });
+    await Navigator.of(ctx.context).pushNamed('movieLiveStreamPage',
+        arguments: {'detail': ctx.state.detail});
 }
 
 Future _onExternalTapped(

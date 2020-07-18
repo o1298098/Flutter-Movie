@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
+import 'package:movie/models/base_api_model/movie_stream_link.dart';
 
 enum BottomPanelAction {
   action,
@@ -10,7 +10,7 @@ enum BottomPanelAction {
   setStreamInBrowser,
   seletedLink,
   setLike,
-  likeTvShow,
+  likeMovie,
   setOption,
   reportStreamLink,
   requestStreamLink,
@@ -38,7 +38,7 @@ class BottomPanelActionCreator {
         payload: streamInBrowser);
   }
 
-  static Action seletedLink(TvShowStreamLink link) {
+  static Action seletedLink(MovieStreamLink link) {
     return Action(BottomPanelAction.seletedLink, payload: link);
   }
 
@@ -46,8 +46,8 @@ class BottomPanelActionCreator {
     return Action(BottomPanelAction.setLike, payload: [likeCount, userLiked]);
   }
 
-  static Action likeTvShow() {
-    return const Action(BottomPanelAction.likeTvShow);
+  static Action likeMovie() {
+    return const Action(BottomPanelAction.likeMovie);
   }
 
   static Action commentTap() {

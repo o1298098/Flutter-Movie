@@ -5,6 +5,7 @@ import 'package:common_utils/common_utils.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
+import 'package:movie/models/base_api_model/movie_comment.dart';
 import 'package:movie/models/base_api_model/tvshow_comment.dart';
 import 'package:movie/style/themestyle.dart';
 
@@ -47,7 +48,7 @@ Widget buildView(
 }
 
 class _CommentCell extends StatelessWidget {
-  final TvShowComment comment;
+  final MovieComment comment;
   const _CommentCell({this.comment});
   @override
   Widget build(BuildContext context) {
@@ -117,7 +118,7 @@ class _CommentCell extends StatelessWidget {
 class _CommentPanel extends StatelessWidget {
   final double height;
   final ScrollController scrollController;
-  final TvShowComments comments;
+  final MovieComments comments;
   const _CommentPanel({this.comments, this.height, this.scrollController});
   @override
   Widget build(BuildContext context) {

@@ -95,7 +95,7 @@ class _StreamLinkReportDialogState extends State<StreamLinkReportDialog> {
           color: Colors.transparent,
           child: Container(
             width: Adapt.px(600),
-            height: Adapt.screenH() / 2,
+            height: Adapt.px(650),
             child: ListView(
               children: _radioValues.map(_buildRadioCell).toList()
                 ..add(_buildOtherTextField()),

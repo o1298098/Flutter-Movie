@@ -1,3 +1,4 @@
+import 'package:movie/models/base_api_model/movie_like_model.dart';
 import 'package:movie/models/base_api_model/tvshow_like_model.dart';
 
 import 'base_api_model/account_state.dart';
@@ -100,6 +101,8 @@ class ModelFactory {
         return GithubReleaseModel(json) as T;
       case 'TvShowLikeModel':
         return TvShowLikeModel(json) as T;
+      case 'MovieLikeModel':
+        return MovieLikeModel(json) as T;
       default:
         return json;
     }

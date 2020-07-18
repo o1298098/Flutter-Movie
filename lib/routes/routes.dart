@@ -30,6 +30,7 @@ import 'package:movie/views/stream_link_page/addlink_page/page.dart';
 import 'package:movie/views/stream_link_page/allstreamlink_page/page.dart';
 import 'package:movie/views/stream_link_page/episode_livestream_page/page.dart';
 import 'package:movie/views/stream_link_page/livestream_page/page.dart';
+import 'package:movie/views/stream_link_page/movie_livestream_page/page.dart';
 import 'package:movie/views/stream_link_page/season_link_page/page.dart';
 import 'package:movie/views/stream_link_page/streamlinks_page/page.dart';
 import 'package:movie/views/stream_link_page/tvshow_livestream_page/page.dart';
@@ -81,7 +82,8 @@ class Routes {
       'downloadPage': DownloadPage(),
       'tvShowDetailPage': TvShowDetailPage(),
       'notificationPage': NotificationPage(),
-      'episodeLiveStreamPage': EpisodeLiveStreamPage()
+      'episodeLiveStreamPage': EpisodeLiveStreamPage(),
+      'movieLiveStreamPage': MovieLiveStreamPage()
     },
     visitor: (String path, Page<Object, dynamic> page) {
       if (page.isTypeof<GlobalBaseState>()) {
