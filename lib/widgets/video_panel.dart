@@ -47,9 +47,11 @@ class _PlayerPanelState extends State<PlayerPanel>
   void didUpdateWidget(PlayerPanel oldWidget) {
     if (oldWidget.streamLink != widget.streamLink ||
         oldWidget.playerType != widget.playerType ||
-        oldWidget.linkId != widget.linkId) {
-      _play = false;
-      setState(() {});
+        oldWidget.linkId != widget.linkId ||
+        oldWidget.background != widget.background) {
+      setState(() {
+        _play = false;
+      });
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -72,18 +74,18 @@ class _PlayerPanelState extends State<PlayerPanel>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return GestureDetector(
-      onTap: _playTapped,
-      child: _play
-          ? _Player(
-              streamLink: widget.streamLink,
-              playerType: widget.playerType,
-            )
-          : _Background(
+    return _play
+        ? _Player(
+            streamLink: widget.streamLink,
+            playerType: widget.playerType,
+          )
+        : GestureDetector(
+            onTap: _playTapped,
+            child: _Background(
               url: widget.background,
               loading: widget.loading,
             ),
-    );
+          );
   }
 }
 

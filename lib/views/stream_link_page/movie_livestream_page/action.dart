@@ -9,6 +9,7 @@ enum MovieLiveStreamAction {
   setComment,
   setStreamLink,
   selectedStreamLink,
+  setLoading,
   setLike,
 }
 
@@ -38,5 +39,9 @@ class MovieLiveStreamActionCreator {
       MovieStreamLinks streamLinks, MovieStreamLink selectedLink) {
     return Action(MovieLiveStreamAction.setStreamLink,
         payload: [streamLinks, selectedLink]);
+  }
+
+  static Action setLoading(bool loading) {
+    return Action(MovieLiveStreamAction.setLoading, payload: loading);
   }
 }

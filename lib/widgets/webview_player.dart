@@ -71,22 +71,24 @@ class _WebviewPlayerState extends State<WebViewPlayer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: const Color(0xFF000000),
-        child: IndexedStack(index: _loadFinsh ? 0 : 1, children: [
+      color: const Color(0xFF000000),
+      child: IndexedStack(
+        index: _loadFinsh ? 0 : 1,
+        children: [
           InAppWebView(
             initialUrl: _streamlink,
-            key: ValueKey(_streamlink),
-            initialHeaders: {},
             initialOptions: InAppWebViewGroupOptions(
               android: AndroidInAppWebViewOptions(
                 supportMultipleWindows: false,
               ),
               crossPlatform: InAppWebViewOptions(
+                javaScriptEnabled: true,
                 supportZoom: false,
                 disableHorizontalScroll: true,
                 disableVerticalScroll: true,
                 useShouldOverrideUrlLoading: true,
                 mediaPlaybackRequiresUserGesture: false,
+                preferredContentMode: UserPreferredContentMode.MOBILE,
                 debuggingEnabled: true,
               ),
             ),
@@ -142,6 +144,8 @@ class _WebviewPlayerState extends State<WebViewPlayer> {
               ),
             ),
           ),
-        ]));
+        ],
+      ),
+    );
   }
 }

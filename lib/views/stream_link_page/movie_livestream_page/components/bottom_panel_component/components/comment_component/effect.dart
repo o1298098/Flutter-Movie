@@ -4,7 +4,6 @@ import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/base_api_model/base_user.dart';
 import 'package:movie/models/base_api_model/movie_comment.dart';
-import 'package:movie/models/base_api_model/tvshow_comment.dart';
 import 'package:toast/toast.dart';
 import 'action.dart';
 import 'state.dart';

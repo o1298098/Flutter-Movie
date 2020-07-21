@@ -12,6 +12,7 @@ Reducer<MovieLiveStreamState> buildReducer() {
       MovieLiveStreamAction.setComment: _setComment,
       MovieLiveStreamAction.setLike: _setLike,
       MovieLiveStreamAction.setStreamLink: _setStreamLink,
+      MovieLiveStreamAction.setLoading: _setLoading
     },
   );
 }
@@ -52,5 +53,12 @@ MovieLiveStreamState _selectedStreamLink(
   final MovieStreamLink _link = action.payload;
   final MovieLiveStreamState newState = state.clone();
   newState.selectedLink = _link;
+  return newState;
+}
+
+MovieLiveStreamState _setLoading(MovieLiveStreamState state, Action action) {
+  final bool _loading = action.payload;
+  final MovieLiveStreamState newState = state.clone();
+  newState.loading = _loading;
   return newState;
 }

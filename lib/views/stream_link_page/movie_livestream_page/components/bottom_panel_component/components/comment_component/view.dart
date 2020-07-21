@@ -6,7 +6,6 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/models/base_api_model/movie_comment.dart';
-import 'package:movie/models/base_api_model/tvshow_comment.dart';
 import 'package:movie/style/themestyle.dart';
 
 import 'action.dart';

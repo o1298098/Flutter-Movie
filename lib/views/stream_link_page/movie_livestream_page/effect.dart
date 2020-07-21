@@ -2,6 +2,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/globalbasestate/store.dart';
+import 'package:movie/models/base_api_model/movie_stream_link.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -21,11 +22,14 @@ void _onInit(Action action, Context<MovieLiveStreamState> ctx) async {
   ctx.state.scrollController = ScrollController();
 
   BaseApi.instance.getMovieStreamLinks(ctx.state.movieId).then((value) {
-    if (value.success) if (value.result.list.length > 0) {
-      final _link = value.result.list.first;
+    if (value.success) {
+      MovieStreamLink _link;
+      if (value.result.list.length > 0) _link = value.result.list.first;
+
       ctx.dispatch(
           MovieLiveStreamActionCreator.setStreamLink(value.result, _link));
-    }
+    } else
+      ctx.dispatch(MovieLiveStreamActionCreator.setLoading(false));
   });
   await _getLike(action, ctx);
   await _getComment(action, ctx);
