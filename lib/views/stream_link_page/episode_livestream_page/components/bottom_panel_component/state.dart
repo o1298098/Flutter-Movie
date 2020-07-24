@@ -1,6 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:flutter/material.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/views/stream_link_page/episode_livestream_page/state.dart';
+import 'package:movie/widgets/overlay_entry_manage.dart';
 
 import 'components/comment_component/state.dart';
 
@@ -16,6 +18,8 @@ class BottomPanelState implements Cloneable<BottomPanelState> {
   int season;
   int commentCount;
   int selectEpisode;
+  GlobalKey<OverlayEntryManageState> overlayStateKey;
+
   @override
   BottomPanelState clone() {
     return BottomPanelState()
@@ -29,7 +33,8 @@ class BottomPanelState implements Cloneable<BottomPanelState> {
       ..selectedLink = selectedLink
       ..commentCount = commentCount
       ..selectEpisode = selectEpisode
-      ..commentState = commentState;
+      ..commentState = commentState
+      ..overlayStateKey = overlayStateKey;
   }
 }
 

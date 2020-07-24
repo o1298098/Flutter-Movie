@@ -4,6 +4,7 @@ import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/seasondetail.dart';
+import 'package:movie/views/stream_link_page/episode_livestream_page/page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'action.dart';
 import 'state.dart';
@@ -106,12 +107,31 @@ void _onEpisodeCellTapped(
               SeasonLinkPageActionCreator.updateSeason(ctx.state.detail));
       });
     }
-    await Navigator.of(ctx.context)
-        .pushNamed('tvShowLiveStreamPage', arguments: {
-      'tvid': ctx.state.detail.id,
-      'name': ctx.state.detail.name,
-      'season': _season,
-      'episode': _episode,
-    });
+    await Navigator.of(ctx.context).push(
+      PageRouteBuilder(
+        transitionDuration: Duration(milliseconds: 500),
+        pageBuilder: (BuildContext context, Animation animation,
+            Animation secondaryAnimation) {
+          final _curvedAnimation =
+              CurvedAnimation(parent: animation, curve: Curves.ease);
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: Offset(0, 1),
+              end: Offset.zero,
+            ).animate(_curvedAnimation),
+            child: FadeTransition(
+              opacity: _curvedAnimation,
+              child: EpisodeLiveStreamPage().buildPage(
+                {
+                  'tvid': ctx.state.detail.id,
+                  'selectedEpisode': _episode,
+                  'season': _season
+                },
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }

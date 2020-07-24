@@ -8,16 +8,22 @@ class TitleState implements Cloneable<TitleState> {
   double vote;
   ContentRatingModel contentRatings;
   String overview;
+  TitleState();
   @override
   TitleState clone() {
-    return TitleState();
+    return TitleState()
+      ..name = name
+      ..genres = genres
+      ..vote = vote
+      ..contentRatings = contentRatings
+      ..overview = overview;
   }
 }
 
 class TitleConnector extends ConnOp<TvShowDetailState, TitleState> {
   @override
   TitleState get(TvShowDetailState state) {
-    TitleState substate = new TitleState();
+    TitleState substate = TitleState();
     substate.name = state.tvDetailModel?.name;
     substate.contentRatings = state.tvDetailModel?.contentRatings;
     substate.genres = state.tvDetailModel?.genres;

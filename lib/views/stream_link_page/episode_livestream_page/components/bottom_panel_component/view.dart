@@ -2,6 +2,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/style/themestyle.dart';
+import 'package:movie/widgets/overlay_entry_manage.dart';
 
 import 'action.dart';
 import 'components/option_menu.dart';
@@ -10,7 +11,13 @@ import 'state.dart';
 
 Widget buildView(
     BottomPanelState state, Dispatch dispatch, ViewService viewService) {
-  void _showPopupMenu(Widget menu) {
+  void _closeMenu(OverlayEntry overlayEntry) {
+    overlayEntry?.remove();
+    state.overlayStateKey.currentState.setOverlayEntry(null);
+    overlayEntry = null;
+  }
+
+  void _showOptionMenu() {
     OverlayEntry menuOverlayEntry;
     menuOverlayEntry = OverlayEntry(
       builder: (context) {
@@ -18,16 +25,32 @@ Widget buildView(
           children: <Widget>[
             Positioned.fill(
                 child: GestureDetector(
-              onTap: () => menuOverlayEntry.remove(),
+              onTap: () => _closeMenu(menuOverlayEntry),
               child: Container(
                 color: Colors.transparent,
               ),
             )),
-            menu,
+            OptionMenu(
+              useVideoSourceApi: state.useVideoSourceApi,
+              streamInBrowser: state.streamInBrowser,
+              reportTap: () {
+                dispatch(BottomPanelActionCreator.reportStreamLink());
+                _closeMenu(menuOverlayEntry);
+              },
+              streamLinkRequestTap: () {
+                dispatch(BottomPanelActionCreator.requestStreamLink());
+                _closeMenu(menuOverlayEntry);
+              },
+              onUseApiTap: (b) =>
+                  dispatch(BottomPanelActionCreator.useVideoSource(b)),
+              onStreamInBrowserTap: (b) =>
+                  dispatch(BottomPanelActionCreator.streamInBrowser(b)),
+            ),
           ],
         );
       },
     );
+    state.overlayStateKey.currentState.setOverlayEntry(menuOverlayEntry);
     Overlay.of(viewService.context).insert(menuOverlayEntry);
   }
 
@@ -39,15 +62,19 @@ Widget buildView(
           children: <Widget>[
             Positioned.fill(
                 child: GestureDetector(
-              onTap: () => menuOverlayEntry.remove(),
+              onTap: () => _closeMenu(menuOverlayEntry),
               child: Container(
                 color: Colors.transparent,
               ),
             )),
             VideoSourceMenu(
               onTap: (d) {
-                menuOverlayEntry.remove();
+                _closeMenu(menuOverlayEntry);
                 dispatch(BottomPanelActionCreator.seletedLink(d));
+              },
+              streamLinkRequestTap: () {
+                dispatch(BottomPanelActionCreator.requestStreamLink());
+                _closeMenu(menuOverlayEntry);
               },
               selectedLinkId: state.selectedLink?.sid ?? 0,
               links: state.streamLinks?.list
@@ -59,82 +86,80 @@ Widget buildView(
         );
       },
     );
+    state.overlayStateKey.currentState.setOverlayEntry(menuOverlayEntry);
     Overlay.of(viewService.context).insert(menuOverlayEntry);
   }
 
   final _theme = ThemeStyle.getTheme(viewService.context);
-  return Positioned(
-    left: 0,
-    right: 0,
-    bottom: 0,
-    child: Container(
-      height: 80,
-      padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
-      decoration: BoxDecoration(
-        color: _theme.brightness == Brightness.light
-            ? const Color(0xFF25272E)
-            : _theme.primaryColorDark,
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(Adapt.px(60)),
-        ),
-      ),
-      child: Row(children: [
-        AnimatedSwitcher(
-          duration: Duration(milliseconds: 300),
-          switchInCurve: Curves.easeIn,
-          switchOutCurve: Curves.easeOut,
-          child: _ItemButton(
-            key: ValueKey('LikeIcons$state.userLiked'),
-            onTap: () => dispatch(BottomPanelActionCreator.likeTvShow()),
-            icon: state.userLiked ? Icons.favorite : Icons.favorite_border,
-            iconColor: state.userLiked
-                ? const Color(0xFFAA222E)
-                : const Color(0xFFFFFFFF),
-            value: _convertString(state.likeCount),
+  return OverlayEntryManage(
+    key: state.overlayStateKey,
+    child: Positioned(
+      left: 0,
+      right: 0,
+      bottom: 0,
+      child: Container(
+        height: 80,
+        padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
+        decoration: BoxDecoration(
+          color: _theme.brightness == Brightness.light
+              ? const Color(0xFF25272E)
+              : _theme.primaryColorDark,
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(Adapt.px(60)),
           ),
         ),
-        _ItemButton(
-          icon: Icons.comment,
-          onTap: () => dispatch(BottomPanelActionCreator.commentTap()),
-          value: _convertString(state.commentCount),
-        ),
-        GestureDetector(
-            onTap: _showSourceMenu,
-            child: Icon(
-              Icons.tv,
-              size: Adapt.px(30),
-              color: const Color(0xFFFFFFFF),
-            )),
-        SizedBox(width: Adapt.px(70)),
-        Icon(
-          Icons.file_download,
-          size: Adapt.px(30),
-          color: const Color(0xFFFFFFFF),
-        ),
-        Spacer(),
-        GestureDetector(
-            onTap: () => _showPopupMenu(OptionMenu(
-                  useVideoSourceApi: state.useVideoSourceApi,
-                  streamInBrowser: state.streamInBrowser,
-                  onUseApiTap: (b) =>
-                      dispatch(BottomPanelActionCreator.useVideoSource(b)),
-                  onStreamInBrowserTap: (b) =>
-                      dispatch(BottomPanelActionCreator.streamInBrowser(b)),
-                )),
+        child: Row(children: [
+          AnimatedSwitcher(
+            duration: Duration(milliseconds: 300),
+            switchInCurve: Curves.easeIn,
+            switchOutCurve: Curves.easeOut,
+            child: _ItemButton(
+              key: ValueKey('LikeIcons$state.userLiked'),
+              onTap: () => dispatch(BottomPanelActionCreator.likeTvShow()),
+              icon: state.userLiked ? Icons.favorite : Icons.favorite_border,
+              iconColor: state.userLiked
+                  ? const Color(0xFFAA222E)
+                  : const Color(0xFFFFFFFF),
+              value: _convertString(state.likeCount),
+            ),
+          ),
+          _ItemButton(
+            icon: Icons.comment,
+            onTap: () => dispatch(BottomPanelActionCreator.commentTap()),
+            value: _convertString(state.commentCount),
+          ),
+          GestureDetector(
+              onTap: _showSourceMenu,
+              child: Icon(
+                Icons.tv,
+                size: Adapt.px(30),
+                color: const Color(0xFFFFFFFF),
+              )),
+          SizedBox(width: Adapt.px(70)),
+          Icon(
+            Icons.file_download,
+            size: Adapt.px(30),
+            color: const Color(0xFFFFFFFF),
+          ),
+          Spacer(),
+          GestureDetector(
+            onTap: () => _showOptionMenu(),
             child: Icon(
               Icons.more_vert,
               color: const Color(0xFFFFFFFF),
-            )),
-        SizedBox(width: Adapt.px(10)),
-        GestureDetector(
-          onTap: () => Navigator.of(viewService.context).pop(),
-          child: Icon(
-            Icons.keyboard_arrow_down,
-            size: Adapt.px(60),
-            color: const Color(0xFFFFFFFF),
+            ),
           ),
-        ),
-      ]),
+          SizedBox(width: Adapt.px(10)),
+          GestureDetector(
+            onTap: () => Navigator.of(viewService.context).pop(),
+            child: Icon(
+              Icons.keyboard_arrow_down,
+              size: Adapt.px(60),
+              color: const Color(0xFFFFFFFF),
+            ),
+          ),
+        ]),
+      ),
     ),
   );
 }

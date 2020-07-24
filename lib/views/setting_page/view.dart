@@ -34,13 +34,14 @@ Widget buildView(
           userPanelPhotoUrl: state.userPanelPhotoUrl,
         ),
         _LoadingPanel(uploading: state.uploading),
-        _AppBar(),
+        const _AppBar(),
       ],
     ),
   );
 }
 
 class _AppBar extends StatelessWidget {
+  const _AppBar();
   @override
   Widget build(BuildContext context) {
     return Positioned(

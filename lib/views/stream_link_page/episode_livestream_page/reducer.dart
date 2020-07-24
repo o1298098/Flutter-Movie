@@ -14,6 +14,7 @@ Reducer<EpisodeLiveStreamState> buildReducer() {
       EpisodeLiveStreamAction.setComment: _setComment,
       EpisodeLiveStreamAction.setLike: _setLike,
       EpisodeLiveStreamAction.setStreamLink: _setStreamLink,
+      EpisodeLiveStreamAction.setLoading: _setLoading,
     },
   );
 }
@@ -57,6 +58,7 @@ EpisodeLiveStreamState _setStreamLink(
   final EpisodeLiveStreamState newState = state.clone();
   newState.selectedLink = _link;
   newState.streamLinks = _streamLinks;
+  newState.loading = false;
   return newState;
 }
 
@@ -65,5 +67,13 @@ EpisodeLiveStreamState _selectedStreamLink(
   final TvShowStreamLink _link = action.payload;
   final EpisodeLiveStreamState newState = state.clone();
   newState.selectedLink = _link;
+  return newState;
+}
+
+EpisodeLiveStreamState _setLoading(
+    EpisodeLiveStreamState state, Action action) {
+  final bool _loading = action.payload;
+  final EpisodeLiveStreamState newState = state.clone();
+  newState.loading = _loading;
   return newState;
 }

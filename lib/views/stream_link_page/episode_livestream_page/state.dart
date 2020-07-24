@@ -5,11 +5,13 @@ import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/seasondetail.dart';
 import 'package:movie/views/stream_link_page/episode_livestream_page/components/bottom_panel_component/components/comment_component/state.dart';
 import 'package:movie/views/stream_link_page/episode_livestream_page/components/bottom_panel_component/state.dart';
+import 'package:movie/widgets/overlay_entry_manage.dart';
 
 import 'components/player_component/state.dart';
 
 class EpisodeLiveStreamState implements Cloneable<EpisodeLiveStreamState> {
   int tvid;
+  bool loading;
   TvShowStreamLinks streamLinks;
   TvShowStreamLink selectedLink;
   Episode selectedEpisode;
@@ -21,6 +23,7 @@ class EpisodeLiveStreamState implements Cloneable<EpisodeLiveStreamState> {
   @override
   EpisodeLiveStreamState clone() {
     return EpisodeLiveStreamState()
+      ..loading = loading
       ..tvid = tvid
       ..season = season
       ..streamLinks = streamLinks
@@ -38,6 +41,7 @@ EpisodeLiveStreamState initState(Map<String, dynamic> args) {
   state.season = args['season'];
   state.selectedEpisode = args['selectedEpisode'];
   state.bottomPanelState = BottomPanelState()
+    ..overlayStateKey = GlobalKey<OverlayEntryManageState>()
     ..tvId = state.tvid
     ..season = state.season.seasonNumber
     ..useVideoSourceApi = true
@@ -47,5 +51,6 @@ EpisodeLiveStreamState initState(Map<String, dynamic> args) {
     ..userLiked = false;
   state.playerState = PlayerState()
     ..background = state.selectedEpisode.stillPath;
+  state.loading = true;
   return state;
 }

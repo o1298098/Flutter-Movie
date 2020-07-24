@@ -8,6 +8,7 @@ class PlayerState implements Cloneable<PlayerState> {
   int streamLinkId;
   bool useVideoSourceApi;
   bool streamInBrowser;
+  bool loading;
   @override
   PlayerState clone() {
     return PlayerState()
@@ -15,7 +16,8 @@ class PlayerState implements Cloneable<PlayerState> {
       ..streamLink = streamLink
       ..background = background
       ..useVideoSourceApi = useVideoSourceApi
-      ..streamInBrowser = streamInBrowser;
+      ..streamInBrowser = streamInBrowser
+      ..loading = loading;
   }
 }
 
@@ -23,6 +25,7 @@ class PlayerConnector extends ConnOp<EpisodeLiveStreamState, PlayerState> {
   @override
   PlayerState get(EpisodeLiveStreamState state) {
     PlayerState mstate = state.playerState.clone();
+    mstate.loading = state.loading;
     mstate.useVideoSourceApi = state.bottomPanelState.useVideoSourceApi;
     mstate.streamInBrowser = state.bottomPanelState.streamInBrowser;
     mstate.background = state.selectedEpisode.stillPath;

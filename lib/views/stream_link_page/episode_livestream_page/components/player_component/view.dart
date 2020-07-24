@@ -12,6 +12,7 @@ Widget buildView(
     child: ClipRRect(
       borderRadius: BorderRadius.circular(Adapt.px(30)),
       child: PlayerPanel(
+        loading: state.loading,
         background: state.background,
         streamLink: state.streamLink,
         playerType: state.playerType,

@@ -42,13 +42,16 @@ void _onInit(Action action, Context<EpisodeLiveStreamState> ctx) async {
       .getTvSeasonStreamLinks(
           ctx.state.tvid, ctx.state.selectedEpisode.seasonNumber)
       .then((value) {
-    if (value.success) if (value.result.list.length > 0) {
-      final _link = value.result.list.firstWhere(
-          (e) => e.episode == ctx.state.selectedEpisode.episodeNumber,
-          orElse: () => null);
+    TvShowStreamLink _link;
+    if (value.success) {
+      if (value.result.list.length > 0)
+        _link = value.result.list.firstWhere(
+            (e) => e.episode == ctx.state.selectedEpisode.episodeNumber,
+            orElse: () => null);
       ctx.dispatch(
           EpisodeLiveStreamActionCreator.setStreamLink(value.result, _link));
-    }
+    } else
+      ctx.dispatch(EpisodeLiveStreamActionCreator.setLoading(false));
   });
   await _getLike(action, ctx);
   await _getComment(action, ctx);

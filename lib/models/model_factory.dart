@@ -83,8 +83,10 @@ class ModelFactory {
         return TvShowComment.fromJson(json) as T;
       case 'TvShowComments':
         return TvShowComments(json) as T;
+      case 'MovieComment':
+        return MovieComment.fromJson(json) as T;
       case 'MovieComments':
-        return MovieComments.fromJson(json) as T;
+        return MovieComments(json) as T;
       case 'TransactionModel':
         return TransactionModel(json) as T;
       case 'BraintreeCustomer':

@@ -25,9 +25,7 @@ Widget buildView(
                   controller: state.scrollController,
                   padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
                   children: [
-                    SizedBox(
-                      height: Adapt.px(30) + Adapt.padTopH(),
-                    ),
+                    SizedBox(height: Adapt.px(30) + Adapt.padTopH()),
                     viewService.buildComponent('player'),
                     viewService.buildComponent('header'),
                     viewService.buildComponent('recommendation'),

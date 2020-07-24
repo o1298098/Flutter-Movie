@@ -9,7 +9,9 @@ class VideoSourceMenu extends StatelessWidget {
   final List<MovieStreamLink> links;
   final int selectedLinkId;
   final Function(MovieStreamLink) onTap;
-  const VideoSourceMenu({this.links, this.onTap, this.selectedLinkId});
+  final Function streamLinkRequestTap;
+  const VideoSourceMenu(
+      {this.links, this.onTap, this.selectedLinkId, this.streamLinkRequestTap});
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
@@ -70,7 +72,7 @@ class VideoSourceMenu extends StatelessWidget {
                         child: SizedBox(
                           width: 120,
                           child: FlatButton(
-                            onPressed: () {},
+                            onPressed: streamLinkRequestTap,
                             child: Text(
                               'request stream link',
                               textAlign: TextAlign.center,

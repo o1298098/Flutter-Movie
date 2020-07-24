@@ -355,7 +355,8 @@ class BaseApi {
     return _r;
   }
 
-  Future createMovieComment(MovieComment comment) async {
+  Future<ResponseModel<MovieComment>> createMovieComment(
+      MovieComment comment) async {
     String _url = '/MovieComments';
     var _data = {
       'mediaId': comment.mediaId,
@@ -365,7 +366,7 @@ class BaseApi {
       'updateTime': comment.updateTime,
       'like': 0,
     };
-    await _http.request(_url, method: 'POST', data: _data);
+    return await _http.request<MovieComment>(_url, method: 'POST', data: _data);
   }
 
   Future<ResponseModel<TvShowComment>> createTvShowComment(

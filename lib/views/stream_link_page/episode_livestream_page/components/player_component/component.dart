@@ -16,7 +16,8 @@ class PlayerComponent extends Component<PlayerState> {
                 o.streamLink != n.streamLink ||
                 o.streamLinkId != n.streamLinkId ||
                 o.streamInBrowser != n.streamInBrowser ||
-                o.background != n.background;
+                o.background != n.background ||
+                o.loading != n.loading;
           },
           dependencies: Dependencies<PlayerState>(
               adapter: null, slots: <String, Dependent<PlayerState>>{}),

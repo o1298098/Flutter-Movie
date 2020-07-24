@@ -96,8 +96,14 @@ class _Title extends StatelessWidget {
   final double vote;
   final ContentRatingModel contentRatings;
   final String overview;
+  final ViewService viewService;
   const _Title(
-      {this.name, this.contentRatings, this.genres, this.overview, this.vote});
+      {this.name,
+      this.contentRatings,
+      this.genres,
+      this.overview,
+      this.vote,
+      this.viewService});
   @override
   Widget build(BuildContext context) {
     final _rate = contentRatings?.results?.firstWhere(

@@ -99,18 +99,19 @@ void _showSnackBar(Action action, Context<TvShowDetailState> ctx) {
 Future _onImageCellTapped(Action action, Context<TvShowDetailState> ctx) async {
   final int _index = action.payload[0];
   final List<ImageData> _images = action.payload[1];
-  await Navigator.of(ctx.context).push(PageRouteBuilder(
+  await Navigator.of(ctx.context).push(
+    PageRouteBuilder(
       transitionDuration: Duration(milliseconds: 300),
       pageBuilder: (BuildContext context, Animation animation,
           Animation secondaryAnimation) {
         return new FadeTransition(
-            opacity: animation,
-            child: GalleryPhotoViewWrapper(
-              imageSize: ImageSize.w400,
-              galleryItems: _images,
-              initialIndex: _index,
-            ),
-          );
+          opacity: animation,
+          child: GalleryPhotoViewWrapper(
+            imageSize: ImageSize.w400,
+            galleryItems: _images,
+            initialIndex: _index,
+          ),
+        );
       },
     ),
   );

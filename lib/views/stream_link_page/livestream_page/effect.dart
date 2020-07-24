@@ -94,7 +94,7 @@ void _addComment(Action action, Context<LiveStreamPageState> ctx) {
     final _baseApi = BaseApi.instance;
     _baseApi.createMovieComment(commentModel).then((d) {
       ctx.state.comment = null;
-      if (d != null) commentModel.id = d.id;
+      if (d.success) commentModel.id = d.result.id;
     });
   }
 }
