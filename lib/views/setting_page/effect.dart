@@ -9,6 +9,9 @@ import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/actions/http/github_api.dart';
 import 'package:movie/actions/user_info_operate.dart';
 import 'package:movie/actions/version_comparison.dart';
+import 'package:movie/globalbasestate/action.dart';
+import 'package:movie/globalbasestate/store.dart';
+import 'package:movie/models/item.dart';
 import 'package:movie/widgets/update_info_dialog.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,6 +29,7 @@ Effect<SettingPageState> buildEffect() {
     SettingPageAction.profileEdit: _profileEdit,
     SettingPageAction.openPhotoPicker: _openPhotoPicker,
     SettingPageAction.checkUpdate: _checkUpdate,
+    SettingPageAction.languageTap: _languageTap,
     Lifecycle.initState: _onInit,
     Lifecycle.build: _onBuild,
     Lifecycle.dispose: _onDispose,
@@ -64,6 +68,9 @@ Future<void> _onInit(Action action, Context<SettingPageState> ctx) async {
   final _adultItem = prefs.getBool('adultItems');
   if (_adultItem != null) if (_adultItem != ctx.state.adultSwitchValue)
     ctx.dispatch(SettingPageActionCreator.adultValueUpadte(_adultItem));
+  final _appLanguage = prefs.getString('appLanguage');
+  if (_appLanguage != null)
+    ctx.dispatch(SettingPageActionCreator.setLanguage(Item(_appLanguage)));
 }
 
 void _cleanCached(Action action, Context<SettingPageState> ctx) async {
@@ -172,4 +179,17 @@ Future _checkUpdate(Action action, Context<SettingPageState> ctx) async {
   } else
     Toast.show(_result.message, ctx.context);
   ctx.dispatch(SettingPageActionCreator.onLoading(false));
+}
+
+void _languageTap(Action action, Context<SettingPageState> ctx) async {
+  final Item _language = action.payload;
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (_language.name == 'System Default')
+    prefs.remove('appLanguage');
+  else
+    prefs.setString('appLanguage', _language.toString());
+  ctx.dispatch(SettingPageActionCreator.setLanguage(_language));
+  GlobalStore.store.dispatch(GlobalActionCreator.changeLocale(
+      _language.value == null ? null : Locale(_language.value)));
+  TMDBApi.instance.setLanguage(_language.value);
 }

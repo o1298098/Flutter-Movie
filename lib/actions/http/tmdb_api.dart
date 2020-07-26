@@ -1,6 +1,8 @@
 import 'dart:convert' show json;
 import 'dart:ui' as ui;
 import 'package:dio/dio.dart';
+import 'package:movie/globalbasestate/action.dart';
+import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/accountdetail.dart';
 import 'package:movie/models/certification.dart';
 import 'package:movie/models/combinedcredits.dart';
@@ -9,6 +11,7 @@ import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/enums/time_window.dart';
 import 'package:movie/models/episodemodel.dart';
 import 'package:movie/models/imagemodel.dart';
+import 'package:movie/models/item.dart';
 import 'package:movie/models/keyword.dart';
 import 'package:movie/models/listdetailmode.dart';
 import 'package:movie/models/listmediaitem.dart';
@@ -40,14 +43,28 @@ class TMDBApi {
   String session;
   DateTime _sessionExpiresTime;
   SharedPreferences prefs;
-  final String language = ui.window.locale.languageCode;
+  String language = ui.window.locale.languageCode;
   final String region = ui.window.locale.countryCode;
   bool includeAdult;
   final Request _http = Request('https://api.themoviedb.org/3');
   final Request _httpV4 = Request('https://api.themoviedb.org/4');
+
   Future<void> init() async {
     prefs = await SharedPreferences.getInstance();
     includeAdult = prefs.getBool('adultItems') ?? false;
+    final _appLanguage = prefs.getString('appLanguage');
+    if (_appLanguage != null) {
+      language = Item(_appLanguage).value;
+      GlobalStore.store
+          .dispatch(GlobalActionCreator.changeLocale(ui.Locale(language)));
+    }
+  }
+
+  void setLanguage(String languageCode) {
+    if (languageCode == null)
+      language = ui.window.locale.languageCode;
+    else
+      language = languageCode;
   }
 
   Future createGuestSession() async {

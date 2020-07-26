@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/store.dart';
+import 'package:movie/models/item.dart';
 
 class SettingPageState implements Cloneable<SettingPageState> {
   AnimationController pageAnimation;
@@ -12,6 +13,7 @@ class SettingPageState implements Cloneable<SettingPageState> {
   String userPanelPhotoUrl;
   String phone;
   String version;
+  Item appLanguage;
   TextEditingController userNameController;
   TextEditingController photoController;
   TextEditingController phoneController;
@@ -38,7 +40,8 @@ class SettingPageState implements Cloneable<SettingPageState> {
       ..photoController = photoController
       ..uploading = uploading
       ..loading = loading
-      ..version = version;
+      ..version = version
+      ..appLanguage = appLanguage;
   }
 }
 
@@ -57,5 +60,6 @@ SettingPageState initState(Map<String, dynamic> args) {
   state.uploading = false;
   state.loading = false;
   state.cachedSize = 0;
+  state.appLanguage = Item.fromParams(name: "System Default");
   return state;
 }

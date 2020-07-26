@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/item.dart';
 
 enum SettingPageAction {
   action,
   adultCellTapped,
   adultValueUpadte,
+  languageTap,
+  setLanguage,
   cleanCached,
   cachedSizeUpdate,
   profileEdit,
@@ -63,5 +66,13 @@ class SettingPageActionCreator {
 
   static Action onCheckUpdate() {
     return const Action(SettingPageAction.checkUpdate);
+  }
+
+  static Action languageTap(Item language) {
+    return Action(SettingPageAction.languageTap, payload: language);
+  }
+
+  static Action setLanguage(Item language) {
+    return Action(SettingPageAction.setLanguage, payload: language);
   }
 }

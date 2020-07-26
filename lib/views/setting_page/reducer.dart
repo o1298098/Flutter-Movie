@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/item.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -13,7 +14,8 @@ Reducer<SettingPageState> buildReducer() {
       SettingPageAction.userUpdate: _userUpdate,
       SettingPageAction.userPanelPhotoUrlUpdate: _userPanelPhotoUrlUpdate,
       SettingPageAction.uploading: _onUploading,
-      SettingPageAction.loading: _onLoading
+      SettingPageAction.loading: _onLoading,
+      SettingPageAction.setLanguage: _setLanguage,
     },
   );
 }
@@ -65,5 +67,12 @@ SettingPageState _userPanelPhotoUrlUpdate(
   final String _url = action.payload;
   final SettingPageState newState = state.clone();
   newState.userPanelPhotoUrl = _url;
+  return newState;
+}
+
+SettingPageState _setLanguage(SettingPageState state, Action action) {
+  final Item _language = action.payload;
+  final SettingPageState newState = state.clone();
+  newState.appLanguage = _language;
   return newState;
 }

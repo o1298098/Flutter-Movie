@@ -31,6 +31,7 @@ Effect<MainPageState> buildEffect() {
 
 ReceivePort _port = ReceivePort();
 void _onAction(Action action, Context<MainPageState> ctx) {}
+
 void _onInit(Action action, Context<MainPageState> ctx) async {
   await TMDBApi.instance.init();
 

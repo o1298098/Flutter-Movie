@@ -32,6 +32,9 @@ class MovieDetailPage extends Page<MovieDetailPageState, Map<String, dynamic>>
           initState: initState,
           effect: buildEffect(),
           reducer: buildReducer(),
+          shouldUpdate: (o, n) {
+            return false;
+          },
           view: buildView,
           dependencies: Dependencies<MovieDetailPageState>(
               adapter: null,

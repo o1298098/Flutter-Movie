@@ -12,7 +12,6 @@ import 'actions/timeline.dart';
 import 'generated/i18n.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-
 class App extends StatefulWidget {
   App({Key key}) : super(key: key);
 
@@ -22,22 +21,23 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   final i18n = I18n.delegate;
- 
+
   final AbstractRoutes routes = Routes.routes;
   final ThemeData _lightTheme = ThemeData.light();
   final ThemeData _darkTheme = ThemeData.dark();
   final FirebaseAnalytics analytics = FirebaseAnalytics();
-Future _init() async {
-  if (Platform.isAndroid)
-    await PermissionHandler().requestPermissions([PermissionGroup.storage]);
-  setLocaleInfo('zh', TimelineInfoCN());
-  setLocaleInfo('en', TimelineInfoEN());
-  setLocaleInfo('Ja', TimelineInfoJA());
-}
+  Future _init() async {
+    if (Platform.isAndroid)
+      await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+    setLocaleInfo('zh', TimelineInfoCN());
+    setLocaleInfo('en', TimelineInfoEN());
+    setLocaleInfo('Ja', TimelineInfoJA());
+  }
+
   @override
   void initState() {
-    _init();
     I18n.onLocaleChanged = onLocaleChange;
+    _init();
     super.initState();
   }
 
@@ -50,30 +50,28 @@ Future _init() async {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-    title: 'Movie',
-    debugShowCheckedModeBanner: false,
-    theme: _lightTheme,
-    darkTheme: _darkTheme,
-    localizationsDelegates: [
-      I18n.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: I18n.delegate.supportedLocales,
-    localeResolutionCallback:
-        I18n.delegate.resolution(fallback: new Locale("en", "US")),
-    navigatorObservers: [
-      FirebaseAnalyticsObserver(analytics: analytics),
-    ],
-    home: routes.buildPage('startpage', null),
-    onGenerateRoute: (RouteSettings settings) {
-      return MaterialPageRoute<Object>(builder: (BuildContext context) {
-        return routes.buildPage(settings.name, settings.arguments);
-      });
-    },
-  );
-
+      title: 'Movie',
+      debugShowCheckedModeBanner: false,
+      theme: _lightTheme,
+      darkTheme: _darkTheme,
+      localizationsDelegates: [
+        I18n.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: I18n.delegate.supportedLocales,
+      localeResolutionCallback:
+          I18n.delegate.resolution(fallback: new Locale("en", "US")),
+      navigatorObservers: [
+        FirebaseAnalyticsObserver(analytics: analytics),
+      ],
+      home: routes.buildPage('startpage', null),
+      onGenerateRoute: (RouteSettings settings) {
+        return MaterialPageRoute<Object>(builder: (BuildContext context) {
+          return routes.buildPage(settings.name, settings.arguments);
+        });
+      },
+    );
   }
-
 }

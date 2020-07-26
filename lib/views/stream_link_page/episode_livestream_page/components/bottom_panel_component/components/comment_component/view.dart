@@ -85,7 +85,7 @@ class _CommentCell extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      comment.u.userName,
+                      comment?.u?.userName ?? '',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: Adapt.px(28),
@@ -102,7 +102,7 @@ class _CommentCell extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: Adapt.px(20)),
-                Text(comment.comment),
+                Text(comment?.comment ?? ''),
                 SizedBox(height: Adapt.px(30)),
                 Divider()
               ],

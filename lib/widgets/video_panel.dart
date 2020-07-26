@@ -183,11 +183,14 @@ class _Background extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFFAABBEE),
-        image: DecorationImage(
-          image: CachedNetworkImageProvider(
-            ImageUrl.getUrl(url, ImageSize.original),
-          ),
-        ),
+        image: url != null
+            ? DecorationImage(
+                fit: BoxFit.cover,
+                image: CachedNetworkImageProvider(
+                  ImageUrl.getUrl(url, ImageSize.original),
+                ),
+              )
+            : null,
       ),
       child: loading
           ? Center(
