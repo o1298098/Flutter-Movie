@@ -1,6 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/image_model.dart';
 import 'package:movie/models/video_model.dart';
+import 'package:movie/views/seasondetail_page/state.dart';
 
 class HeaderState implements Cloneable<HeaderState> {
   String posterurl;
@@ -35,6 +36,18 @@ class HeaderState implements Cloneable<HeaderState> {
   }
 }
 
-HeaderState initState(Map<String, dynamic> args) {
-  return HeaderState();
+class HeaderConnector extends ConnOp<SeasonDetailPageState, HeaderState> {
+  @override
+  HeaderState get(SeasonDetailPageState state) {
+    HeaderState mstate = HeaderState();
+    mstate.posterurl = state.seasonDetailModel?.posterPath;
+    mstate.overwatch = state.seasonDetailModel?.overview;
+    mstate.name = state.tvShowName;
+    mstate.airDate = state.seasonDetailModel?.airDate;
+    mstate.seasonName = state.seasonDetailModel?.name ?? '';
+    mstate.seasonNumber = state.seasonNumber;
+    mstate.images = state.images;
+    mstate.videos = state.videos;
+    return mstate;
+  }
 }

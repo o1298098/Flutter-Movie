@@ -8,7 +8,8 @@ enum PeopleDetailPageAction {
   init,
   setCreditModel,
   showBiography,
-  cellTapped
+  cellTapped,
+  showMovie,
 }
 
 class PeopleDetailPageActionCreator {
@@ -32,5 +33,9 @@ class PeopleDetailPageActionCreator {
       int id, String bgpic, String name, String poster, MediaType type) {
     return Action(PeopleDetailPageAction.cellTapped,
         payload: [id, bgpic, name, poster, type]);
+  }
+
+  static Action showMovie(bool d) {
+    return Action(PeopleDetailPageAction.showMovie, payload: d);
   }
 }

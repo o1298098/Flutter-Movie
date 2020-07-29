@@ -1,26 +1,47 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/models/combined_credits.dart';
+import 'package:movie/views/peopledetail_page/state.dart';
 
 class TimeLineState implements Cloneable<TimeLineState> {
   String department;
-  CombinedCreditsModel creditsModel;
   bool showmovie = true;
-  PageScrollPhysics scrollPhysics;
+  List<CastData> movies;
+  List<CastData> tvshows;
+  ScrollPhysics scrollPhysics;
 
   TimeLineState(
-      {this.department, this.creditsModel, this.showmovie, this.scrollPhysics});
+      {this.department,
+      this.showmovie,
+      this.scrollPhysics,
+      this.movies,
+      this.tvshows});
 
   @override
   TimeLineState clone() {
     return TimeLineState()
-      ..creditsModel = creditsModel
       ..department = department
       ..showmovie = showmovie
-      ..scrollPhysics = scrollPhysics;
+      ..scrollPhysics = scrollPhysics
+      ..movies = movies
+      ..tvshows = tvshows;
   }
 }
 
-TimeLineState initState(Map<String, dynamic> args) {
-  return TimeLineState();
+class TimeLineConnector extends ConnOp<PeopleDetailPageState, TimeLineState> {
+  @override
+  TimeLineState get(PeopleDetailPageState state) {
+    TimeLineState mstate = TimeLineState();
+    mstate.department = state.peopleDetailModel.knownForDepartment;
+    mstate.showmovie = state.showmovie;
+    mstate.scrollPhysics = state.pageScrollPhysics;
+    mstate.movies = state.movies;
+    mstate.tvshows = state.tvshows;
+    return mstate;
+  }
+
+  @override
+  void set(PeopleDetailPageState state, TimeLineState subState) {
+    state.showmovie = subState.showmovie;
+  }
 }

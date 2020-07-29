@@ -209,7 +209,7 @@ class _SwiperState extends State<_Swiper> {
           return _SubscriptionPlanCell(
             dispatch: widget.dispatch,
             data: _item,
-            isSubscried: widget.user.premium.premiumType == _item.id &&
+            isSubscried: widget.user.premium?.premiumType == _item.id &&
                 widget.user.premium.subscription,
           );
         },

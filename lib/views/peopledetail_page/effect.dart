@@ -42,6 +42,10 @@ Future _onInit(Action action, Context<PeopleDetailPageState> ctx) async {
             ? (time2.month > time1.month ? 1 : -1)
             : (time2.year > time1.year ? 1 : -1);
       });
+
+      var _model = _combinedCredits.result.cast ?? [];
+      ctx.state.movies = _model.where((d) => d.mediaType == 'movie').toList();
+      ctx.state.tvshows = _model.where((d) => d.mediaType == 'tv').toList();
       ctx.dispatch(PeopleDetailPageActionCreator.onSetCreditModel(
           _combinedCredits.result, cast));
     }

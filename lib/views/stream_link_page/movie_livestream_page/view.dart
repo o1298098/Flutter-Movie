@@ -21,15 +21,19 @@ Widget buildView(
           child: Stack(
             children: [
               Container(
-                child: ListView(
+                padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
+                child: CustomScrollView(
                   controller: state.scrollController,
-                  padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
-                  children: [
-                    SizedBox(height: Adapt.px(30) + Adapt.padTopH()),
+                  slivers: [
+                    SliverToBoxAdapter(
+                        child:
+                            SizedBox(height: Adapt.px(30) + Adapt.padTopH())),
                     viewService.buildComponent('player'),
                     viewService.buildComponent('header'),
+                    const _RecommendationTitle(),
                     viewService.buildComponent('recommendation'),
-                    const SizedBox(height: 100),
+                    const SliverToBoxAdapter(
+                        child: const SizedBox(height: 100)),
                   ],
                 ),
               ),
@@ -44,4 +48,24 @@ Widget buildView(
       );
     },
   );
+}
+
+class _RecommendationTitle extends StatelessWidget {
+  const _RecommendationTitle();
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding:
+            EdgeInsetsDirectional.only(top: Adapt.px(40), bottom: Adapt.px(30)),
+        child: Text(
+          'Recommendations',
+          style: TextStyle(
+            fontSize: Adapt.px(30),
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
+  }
 }

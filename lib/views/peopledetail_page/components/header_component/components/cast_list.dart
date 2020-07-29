@@ -42,15 +42,15 @@ class _CastListState extends State<CastList> {
         .push(MaterialPageRoute(builder: (_) => CastListCreate()));
   }
 
-  void _onOk() async {
+  void _onOk(BuildContext c) async {
     if (_selectedList == null) return;
     final _user = GlobalStore.store.getState().user;
-    if (_user?.firebaseUser == null) return Toast.show('Please login', context);
+    if (_user?.firebaseUser == null) return Toast.show('Please login', c);
     _cast.listId = _selectedList.id;
 
     BaseGraphQLClient.instance.addCast(_selectedList, _cast);
 
-    Navigator.of(context).pop();
+    Navigator.of(c).pop();
   }
 
   @override
@@ -81,19 +81,23 @@ class _CastListState extends State<CastList> {
                     ..sort(
                         (a, b) => a.updateTime.isBefore(b.updateTime) ? 1 : 0);
                   return _CastListView(
-                    data: _list ?? [],
+                    data: _list,
                     onSelected: _onSelected,
                   );
 
                 case ConnectionState.none:
                 default:
-                  return Center(child: Text('empty'));
+                  return Center(
+                      child: Text(
+                    'Empty List',
+                    style: TextStyle(fontSize: 18),
+                  ));
               }
             },
           ),
         ),
         _ButtonPanel(
-          onSubmit: _onOk,
+          onSubmit: () => _onOk(context),
           onCancel: () => Navigator.of(context).pop(),
         ),
       ],

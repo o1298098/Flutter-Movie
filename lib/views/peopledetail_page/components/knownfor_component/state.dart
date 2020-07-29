@@ -1,5 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/combined_credits.dart';
+import 'package:movie/views/peopledetail_page/state.dart';
 
 class KnownForState implements Cloneable<KnownForState> {
   List<CastData> cast;
@@ -12,8 +13,11 @@ class KnownForState implements Cloneable<KnownForState> {
   }
 }
 
-KnownForState initState(Map<String, dynamic> args) {
-  var state = KnownForState();
-  state.cast = List<CastData>();
-  return state;
+class KnownForConnector extends ConnOp<PeopleDetailPageState, KnownForState> {
+  @override
+  KnownForState get(PeopleDetailPageState state) {
+    KnownForState mstate = KnownForState();
+    mstate.cast = state.knowForCast ?? [];
+    return mstate;
+  }
 }

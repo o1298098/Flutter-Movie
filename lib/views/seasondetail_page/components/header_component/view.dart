@@ -16,13 +16,15 @@ import 'state.dart';
 
 Widget buildView(
     HeaderState state, Dispatch dispatch, ViewService viewService) {
-  return _HeaderPanel(
-    backgroundUrl: state.posterurl,
-    title: state.name,
-    seasonName: state.seasonName,
-    overview: state.overwatch,
-    images: state.images,
-    videos: state.videos,
+  return SliverToBoxAdapter(
+    child: _HeaderPanel(
+      backgroundUrl: state.posterurl,
+      title: state.name,
+      seasonName: state.seasonName,
+      overview: state.overwatch,
+      images: state.images,
+      videos: state.videos,
+    ),
   );
 }
 

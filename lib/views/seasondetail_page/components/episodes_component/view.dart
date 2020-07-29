@@ -7,7 +7,6 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
-import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/episode_model.dart';
 import 'package:movie/style/themestyle.dart';
@@ -20,45 +19,16 @@ import 'state.dart';
 
 Widget buildView(
     EpisodesState state, Dispatch dispatch, ViewService viewService) {
-  return Column(
-    key: ValueKey(state.episodes),
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      SizedBox(height: Adapt.px(30)),
-      Padding(
-        padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
-        child: Text.rich(
-          TextSpan(
-            children: [
-              TextSpan(
-                  text: I18n.of(viewService.context).episodes,
-                  style: TextStyle(
-                      fontSize: Adapt.px(30), fontWeight: FontWeight.w600)),
-              TextSpan(
-                  text:
-                      ' ${state.episodes != null ? state.episodes.length.toString() : ''}',
-                  style: TextStyle(color: Colors.grey, fontSize: Adapt.px(26)))
-            ],
-          ),
-        ),
-      ),
-      state.episodes.length > 0
-          ? ListView.separated(
-              shrinkWrap: true,
-              physics: PageScrollPhysics(),
-              padding: EdgeInsets.symmetric(
-                  horizontal: Adapt.px(40), vertical: Adapt.px(30)),
-              separatorBuilder: (_, __) => SizedBox(height: Adapt.px(30)),
-              itemCount: state.episodes.length,
-              itemBuilder: (_, i) => _EpisodeCell(
-                data: state.episodes[i],
-                onTap: (d) => dispatch(
-                    SeasonDetailPageActionCreator.episodeCellTapped(d)),
-              ),
-            )
-          : const _ShimmerList()
-    ],
-  );
+  return state.episodes.length > 0
+      ? SliverList(
+          delegate: SliverChildBuilderDelegate((_, index) {
+          return _EpisodeCell(
+            data: state.episodes[index],
+            onTap: (d) =>
+                dispatch(SeasonDetailPageActionCreator.episodeCellTapped(d)),
+          );
+        }, childCount: state.episodes.length))
+      : const _ShimmerList();
 }
 
 class _ShimmerCell extends StatelessWidget {
@@ -140,18 +110,20 @@ class _ShimmerList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
-    return Shimmer.fromColors(
-      baseColor: _theme.primaryColorDark,
-      highlightColor: _theme.primaryColorLight,
-      child: SizedBox(
-        child: ListView.separated(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.symmetric(
-              horizontal: Adapt.px(40), vertical: Adapt.px(30)),
-          separatorBuilder: (_, __) => SizedBox(height: Adapt.px(60)),
-          itemCount: 3,
-          itemBuilder: (_, __) => const _ShimmerCell(),
+    return SliverToBoxAdapter(
+      child: Shimmer.fromColors(
+        baseColor: _theme.primaryColorDark,
+        highlightColor: _theme.primaryColorLight,
+        child: SizedBox(
+          child: ListView.separated(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.symmetric(
+                horizontal: Adapt.px(40), vertical: Adapt.px(30)),
+            separatorBuilder: (_, __) => SizedBox(height: Adapt.px(60)),
+            itemCount: 3,
+            itemBuilder: (_, __) => const _ShimmerCell(),
+          ),
         ),
       ),
     );
@@ -173,7 +145,10 @@ class _EpisodeCell extends StatelessWidget {
     final bool _canPlay = DateTime.now().isAfter(_airDate);
     return Container(
       margin: EdgeInsets.only(
+        left: Adapt.px(40),
+        right: Adapt.px(40),
         top: Adapt.px(50),
+        bottom: Adapt.px(30),
       ),
       padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
       decoration: BoxDecoration(

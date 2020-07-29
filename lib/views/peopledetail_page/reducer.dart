@@ -12,7 +12,8 @@ Reducer<PeopleDetailPageState> buildReducer() {
       PeopleDetailPageAction.action: _onAction,
       PeopleDetailPageAction.init: _onInit,
       PeopleDetailPageAction.setCreditModel: _onSetCreditModel,
-      PeopleDetailPageAction.showBiography: _onShowBiography
+      PeopleDetailPageAction.showBiography: _onShowBiography,
+      PeopleDetailPageAction.showMovie: _showMovie,
     },
   );
 }
@@ -56,5 +57,12 @@ PeopleDetailPageState _onShowBiography(
     newState.biographyHeight = Adapt.px(500);
     newState.isBiographyOpen = true;
   }
+  return newState;
+}
+
+PeopleDetailPageState _showMovie(PeopleDetailPageState state, Action action) {
+  final b = action.payload ?? true;
+  final PeopleDetailPageState newState = state.clone();
+  newState.showmovie = b;
   return newState;
 }

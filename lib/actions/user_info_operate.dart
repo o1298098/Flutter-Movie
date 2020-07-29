@@ -21,8 +21,7 @@ class UserInfoOperate {
     final _r = await _baseApi.getUserPremium(user.uid);
     if (_r.success) {
       if (_r.result.status) {
-        if (_r.result.data != null) if (_r.result.data != null)
-          await setPremium(_r.result.data);
+        if (_r.result.data != null) await setPremium(_r.result.data);
       }
     }
     print(_r);

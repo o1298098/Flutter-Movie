@@ -26,33 +26,13 @@ class _RecommendationList extends StatelessWidget {
   const _RecommendationList({this.recommendations, this.onTap});
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: Adapt.px(40)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Recommendations',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          SizedBox(height: Adapt.px(30)),
-          ListView.separated(
-              padding: EdgeInsets.zero,
-              physics: PageScrollPhysics(),
-              shrinkWrap: true,
-              separatorBuilder: (_, __) => SizedBox(height: Adapt.px(30)),
-              itemCount: recommendations.length,
-              itemBuilder: (_, index) {
-                return _RecommendationCell(
-                  data: recommendations[index],
-                  onTap: onTap,
-                );
-              })
-        ],
-      ),
+    return SliverList(
+      delegate: SliverChildBuilderDelegate((_, index) {
+        return _RecommendationCell(
+          data: recommendations[index],
+          onTap: onTap,
+        );
+      }, childCount: recommendations.length),
     );
   }
 }
@@ -66,46 +46,51 @@ class _RecommendationCell extends StatelessWidget {
     final _theme = ThemeStyle.getTheme(context);
     return GestureDetector(
       onTap: () => onTap(data),
-      child: Row(
-        children: [
-          Container(
-            width: Adapt.px(220),
-            height: Adapt.px(122),
-            decoration: BoxDecoration(
-              color: _theme.primaryColorDark,
-              borderRadius: BorderRadius.circular(Adapt.px(15)),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: CachedNetworkImageProvider(
-                  ImageUrl.getUrl(data.backdropPath, ImageSize.w300),
+      child: Padding(
+        padding: EdgeInsets.only(bottom: Adapt.px(30)),
+        child: Row(
+          children: [
+            Container(
+              width: Adapt.px(220),
+              height: Adapt.px(122),
+              decoration: BoxDecoration(
+                color: _theme.primaryColorDark,
+                borderRadius: BorderRadius.circular(Adapt.px(15)),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: CachedNetworkImageProvider(
+                    ImageUrl.getUrl(data.backdropPath, ImageSize.w300),
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(width: Adapt.px(20)),
-          SizedBox(
-            width: Adapt.screenW() - Adapt.px(320),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${data.title}',
-                  style: TextStyle(fontSize: Adapt.px(26)),
-                ),
-                const SizedBox(height: 6),
-                Row(children: [
-                  LinearGradientProgressIndicator(value: data.voteAverage / 10),
-                  const SizedBox(width: 6),
+            SizedBox(width: Adapt.px(20)),
+            SizedBox(
+              width: Adapt.screenW() - Adapt.px(320),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Text(
-                    data.voteAverage.toStringAsFixed(1),
-                    style: TextStyle(
-                        fontSize: Adapt.px(20), color: const Color(0xFF717171)),
-                  )
-                ])
-              ],
-            ),
-          )
-        ],
+                    '${data.title}',
+                    style: TextStyle(fontSize: Adapt.px(26)),
+                  ),
+                  const SizedBox(height: 6),
+                  Row(children: [
+                    LinearGradientProgressIndicator(
+                        value: data.voteAverage / 10),
+                    const SizedBox(width: 6),
+                    Text(
+                      data.voteAverage.toStringAsFixed(1),
+                      style: TextStyle(
+                          fontSize: Adapt.px(20),
+                          color: const Color(0xFF717171)),
+                    )
+                  ])
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

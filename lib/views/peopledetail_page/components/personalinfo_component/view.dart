@@ -9,23 +9,26 @@ import 'state.dart';
 
 Widget buildView(
     PersonalInfoState state, Dispatch dispatch, ViewService viewService) {
-  return Container(
-    padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          I18n.of(viewService.context).personalInfo,
-          softWrap: true,
-          style: TextStyle(fontWeight: FontWeight.w500, fontSize: Adapt.px(40)),
-        ),
-        SizedBox(height: Adapt.px(50)),
-        _InfoBody(
-          data: state.peopleDetailModel,
-          creditcount: state.creditcount,
-        ),
-        SizedBox(height: Adapt.px(50)),
-      ],
+  return SliverToBoxAdapter(
+    child: Container(
+      padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            I18n.of(viewService.context).personalInfo,
+            softWrap: true,
+            style:
+                TextStyle(fontWeight: FontWeight.w500, fontSize: Adapt.px(40)),
+          ),
+          SizedBox(height: Adapt.px(50)),
+          _InfoBody(
+            data: state.peopleDetailModel,
+            creditcount: state.creditcount,
+          ),
+          SizedBox(height: Adapt.px(50)),
+        ],
+      ),
     ),
   );
 }

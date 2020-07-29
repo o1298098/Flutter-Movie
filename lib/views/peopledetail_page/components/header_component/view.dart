@@ -16,7 +16,8 @@ import 'state.dart';
 
 Widget buildView(
     HeaderState state, Dispatch dispatch, ViewService viewService) {
-  return Container(
+  return SliverToBoxAdapter(
+    child: Container(
       key: ValueKey('header'),
       width: Adapt.screenW(),
       child: Column(
@@ -72,7 +73,9 @@ Widget buildView(
           ),
           SizedBox(height: Adapt.px(50))
         ],
-      ));
+      ),
+    ),
+  );
 }
 
 class _BiographyShimmer extends StatelessWidget {

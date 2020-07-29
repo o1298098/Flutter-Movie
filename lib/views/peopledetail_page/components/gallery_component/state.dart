@@ -1,5 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/people_detail.dart';
+import 'package:movie/views/peopledetail_page/state.dart';
 
 class GalleryState implements Cloneable<GalleryState> {
   ProfileImages images;
@@ -11,6 +12,11 @@ class GalleryState implements Cloneable<GalleryState> {
   }
 }
 
-GalleryState initState(Map<String, dynamic> args) {
-  return GalleryState();
+class GalleryConnector extends ConnOp<PeopleDetailPageState, GalleryState> {
+  @override
+  GalleryState get(PeopleDetailPageState state) {
+    GalleryState mstate = GalleryState();
+    mstate.images = state.peopleDetailModel.images;
+    return mstate;
+  }
 }

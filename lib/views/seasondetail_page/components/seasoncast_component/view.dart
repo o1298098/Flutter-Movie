@@ -14,38 +14,40 @@ import 'state.dart';
 
 Widget buildView(
     SeasonCastState state, Dispatch dispatch, ViewService viewService) {
-  return Container(
-    key: ValueKey(state.castData),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.all(Adapt.px(40)),
-          child: Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: I18n.of(viewService.context).seasonCast,
-                  style: TextStyle(
-                      fontSize: Adapt.px(30), fontWeight: FontWeight.w600),
-                ),
-                TextSpan(
-                  text:
-                      ' ${state.castData != null ? state.castData.length.toString() : ''}',
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: Adapt.px(26),
+  return SliverToBoxAdapter(
+    child: Container(
+      key: ValueKey(state.castData),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(Adapt.px(40)),
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: I18n.of(viewService.context).seasonCast,
+                    style: TextStyle(
+                        fontSize: Adapt.px(30), fontWeight: FontWeight.w600),
                   ),
-                ),
-              ],
+                  TextSpan(
+                    text:
+                        ' ${state.castData != null ? state.castData.length.toString() : ''}',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: Adapt.px(26),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        _CastBody(
-          dispatch: dispatch,
-          castData: state.castData,
-        ),
-      ],
+          _CastBody(
+            dispatch: dispatch,
+            castData: state.castData,
+          ),
+        ],
+      ),
     ),
   );
 }

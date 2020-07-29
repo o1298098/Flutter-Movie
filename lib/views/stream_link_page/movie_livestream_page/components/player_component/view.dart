@@ -7,17 +7,19 @@ import 'state.dart';
 
 Widget buildView(
     PlayerState state, Dispatch dispatch, ViewService viewService) {
-  return AspectRatio(
-    aspectRatio: 16 / 9,
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(Adapt.px(30)),
-      child: PlayerPanel(
-        loading: state.loading,
-        background: state.background,
-        streamLink: state.streamLink,
-        playerType: state.playerType,
-        linkId: state.streamLinkId,
-        streamInBrowser: state.streamInBrowser,
+  return SliverToBoxAdapter(
+    child: AspectRatio(
+      aspectRatio: 16 / 9,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(Adapt.px(30)),
+        child: PlayerPanel(
+          loading: state.loading,
+          background: state.background,
+          streamLink: state.streamLink,
+          playerType: state.playerType,
+          linkId: state.streamLinkId,
+          streamInBrowser: state.streamInBrowser,
+        ),
       ),
     ),
   );

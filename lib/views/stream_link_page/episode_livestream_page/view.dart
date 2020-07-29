@@ -32,25 +32,26 @@ Widget buildView(
           child: Stack(
             children: [
               Container(
-                child: ListView(
+                padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
+                child: CustomScrollView(
                   controller: state.scrollController,
-                  padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
-                  children: [
-                    SizedBox(
-                      height: Adapt.px(30) + Adapt.padTopH(),
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: SizedBox(height: Adapt.px(30) + Adapt.padTopH()),
                     ),
                     viewService.buildComponent('player'),
                     _Header(
                       episode: state.selectedEpisode,
                       season: state.season,
                     ),
+                    const _EpisodeTitle(),
                     _Episodes(
                       episodes: state.season.episodes,
                       episodeNumber: state.selectedEpisode.episodeNumber,
                       onTap: (d) => dispatch(
                           EpisodeLiveStreamActionCreator.episodeTapped(d)),
                     ),
-                    const SizedBox(height: 100),
+                    SliverToBoxAdapter(child: const SizedBox(height: 100)),
                   ],
                 ),
               ),
@@ -73,60 +74,62 @@ class _Header extends StatelessWidget {
   const _Header({this.episode, this.season});
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: Adapt.px(40)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            episode.name,
-            style: TextStyle(
-              fontSize: Adapt.px(35),
-              fontWeight: FontWeight.bold,
-              height: 1.5,
-            ),
-          ),
-          SizedBox(height: Adapt.px(40)),
-          Row(children: [
-            Container(
-              width: Adapt.px(80),
-              height: Adapt.px(80),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Adapt.px(20)),
-                image: season.posterPath != null
-                    ? DecorationImage(
-                        fit: BoxFit.cover,
-                        image: CachedNetworkImageProvider(
-                          ImageUrl.getUrl(season.posterPath, ImageSize.w300),
-                        ),
-                      )
-                    : null,
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: EdgeInsets.only(top: Adapt.px(40)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              episode.name,
+              style: TextStyle(
+                fontSize: Adapt.px(35),
+                fontWeight: FontWeight.bold,
+                height: 1.5,
               ),
             ),
-            SizedBox(width: Adapt.px(10)),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(season.name),
-                Text(
-                  DateFormat.yMMMd().format(DateTime.parse(season.airDate)),
-                  style: TextStyle(
-                    fontSize: Adapt.px(24),
-                    color: const Color(0xFF717171),
-                  ),
+            SizedBox(height: Adapt.px(40)),
+            Row(children: [
+              Container(
+                width: Adapt.px(80),
+                height: Adapt.px(80),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Adapt.px(20)),
+                  image: season.posterPath != null
+                      ? DecorationImage(
+                          fit: BoxFit.cover,
+                          image: CachedNetworkImageProvider(
+                            ImageUrl.getUrl(season.posterPath, ImageSize.w300),
+                          ),
+                        )
+                      : null,
                 ),
-              ],
-            ),
-            Spacer(),
-            _CastCell(casts: season.credits.cast)
-          ]),
-          SizedBox(height: Adapt.px(40)),
-          ExpandableText(
-            season.overview,
-            maxLines: 3,
-            style: TextStyle(color: const Color(0xFF717171), height: 1.5),
-          )
-        ],
+              ),
+              SizedBox(width: Adapt.px(10)),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(season.name),
+                  Text(
+                    DateFormat.yMMMd().format(DateTime.parse(season.airDate)),
+                    style: TextStyle(
+                      fontSize: Adapt.px(24),
+                      color: const Color(0xFF717171),
+                    ),
+                  ),
+                ],
+              ),
+              Spacer(),
+              _CastCell(casts: season.credits.cast)
+            ]),
+            SizedBox(height: Adapt.px(40)),
+            ExpandableText(
+              season.overview,
+              maxLines: 3,
+              style: TextStyle(color: const Color(0xFF717171), height: 1.5),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -172,6 +175,26 @@ class _CastCell extends StatelessWidget {
   }
 }
 
+class _EpisodeTitle extends StatelessWidget {
+  const _EpisodeTitle();
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding:
+            EdgeInsetsDirectional.only(top: Adapt.px(40), bottom: Adapt.px(30)),
+        child: Text(
+          'Next Episode',
+          style: TextStyle(
+            fontSize: Adapt.px(30),
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _Episodes extends StatelessWidget {
   final List<Episode> episodes;
   final int episodeNumber;
@@ -180,37 +203,16 @@ class _Episodes extends StatelessWidget {
   const _Episodes({this.episodes, this.episodeNumber, this.onTap});
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: Adapt.px(40)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Next Episode',
-            style: TextStyle(
-              fontSize: Adapt.px(30),
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          SizedBox(height: Adapt.px(30)),
-          ListView.separated(
-              padding: EdgeInsets.zero,
-              physics: PageScrollPhysics(),
-              shrinkWrap: true,
-              separatorBuilder: (_, __) => SizedBox(height: Adapt.px(30)),
-              itemCount: episodes.length,
-              itemBuilder: (_, index) {
-                int _episodeIndex = episodeNumber - 1;
-                int _d = _episodeIndex + index;
-                final int _index =
-                    _d < episodes.length ? _d : _d - episodes.length;
-                return _EpisodeCell(
-                  episode: episodes[_index],
-                  onTap: onTap,
-                );
-              })
-        ],
-      ),
+    return SliverList(
+      delegate: SliverChildBuilderDelegate((_, index) {
+        int _episodeIndex = episodeNumber - 1;
+        int _d = _episodeIndex + index;
+        final int _index = _d < episodes.length ? _d : _d - episodes.length;
+        return _EpisodeCell(
+          episode: episodes[_index],
+          onTap: onTap,
+        );
+      }, childCount: episodes.length),
     );
   }
 }
@@ -224,38 +226,41 @@ class _EpisodeCell extends StatelessWidget {
     final _theme = ThemeStyle.getTheme(context);
     return GestureDetector(
       onTap: () => onTap(episode),
-      child: Row(
-        children: [
-          Container(
-            width: Adapt.px(220),
-            height: Adapt.px(122),
-            decoration: BoxDecoration(
-              color: _theme.primaryColorDark,
-              borderRadius: BorderRadius.circular(Adapt.px(15)),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: CachedNetworkImageProvider(
-                  ImageUrl.getUrl(episode.stillPath, ImageSize.w300),
+      child: Padding(
+        padding: EdgeInsets.only(bottom: Adapt.px(30)),
+        child: Row(
+          children: [
+            Container(
+              width: Adapt.px(220),
+              height: Adapt.px(122),
+              decoration: BoxDecoration(
+                color: _theme.primaryColorDark,
+                borderRadius: BorderRadius.circular(Adapt.px(15)),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: CachedNetworkImageProvider(
+                    ImageUrl.getUrl(episode.stillPath, ImageSize.w300),
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(width: Adapt.px(20)),
-          SizedBox(
-            width: Adapt.screenW() - Adapt.px(320),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'EP${episode.episodeNumber}',
-                  style: TextStyle(
-                      fontSize: Adapt.px(28), fontWeight: FontWeight.bold),
-                ),
-                Text(episode.name),
-              ],
-            ),
-          )
-        ],
+            SizedBox(width: Adapt.px(20)),
+            SizedBox(
+              width: Adapt.screenW() - Adapt.px(320),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'EP${episode.episodeNumber}',
+                    style: TextStyle(
+                        fontSize: Adapt.px(28), fontWeight: FontWeight.bold),
+                  ),
+                  Text(episode.name),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

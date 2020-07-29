@@ -14,36 +14,39 @@ import 'state.dart';
 
 Widget buildView(
     GalleryState state, Dispatch dispatch, ViewService viewService) {
-  return Container(
-    key: ValueKey('gallery'),
-    padding: EdgeInsets.only(top: Adapt.px(50)),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-            padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-            child: Row(
-              children: <Widget>[
-                Text(
-                  'Photos',
-                  style: TextStyle(
-                      fontSize: Adapt.px(40), fontWeight: FontWeight.w500),
-                ),
-                Expanded(child: Container()),
-                InkWell(
-                  onTap: () => dispatch(GalleryActionCreator.viewMoreTapped()),
-                  child: Text(
-                    'View more',
-                    style:
-                        TextStyle(color: Colors.grey, fontSize: Adapt.px(24)),
+  return SliverToBoxAdapter(
+    child: Container(
+      key: ValueKey('gallery'),
+      padding: EdgeInsets.only(top: Adapt.px(50)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    'Photos',
+                    style: TextStyle(
+                        fontSize: Adapt.px(40), fontWeight: FontWeight.w500),
                   ),
-                )
-              ],
-            )),
-        SizedBox(height: Adapt.px(30)),
-        _Gallery(images: state?.images),
-        SizedBox(height: Adapt.px(50)),
-      ],
+                  Expanded(child: Container()),
+                  InkWell(
+                    onTap: () =>
+                        dispatch(GalleryActionCreator.viewMoreTapped()),
+                    child: Text(
+                      'View more',
+                      style:
+                          TextStyle(color: Colors.grey, fontSize: Adapt.px(24)),
+                    ),
+                  )
+                ],
+              )),
+          SizedBox(height: Adapt.px(30)),
+          _Gallery(images: state?.images),
+          SizedBox(height: Adapt.px(50)),
+        ],
+      ),
     ),
   );
 }

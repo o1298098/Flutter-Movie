@@ -17,7 +17,8 @@ import 'state.dart';
 
 Widget buildView(
     KnownForState state, Dispatch dispatch, ViewService viewService) {
-  return AnimatedSwitcher(
+  return SliverToBoxAdapter(
+    child: AnimatedSwitcher(
       key: ValueKey('knownfor'),
       switchInCurve: Curves.easeIn,
       switchOutCurve: Curves.easeOut,
@@ -45,7 +46,9 @@ Widget buildView(
             ),
           ],
         ),
-      ));
+      ),
+    ),
+  );
 }
 
 class _ShimmerCell extends StatelessWidget {

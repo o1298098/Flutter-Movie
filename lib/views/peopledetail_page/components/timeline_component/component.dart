@@ -9,9 +9,10 @@ class TimeLineComponent extends Component<TimeLineState> {
   TimeLineComponent()
       : super(
           shouldUpdate: (olditem, newitem) {
-            return newitem.creditsModel != olditem.creditsModel ||
+            return newitem.movies != olditem.movies ||
                 newitem.department != olditem.department ||
-                olditem.showmovie != newitem.showmovie;
+                olditem.showmovie != newitem.showmovie ||
+                newitem.tvshows != olditem.tvshows;
           },
           effect: buildEffect(),
           reducer: buildReducer(),
