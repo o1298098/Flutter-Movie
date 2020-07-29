@@ -7,8 +7,8 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/widgets/shimmercell.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
-import 'package:movie/models/externalidsmodel.dart';
-import 'package:movie/models/tvdetail.dart';
+import 'package:movie/models/external_ids_model.dart';
+import 'package:movie/models/tvshow_detail.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/tvdetail_page/components/info_component/action.dart';
 

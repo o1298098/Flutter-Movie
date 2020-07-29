@@ -3,30 +3,30 @@ import 'dart:ui' as ui;
 import 'package:dio/dio.dart';
 import 'package:movie/globalbasestate/action.dart';
 import 'package:movie/globalbasestate/store.dart';
-import 'package:movie/models/accountdetail.dart';
+import 'package:movie/models/account_detail.dart';
 import 'package:movie/models/certification.dart';
-import 'package:movie/models/combinedcredits.dart';
-import 'package:movie/models/creditsmodel.dart';
+import 'package:movie/models/combined_credits.dart';
+import 'package:movie/models/credits_model.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/enums/time_window.dart';
-import 'package:movie/models/episodemodel.dart';
-import 'package:movie/models/imagemodel.dart';
+import 'package:movie/models/episode_model.dart';
+import 'package:movie/models/image_model.dart';
 import 'package:movie/models/item.dart';
 import 'package:movie/models/keyword.dart';
-import 'package:movie/models/listdetailmode.dart';
-import 'package:movie/models/listmediaitem.dart';
-import 'package:movie/models/media_accountstatemodel.dart';
-import 'package:movie/models/moviechange.dart';
+import 'package:movie/models/list_detail_mode.dart';
+import 'package:movie/models/list_media_item.dart';
+import 'package:movie/models/media_account_state_model.dart';
+import 'package:movie/models/movie_change.dart';
 import 'package:movie/models/moviedetail.dart';
-import 'package:movie/models/mylistmodel.dart';
-import 'package:movie/models/peopledetail.dart';
+import 'package:movie/models/mylist_model.dart';
+import 'package:movie/models/people_detail.dart';
 import 'package:movie/models/response_model.dart';
-import 'package:movie/models/seasondetail.dart';
-import 'package:movie/models/videolist.dart';
+import 'package:movie/models/season_detail.dart';
+import 'package:movie/models/video_list.dart';
 import 'package:movie/models/review.dart';
-import 'package:movie/models/searchresult.dart';
-import 'package:movie/models/tvdetail.dart';
-import 'package:movie/models/videomodel.dart';
+import 'package:movie/models/search_result.dart';
+import 'package:movie/models/tvshow_detail.dart';
+import 'package:movie/models/video_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'request.dart';
@@ -43,7 +43,7 @@ class TMDBApi {
   String session;
   DateTime _sessionExpiresTime;
   SharedPreferences prefs;
-  String language = ui.window.locale.languageCode;
+  String _language = ui.window.locale.languageCode;
   final String region = ui.window.locale.countryCode;
   bool includeAdult;
   final Request _http = Request('https://api.themoviedb.org/3');
@@ -54,17 +54,17 @@ class TMDBApi {
     includeAdult = prefs.getBool('adultItems') ?? false;
     final _appLanguage = prefs.getString('appLanguage');
     if (_appLanguage != null) {
-      language = Item(_appLanguage).value;
+      _language = Item(_appLanguage).value;
       GlobalStore.store
-          .dispatch(GlobalActionCreator.changeLocale(ui.Locale(language)));
+          .dispatch(GlobalActionCreator.changeLocale(ui.Locale(_language)));
     }
   }
 
   void setLanguage(String languageCode) {
     if (languageCode == null)
-      language = ui.window.locale.languageCode;
+      _language = ui.window.locale.languageCode;
     else
-      language = languageCode;
+      _language = languageCode;
   }
 
   Future createGuestSession() async {
@@ -238,7 +238,7 @@ class TMDBApi {
 
   Future<ResponseModel<ListDetailModel>> getListDetailV4(int listId,
       {int page = 1, String sortBy}) async {
-    String param = '/list/$listId?page=$page&language=$language';
+    String param = '/list/$listId?page=$page&language=$_language';
     if (sortBy != null) param += '&sort_by=$sortBy';
     final r = await _httpV4.request<ListDetailModel>(param,
         headers: {'Authorization': 'Bearer $_apikeyV4'});
@@ -322,7 +322,7 @@ class TMDBApi {
   Future<ResponseModel<VideoListModel>> getFavoriteMovies(int accountid,
       {int page = 1, String sortBy = 'created_at.asc'}) async {
     String param =
-        '/account/$accountid/favorite/movies?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
+        '/account/$accountid/favorite/movies?api_key=$_apikey&language=$_language&session_id=$session&sort_by=$sortBy&page=$page';
     final r = await _http.request<VideoListModel>(param);
     return r;
   }
@@ -331,7 +331,7 @@ class TMDBApi {
   Future<ResponseModel<VideoListModel>> getFavoriteTVShows(int accountid,
       {int page = 1, String sortBy = 'created_at.asc'}) async {
     final String param =
-        '/account/$accountid/favorite/tv?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
+        '/account/$accountid/favorite/tv?api_key=$_apikey&language=$_language&session_id=$session&sort_by=$sortBy&page=$page';
     final r = await _http.request<VideoListModel>(param);
     return r;
   }
@@ -339,7 +339,7 @@ class TMDBApi {
   Future<ResponseModel<VideoListModel>> getMoviesWatchlist(int accountid,
       {int page = 1, String sortBy = 'created_at.asc'}) async {
     String param =
-        '/account/$accountid/watchlist/movies?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
+        '/account/$accountid/watchlist/movies?api_key=$_apikey&language=$_language&session_id=$session&sort_by=$sortBy&page=$page';
     final r = await _http.request<VideoListModel>(param);
     return r;
   }
@@ -347,7 +347,7 @@ class TMDBApi {
   Future<ResponseModel<VideoListModel>> getTVShowsWacthlist(int accountid,
       {int page = 1, String sortBy = 'created_at.asc'}) async {
     String param =
-        '/account/$accountid/watchlist/tv?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
+        '/account/$accountid/watchlist/tv?api_key=$_apikey&language=$_language&session_id=$session&sort_by=$sortBy&page=$page';
     final r = await _http.request<VideoListModel>(param);
     return r;
   }
@@ -358,7 +358,7 @@ class TMDBApi {
     int accountid = prefs.getInt('accountid');
     if (accountid == null) return null;
     final String param =
-        '/account/$accountid/rated/movies?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
+        '/account/$accountid/rated/movies?api_key=$_apikey&language=$_language&session_id=$session&sort_by=$sortBy&page=$page';
     final r = await _http.request<VideoListModel>(param);
     return r;
   }
@@ -369,7 +369,7 @@ class TMDBApi {
     final int accountid = prefs.getInt('accountid');
     if (accountid == null) return null;
     final String param =
-        '/account/$accountid/rated/tv?api_key=$_apikey&language=$language&session_id=$session&sort_by=$sortBy&page=$page';
+        '/account/$accountid/rated/tv?api_key=$_apikey&language=$_language&session_id=$session&sort_by=$sortBy&page=$page';
     final r = await _http.request<VideoListModel>(param);
     return r;
   }
@@ -437,20 +437,20 @@ class TMDBApi {
   }
 
   Future<ResponseModel<VideoListResult>> getLastMovies() async {
-    final String param = "/movie/latest?api_key=$_apikey&language=$language";
+    final String param = "/movie/latest?api_key=$_apikey&language=$_language";
     final r = await _http.request<VideoListResult>(param);
     return r;
   }
 
   Future<ResponseModel<VideoListResult>> getLastTVShows() async {
-    final String param = "/tv/latest?api_key=$_apikey&language=$language";
+    final String param = "/tv/latest?api_key=$_apikey&language=$_language";
     final r = await _http.request<VideoListResult>(param);
     return r;
   }
 
   Future<ResponseModel<VideoListModel>> getPopularMovies({int page = 1}) async {
     final String param =
-        "/movie/popular?api_key=$_apikey&language=$language&page=$page&region=$region";
+        "/movie/popular?api_key=$_apikey&language=$_language&page=$page&region=$region";
     final r = await _http.request<VideoListModel>(param);
     return r;
   }
@@ -458,14 +458,14 @@ class TMDBApi {
   Future<ResponseModel<VideoListModel>> getPopularTVShows(
       {int page = 1}) async {
     final String param =
-        "/tv/popular?api_key=$_apikey&language=$language&page=$page&region=$region";
+        "/tv/popular?api_key=$_apikey&language=$_language&page=$page&region=$region";
     final r = await _http.request<VideoListModel>(param);
     return r;
   }
 
   Future<ResponseModel<MovieDetailModel>> getMovieDetail(int mvid,
       {String appendtoresponse}) async {
-    String param = '/movie/$mvid?api_key=$_apikey&language=$language';
+    String param = '/movie/$mvid?api_key=$_apikey&language=$_language';
     if (appendtoresponse != null)
       param = param + '&append_to_response=$appendtoresponse';
     final r = await _http.request<MovieDetailModel>(param,
@@ -475,7 +475,7 @@ class TMDBApi {
 
   Future<ResponseModel<TVDetailModel>> getTVDetail(int tvid,
       {String appendtoresponse}) async {
-    String param = '/tv/$tvid?api_key=$_apikey&language=$language';
+    String param = '/tv/$tvid?api_key=$_apikey&language=$_language';
     if (appendtoresponse != null)
       param = param + '&append_to_response=$appendtoresponse';
     final r = await _http.request<TVDetailModel>(param, cached: true);
@@ -485,7 +485,7 @@ class TMDBApi {
   Future<ResponseModel<MediaAccountStateModel>> getTVAccountState(
       int tvid) async {
     String param =
-        '/tv/$tvid/account_states?api_key=$_apikey&language=$language';
+        '/tv/$tvid/account_states?api_key=$_apikey&language=$_language';
     final int accountid = prefs.getInt('accountid');
     if (accountid != null)
       param += '&session_id=$session';
@@ -498,7 +498,7 @@ class TMDBApi {
   Future<ResponseModel<MediaAccountStateModel>> getMovieAccountState(
       int movieid) async {
     String param =
-        '/movie/$movieid/account_states?api_key=$_apikey&language=$language';
+        '/movie/$movieid/account_states?api_key=$_apikey&language=$_language';
     int accountid = prefs.getInt('accountid');
     if (accountid != null)
       param += '&session_id=$session';
@@ -521,7 +521,7 @@ class TMDBApi {
   ///Get a list of upcoming movies in theatres. This is a release type query that looks for all movies that have a release type of 2 or 3 within the specified date range.You can optionally specify a region prameter which will narrow the search to only look for theatrical release dates within the specified country.
   Future<ResponseModel<VideoListModel>> getMovieUpComing({int page = 1}) async {
     final String param =
-        '/movie/upcoming?api_key=$_apikey&language=$language&page=$page&region=$region';
+        '/movie/upcoming?api_key=$_apikey&language=$_language&page=$page&region=$region';
     final r = await _http.request<VideoListModel>(param,
         cached: true, cacheDuration: Duration(seconds: 0));
 
@@ -533,7 +533,7 @@ class TMDBApi {
       MediaType type, TimeWindow time,
       {int page = 1}) async {
     final String param =
-        '/trending/${type.toString().split('.').last}/${time.toString().split('.').last}?api_key=$_apikey&language=$language&page=$page';
+        '/trending/${type.toString().split('.').last}/${time.toString().split('.').last}?api_key=$_apikey&language=$_language&page=$page';
     final r = await _http.request<SearchResultModel>(param,
         cached: true, cacheDuration: Duration(hours: 1));
     return r;
@@ -543,7 +543,7 @@ class TMDBApi {
   Future<ResponseModel<VideoListModel>> getNowPlayingMovie(
       {int page = 1}) async {
     final String param =
-        '/movie/now_playing?api_key=$_apikey&language=$language&page=$page&region=$region';
+        '/movie/now_playing?api_key=$_apikey&language=$_language&page=$page&region=$region';
     final r = await _http.request<VideoListModel>(param, cached: true);
     return r;
   }
@@ -551,7 +551,7 @@ class TMDBApi {
   Future<ResponseModel<VideoListModel>> getRecommendationsMovie(int movieid,
       {int page = 1}) async {
     final String param =
-        '/movie/$movieid/recommendations?api_key=$_apikey&language=$language&page=$page';
+        '/movie/$movieid/recommendations?api_key=$_apikey&language=$_language&page=$page';
     final r = await _http.request<VideoListModel>(param);
     return r;
   }
@@ -559,7 +559,7 @@ class TMDBApi {
   Future<ResponseModel<VideoListModel>> getRecommendationsTV(int tvid,
       {int page = 1}) async {
     final String param =
-        '/tv/$tvid/recommendations?api_key=$_apikey&language=$language&page=$page';
+        '/tv/$tvid/recommendations?api_key=$_apikey&language=$_language&page=$page';
     final r = await _http.request<VideoListModel>(param);
     return r;
   }
@@ -580,7 +580,7 @@ class TMDBApi {
   ///Get a list of shows that are currently on the air.This query looks for any TV show that has an episode with an air date in the next 7 days.
   Future<ResponseModel<VideoListModel>> getTVOnTheAir({int page = 1}) async {
     String param =
-        '/tv/on_the_air?api_key=$_apikey&language=$language&page=$page&region=$region';
+        '/tv/on_the_air?api_key=$_apikey&language=$_language&page=$page&region=$region';
     final r = await _http.request<VideoListModel>(param,
         cached: true, cacheDuration: Duration(seconds: 0));
     return r;
@@ -590,7 +590,7 @@ class TMDBApi {
   Future<ResponseModel<SearchResultModel>> searchMulit(String query,
       {int page = 1, bool searchadult = false}) async {
     final String param =
-        '/search/multi?api_key=$_apikey&query=$query&page=$page&include_adult=$includeAdult&language=$language';
+        '/search/multi?api_key=$_apikey&query=$query&page=$page&include_adult=$includeAdult&language=$_language';
     final r = await _http.request<SearchResultModel>(param, cached: true);
     return r;
   }
@@ -598,14 +598,14 @@ class TMDBApi {
   ///Get the cast and crew for a movie.
   Future<ResponseModel<CreditsModel>> getMovieCredits(int movieid) async {
     final String param =
-        '/movie/$movieid/credits?api_key=$_apikey&language=$language';
+        '/movie/$movieid/credits?api_key=$_apikey&language=$_language';
     final r = await _http.request<CreditsModel>(param, cached: true);
     return r;
   }
 
   Future<ResponseModel<CreditsModel>> getTVCredits(int tvid) async {
     final String param =
-        '/tv/$tvid/credits?api_key=$_apikey&language=$language';
+        '/tv/$tvid/credits?api_key=$_apikey&language=$_language';
     final r = await _http.request<CreditsModel>(param, cached: true);
     return r;
   }
@@ -686,7 +686,7 @@ class TMDBApi {
       String withOriginalLanguage,
       String withoutKeywords}) async {
     String param =
-        '/discover/movie?api_key=$_apikey&page=$page&language=$language';
+        '/discover/movie?api_key=$_apikey&page=$page&language=$_language';
     param += sortBy == null ? '' : '&sort_by=$sortBy';
     param += certification == null ? '' : '&certification=$certification';
     param += certificationCountry == null
@@ -746,7 +746,7 @@ class TMDBApi {
       String withGenres,
       String withKeywords}) async {
     String param =
-        '/discover/tv?api_key=$_apikey&page=$page&timezone=$timezone&language=$language';
+        '/discover/tv?api_key=$_apikey&page=$page&timezone=$timezone&language=$_language';
     param += sortBy == null ? '' : '&sort_by=$sortBy';
     param += airDateGte == null ? '' : '&air_ate.gte=$airDateGte';
     param += airDateLte == null ? '' : '&air_ate.lte=$airDateLte';
@@ -783,7 +783,7 @@ class TMDBApi {
   Future<ResponseModel<Season>> getTVSeasonDetail(int tvid, int seasonNumber,
       {String appendToResponse}) async {
     String param =
-        '/tv/$tvid/season/$seasonNumber?api_key=$_apikey&language=$language';
+        '/tv/$tvid/season/$seasonNumber?api_key=$_apikey&language=$_language';
     if (appendToResponse != null)
       param += "&append_to_response=$appendToResponse";
     final r = await _http.request<Season>(param, cached: true);
@@ -794,7 +794,7 @@ class TMDBApi {
       int tvid, int seasonNumber, int episodeNumber,
       {String appendToResponse}) async {
     String param =
-        '/tv/$tvid/season/$seasonNumber/episode/$episodeNumber?api_key=$_apikey&language=$language';
+        '/tv/$tvid/season/$seasonNumber/episode/$episodeNumber?api_key=$_apikey&language=$_language';
     if (appendToResponse != null)
       param += '&append_to_response=$appendToResponse';
     final r = await _http.request<Episode>(param, cached: true);
@@ -803,7 +803,7 @@ class TMDBApi {
 
   Future<ResponseModel<PeopleDetailModel>> getPeopleDetail(int peopleid,
       {String appendToResponse}) async {
-    String param = '/person/$peopleid?api_key=$_apikey&language=$language';
+    String param = '/person/$peopleid?api_key=$_apikey&language=$_language';
     if (appendToResponse != null)
       param += '&append_to_response=$appendToResponse';
     final r = await _http.request<PeopleDetailModel>(param, cached: true);
@@ -813,7 +813,7 @@ class TMDBApi {
   Future<ResponseModel<CreditsModel>> getPeopleMovieCredits(
       int peopleid) async {
     final String param =
-        '/person/$peopleid/movie_credits?api_key=$_apikey&language=$language';
+        '/person/$peopleid/movie_credits?api_key=$_apikey&language=$_language';
     final r = await _http.request<CreditsModel>(param, cached: true);
     return r;
   }
@@ -821,7 +821,7 @@ class TMDBApi {
   Future<ResponseModel<CombinedCreditsModel>> getCombinedCredits(
       int peopleid) async {
     final String param =
-        '/person/$peopleid/combined_credits?api_key=$_apikey&language=$language';
+        '/person/$peopleid/combined_credits?api_key=$_apikey&language=$_language';
     final r = await _http.request<CombinedCreditsModel>(param, cached: true);
     return r;
   }

@@ -10,7 +10,7 @@ import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/releasedatetype.dart';
 import 'package:movie/models/moviedetail.dart';
-import 'package:movie/models/releasedatemodel.dart';
+import 'package:movie/models/release_date_model.dart';
 
 import 'dart:ui' as ui;
 

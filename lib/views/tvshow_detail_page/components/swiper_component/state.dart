@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/imagemodel.dart';
-import 'package:movie/models/videomodel.dart';
+import 'package:movie/models/image_model.dart';
+import 'package:movie/models/video_model.dart';
 import 'package:movie/views/tvshow_detail_page/state.dart';
 
 class SwiperState implements Cloneable<SwiperState> {

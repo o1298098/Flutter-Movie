@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/models/combinedcredits.dart';
-import 'package:movie/models/peopledetail.dart';
+import 'package:movie/models/combined_credits.dart';
+import 'package:movie/models/people_detail.dart';
 
 import 'action.dart';
 import 'state.dart';

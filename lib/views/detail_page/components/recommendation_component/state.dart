@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/videolist.dart';
+import 'package:movie/models/video_list.dart';
 import 'package:movie/views/detail_page/state.dart';
 
 class RecommendationsState implements Cloneable<RecommendationsState> {

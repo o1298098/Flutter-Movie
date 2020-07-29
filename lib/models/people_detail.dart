@@ -1,6 +1,6 @@
 import 'dart:convert' show json;
 
-import 'imagemodel.dart';
+import 'image_model.dart';
 
 class PeopleDetailModel {
   Object deathday;

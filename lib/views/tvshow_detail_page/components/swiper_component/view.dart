@@ -7,8 +7,8 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
-import 'package:movie/models/imagemodel.dart';
-import 'package:movie/models/videomodel.dart';
+import 'package:movie/models/image_model.dart';
+import 'package:movie/models/video_model.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -293,6 +293,6 @@ class _VideoPlayer extends StatelessWidget {
               ),
             ),
           )
-        :const SizedBox();
+        : const SizedBox();
   }
 }

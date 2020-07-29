@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/seasondetail.dart';
-import 'package:movie/models/tvdetail.dart';
+import 'package:movie/models/season_detail.dart';
+import 'package:movie/models/tvshow_detail.dart';
 import 'package:movie/views/tvdetail_page/state.dart';
 
 class CurrentSeasonState implements Cloneable<CurrentSeasonState> {

@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart';
-import 'package:movie/models/videolist.dart';
+import 'package:movie/models/video_list.dart';
 import 'package:movie/views/coming_page/state.dart';
 
 class MovieListState implements Cloneable<MovieListState> {

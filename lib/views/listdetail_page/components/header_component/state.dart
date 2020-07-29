@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/sortcondition.dart';
+import 'package:movie/models/sort_condition.dart';
 import 'package:movie/views/listdetail_page/state.dart';
 
 class HeaderState implements Cloneable<HeaderState> {

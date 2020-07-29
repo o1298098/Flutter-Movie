@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/app_user.dart';
-import 'package:movie/models/sortcondition.dart';
-import 'package:movie/models/videolist.dart';
+import 'package:movie/models/sort_condition.dart';
+import 'package:movie/models/video_list.dart';
 import 'package:movie/views/discover_page/components/filter_component/state.dart';
 
 import 'components/movicecell_component/state.dart';

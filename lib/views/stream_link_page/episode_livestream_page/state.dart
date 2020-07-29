@@ -1,8 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
-import 'package:movie/models/episodemodel.dart';
-import 'package:movie/models/seasondetail.dart';
+import 'package:movie/models/episode_model.dart';
+import 'package:movie/models/season_detail.dart';
 import 'package:movie/views/stream_link_page/episode_livestream_page/components/bottom_panel_component/components/comment_component/state.dart';
 import 'package:movie/views/stream_link_page/episode_livestream_page/components/bottom_panel_component/state.dart';
 import 'package:movie/widgets/overlay_entry_manage.dart';

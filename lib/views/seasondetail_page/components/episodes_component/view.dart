@@ -9,7 +9,7 @@ import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
-import 'package:movie/models/episodemodel.dart';
+import 'package:movie/models/episode_model.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/seasondetail_page/action.dart';
 import 'package:movie/widgets/expandable_text.dart';

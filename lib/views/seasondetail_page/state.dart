@@ -3,11 +3,11 @@ import 'dart:ui';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:movie/globalbasestate/state.dart';
-import 'package:movie/models/episodemodel.dart';
+import 'package:movie/models/episode_model.dart';
 import 'package:movie/models/app_user.dart';
-import 'package:movie/models/imagemodel.dart';
-import 'package:movie/models/seasondetail.dart';
-import 'package:movie/models/videomodel.dart';
+import 'package:movie/models/image_model.dart';
+import 'package:movie/models/season_detail.dart';
+import 'package:movie/models/video_model.dart';
 
 import 'components/episodes_component/state.dart';
 import 'components/header_component/state.dart';

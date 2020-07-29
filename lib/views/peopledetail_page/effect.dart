@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/http/tmdb_api.dart';
-import 'package:movie/models/combinedcredits.dart';
+import 'package:movie/models/combined_credits.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'action.dart';
 import 'state.dart';
@@ -15,6 +15,7 @@ Effect<PeopleDetailPageState> buildEffect() {
 }
 
 void _onAction(Action action, Context<PeopleDetailPageState> ctx) {}
+
 Future _onInit(Action action, Context<PeopleDetailPageState> ctx) async {
   int id = ctx.state.peopleid;
   await Future.delayed(Duration(milliseconds: 200), () async {
@@ -54,7 +55,7 @@ void _cellTapped(Action action, Context<PeopleDetailPageState> ctx) async {
   final String title = action.payload[2];
   final String posterpic = action.payload[3];
   final String pagename =
-      type == MediaType.movie ? 'detailpage' : 'tvdetailpage';
+      type == MediaType.movie ? 'detailpage' : 'tvShowDetailPage';
   var data = {
     type == MediaType.movie ? 'id' : 'tvid': id,
     'bgpic': type == MediaType.movie ? posterpic : bgpic,

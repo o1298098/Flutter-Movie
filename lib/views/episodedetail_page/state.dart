@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/globalbasestate/state.dart';
-import 'package:movie/models/episodemodel.dart';
+import 'package:movie/models/episode_model.dart';
 import 'package:movie/models/app_user.dart';
 
 import 'components/credits_component/state.dart';

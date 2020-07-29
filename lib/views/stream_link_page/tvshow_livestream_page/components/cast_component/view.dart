@@ -3,7 +3,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
-import 'package:movie/models/creditsmodel.dart';
+import 'package:movie/models/credits_model.dart';
 import 'package:movie/models/enums/imagesize.dart';
 
 import 'action.dart';
@@ -27,8 +27,8 @@ Widget buildView(CastState state, Dispatch dispatch, ViewService viewService) {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: CachedNetworkImageProvider(ImageUrl.getUrl(
-                              d.profilePath, ImageSize.w300)))),
+                          image: CachedNetworkImageProvider(
+                              ImageUrl.getUrl(d.profilePath, ImageSize.w300)))),
                 ),
                 SizedBox(width: Adapt.px(20)),
                 SizedBox(

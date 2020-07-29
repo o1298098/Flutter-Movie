@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/generated/i18n.dart';
-import 'package:movie/models/creditsmodel.dart';
+import 'package:movie/models/credits_model.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/episodedetail_page/components/credits_component/action.dart';

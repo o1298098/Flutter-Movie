@@ -1,7 +1,7 @@
 import 'dart:convert' show json;
 
-import 'creditsmodel.dart';
-import 'episodemodel.dart';
+import 'credits_model.dart';
+import 'episode_model.dart';
 
 class Season {
   int id;

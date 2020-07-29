@@ -335,7 +335,10 @@ class _LanguageList extends StatelessWidget {
     return SimpleDialog(
       elevation: 0.0,
       backgroundColor: const Color(0xFF252525),
-      title: Text('Support Language'),
+      titleTextStyle: TextStyle(color: const Color(0xFFFFFFFF), fontSize: 20),
+      title: Text(
+        'Support Language',
+      ),
       children: [
         Container(
           height: _size.height / 2,

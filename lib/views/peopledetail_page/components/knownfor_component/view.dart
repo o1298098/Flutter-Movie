@@ -5,7 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/generated/i18n.dart';
-import 'package:movie/models/combinedcredits.dart';
+import 'package:movie/models/combined_credits.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/style/themestyle.dart';

@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/models/enums/genres.dart';
-import 'package:movie/models/sortcondition.dart';
+import 'package:movie/models/sort_condition.dart';
 import '../../state.dart';
 
 class FilterState implements Cloneable<FilterState> {

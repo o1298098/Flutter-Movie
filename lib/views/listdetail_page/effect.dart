@@ -3,7 +3,7 @@ import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/widgets/share_card.dart';
 import 'package:movie/models/base_api_model/user_list_detail.dart';
-import 'package:movie/models/sortcondition.dart';
+import 'package:movie/models/sort_condition.dart';
 import 'action.dart';
 import 'state.dart';
 

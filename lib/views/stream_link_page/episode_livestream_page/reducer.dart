@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
-import 'package:movie/models/episodemodel.dart';
+import 'package:movie/models/episode_model.dart';
 
 import 'action.dart';
 import 'state.dart';

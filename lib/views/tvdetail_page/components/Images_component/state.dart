@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/imagemodel.dart';
+import 'package:movie/models/image_model.dart';
 import 'package:movie/views/tvdetail_page/state.dart';
 
 class ImagesState implements Cloneable<ImagesState> {

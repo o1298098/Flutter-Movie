@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
-import 'package:movie/models/imagemodel.dart';
+import 'package:movie/models/image_model.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 

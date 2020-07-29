@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/seasondetail.dart';
+import 'package:movie/models/season_detail.dart';
 import 'package:movie/views/tvshow_detail_page/state.dart';
 
 class SeasonState implements Cloneable<SeasonState> {

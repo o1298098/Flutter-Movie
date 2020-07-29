@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/enums/media_type.dart';
-import 'package:movie/models/searchresult.dart';
-import 'package:movie/models/sortcondition.dart';
+import 'package:movie/models/search_result.dart';
+import 'package:movie/models/sort_condition.dart';
 
 enum FilterAction {
   action,

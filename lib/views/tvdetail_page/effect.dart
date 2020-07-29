@@ -7,7 +7,7 @@ import 'package:movie/widgets/gallery_photoview_wrapper.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/media_type.dart';
-import 'package:movie/models/imagemodel.dart';
+import 'package:movie/models/image_model.dart';
 import 'action.dart';
 import 'state.dart';
 

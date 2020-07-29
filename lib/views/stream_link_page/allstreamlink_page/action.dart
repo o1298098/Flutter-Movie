@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/base_api_model/base_tvshow.dart';
-import 'package:movie/models/sortcondition.dart';
+import 'package:movie/models/sort_condition.dart';
 
 enum AllStreamLinkPageAction {
   action,

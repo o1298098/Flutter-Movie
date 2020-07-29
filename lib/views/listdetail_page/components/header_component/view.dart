@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/models/sortcondition.dart';
+import 'package:movie/models/sort_condition.dart';
 import 'package:movie/views/listdetail_page/action.dart';
 import 'package:shimmer/shimmer.dart';
 

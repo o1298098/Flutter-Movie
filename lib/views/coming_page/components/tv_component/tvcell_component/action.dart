@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/tvdetail.dart';
-import 'package:movie/models/videolist.dart';
+import 'package:movie/models/tvshow_detail.dart';
+import 'package:movie/models/video_list.dart';
 
 enum TVCellAction { action, loadSeason, cellTapped }
 

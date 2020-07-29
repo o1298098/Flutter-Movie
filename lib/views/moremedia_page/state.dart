@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie/models/enums/media_type.dart';
-import 'package:movie/models/videolist.dart';
+import 'package:movie/models/video_list.dart';
 
 class MoreMediaPageState implements Cloneable<MoreMediaPageState> {
   MediaType mediaType;

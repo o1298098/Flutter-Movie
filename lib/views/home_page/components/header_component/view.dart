@@ -6,7 +6,7 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/media_type.dart';
-import 'package:movie/models/videolist.dart';
+import 'package:movie/models/video_list.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/home_page/action.dart';
 import 'package:shimmer/shimmer.dart';

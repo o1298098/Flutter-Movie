@@ -3,7 +3,7 @@ import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
-import 'package:movie/models/episodemodel.dart';
+import 'package:movie/models/episode_model.dart';
 import 'action.dart';
 import 'state.dart';
 

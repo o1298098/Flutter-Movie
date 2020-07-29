@@ -3,7 +3,7 @@ import 'package:flutter/animation.dart';
 import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/models/base_api_model/movie_stream_link.dart';
-import 'package:movie/models/videolist.dart';
+import 'package:movie/models/video_list.dart';
 import 'package:movie/views/stream_link_page/movie_livestream_page/action.dart';
 import 'action.dart';
 import 'state.dart';

@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/user_list.dart';
-import 'package:movie/models/mylistmodel.dart';
+import 'package:movie/models/mylist_model.dart';
 
 enum MyListsPageAction {
   action,

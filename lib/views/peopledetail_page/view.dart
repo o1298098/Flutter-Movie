@@ -23,7 +23,7 @@ Widget buildView(
           ),
           SafeArea(
             child: Container(
-              margin: EdgeInsets.only(right: Adapt.px(30)),
+              margin: EdgeInsets.only(top: 10, right: Adapt.px(30)),
               width: Adapt.px(60),
               height: Adapt.px(60),
               decoration:

@@ -1,22 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
-enum TestPageAction { action, setData, googleSignIn, inputTapped }
+enum TestPageAction { action, setData, setData2 }
 
 class TestPageActionCreator {
   static Action onAction() {
     return const Action(TestPageAction.action);
   }
 
-  static Action setData(Stream<QuerySnapshot> d) {
+  static Action setData(Stream<FetchResult> d) {
     return Action(TestPageAction.setData, payload: d);
   }
 
-  static Action googleSignIn() {
-    return const Action(TestPageAction.googleSignIn);
-  }
-
-  static Action inputTapped() {
-    return const Action(TestPageAction.inputTapped);
+  static Action setData2(Stream<FetchResult> d) {
+    return Action(TestPageAction.setData2, payload: d);
   }
 }

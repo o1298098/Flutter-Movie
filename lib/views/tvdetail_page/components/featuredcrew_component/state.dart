@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/creditsmodel.dart';
-import 'package:movie/models/tvdetail.dart';
+import 'package:movie/models/credits_model.dart';
+import 'package:movie/models/tvshow_detail.dart';
 import 'package:movie/views/tvdetail_page/state.dart';
 
 class TvInfoState implements Cloneable<TvInfoState> {

@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/models/combinedcredits.dart';
+import 'package:movie/models/combined_credits.dart';
 
 class TimeLineState implements Cloneable<TimeLineState> {
   String department;

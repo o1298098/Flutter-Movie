@@ -1,11 +1,10 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/episodemodel.dart';
+import 'package:movie/models/episode_model.dart';
 
 class ImagesState implements Cloneable<ImagesState> {
+  EpisodeImageModel images;
 
-EpisodeImageModel images;
-
-ImagesState({this.images});
+  ImagesState({this.images});
 
   @override
   ImagesState clone() {

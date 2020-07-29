@@ -7,7 +7,7 @@ import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/response_model.dart';
-import 'package:movie/models/searchresult.dart';
+import 'package:movie/models/search_result.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SearchBarDelegate extends SearchDelegate<SearchResult> {

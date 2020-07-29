@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/videomodel.dart';
+import 'package:movie/models/video_model.dart';
 import 'package:movie/views/detail_page/state.dart';
 
 class TrailerState implements Cloneable<TrailerState> {

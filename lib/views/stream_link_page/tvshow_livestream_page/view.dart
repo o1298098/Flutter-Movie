@@ -4,7 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/widgets/keepalive_widget.dart';
 import 'package:movie/widgets/sliverappbar_delegate.dart';
-import 'package:movie/models/episodemodel.dart';
+import 'package:movie/models/episode_model.dart';
 import 'package:movie/style/themestyle.dart';
 
 import 'action.dart';

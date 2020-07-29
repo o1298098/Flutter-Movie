@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/models/seasondetail.dart';
+import 'package:movie/models/season_detail.dart';
 import 'package:movie/views/stream_link_page/season_link_page/state.dart';
 
 class TabbarState implements Cloneable<TabbarState> {

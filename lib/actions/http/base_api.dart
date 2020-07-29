@@ -7,6 +7,7 @@ import 'package:movie/models/base_api_model/braintree_creditcard.dart';
 import 'package:movie/models/base_api_model/braintree_customer.dart';
 import 'package:movie/models/base_api_model/braintree_subscription.dart';
 import 'package:movie/models/base_api_model/braintree_transaction.dart';
+import 'package:movie/models/base_api_model/cast_list_detail.dart';
 import 'package:movie/models/base_api_model/movie_comment.dart';
 import 'package:movie/models/base_api_model/movie_like_model.dart';
 import 'package:movie/models/base_api_model/movie_stream_link.dart';
@@ -123,6 +124,32 @@ class BaseApi {
       "listName": list.listName
     };
     return await _http.request(_url, method: 'PUT', data: data);
+  }
+
+  Future<ResponseModel<CastListDetail>> getCastListDetail(int listId,
+      {int page = 1, int pageSize = 20}) async {
+    final String _url =
+        '/CastList/$listId/detail?page=$page&pageSize=$pageSize';
+    final r = await _http.request<CastListDetail>(_url);
+    return r;
+  }
+
+  Future<ResponseModel<BaseCast>> addCast(BaseCast cast) async {
+    final String _url = '/CastList/addCast';
+    final _data = {
+      "listId": cast.listId,
+      "Name": cast.name,
+      "castId": cast.castId,
+      "profileUrl": cast.profileUrl
+    };
+    final r = await _http.request<BaseCast>(_url, method: 'POST', data: _data);
+    return r;
+  }
+
+  Future<ResponseModel<BaseCast>> deleteCast(int id) async {
+    final String _url = '/CastList/detail/$id';
+    final r = await _http.request<BaseCast>(_url, method: 'DELETE');
+    return r;
   }
 
   Future<ResponseModel<AccountState>> getAccountState(

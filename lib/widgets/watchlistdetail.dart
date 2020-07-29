@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
-import 'package:movie/models/videolist.dart';
+import 'package:movie/models/video_list.dart';
 import 'package:video_player/video_player.dart';
 
 class WatchlistDetail extends StatefulWidget {

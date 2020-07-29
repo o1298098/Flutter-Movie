@@ -7,10 +7,10 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
-import 'package:movie/models/creditsmodel.dart';
+import 'package:movie/models/credits_model.dart';
 import 'package:movie/models/enums/imagesize.dart';
-import 'package:movie/models/episodemodel.dart';
-import 'package:movie/models/seasondetail.dart';
+import 'package:movie/models/episode_model.dart';
+import 'package:movie/models/season_detail.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/widgets/expandable_text.dart';
 

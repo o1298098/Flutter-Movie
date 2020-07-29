@@ -8,6 +8,7 @@ import 'base_api_model/braintree_billing_address.dart';
 import 'base_api_model/braintree_customer.dart';
 import 'base_api_model/braintree_subscription.dart';
 import 'base_api_model/braintree_transaction.dart';
+import 'base_api_model/cast_list_detail.dart';
 import 'base_api_model/movie_comment.dart';
 import 'base_api_model/movie_stream_link.dart';
 import 'base_api_model/tvshow_comment.dart';
@@ -16,19 +17,19 @@ import 'base_api_model/user_list.dart';
 import 'base_api_model/user_list_detail.dart';
 import 'base_api_model/user_media.dart';
 import 'base_api_model/user_premium_model.dart';
-import 'combinedcredits.dart';
-import 'creditsmodel.dart';
-import 'episodemodel.dart';
-import 'imagemodel.dart';
+import 'combined_credits.dart';
+import 'credits_model.dart';
+import 'episode_model.dart';
+import 'image_model.dart';
 import 'keyword.dart';
 import 'moviedetail.dart';
-import 'peopledetail.dart';
+import 'people_detail.dart';
 import 'review.dart';
-import 'searchresult.dart';
-import 'seasondetail.dart';
-import 'tvdetail.dart';
-import 'videolist.dart';
-import 'videomodel.dart';
+import 'search_result.dart';
+import 'season_detail.dart';
+import 'tvshow_detail.dart';
+import 'video_list.dart';
+import 'video_model.dart';
 
 import 'github_release.dart';
 
@@ -105,6 +106,10 @@ class ModelFactory {
         return TvShowLikeModel(json) as T;
       case 'MovieLikeModel':
         return MovieLikeModel(json) as T;
+      case 'CastListDetail':
+        return CastListDetail(json) as T;
+      case 'BaseCast':
+        return BaseCast.fromJson(json) as T;
       default:
         return json;
     }

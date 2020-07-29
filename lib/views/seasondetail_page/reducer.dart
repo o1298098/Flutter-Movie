@@ -1,8 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/episodemodel.dart';
-import 'package:movie/models/imagemodel.dart';
-import 'package:movie/models/seasondetail.dart';
-import 'package:movie/models/videomodel.dart';
+import 'package:movie/models/episode_model.dart';
+import 'package:movie/models/image_model.dart';
+import 'package:movie/models/season_detail.dart';
+import 'package:movie/models/video_model.dart';
 import 'package:movie/views/seasondetail_page/components/seasoncast_component/state.dart';
 
 import 'action.dart';

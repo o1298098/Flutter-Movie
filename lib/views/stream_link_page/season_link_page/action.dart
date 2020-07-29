@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/episodemodel.dart';
-import 'package:movie/models/seasondetail.dart';
-import 'package:movie/models/tvdetail.dart';
+import 'package:movie/models/episode_model.dart';
+import 'package:movie/models/season_detail.dart';
+import 'package:movie/models/tvshow_detail.dart';
 
 enum SeasonLinkPageAction {
   action,

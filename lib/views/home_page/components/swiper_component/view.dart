@@ -8,7 +8,7 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/widgets/shimmercell.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/media_type.dart';
-import 'package:movie/models/videolist.dart';
+import 'package:movie/models/video_list.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/home_page/action.dart';
 
@@ -120,8 +120,7 @@ class _Cell extends StatelessWidget {
                         data.overview,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontSize: Adapt.px(24)),
+                        style: TextStyle(fontSize: Adapt.px(24)),
                       ),
                     )
                   ],
@@ -185,7 +184,7 @@ class _Swiper extends StatelessWidget {
                 );
               },
             )
-          :const _ShimmerCell(),
+          : const _ShimmerCell(),
     );
   }
 }

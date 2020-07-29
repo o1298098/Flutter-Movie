@@ -6,7 +6,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
-import 'package:movie/models/imagemodel.dart';
+import 'package:movie/models/image_model.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/tvdetail_page/action.dart';
 import 'package:parallax_image/parallax_image.dart';

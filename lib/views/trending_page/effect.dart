@@ -2,7 +2,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart' hide Action, Page;
 import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/models/enums/time_window.dart';
-import 'package:movie/models/searchresult.dart';
+import 'package:movie/models/search_result.dart';
 import 'package:movie/views/detail_page/page.dart';
 import 'package:movie/views/peopledetail_page/page.dart';
 import 'package:movie/views/tvshow_detail_page/page.dart';

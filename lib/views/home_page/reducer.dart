@@ -1,8 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/base_api_model/base_tvshow.dart';
-import 'package:movie/models/searchresult.dart';
-import 'package:movie/models/videolist.dart';
+import 'package:movie/models/search_result.dart';
+import 'package:movie/models/video_list.dart';
 
 import 'action.dart';
 import 'state.dart';

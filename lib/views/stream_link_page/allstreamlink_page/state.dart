@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/base_api_model/base_tvshow.dart';
 import 'package:movie/models/enums/media_type.dart';
-import 'package:movie/models/sortcondition.dart';
+import 'package:movie/models/sort_condition.dart';
 
 class AllStreamLinkPageState implements Cloneable<AllStreamLinkPageState> {
   BaseMovieModel movieList;

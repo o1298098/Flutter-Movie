@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/votecolorhelper.dart';
 import 'package:movie/widgets/expandable_text.dart';
-import 'package:movie/models/tvdetail.dart';
+import 'package:movie/models/tvshow_detail.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 import 'dart:ui';

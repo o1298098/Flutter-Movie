@@ -7,7 +7,7 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/widgets/keepalive_widget.dart';
 import 'package:movie/models/enums/genres.dart';
 import 'package:movie/models/enums/imagesize.dart';
-import 'package:movie/models/videolist.dart';
+import 'package:movie/models/video_list.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
 

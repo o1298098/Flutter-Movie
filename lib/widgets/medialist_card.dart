@@ -8,8 +8,9 @@ import 'package:movie/models/base_api_model/user_list.dart';
 import 'package:movie/models/base_api_model/user_list_detail.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/media_type.dart';
-import 'package:movie/models/mylistmodel.dart';
+import 'package:movie/models/mylist_model.dart';
 import 'package:movie/models/response_model.dart';
+import 'package:movie/style/themestyle.dart';
 
 class MediaListCardDialog extends StatefulWidget {
   final MediaType type;
@@ -102,14 +103,13 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
         context: context,
         builder: (ctx) {
           return SimpleDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(Adapt.px(30))),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             contentPadding: EdgeInsets.zero,
             children: <Widget>[
               Container(
                 padding: EdgeInsets.all(Adapt.px(30)),
                 width: Adapt.px(600),
-                height: Adapt.screenH() / 2,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -159,31 +159,13 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
         });
   }
 
-  Widget _buildListCell(UserList d) {
-    bool _selected = d.selected == 1 ? true : false;
-    return Column(
-      children: <Widget>[
-        ListTile(
-          selected: _selected,
-          title: Text(
-            d.listName,
-            style: TextStyle(fontSize: Adapt.px(30)),
-          ),
-          trailing: _selected ? Icon(Icons.check) : SizedBox(),
-          onTap: () async {
-            final l = await _userList;
-            l.result.data.forEach((f) {
-              if (f.selected == 1) f.selected = 0;
-            });
-            d.selected = 1;
-            setState(() {});
-          },
-        ),
-        Divider(
-          height: 1,
-        )
-      ],
-    );
+  void _onSelected(UserList userlist) async {
+    final l = await _userList;
+    l.result.data.forEach((f) {
+      if (f.selected == 1) f.selected = 0;
+    });
+    userlist.selected = 1;
+    setState(() {});
   }
 
   @override
@@ -201,34 +183,15 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final Size _size = MediaQuery.of(context).size;
     return SimpleDialog(
-        contentPadding: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(Adapt.px(20))),
+        title: _Title(onAdd: () => _buildCreateListDialog()),
         children: <Widget>[
           Container(
-              padding: EdgeInsets.all(Adapt.px(30)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'Add to my list',
-                    style: TextStyle(
-                        fontSize: Adapt.px(40), fontWeight: FontWeight.bold),
-                  ),
-                  IconButton(
-                    padding: EdgeInsets.zero,
-                    icon: Icon(Icons.add_circle_outline),
-                    onPressed: _buildCreateListDialog,
-                  )
-                ],
-              )),
-          Divider(
-            height: 2,
-          ),
-          Container(
-            width: Adapt.screenW() - Adapt.px(60),
-            height: Adapt.px(600),
+            width: _size.width,
+            height: _size.height / 2,
             child: FutureBuilder<ResponseModel<UserListModel>>(
               future: _userList,
               builder: (BuildContext context,
@@ -245,31 +208,134 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
                       ),
                     );
                   case ConnectionState.done:
-                    if (snapshot.hasData && snapshot.data.success)
-                      return ListView(
-                        children: snapshot.data.result.data
-                            .map(_buildListCell)
-                            .toList(),
-                      );
-                    else
+                    if (snapshot.hasData && snapshot.data.success) {
+                      final List<UserList> _list =
+                          snapshot.data?.result?.data ?? [];
+                      return ListView.separated(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 10),
+                          itemBuilder: (_, index) {
+                            final d = _list[index];
+                            return _ListCell(
+                              data: d,
+                              selected: d.selected == 1,
+                              onTap: _onSelected,
+                            );
+                          },
+                          separatorBuilder: (_, index) => SizedBox(height: 10),
+                          itemCount: _list.length);
+                    } else
                       return SizedBox();
                 }
                 return SizedBox();
               },
             ),
           ),
-          Divider(),
-          Container(
-            height: Adapt.px(100),
-            child: FlatButton(
-              child: Text(
-                'Submit',
-                style:
-                    TextStyle(color: Colors.blueAccent, fontSize: Adapt.px(35)),
-              ),
-              onPressed: _submit,
-            ),
+          _ButtonPanel(
+            onSubmit: _submit,
+            onCancel: () => Navigator.of(context).pop(),
           )
         ]);
+  }
+}
+
+class _Title extends StatelessWidget {
+  final Function onAdd;
+  const _Title({this.onAdd});
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text('Add to my list'),
+        GestureDetector(
+          onTap: onAdd,
+          child: Icon(Icons.add_circle),
+        ),
+      ],
+    );
+  }
+}
+
+class _ListCell extends StatelessWidget {
+  final UserList data;
+  final bool selected;
+  final Function(UserList) onTap;
+  const _ListCell({this.data, this.selected, this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    final _theme = ThemeStyle.getTheme(context);
+    return GestureDetector(
+        onTap: () => onTap(data),
+        child: Container(
+          padding: EdgeInsets.all(10),
+          decoration: selected
+              ? BoxDecoration(
+                  border: Border.all(color: _theme.iconTheme.color),
+                  borderRadius: BorderRadius.circular(5),
+                )
+              : null,
+          child: Text(
+            data.listName ?? '',
+            style: TextStyle(fontSize: 18),
+          ),
+        ));
+  }
+}
+
+class _ButtonPanel extends StatelessWidget {
+  final Function onSubmit;
+  final Function onCancel;
+  const _ButtonPanel({this.onSubmit, this.onCancel});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          _Button(
+            text: 'cancel',
+            onPress: onCancel,
+          ),
+          SizedBox(width: 24),
+          _Button(
+            text: 'ok',
+            onPress: onSubmit,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Button extends StatelessWidget {
+  final String text;
+  final Function onPress;
+  const _Button({this.onPress, this.text});
+  @override
+  Widget build(BuildContext context) {
+    final _theme = ThemeStyle.getTheme(context);
+    final _textStyle = TextStyle(
+        fontSize: 20,
+        color: _theme.brightness == Brightness.light
+            ? const Color(0xFFFFFFFF)
+            : const Color(0xFF000000));
+    return InkWell(
+      onTap: onPress,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+        constraints: BoxConstraints(minWidth: 80),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: _theme.iconTheme.color),
+        child: Center(
+          child: Text(
+            text,
+            style: _textStyle,
+          ),
+        ),
+      ),
+    );
   }
 }

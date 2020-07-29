@@ -1,8 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/user_list_detail.dart';
 import 'package:movie/models/enums/screenshot_type.dart';
-import 'package:movie/models/listdetailmode.dart';
-import 'package:movie/models/sortcondition.dart';
+import 'package:movie/models/list_detail_mode.dart';
+import 'package:movie/models/sort_condition.dart';
 
 enum ListDetailPageAction {
   action,

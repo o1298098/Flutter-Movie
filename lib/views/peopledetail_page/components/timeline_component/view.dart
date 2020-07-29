@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/generated/i18n.dart';
-import 'package:movie/models/combinedcredits.dart';
+import 'package:movie/models/combined_credits.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/peopledetail_page/action.dart';

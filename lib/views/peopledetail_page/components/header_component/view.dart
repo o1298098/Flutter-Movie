@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/generated/i18n.dart';
+import 'package:movie/models/base_api_model/cast_list_detail.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/style/themestyle.dart';
+import 'package:movie/views/peopledetail_page/components/header_component/components/cast_list.dart';
+import 'package:movie/widgets/expandable_text.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../style/themestyle.dart';
@@ -13,45 +16,6 @@ import 'state.dart';
 
 Widget buildView(
     HeaderState state, Dispatch dispatch, ViewService viewService) {
-  final ThemeData _theme = ThemeStyle.getTheme(viewService.context);
-  void _bioReadMore() async {
-    if (state.biography == null || state.biography.isEmpty) return;
-    await showGeneralDialog(
-        context: viewService.context,
-        barrierLabel: 'bio',
-        barrierColor: Colors.black45,
-        barrierDismissible: true,
-        transitionDuration: Duration(milliseconds: 300),
-        pageBuilder: (context, animation, secAnimation) {
-          return Center(
-            child: Material(
-              color: _theme.backgroundColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Adapt.px(20))),
-              child: Container(
-                padding: EdgeInsets.all(Adapt.px(30)),
-                width: Adapt.screenW() - Adapt.px(60),
-                height: Adapt.screenH() - Adapt.px(400),
-                child: Scrollbar(
-                  child: SingleChildScrollView(
-                    child: Text(
-                      state?.biography == null ||
-                              state?.biography?.isEmpty == true
-                          ? "We don't have a biography for ${state.profileName}"
-                          : state.biography,
-                      style: TextStyle(
-                          fontSize: Adapt.px(30),
-                          height: 1.2,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          );
-        });
-  }
-
   return Container(
       key: ValueKey('header'),
       width: Adapt.screenW(),
@@ -84,37 +48,23 @@ Widget buildView(
             ),
           ),
           SizedBox(height: Adapt.px(50)),
-          _NameCell(
-            peopleid: state.peopleid,
-            profileName: state.profileName,
-          ),
-          _YearsOld(
+          _NamePanel(
+            id: state.peopleid,
+            name: state.profileName,
             birthday: state.birthday,
             deathday: state.deathday,
+            profilePath: state.profilePath,
           ),
           SizedBox(height: Adapt.px(50)),
           Padding(
-              padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    I18n.of(viewService.context).biography,
-                    softWrap: true,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500, fontSize: Adapt.px(40)),
-                  ),
-                  Expanded(
-                    child: SizedBox(),
-                  ),
-                  InkWell(
-                      onTap: () => _bioReadMore(),
-                      child: Text(
-                        'Read more',
-                        style: TextStyle(color: Colors.grey[500]),
-                      ))
-                ],
-              )),
+            padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+            child: Text(
+              I18n.of(viewService.context).biography,
+              softWrap: true,
+              style: TextStyle(
+                  fontWeight: FontWeight.w500, fontSize: Adapt.px(40)),
+            ),
+          ),
           SizedBox(height: Adapt.px(30)),
           _BiographyCell(
             biography: state.biography,
@@ -125,10 +75,82 @@ Widget buildView(
       ));
 }
 
+class _BiographyShimmer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeStyle.getTheme(context);
+    final Color _baseColor = Colors.grey[200];
+    return Shimmer.fromColors(
+      baseColor: _theme.primaryColorDark,
+      highlightColor: _theme.primaryColorLight,
+      child: Container(
+        child: Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(left: Adapt.px(60)),
+              color: _baseColor,
+              height: Adapt.px(30),
+            ),
+            SizedBox(height: Adapt.px(10)),
+            Container(
+              color: _baseColor,
+              height: Adapt.px(30),
+            ),
+            SizedBox(height: Adapt.px(10)),
+            Container(
+              color: _baseColor,
+              height: Adapt.px(30),
+            ),
+            SizedBox(height: Adapt.px(10)),
+            Container(
+              color: _baseColor,
+              height: Adapt.px(30),
+            ),
+            SizedBox(height: Adapt.px(10)),
+            Container(
+              color: _baseColor,
+              height: Adapt.px(30),
+            ),
+            SizedBox(height: Adapt.px(10)),
+            Container(
+              color: _baseColor,
+              height: Adapt.px(30),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _BiographyCell extends StatelessWidget {
+  final String biography;
+  final String profileName;
+  const _BiographyCell({this.biography, this.profileName});
+  @override
+  Widget build(BuildContext context) {
+    final _theme = ThemeStyle.getTheme(context);
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+      child: biography == null
+          ? _BiographyShimmer()
+          : ExpandableText(
+              biography == null || biography?.isEmpty == true
+                  ? "We don't have a biography for $profileName"
+                  : biography,
+              maxLines: 5,
+              style: TextStyle(
+                  fontSize: 16,
+                  height: 1.5,
+                  color: _theme.textTheme.bodyText1.color),
+            ),
+    );
+  }
+}
+
 class _NameCell extends StatelessWidget {
   final String profileName;
-  final int peopleid;
-  const _NameCell({this.peopleid, this.profileName});
+  const _NameCell({this.profileName});
   @override
   Widget build(BuildContext context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
@@ -146,96 +168,12 @@ class _NameCell extends StatelessWidget {
                 ),
               ),
             )
-          : Hero(
-              tag: 'Actor' + peopleid.toString(),
-              child: Material(
-                color: Colors.transparent,
-                child: Text(
-                  profileName ?? '',
-                  style: TextStyle(
-                      fontSize: Adapt.px(50), fontWeight: FontWeight.w700),
-                ),
-              ),
+          : Text(
+              profileName ?? '',
+              style: TextStyle(
+                  fontSize: Adapt.px(50), fontWeight: FontWeight.w700),
             ),
     );
-  }
-}
-
-class _BiographyShimmer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData _theme = ThemeStyle.getTheme(context);
-    return Shimmer.fromColors(
-      baseColor: _theme.primaryColorDark,
-      highlightColor: _theme.primaryColorLight,
-      child: Container(
-        child: Column(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(left: Adapt.px(60)),
-              color: Colors.grey[200],
-              height: Adapt.px(30),
-            ),
-            SizedBox(
-              height: Adapt.px(10),
-            ),
-            Container(
-              color: Colors.grey[200],
-              height: Adapt.px(30),
-            ),
-            SizedBox(
-              height: Adapt.px(10),
-            ),
-            Container(
-              color: Colors.grey[200],
-              height: Adapt.px(30),
-            ),
-            SizedBox(
-              height: Adapt.px(10),
-            ),
-            Container(
-              color: Colors.grey[200],
-              height: Adapt.px(30),
-            ),
-            SizedBox(
-              height: Adapt.px(10),
-            ),
-            Container(
-              color: Colors.grey[200],
-              height: Adapt.px(30),
-            ),
-            SizedBox(
-              height: Adapt.px(10),
-            ),
-            Container(
-              color: Colors.grey[200],
-              height: Adapt.px(30),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _BiographyCell extends StatelessWidget {
-  final String biography;
-  final String profileName;
-  const _BiographyCell({this.biography, this.profileName});
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-        child: biography == null
-            ? _BiographyShimmer()
-            : Text(
-                biography == null || biography?.isEmpty == true
-                    ? "We don't have a biography for $profileName"
-                    : biography,
-                maxLines: 10,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: Adapt.px(30)),
-              ));
   }
 }
 
@@ -261,5 +199,60 @@ class _YearsOld extends StatelessWidget {
       return SizedBox(
         height: Adapt.px(35),
       );
+  }
+}
+
+class _NamePanel extends StatelessWidget {
+  final int id;
+  final String profilePath;
+  final String name;
+  final String birthday;
+  final String deathday;
+  const _NamePanel(
+      {this.id, this.name, this.birthday, this.deathday, this.profilePath});
+  @override
+  Widget build(BuildContext context) {
+    void _showCsatList() {
+      showDialog(
+          context: context,
+          builder: (_) => CastList(
+              cast: BaseCast.fromParams(
+                  name: name, castId: id, profileUrl: profilePath)));
+    }
+
+    return Row(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _NameCell(
+              profileName: name,
+            ),
+            _YearsOld(
+              birthday: birthday,
+              deathday: deathday,
+            ),
+          ],
+        ),
+        Spacer(),
+        GestureDetector(
+          onTap: _showCsatList,
+          child: Icon(
+            Icons.add_circle_outline,
+            size: 25,
+          ),
+        ),
+        SizedBox(width: Adapt.px(20)),
+        GestureDetector(
+            onTap: () async {
+              await Navigator.of(context).pushNamed("testPage");
+            },
+            child: Icon(
+              Icons.favorite_border,
+              size: 25,
+            )),
+        SizedBox(width: Adapt.px(40))
+      ],
+    );
   }
 }

@@ -1,13 +1,13 @@
 import 'dart:convert' show json;
 
-import 'package:movie/models/externalidsmodel.dart';
-import 'package:movie/models/seasondetail.dart';
+import 'package:movie/models/external_ids_model.dart';
+import 'package:movie/models/season_detail.dart';
 
-import 'creditsmodel.dart';
-import 'imagemodel.dart';
+import 'credits_model.dart';
+import 'image_model.dart';
 import 'keyword.dart';
 import 'review.dart';
-import 'videolist.dart';
+import 'video_list.dart';
 
 class TVDetailModel {
   int id;

@@ -2,13 +2,13 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/base_api_model/account_state.dart';
-import 'package:movie/models/creditsmodel.dart';
-import 'package:movie/models/imagemodel.dart';
+import 'package:movie/models/credits_model.dart';
+import 'package:movie/models/image_model.dart';
 import 'package:movie/models/keyword.dart';
 import 'package:movie/models/review.dart';
-import 'package:movie/models/tvdetail.dart';
-import 'package:movie/models/videolist.dart';
-import 'package:movie/models/videomodel.dart';
+import 'package:movie/models/tvshow_detail.dart';
+import 'package:movie/models/video_list.dart';
+import 'package:movie/models/video_model.dart';
 
 class TvShowDetailState implements Cloneable<TvShowDetailState> {
   GlobalKey<ScaffoldState> scaffoldkey;

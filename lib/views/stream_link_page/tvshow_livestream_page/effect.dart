@@ -11,7 +11,7 @@ import 'package:movie/models/base_api_model/base_user.dart';
 import 'package:movie/models/base_api_model/stream_link_report.dart';
 import 'package:movie/models/base_api_model/tvshow_comment.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
-import 'package:movie/models/episodemodel.dart';
+import 'package:movie/models/episode_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:video_player/video_player.dart';

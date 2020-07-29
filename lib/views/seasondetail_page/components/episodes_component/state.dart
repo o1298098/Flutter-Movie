@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/episodemodel.dart';
+import 'package:movie/models/episode_model.dart';
 
 class EpisodesState implements Cloneable<EpisodesState> {
   List<Episode> episodes;
@@ -12,8 +12,7 @@ class EpisodesState implements Cloneable<EpisodesState> {
 
   @override
   EpisodesState clone() {
-    return EpisodesState()
-      ..episodes = episodes;
+    return EpisodesState()..episodes = episodes;
   }
 }
 

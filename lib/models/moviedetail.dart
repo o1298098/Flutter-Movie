@@ -1,13 +1,13 @@
 import 'dart:convert' show json;
 
-import 'package:movie/models/releasedatemodel.dart';
+import 'package:movie/models/release_date_model.dart';
 import 'package:movie/models/review.dart';
-import 'package:movie/models/videolist.dart';
-import 'package:movie/models/videomodel.dart';
+import 'package:movie/models/video_list.dart';
+import 'package:movie/models/video_model.dart';
 
-import 'creditsmodel.dart';
-import 'externalidsmodel.dart';
-import 'imagemodel.dart';
+import 'credits_model.dart';
+import 'external_ids_model.dart';
+import 'image_model.dart';
 import 'keyword.dart';
 
 class MovieDetailModel {
@@ -115,9 +115,8 @@ class MovieDetailModel {
 
     productionCompanies = jsonRes['production_companies'] == null ? null : [];
 
-    for (var production_companiesItem in productionCompanies == null
-        ? []
-        : jsonRes['production_companies']) {
+    for (var production_companiesItem
+        in productionCompanies == null ? [] : jsonRes['production_companies']) {
       productionCompanies.add(production_companiesItem == null
           ? null
           : new ProductionCompanie.fromJson(production_companiesItem));
@@ -125,9 +124,8 @@ class MovieDetailModel {
 
     productionCountries = jsonRes['production_countries'] == null ? null : [];
 
-    for (var production_countriesItem in productionCountries == null
-        ? []
-        : jsonRes['production_countries']) {
+    for (var production_countriesItem
+        in productionCountries == null ? [] : jsonRes['production_countries']) {
       productionCountries.add(production_countriesItem == null
           ? null
           : new ProductionCountrie.fromJson(production_countriesItem));

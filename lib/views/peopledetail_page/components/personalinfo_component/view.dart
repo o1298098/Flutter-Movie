@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/generated/i18n.dart';
-import 'package:movie/models/peopledetail.dart';
+import 'package:movie/models/people_detail.dart';
 
 import 'state.dart';
 

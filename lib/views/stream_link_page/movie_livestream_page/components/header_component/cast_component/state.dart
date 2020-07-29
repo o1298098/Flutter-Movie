@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/creditsmodel.dart';
+import 'package:movie/models/credits_model.dart';
 
 import '../state.dart';
 

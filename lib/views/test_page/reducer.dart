@@ -1,6 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fish_redux/fish_redux.dart';
-
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -8,7 +7,8 @@ Reducer<TestPageState> buildReducer() {
   return asReducer(
     <Object, Reducer<TestPageState>>{
       TestPageAction.action: _onAction,
-      TestPageAction.setData: _setData
+      TestPageAction.setData: _setData,
+      TestPageAction.setData2: _setData2
     },
   );
 }
@@ -19,8 +19,15 @@ TestPageState _onAction(TestPageState state, Action action) {
 }
 
 TestPageState _setData(TestPageState state, Action action) {
-  final Stream<QuerySnapshot> d = action.payload;
+  final Stream<FetchResult> d = action.payload;
   final TestPageState newState = state.clone();
   newState.testData = d;
+  return newState;
+}
+
+TestPageState _setData2(TestPageState state, Action action) {
+  final Stream<FetchResult> d = action.payload;
+  final TestPageState newState = state.clone();
+  newState.testData2 = d;
   return newState;
 }

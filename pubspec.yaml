@@ -72,6 +72,7 @@ dependencies:
   flutter_braintree: ^0.6.0
   camera: ^0.5.8+2
   flutter_local_notifications: ^1.4.4+1
+  graphql_flutter: ^3.0.1
   
 
 dev_dependencies:

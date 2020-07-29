@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/combinedcredits.dart';
+import 'package:movie/models/combined_credits.dart';
 import 'package:movie/models/enums/media_type.dart';
-import 'package:movie/models/peopledetail.dart';
+import 'package:movie/models/people_detail.dart';
 
 enum PeopleDetailPageAction {
   action,

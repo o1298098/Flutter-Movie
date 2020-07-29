@@ -5,7 +5,7 @@ import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/genres.dart';
 import 'package:movie/models/enums/imagesize.dart';
-import 'package:movie/models/searchresult.dart';
+import 'package:movie/models/search_result.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/trending_page/action.dart';
 import 'package:parallax_image/parallax_image.dart';

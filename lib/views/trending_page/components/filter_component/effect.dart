@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/models/enums/time_window.dart';
-import 'package:movie/models/sortcondition.dart';
+import 'package:movie/models/sort_condition.dart';
 import 'action.dart';
 import 'state.dart';
 

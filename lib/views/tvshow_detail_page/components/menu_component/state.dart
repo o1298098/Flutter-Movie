@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/account_state.dart';
-import 'package:movie/models/tvdetail.dart';
+import 'package:movie/models/tvshow_detail.dart';
 import 'package:movie/views/tvshow_detail_page/state.dart';
 
 class MenuState implements Cloneable<MenuState> {

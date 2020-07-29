@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
-import 'package:movie/models/tvdetail.dart';
+import 'package:movie/models/tvshow_detail.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/tvshow_detail_page/action.dart';
 
