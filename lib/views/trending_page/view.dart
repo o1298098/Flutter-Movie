@@ -32,28 +32,23 @@ Widget buildView(
             ),
           ],
         ),
-        body: Container(
-          child: AnimatedSwitcher(
-            duration: Duration(milliseconds: 300),
-            child: CustomScrollView(
-              key: ValueKey(state.trending),
-              physics: BouncingScrollPhysics(),
-              controller: state.controller,
-              slivers: <Widget>[
-                viewService.buildComponent('filter'),
-                _Refreshing(refreshController: state.refreshController),
-                SliverToBoxAdapter(
-                  child: SizedBox(height: Adapt.px(30)),
-                ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate((ctx, index) {
-                    return _adapter.itemBuilder(ctx, index);
-                  }, childCount: _adapter.itemCount),
-                ),
-                _Loading(),
-              ],
+        body: CustomScrollView(
+          key: ValueKey(state.trending),
+          physics: BouncingScrollPhysics(),
+          controller: state.controller,
+          slivers: <Widget>[
+            viewService.buildComponent('filter'),
+            _Refreshing(refreshController: state.refreshController),
+            SliverToBoxAdapter(
+              child: SizedBox(height: Adapt.px(30)),
             ),
-          ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate((ctx, index) {
+                return _adapter.itemBuilder(ctx, index);
+              }, childCount: _adapter.itemCount),
+            ),
+            _Loading(),
+          ],
         ),
       );
     },

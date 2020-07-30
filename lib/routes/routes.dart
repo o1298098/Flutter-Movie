@@ -2,6 +2,8 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/views/account_page/page.dart';
+import 'package:movie/views/cast_list/cast_list_detail_page/page.dart';
+import 'package:movie/views/cast_list/cast_list_page/page.dart';
 import 'package:movie/views/checkout_page/page.dart';
 import 'package:movie/views/coming_page/page.dart';
 import 'package:movie/views/createlist_page/page.dart';
@@ -83,7 +85,9 @@ class Routes {
       'tvShowDetailPage': TvShowDetailPage(),
       'notificationPage': NotificationPage(),
       'episodeLiveStreamPage': EpisodeLiveStreamPage(),
-      'movieLiveStreamPage': MovieLiveStreamPage()
+      'movieLiveStreamPage': MovieLiveStreamPage(),
+      'castListPage': CastListPage(),
+      'castListDetailPage': CastListDetailPage(),
     },
     visitor: (String path, Page<Object, dynamic> page) {
       if (page.isTypeof<GlobalBaseState>()) {

@@ -18,7 +18,7 @@ Widget buildView(
             physics: BouncingScrollPhysics(),
             child: Stack(
               children: <Widget>[
-                _BackGround(),
+                const _BackGround(),
                 SafeArea(
                   child: Column(
                     children: <Widget>[
@@ -39,6 +39,7 @@ Widget buildView(
 }
 
 class _BackGround extends StatelessWidget {
+  const _BackGround();
   @override
   Widget build(BuildContext context) {
     return ClipPath(

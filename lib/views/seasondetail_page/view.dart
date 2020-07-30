@@ -29,27 +29,9 @@ Widget buildView(
               slivers: [
                 viewService.buildComponent('header'),
                 viewService.buildComponent('seasonCast'),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: Adapt.px(40), vertical: Adapt.px(30)),
-                    child: Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: I18n.of(viewService.context).episodes,
-                              style: TextStyle(
-                                  fontSize: Adapt.px(30),
-                                  fontWeight: FontWeight.w600)),
-                          TextSpan(
-                              text:
-                                  ' ${state.seasonDetailModel?.episodes != null ? state.seasonDetailModel?.episodes?.length?.toString() : ''}',
-                              style: TextStyle(
-                                  color: Colors.grey, fontSize: Adapt.px(26)))
-                        ],
-                      ),
-                    ),
-                  ),
+                _EpisodesTitle(
+                  title:
+                      ' ${state.seasonDetailModel?.episodes != null ? state.seasonDetailModel?.episodes?.length?.toString() : ''}',
                 ),
                 viewService.buildComponent('episode'),
               ],
@@ -57,4 +39,32 @@ Widget buildView(
       ],
     );
   });
+}
+
+class _EpisodesTitle extends StatelessWidget {
+  final String title;
+  const _EpisodesTitle({this.title});
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: Adapt.px(40), vertical: Adapt.px(30)),
+        child: Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                  text: I18n.of(context).episodes,
+                  style: TextStyle(
+                      fontSize: Adapt.px(30), fontWeight: FontWeight.w600)),
+              TextSpan(
+                  text: title,
+                  style: TextStyle(
+                      color: const Color(0xFF9E9E9E), fontSize: Adapt.px(26)))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

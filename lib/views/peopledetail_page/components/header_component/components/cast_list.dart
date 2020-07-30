@@ -5,7 +5,7 @@ import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/base_api_model/base_cast_list.dart';
 import 'package:movie/models/base_api_model/cast_list_detail.dart';
 import 'package:movie/style/themestyle.dart';
-import 'package:movie/views/cast_list_page/components/cast_list_create.dart';
+import 'package:movie/views/cast_list/cast_list_page/components/cast_list_create.dart';
 import 'package:toast/toast.dart';
 
 class CastList extends StatefulWidget {

@@ -44,7 +44,7 @@ class HeaderConnector extends ConnOp<SeasonDetailPageState, HeaderState> {
     mstate.overwatch = state.seasonDetailModel?.overview;
     mstate.name = state.tvShowName;
     mstate.airDate = state.seasonDetailModel?.airDate;
-    mstate.seasonName = state.seasonDetailModel?.name ?? '';
+    mstate.seasonName = state.name ?? '';
     mstate.seasonNumber = state.seasonNumber;
     mstate.images = state.images;
     mstate.videos = state.videos;

@@ -20,6 +20,7 @@ class BaseGraphQLClient {
         name
         updateTime
         createTime
+        castCount
       }
     }''';
 
@@ -29,7 +30,8 @@ class BaseGraphQLClient {
   Future<QueryResult> addCastList(BaseCastList list) {
     String _query = '''
     mutation {
-      addCastList(
+      cast{
+      addList(
         castList: {
           uid: "${list.uid}"
           updateTime: "${list.updateTime.toString()}"
@@ -41,6 +43,7 @@ class BaseGraphQLClient {
       ) {
        id
      }
+     }
    }
     ''';
 
@@ -50,7 +53,8 @@ class BaseGraphQLClient {
   Future<QueryResult> updateCastList(BaseCastList list) {
     String _query = '''
     mutation {
-      updateCastList(
+      cast{
+      updateList(
         castList: {
           id:${list.id}
           uid: "${list.uid}"
@@ -59,9 +63,11 @@ class BaseGraphQLClient {
           name: "${list.name}"
           description: "${list.description ?? ''}"
           backGroundUrl: "${list.backGroundUrl ?? ''}"
+          castCount:${list.castCount}
         }
       ) {
        id
+     }
      }
    }
     ''';
@@ -72,8 +78,10 @@ class BaseGraphQLClient {
   Future<QueryResult> deleteCastList(int listId) {
     String _query = '''
     mutation {
-      removeCastList(castListId:$listId){
+      cast{
+      removeList(castListId:$listId){
         id
+      }
       }
     }
     ''';
@@ -84,29 +92,19 @@ class BaseGraphQLClient {
   Future<QueryResult> addCast(BaseCastList list, BaseCast cast) {
     String _query = '''
     mutation {
-      updateCastList(
-        castList: {
-          id:${list.id}
-          uid: "${list.uid}"
-          updateTime: "${DateTime.now().toString()}"
-          createTime: "${list.createTime.toString()}"
-          name: "${list.name}"
-          description: "${list.description ?? ''}"
-          backGroundUrl: "${list.backGroundUrl ?? ''}"
-        }
-      ) {
-       id
-     }
+      cast{
      addCast(
         cast: { 
           listId: ${cast.listId}
           name: "${cast.name}"
           castId: ${cast.castId}
           profileUrl: "${cast.profileUrl}" 
+          updateTime:"${DateTime.now().toString()}"
       }
     ) {
-    id
-  }
+       id
+      }
+     }
    }
     ''';
 

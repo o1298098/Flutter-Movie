@@ -5,10 +5,9 @@ import 'package:movie/actions/http/graphql_client.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/base_api_model/base_cast_list.dart';
 import 'package:movie/style/themestyle.dart';
+import 'package:movie/widgets/loading_layout.dart';
 import 'package:path/path.dart' as Path;
 import 'package:toast/toast.dart';
-
-import '../../../widgets/loading_layout.dart';
 
 class CastListCreate extends StatefulWidget {
   @override

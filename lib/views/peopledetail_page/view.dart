@@ -25,13 +25,12 @@ Widget buildView(
               viewService.buildComponent('personalInfo'),
               viewService.buildComponent('knowFor'),
               viewService.buildComponent('gallery'),
-              SliverToBoxAdapter(
-                  child: _ActionTitle(
+              _ActionTitle(
                 title: state.peopleDetailModel?.knownForDepartment ?? 'Acting',
                 showMovie: state.showmovie,
                 onTap: (b) =>
                     dispatch(PeopleDetailPageActionCreator.showMovie(b)),
-              )),
+              ),
               viewService.buildComponent('timeline'),
               SliverToBoxAdapter(
                 child: const SizedBox(height: 20),
@@ -40,15 +39,18 @@ Widget buildView(
           ),
           SafeArea(
             child: Container(
-              margin: EdgeInsets.only(top: 10, right: Adapt.px(30)),
-              width: Adapt.px(60),
-              height: Adapt.px(60),
+              margin: EdgeInsets.only(top: 10, right: 20),
+              width: 30,
+              height: 30,
               decoration:
                   BoxDecoration(shape: BoxShape.circle, color: Colors.black38),
               child: IconButton(
                 padding: EdgeInsets.zero,
                 onPressed: () => Navigator.of(viewService.context).pop(),
-                icon: Icon(Icons.close),
+                icon: Icon(
+                  Icons.close,
+                  size: 20,
+                ),
                 color: Colors.white,
               ),
             ),
@@ -68,29 +70,32 @@ class _ActionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     final _selectTextStyle = TextStyle(fontWeight: FontWeight.w500);
     final _unSelectTextStyle = TextStyle(color: Colors.grey);
-    return Padding(
-      padding: EdgeInsets.fromLTRB(Adapt.px(30), 0, Adapt.px(30), Adapt.px(30)),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          _Title(department: title),
-          Expanded(
-            child: Container(),
-          ),
-          GestureDetector(
-            onTap: () => onTap(true),
-            child: Text(I18n.of(context).movies,
-                style: showMovie ? _selectTextStyle : _unSelectTextStyle),
-          ),
-          SizedBox(
-            width: Adapt.px(20),
-          ),
-          GestureDetector(
-            onTap: () => onTap(false),
-            child: Text(I18n.of(context).tvShows,
-                style: showMovie ? _unSelectTextStyle : _selectTextStyle),
-          )
-        ],
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding:
+            EdgeInsets.fromLTRB(Adapt.px(30), 0, Adapt.px(30), Adapt.px(30)),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            _Title(department: title),
+            Expanded(
+              child: Container(),
+            ),
+            GestureDetector(
+              onTap: () => onTap(true),
+              child: Text(I18n.of(context).movies,
+                  style: showMovie ? _selectTextStyle : _unSelectTextStyle),
+            ),
+            SizedBox(
+              width: Adapt.px(20),
+            ),
+            GestureDetector(
+              onTap: () => onTap(false),
+              child: Text(I18n.of(context).tvShows,
+                  style: showMovie ? _unSelectTextStyle : _selectTextStyle),
+            )
+          ],
+        ),
       ),
     );
   }

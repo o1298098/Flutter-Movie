@@ -248,7 +248,7 @@ class _NamePanel extends StatelessWidget {
         SizedBox(width: Adapt.px(20)),
         GestureDetector(
             onTap: () async {
-              await Navigator.of(context).pushNamed("testPage");
+              await Navigator.of(context).pushNamed("castListPage");
             },
             child: Icon(
               Icons.favorite_border,
