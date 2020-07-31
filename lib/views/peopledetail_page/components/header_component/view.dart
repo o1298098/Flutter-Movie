@@ -11,7 +11,6 @@ import 'package:movie/views/peopledetail_page/components/header_component/compon
 import 'package:movie/widgets/expandable_text.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../../style/themestyle.dart';
 import 'state.dart';
 
 Widget buildView(
@@ -32,7 +31,8 @@ Widget buildView(
                   boxShadow: <BoxShadow>[
                     BoxShadow(
                         blurRadius: 20,
-                        offset: Offset(0, 5),
+                        spreadRadius: -15.0,
+                        offset: Offset(0, 25),
                         color: Colors.black38),
                   ],
                   color: Colors.grey[200],
@@ -157,7 +157,9 @@ class _NameCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
-    return Padding(
+    final Size _size = MediaQuery.of(context).size;
+    return Container(
+      width: _size.width - 120,
       padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
       child: profileName == null
           ? SizedBox(
@@ -245,7 +247,7 @@ class _NamePanel extends StatelessWidget {
             size: 25,
           ),
         ),
-        SizedBox(width: Adapt.px(20)),
+        SizedBox(width: 15),
         GestureDetector(
             onTap: () async {
               await Navigator.of(context).pushNamed("castListPage");

@@ -21,6 +21,8 @@ class BaseGraphQLClient {
         updateTime
         createTime
         castCount
+        backgroundUrl
+        description
       }
     }''';
 
@@ -38,7 +40,7 @@ class BaseGraphQLClient {
           createTime: "${list.createTime.toString()}"
           name: "${list.name}"
           description: "${list.description ?? ''}"
-          backGroundUrl: "${list.backGroundUrl ?? ''}"
+          backgroundUrl: "${list.backgroundUrl ?? ''}"
         }
       ) {
        id
@@ -62,7 +64,7 @@ class BaseGraphQLClient {
           createTime: "${list.createTime.toString()}"
           name: "${list.name}"
           description: "${list.description ?? ''}"
-          backGroundUrl: "${list.backGroundUrl ?? ''}"
+          backGroundUrl: "${list.backgroundUrl ?? ''}"
           castCount:${list.castCount}
         }
       ) {

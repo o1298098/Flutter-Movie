@@ -34,7 +34,7 @@ class CastListModel {
 }
 
 class BaseCastList {
-  String backGroundUrl;
+  String backgroundUrl;
   int id;
   bool selected;
   DateTime createTime;
@@ -45,7 +45,7 @@ class BaseCastList {
   int castCount;
 
   BaseCastList.fromParams(
-      {this.backGroundUrl,
+      {this.backgroundUrl,
       this.id,
       this.selected,
       this.createTime,
@@ -56,19 +56,21 @@ class BaseCastList {
       this.castCount = 0});
 
   BaseCastList.fromJson(jsonRes) {
-    backGroundUrl = jsonRes['backGroundUrl'];
+    backgroundUrl = jsonRes['backgroundUrl'];
     id = int.parse(jsonRes['id']);
     selected = jsonRes['selected'] == '1';
-    createTime = DateTime.parse(jsonRes['createTime'] ?? '1990-01-01');
+    createTime =
+        DateTime.parse(jsonRes['createTime']?.toString() ?? '1990-01-01');
     description = jsonRes['description'];
     name = jsonRes['name'];
     uid = jsonRes['uid'];
-    updateTime = DateTime.parse(jsonRes['updateTime'] ?? '1990-01-01');
+    updateTime =
+        DateTime.parse(jsonRes['updateTime']?.toString() ?? '1990-01-01');
     castCount = int.parse(jsonRes['castCount'].toString());
   }
 
   @override
   String toString() {
-    return '{"backGroundUrl": ${backGroundUrl != null ? '${json.encode(backGroundUrl)}' : 'null'},"id": $id,"selected": $selected,"createTime": ${createTime != null ? '${json.encode(createTime)}' : 'null'},"description": ${description != null ? '${json.encode(description)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"uid": ${uid != null ? '${json.encode(uid)}' : 'null'},"updateTime": ${updateTime != null ? '${json.encode(updateTime)}' : 'null'},"castCount": $castCount}';
+    return '{"backGroundUrl": ${backgroundUrl != null ? '${json.encode(backgroundUrl)}' : 'null'},"id": $id,"selected": $selected,"createTime": $createTime,"description": ${description != null ? '${json.encode(description)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"uid": ${uid != null ? '${json.encode(uid)}' : 'null'},"updateTime": $updateTime,"castCount": $castCount}';
   }
 }

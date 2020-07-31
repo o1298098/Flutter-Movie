@@ -33,9 +33,15 @@ class BaseCast {
   int listId;
   String name;
   String profileUrl;
+  DateTime updateTime;
 
   BaseCast.fromParams(
-      {this.castId, this.id, this.listId, this.name, this.profileUrl});
+      {this.castId,
+      this.id,
+      this.listId,
+      this.name,
+      this.profileUrl,
+      this.updateTime});
 
   BaseCast.fromJson(jsonRes) {
     castId = jsonRes['castId'];
@@ -43,10 +49,12 @@ class BaseCast {
     listId = jsonRes['listId'];
     name = jsonRes['name'];
     profileUrl = jsonRes['profileUrl'];
+    updateTime =
+        DateTime.parse(jsonRes['updateTime']?.toString() ?? '2020-01-01');
   }
 
   @override
   String toString() {
-    return '{"castId": $castId,"id": $id,"listId": $listId,"name": ${name != null ? '${json.encode(name)}' : 'null'},"profileUrl": ${profileUrl != null ? '${json.encode(profileUrl)}' : 'null'}}';
+    return '{"castId": $castId,"id": $id,"listId": $listId,"name": ${name != null ? '${json.encode(name)}' : 'null'},"profileUrl": ${profileUrl != null ? '${json.encode(profileUrl)}' : 'null'},"updateTime": $updateTime}';
   }
 }

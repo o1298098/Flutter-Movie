@@ -35,7 +35,7 @@ class _CastListCreateState extends State<CastListCreate> {
       uid: _user.firebaseUser.uid,
       name: _nameController.text,
       description: _descriptionController.text,
-      backGroundUrl: _url,
+      backgroundUrl: _url,
       createTime: _nowTime,
       updateTime: _nowTime,
     );
@@ -60,7 +60,7 @@ class _CastListCreateState extends State<CastListCreate> {
   void _onUploadImage() async {
     final ImagePicker _imagePicker = ImagePicker();
     final _image = await _imagePicker.getImage(
-        source: ImageSource.gallery, maxHeight: 100, maxWidth: 100);
+        source: ImageSource.gallery, maxHeight: 1920, maxWidth: 1080);
     if (_image != null) {
       _setLoading(true);
       StorageReference storageReference = FirebaseStorage.instance
