@@ -31,6 +31,8 @@ Widget buildView(
         _CastList(
           data: state.listDetail?.data,
           onCastTap: (d) => dispatch(CastListDetailActionCreator.onCastTap(d)),
+          onDeleteTap: (d) =>
+              dispatch(CastListDetailActionCreator.onDeleteTap(d)),
         ),
         _LoadingPanel(loading: state.loading),
       ],
@@ -232,6 +234,20 @@ class _AppBarState extends State<_AppBar> {
               key: ValueKey('AppBarHide'),
               backgroundColor: Colors.transparent,
               elevation: 0.0,
+              leading: InkWell(
+                child: Container(
+                  margin: EdgeInsets.all(12),
+                  width: 20,
+                  height: 20,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle, color: const Color(0x60000000)),
+                  child: Icon(
+                    Icons.keyboard_arrow_left,
+                    color: const Color(0xFFFFFFFF),
+                  ),
+                ),
+                onTap: () => Navigator.of(context).pop(),
+              ),
             ),
     );
   }
@@ -255,7 +271,8 @@ class _CastListTitle extends StatelessWidget {
 class _CastList extends StatelessWidget {
   final List<BaseCast> data;
   final Function(BaseCast) onCastTap;
-  const _CastList({this.data, this.onCastTap});
+  final Function(BaseCast) onDeleteTap;
+  const _CastList({this.data, this.onCastTap, this.onDeleteTap});
   @override
   Widget build(BuildContext context) {
     return data == null
@@ -267,6 +284,7 @@ class _CastList extends StatelessWidget {
                     return _CastCell(
                       data: data[index],
                       onCastTap: onCastTap,
+                      onDeleteTap: onDeleteTap,
                     );
                   },
                   childCount: data.length,
@@ -290,17 +308,18 @@ class _CastList extends StatelessWidget {
 class _CastCell extends StatelessWidget {
   final BaseCast data;
   final Function(BaseCast) onCastTap;
-  const _CastCell({this.data, this.onCastTap});
+  final Function(BaseCast) onDeleteTap;
+  const _CastCell({this.data, this.onCastTap, this.onDeleteTap});
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
 
-    return GestureDetector(
-      onTap: () => onCastTap(data),
-      child: Container(
-        margin: EdgeInsets.only(bottom: 20, left: 20, right: 20),
-        child: Row(children: [
-          Container(
+    return Padding(
+      padding: EdgeInsets.only(bottom: 20, left: 20, right: 20),
+      child: Row(children: [
+        GestureDetector(
+          onTap: () => onCastTap(data),
+          child: Container(
             width: 80,
             height: 80,
             decoration: BoxDecoration(
@@ -324,8 +343,11 @@ class _CastCell extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: 10),
-          Column(
+        ),
+        SizedBox(width: 10),
+        GestureDetector(
+          onTap: () => onCastTap(data),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -342,10 +364,13 @@ class _CastCell extends StatelessWidget {
               )
             ],
           ),
-          Spacer(),
-          Icon(Icons.more_vert)
-        ]),
-      ),
+        ),
+        Spacer(),
+        InkWell(
+          onTap: () => onDeleteTap(data),
+          child: Icon(Icons.remove_circle_outline),
+        )
+      ]),
     );
   }
 }

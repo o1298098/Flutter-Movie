@@ -64,7 +64,7 @@ class BaseGraphQLClient {
           createTime: "${list.createTime.toString()}"
           name: "${list.name}"
           description: "${list.description ?? ''}"
-          backGroundUrl: "${list.backgroundUrl ?? ''}"
+          backgroundUrl: "${list.backgroundUrl ?? ''}"
           castCount:${list.castCount}
         }
       ) {
@@ -108,6 +108,34 @@ class BaseGraphQLClient {
       }
      }
    }
+    ''';
+
+    return _service.mutate(_query);
+  }
+
+  Future<QueryResult> deleteCast(int id, BaseCastList list) {
+    String _query = '''
+    mutation {
+        cast {
+          deleteCast(id: $id) {
+          id
+        }
+        updateList(
+        castList: {
+          id:${list.id}
+          uid: "${list.uid}"
+          updateTime: "${DateTime.now().toString()}"
+          createTime: "${list.createTime.toString()}"
+          name: "${list.name}"
+          description: "${list.description ?? ''}"
+          backgroundUrl: "${list.backgroundUrl ?? ''}"
+          castCount:${list.castCount - 1}
+        }
+      ) {
+       id
+     }
+      }
+    }
     ''';
 
     return _service.mutate(_query);

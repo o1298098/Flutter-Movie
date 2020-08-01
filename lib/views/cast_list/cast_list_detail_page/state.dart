@@ -8,13 +8,15 @@ class CastListDetailState implements Cloneable<CastListDetailState> {
   CastListDetail listDetail;
   ScrollController scrollController;
   bool loading;
+  bool allLoaded;
   @override
   CastListDetailState clone() {
     return CastListDetailState()
       ..castList = castList
       ..listDetail = listDetail
       ..scrollController = scrollController
-      ..loading = loading;
+      ..loading = loading
+      ..allLoaded = allLoaded;
   }
 }
 
@@ -22,5 +24,6 @@ CastListDetailState initState(Map<String, dynamic> args) {
   CastListDetailState state = CastListDetailState();
   state.castList = args['castList'];
   state.loading = false;
+  state.allLoaded = false;
   return state;
 }

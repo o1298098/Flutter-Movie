@@ -5,6 +5,8 @@ enum CastListDetailAction {
   action,
   setListDetail,
   onCastTap,
+  onDeleteTap,
+  updateCastList,
   setLoadMore,
   loading
 }
@@ -28,5 +30,13 @@ class CastListDetailActionCreator {
 
   static Action loading(bool loading) {
     return Action(CastListDetailAction.loading, payload: loading);
+  }
+
+  static Action onDeleteTap(BaseCast cast) {
+    return Action(CastListDetailAction.onDeleteTap, payload: cast);
+  }
+
+  static Action updateCastList(BaseCast cast) {
+    return Action(CastListDetailAction.updateCastList, payload: cast);
   }
 }

@@ -2,7 +2,13 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:movie/models/base_api_model/base_cast_list.dart';
 
-enum CastListAction { action, addCastList, setCastList, onCastListTap }
+enum CastListAction {
+  action,
+  addCastList,
+  setCastList,
+  onCastListTap,
+  onCastListEdit
+}
 
 class CastListActionCreator {
   static Action onAction() {
@@ -19,5 +25,9 @@ class CastListActionCreator {
 
   static Action onCastListTap(BaseCastList list) {
     return Action(CastListAction.onCastListTap, payload: list);
+  }
+
+  static Action onCastListEdit(BaseCastList list) {
+    return Action(CastListAction.onCastListEdit, payload: list);
   }
 }

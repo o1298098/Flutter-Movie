@@ -10,6 +10,7 @@ Reducer<CastListDetailState> buildReducer() {
       CastListDetailAction.action: _onAction,
       CastListDetailAction.setListDetail: _setListDetail,
       CastListDetailAction.setLoadMore: _setLoadMore,
+      CastListDetailAction.updateCastList: _updateCastList,
       CastListDetailAction.loading: _loading
     },
   );
@@ -41,6 +42,12 @@ CastListDetailState _setLoadMore(CastListDetailState state, Action action) {
     newState.listDetail.page = _result.page;
     newState.listDetail.data.addAll(_result.data);
   }
-  newState.loading = false;
+  return newState;
+}
+
+CastListDetailState _updateCastList(CastListDetailState state, Action action) {
+  final BaseCast _cast = action.payload;
+  final CastListDetailState newState = state.clone();
+  newState.listDetail.data.remove(_cast);
   return newState;
 }

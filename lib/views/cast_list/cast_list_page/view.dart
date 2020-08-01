@@ -22,8 +22,9 @@ Widget buildView(
       iconTheme: _theme.iconTheme,
       actions: [
         IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => dispatch(CastListActionCreator.addCastList()))
+          icon: Icon(Icons.add),
+          onPressed: () => dispatch(CastListActionCreator.addCastList()),
+        )
       ],
     ),
     backgroundColor: _theme.backgroundColor,
@@ -32,7 +33,11 @@ Widget buildView(
       builder: (_, snapShot) {
         switch (snapShot.connectionState) {
           case ConnectionState.waiting:
-            return Center(child: Text('waiting'));
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(_theme.iconTheme.color),
+              ),
+            );
           case ConnectionState.active:
           case ConnectionState.done:
             final _castList = CastListModel.fromMap(snapShot.data.data);
@@ -42,11 +47,13 @@ Widget buildView(
               data: _list,
               onSelected: (d) =>
                   dispatch(CastListActionCreator.onCastListTap(d)),
+              onEdit: (d) => dispatch(CastListActionCreator.onCastListEdit(d)),
             );
-
           case ConnectionState.none:
           default:
-            return Center(child: Text('empty'));
+            return Center(
+              child: Text('Empty List'),
+            );
         }
       },
     ),
@@ -56,7 +63,9 @@ Widget buildView(
 class _CastListView extends StatelessWidget {
   final List<BaseCastList> data;
   final Function(BaseCastList) onSelected;
-  const _CastListView({this.data, this.onSelected});
+  final Function(BaseCastList) onEdit;
+  const _CastListView({this.data, this.onSelected, this.onEdit});
+
   void _onSelected(BaseCastList selected) {
     if (onSelected != null) onSelected(selected);
   }
@@ -64,11 +73,12 @@ class _CastListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
       itemBuilder: (_, index) {
         return _CastListCell(
           data: data[index],
           onTap: _onSelected,
+          onEdit: onEdit,
         );
       },
       separatorBuilder: (_, index) => SizedBox(height: 10),
@@ -80,18 +90,21 @@ class _CastListView extends StatelessWidget {
 class _CastListCell extends StatelessWidget {
   final BaseCastList data;
   final Function(BaseCastList) onTap;
-  const _CastListCell({this.data, this.onTap});
+  final Function(BaseCastList) onEdit;
+  const _CastListCell({this.data, this.onTap, this.onEdit});
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
+    final _size = MediaQuery.of(context).size;
     return Padding(
       padding: EdgeInsets.only(bottom: 10),
       child: InkWell(
         onTap: () => onTap(data),
         child: Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: _theme.primaryColorDark)),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: _theme.primaryColorDark),
+          ),
           child: Row(
             children: [
               Container(
@@ -111,13 +124,24 @@ class _CastListCell extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 15),
-              Text(
-                data.name ?? '',
-                style: TextStyle(fontSize: 18),
+              SizedBox(
+                width: _size.width - 220,
+                child: Text(
+                  data.name ?? '',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 18),
+                ),
               ),
               Spacer(),
               Text(data.castCount.toString()),
-              SizedBox(width: 15)
+              //SizedBox(width: 15),
+              IconButton(
+                  icon: Icon(
+                    Icons.more_vert,
+                    color: const Color(0xFF717171),
+                  ),
+                  onPressed: () => onEdit(data))
             ],
           ),
         ),

@@ -11,6 +11,7 @@ Effect<CastListState> buildEffect() {
     CastListAction.action: _onAction,
     CastListAction.addCastList: _addCastList,
     CastListAction.onCastListTap: _onCastListTap,
+    CastListAction.onCastListEdit: _onCastListEdit,
     Lifecycle.initState: _onInit,
   });
 }
@@ -35,4 +36,11 @@ void _onCastListTap(Action action, Context<CastListState> ctx) async {
   if (_list == null) return;
   await Navigator.of(ctx.context)
       .pushNamed('castListDetailPage', arguments: {'castList': _list});
+}
+
+void _onCastListEdit(Action action, Context<CastListState> ctx) async {
+  final BaseCastList _list = action.payload;
+  if (_list == null) return;
+  await Navigator.of(ctx.context)
+      .push(MaterialPageRoute(builder: (_) => CastListCreate(data: _list)));
 }

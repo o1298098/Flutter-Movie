@@ -1,5 +1,6 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:movie/actions/http/graphql_client.dart';
 import 'package:movie/globalbasestate/store.dart';
@@ -10,6 +11,8 @@ import 'package:path/path.dart' as Path;
 import 'package:toast/toast.dart';
 
 class CastListCreate extends StatefulWidget {
+  final BaseCastList data;
+  const CastListCreate({this.data});
   @override
   _CastListCreateState createState() => _CastListCreateState();
 }
@@ -19,6 +22,7 @@ class _CastListCreateState extends State<CastListCreate> {
   final TextEditingController _descriptionController = TextEditingController();
   final FocusNode _nameFoucsNode = FocusNode();
   final FocusNode _descriptionFoucsNode = FocusNode();
+  bool _editMode = false;
   bool _loading = false;
   String _url;
   void _onSave() async {
@@ -31,15 +35,29 @@ class _CastListCreateState extends State<CastListCreate> {
       return Toast.show('Please login before add a list', context);
     _setLoading(true);
     final _nowTime = DateTime.now();
-    final _list = BaseCastList.fromParams(
-      uid: _user.firebaseUser.uid,
-      name: _nameController.text,
-      description: _descriptionController.text,
-      backgroundUrl: _url,
-      createTime: _nowTime,
-      updateTime: _nowTime,
-    );
-    final _result = await BaseGraphQLClient.instance.addCastList(_list);
+    QueryResult _result;
+    if (!_editMode) {
+      final _list = BaseCastList.fromParams(
+        uid: _user.firebaseUser.uid,
+        name: _nameController.text,
+        description: _descriptionController.text,
+        backgroundUrl: _url,
+        createTime: _nowTime,
+        updateTime: _nowTime,
+      );
+      _result = await BaseGraphQLClient.instance.addCastList(_list);
+    } else {
+      final _list = BaseCastList.fromParams(
+          id: widget.data.id,
+          uid: widget.data.uid,
+          name: _nameController.text,
+          description: _descriptionController.text,
+          backgroundUrl: _url,
+          createTime: widget.data.createTime,
+          updateTime: _nowTime,
+          castCount: widget.data.castCount);
+      _result = await BaseGraphQLClient.instance.updateCastList(_list);
+    }
     _setLoading(false);
     if (!_result.hasException)
       Navigator.of(context).pop();
@@ -88,6 +106,30 @@ class _CastListCreateState extends State<CastListCreate> {
     });
   }
 
+  void _deleteCastList() async {
+    _setLoading(true);
+    final _result =
+        await BaseGraphQLClient.instance.deleteCastList(widget.data.id);
+
+    _setLoading(false);
+    if (!_result.hasException)
+      Navigator.of(context).pop();
+    else {
+      Toast.show('Something wrong', context);
+    }
+  }
+
+  @override
+  void initState() {
+    if (widget.data != null) {
+      _editMode = true;
+      _nameController.text = widget.data.name;
+      _url = widget.data.backgroundUrl;
+      _descriptionController.text = widget.data.description;
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
@@ -99,7 +141,7 @@ class _CastListCreateState extends State<CastListCreate> {
           appBar: AppBar(
             elevation: 0.0,
             title: Text(
-              'Create Cast List',
+              '${_editMode ? 'Edit' : 'Create'} Cast List',
               style: TextStyle(color: _theme.textTheme.bodyText1.color),
             ),
             iconTheme: _theme.iconTheme,
@@ -117,24 +159,49 @@ class _CastListCreateState extends State<CastListCreate> {
           ),
           body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Column(children: [
-              SizedBox(height: 20),
-              _CustomTextField(
-                title: 'Name',
-                controller: _nameController,
-                focusNode: _nameFoucsNode,
-              ),
-              _BackGroundUpLoad(
-                url: _url,
-                onTap: _onUploadImage,
-              ),
-              _CustomTextField(
-                title: 'Description',
-                controller: _descriptionController,
-                focusNode: _descriptionFoucsNode,
-                maxLines: 12,
-              )
-            ]),
+            child: Column(
+              children: [
+                SizedBox(height: 20),
+                _CustomTextField(
+                  title: 'Name',
+                  controller: _nameController,
+                  focusNode: _nameFoucsNode,
+                ),
+                _BackGroundUpLoad(
+                  url: _url,
+                  onTap: _onUploadImage,
+                ),
+                _CustomTextField(
+                  title: 'Description',
+                  controller: _descriptionController,
+                  focusNode: _descriptionFoucsNode,
+                  maxLines: 12,
+                ),
+                Spacer(),
+                _editMode
+                    ? GestureDetector(
+                        onTap: _deleteCastList,
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: 20),
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: const Color(0xFFFF0000),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Center(
+                            child: Text(
+                              'DELETE',
+                              style: TextStyle(
+                                color: const Color(0xFFFFFFFF),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    : const SizedBox()
+              ],
+            ),
           ),
         ),
         LoadingLayout(title: 'loading...', show: _loading)

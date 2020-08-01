@@ -260,6 +260,9 @@ PODS:
     - Firebase/Core
     - Firebase/Firestore (~> 6.0)
     - Flutter
+  - connectivity (0.0.1):
+    - Flutter
+    - Reachability
   - Firebase/AdMob (6.26.0):
     - Firebase/CoreOnly
     - Google-Mobile-Ads-SDK (~> 7.50)
@@ -518,6 +521,7 @@ PODS:
     - Flutter
   - PromisesObjC (1.2.9)
   - Protobuf (3.12.0)
+  - Reachability (3.2)
   - share_extend (0.0.1):
     - Flutter
   - shared_preferences (0.0.1):
@@ -535,6 +539,7 @@ PODS:
 DEPENDENCIES:
   - camera (from `.symlinks/plugins/camera/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
+  - connectivity (from `.symlinks/plugins/connectivity/ios`)
   - Firebase/MLVisionTextModel
   - firebase_admob (from `.symlinks/plugins/firebase_admob/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
@@ -601,12 +606,15 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - Protobuf
+    - Reachability
 
 EXTERNAL SOURCES:
   camera:
     :path: ".symlinks/plugins/camera/ios"
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
+  connectivity:
+    :path: ".symlinks/plugins/connectivity/ios"
   firebase_admob:
     :path: ".symlinks/plugins/firebase_admob/ios"
   firebase_analytics:
@@ -664,6 +672,7 @@ SPEC CHECKSUMS:
   BraintreeDropIn: fc3e96a8a2b5416e5e3a3beba119f0089713bc1e
   camera: 38cc83ae9a5667bb5a71c7d9edaf60a91920fd4e
   cloud_firestore: 2a4f8f802fb0b701cf809b283b6bec7477ebaa6f
+  connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   Firebase: 7cf5f9c67f03cb3b606d1d6535286e1080e57eb6
   firebase_admob: d8c2bc95b5e0069406280ce6adb816cdee6aa595
   firebase_analytics: 9118044ffb98bee71d84733fc594f5134fe4bc1b
@@ -715,6 +724,7 @@ SPEC CHECKSUMS:
   permission_handler: 67637977b227d62d46bfbf524f335f8568de5a73
   PromisesObjC: b48e0338dbbac2207e611750777895f7a5811b75
   Protobuf: 2793fcd0622a00b546c60e7cbbcc493e043e9bb9
+  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   share_extend: b6748dc53695587891126a89533b862b92548c7b
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
