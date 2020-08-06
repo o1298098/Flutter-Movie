@@ -290,14 +290,17 @@ class _BackGroundUpLoad extends StatelessWidget {
                   ),
                   Spacer(),
                   Container(
-                    width: 35,
-                    height: 35,
+                    width: 30,
+                    height: 30,
                     decoration: BoxDecoration(
                       color: _theme.iconTheme.color,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Icon(Icons.file_upload,
-                        color: _theme.accentIconTheme.color),
+                    child: Icon(
+                      Icons.file_upload,
+                      color: _theme.accentIconTheme.color,
+                      size: 20,
+                    ),
                   ),
                 ],
               ),

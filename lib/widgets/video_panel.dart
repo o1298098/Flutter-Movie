@@ -9,6 +9,7 @@ import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/widgets/web_torrent_player.dart';
 import 'package:movie/widgets/webview_player.dart';
 import 'package:movie/widgets/youtube_player.dart';
+import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
@@ -19,6 +20,7 @@ class PlayerPanel extends StatefulWidget {
   final String background;
   final String playerType;
   final bool streamInBrowser;
+  final bool useVideoSourceApi;
   final bool loading;
   final int linkId;
   const PlayerPanel(
@@ -27,6 +29,7 @@ class PlayerPanel extends StatefulWidget {
       this.background,
       this.linkId,
       this.loading = false,
+      this.useVideoSourceApi = true,
       this.streamInBrowser = false});
   @override
   _PlayerPanelState createState() => _PlayerPanelState();
@@ -56,8 +59,10 @@ class _PlayerPanelState extends State<PlayerPanel>
     super.didUpdateWidget(oldWidget);
   }
 
-  _playTapped() async {
+  _playTapped(BuildContext context) async {
     if (widget.loading) return;
+    if (!widget.useVideoSourceApi && widget.playerType == 'VideoSourceApi')
+      return Toast.show('no streamlink at this moment', context);
     if (widget.streamInBrowser &&
         (widget.playerType == 'WebView' ||
             widget.playerType == 'VideoSourceApi')) {
@@ -80,7 +85,7 @@ class _PlayerPanelState extends State<PlayerPanel>
             playerType: widget.playerType,
           )
         : GestureDetector(
-            onTap: _playTapped,
+            onTap: () => _playTapped(context),
             child: _Background(
               url: widget.background,
               loading: widget.loading,

@@ -19,6 +19,7 @@ Widget buildView(
           playerType: state.playerType,
           linkId: state.streamLinkId,
           streamInBrowser: state.streamInBrowser,
+          useVideoSourceApi: state.useVideoSourceApi,
         ),
       ),
     ),

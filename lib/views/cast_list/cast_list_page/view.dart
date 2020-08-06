@@ -115,12 +115,14 @@ class _CastListCell extends StatelessWidget {
                     left: Radius.circular(20),
                   ),
                   color: _theme.primaryColorDark,
-                  image: data.backgroundUrl != null
-                      ? DecorationImage(
-                          fit: BoxFit.cover,
-                          image: CachedNetworkImageProvider(data.backgroundUrl),
-                        )
-                      : null,
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(data.backgroundUrl ==
+                                null ||
+                            data.backgroundUrl?.isEmpty == true
+                        ? 'https://img.freepik.com/free-vector/people-waving-hand-illustration-concept_52683-29825.jpg?size=626&ext=jpg'
+                        : data.backgroundUrl),
+                  ),
                 ),
               ),
               SizedBox(width: 15),
@@ -134,7 +136,7 @@ class _CastListCell extends StatelessWidget {
                 ),
               ),
               Spacer(),
-              Text(data.castCount.toString()),
+              Text('${data.castCount ?? 0}'),
               //SizedBox(width: 15),
               IconButton(
                   icon: Icon(

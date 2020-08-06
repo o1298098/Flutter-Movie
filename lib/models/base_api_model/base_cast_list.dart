@@ -66,7 +66,7 @@ class BaseCastList {
     uid = jsonRes['uid'];
     updateTime =
         DateTime.parse(jsonRes['updateTime']?.toString() ?? '1990-01-01');
-    castCount = int.parse(jsonRes['castCount'].toString());
+    castCount = int.parse(jsonRes['castCount']?.toString() ?? '0');
   }
 
   @override

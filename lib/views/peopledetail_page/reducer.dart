@@ -28,11 +28,7 @@ PeopleDetailPageState _onInit(PeopleDetailPageState state, Action action) {
       PeopleDetailModel.fromParams(alsoKnownAs: List<String>());
   final PeopleDetailPageState newState = state.clone();
   newState.peopleDetailModel = m;
-  double s = (m.biography.length *
-          Adapt.px(30) /
-          (Adapt.screenW() / Adapt.onepx() - Adapt.px(60)))
-      .floorToDouble();
-  newState.biographyHeight = s * Adapt.px(30);
+  newState.profilePath = m.profilePath;
   return newState;
 }
 

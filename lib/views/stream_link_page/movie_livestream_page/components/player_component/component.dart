@@ -16,6 +16,7 @@ class PlayerComponent extends Component<PlayerState> {
                 o.streamLink != n.streamLink ||
                 o.streamLinkId != n.streamLinkId ||
                 o.streamInBrowser != n.streamInBrowser ||
+                o.useVideoSourceApi != n.useVideoSourceApi ||
                 o.background != n.background ||
                 o.loading != n.loading;
           },
