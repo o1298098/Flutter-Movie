@@ -2,9 +2,11 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
+import 'package:movie/models/ad_target_info.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/widgets/web_torrent_player.dart';
 import 'package:movie/widgets/webview_player.dart';
@@ -21,16 +23,21 @@ class PlayerPanel extends StatefulWidget {
   final String playerType;
   final bool streamInBrowser;
   final bool useVideoSourceApi;
+  final bool needAd;
   final bool loading;
   final int linkId;
-  const PlayerPanel(
-      {this.streamLink,
-      this.playerType,
-      this.background,
-      this.linkId,
-      this.loading = false,
-      this.useVideoSourceApi = true,
-      this.streamInBrowser = false});
+  const PlayerPanel({
+    Key key,
+    this.streamLink,
+    this.playerType,
+    this.background,
+    this.linkId,
+    this.loading = false,
+    this.useVideoSourceApi = true,
+    this.streamInBrowser = false,
+    this.needAd = false,
+  })  : assert(streamLink != null),
+        super(key: key);
   @override
   _PlayerPanelState createState() => _PlayerPanelState();
 }
@@ -38,12 +45,25 @@ class PlayerPanel extends StatefulWidget {
 class _PlayerPanelState extends State<PlayerPanel>
     with AutomaticKeepAliveClientMixin {
   bool _play = false;
+  final _rewardedVideoAd = RewardedVideoAd.instance;
+  bool _isRewarded = false;
+  bool _needAd = false;
+  bool _loading = false;
 
   @override
   bool get wantKeepAlive => true;
   @override
   void initState() {
+    _needAd = widget.needAd;
+    _loading = widget.loading;
+    _addAdsListener();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _rewardedVideoAd.listener = null;
+    super.dispose();
   }
 
   @override
@@ -56,13 +76,63 @@ class _PlayerPanelState extends State<PlayerPanel>
         _play = false;
       });
     }
+    if (_needAd != widget.needAd) _setNeedAd(widget.needAd);
+    if (_loading != widget.loading) _setLoading(widget.loading);
     super.didUpdateWidget(oldWidget);
+  }
+
+  _setNeedAd(bool needAd) {
+    setState(() {
+      _needAd = needAd;
+    });
+  }
+
+  _addAdsListener() {
+    _rewardedVideoAd.listener =
+        (RewardedVideoAdEvent event, {String rewardType, int rewardAmount}) {
+      switch (event) {
+        case RewardedVideoAdEvent.loaded:
+          print('loaded');
+          _setLoading(false);
+          _rewardedVideoAd.show();
+          break;
+        case RewardedVideoAdEvent.failedToLoad:
+          _setLoading(false);
+          _startPlayer();
+          print('failedToLoad');
+          break;
+        case RewardedVideoAdEvent.closed:
+          if (_isRewarded) {
+            _setNeedAd(false);
+            _startPlayer();
+          } else
+            print('closed');
+          break;
+        case RewardedVideoAdEvent.rewarded:
+          _isRewarded = true;
+          print('rewarded');
+          break;
+        default:
+          break;
+      }
+    };
   }
 
   _playTapped(BuildContext context) async {
     if (widget.loading) return;
     if (!widget.useVideoSourceApi && widget.playerType == 'VideoSourceApi')
       return Toast.show('no streamlink at this moment', context);
+    if (_needAd) {
+      _setLoading(true);
+      _rewardedVideoAd.load(
+          adUnitId: RewardedVideoAd.testAdUnitId,
+          targetingInfo: AdTargetInfo.targetingInfo);
+      return;
+    }
+    await _startPlayer();
+  }
+
+  _startPlayer() async {
     if (widget.streamInBrowser &&
         (widget.playerType == 'WebView' ||
             widget.playerType == 'VideoSourceApi')) {
@@ -74,6 +144,12 @@ class _PlayerPanelState extends State<PlayerPanel>
       setState(() {
         _play = true;
       });
+  }
+
+  _setLoading(bool loading) {
+    setState(() {
+      _loading = loading;
+    });
   }
 
   @override
@@ -88,7 +164,7 @@ class _PlayerPanelState extends State<PlayerPanel>
             onTap: () => _playTapped(context),
             child: _Background(
               url: widget.background,
-              loading: widget.loading,
+              loading: _loading,
             ),
           );
   }

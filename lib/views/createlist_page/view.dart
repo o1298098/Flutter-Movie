@@ -3,50 +3,81 @@ import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/models/base_api_model/user_list.dart';
 import 'package:movie/style/themestyle.dart';
+import 'package:movie/widgets/loading_layout.dart';
 
-import '../../style/themestyle.dart';
 import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
     CreateListPageState state, Dispatch dispatch, ViewService viewService) {
-  return Builder(builder: (context) {
-    final ThemeData _theme = ThemeStyle.getTheme(context);
-    return Scaffold(
-      backgroundColor: _theme.backgroundColor,
-      resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-        iconTheme: _theme.iconTheme,
-        elevation: 0.0,
-        backgroundColor: _theme.backgroundColor,
-        title: Text(
-          'CreatList',
-          style: _theme.textTheme.bodyText1,
-        ),
-      ),
-      body: _Body(
-        backGroundTextController: state.backGroundTextController,
-        descriptionTextController: state.descriptionTextController,
-        listData: state.listData,
-        nameTextController: state.nameTextController,
-        dispatch: dispatch,
-      ),
-    );
-  });
+  return Builder(
+    builder: (context) {
+      final ThemeData _theme = ThemeStyle.getTheme(context);
+      return Stack(
+        children: [
+          Scaffold(
+            backgroundColor: _theme.backgroundColor,
+            resizeToAvoidBottomPadding: false,
+            appBar: AppBar(
+              iconTheme: _theme.iconTheme,
+              elevation: 0.0,
+              backgroundColor: _theme.backgroundColor,
+              title: Text(
+                'CreatList',
+                style: _theme.textTheme.bodyText1,
+              ),
+              actions: [
+                FlatButton(
+                  onPressed: () =>
+                      dispatch(CreateListPageActionCreator.onSubmit()),
+                  child: Text(
+                    'Save',
+                    style: TextStyle(
+                        color: _theme.textTheme.bodyText1.color, fontSize: 16),
+                  ),
+                )
+              ],
+            ),
+            body: _Body(
+              backGroundUrl: state.backGroundUrl,
+              descriptionTextController: state.descriptionTextController,
+              listData: state.listData,
+              nameTextController: state.nameTextController,
+              dispatch: dispatch,
+              nameFoucsNode: state.nameFoucsNode,
+              descriptionFoucsNode: state.descriptionFoucsNode,
+              onUploadImage: () =>
+                  dispatch(CreateListPageActionCreator.uploadBackground()),
+            ),
+          ),
+          LoadingLayout(
+            title: 'loading...',
+            show: state.loading,
+          )
+        ],
+      );
+    },
+  );
 }
 
 class _Body extends StatelessWidget {
   final TextEditingController nameTextController;
-  final TextEditingController backGroundTextController;
+  final String backGroundUrl;
   final TextEditingController descriptionTextController;
+  final FocusNode nameFoucsNode;
+  final FocusNode descriptionFoucsNode;
   final UserList listData;
   final Dispatch dispatch;
+  final Function onUploadImage;
   _Body({
-    this.backGroundTextController,
+    this.backGroundUrl,
     this.descriptionTextController,
     this.dispatch,
     this.listData,
     this.nameTextController,
+    this.descriptionFoucsNode,
+    this.nameFoucsNode,
+    this.onUploadImage,
   });
   @override
   Widget build(BuildContext context) {
@@ -55,57 +86,120 @@ class _Body extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          TextField(
+          _CustomTextField(
+            title: 'Name',
             controller: nameTextController,
-            cursorColor: Colors.grey,
-            decoration: InputDecoration(
-              enabled: listData == null,
-              border: OutlineInputBorder(),
-              labelText: 'ListName',
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey)),
-            ),
+            focusNode: nameFoucsNode,
           ),
-          SizedBox(
-            height: Adapt.px(30),
+          _BackGroundUpLoad(
+            url: backGroundUrl,
+            onTap: onUploadImage,
           ),
-          TextField(
-            controller: backGroundTextController,
-            cursorColor: Colors.grey,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'BackGroundUrl',
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey)),
-            ),
-          ),
-          SizedBox(
-            height: Adapt.px(30),
-          ),
-          TextField(
+          _CustomTextField(
+            title: 'Description',
             controller: descriptionTextController,
-            maxLines: 18,
-            cursorColor: Colors.grey,
+            focusNode: descriptionFoucsNode,
+            maxLines: 12,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CustomTextField extends StatelessWidget {
+  final String title;
+  final double width;
+  final int maxLines;
+  final FocusNode focusNode;
+  final TextEditingController controller;
+  const _CustomTextField(
+      {this.title,
+      this.width,
+      this.maxLines = 1,
+      this.controller,
+      this.focusNode});
+  @override
+  Widget build(BuildContext context) {
+    final double _fontSize = 20;
+    final Size _size = MediaQuery.of(context).size;
+    final _intputBorder = OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: const Color(0xFF9E9E9E)));
+    return Container(
+      width: width ?? _size.width,
+      padding: EdgeInsets.only(bottom: 30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: TextStyle(fontSize: _fontSize)),
+          SizedBox(height: 10),
+          TextField(
+            controller: controller,
+            maxLines: maxLines,
+            focusNode: focusNode,
+            cursorColor: const Color(0xFF9E9E9E),
             decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'description',
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey))),
-          ),
-          SizedBox(
-            height: Adapt.px(30),
-          ),
-          Container(
-            width: Adapt.screenW(),
-            decoration: BoxDecoration(
-              color: Color(0xFF505050),
-              borderRadius: BorderRadius.circular(Adapt.px(20)),
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              enabledBorder: _intputBorder,
+              disabledBorder: _intputBorder,
+              focusedBorder: _intputBorder,
             ),
-            child: FlatButton(
-              onPressed: () => dispatch(CreateListPageActionCreator.onSubmit()),
-              child: Text(
-                'Submit',
-                style: TextStyle(color: Colors.white, fontSize: Adapt.px(28)),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BackGroundUpLoad extends StatelessWidget {
+  final String url;
+  final Function onTap;
+  const _BackGroundUpLoad({this.onTap, this.url});
+  @override
+  Widget build(BuildContext context) {
+    final _theme = ThemeStyle.getTheme(context);
+    final _size = MediaQuery.of(context).size;
+    return Padding(
+      padding: EdgeInsets.only(bottom: 30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Background', style: TextStyle(fontSize: 20)),
+          SizedBox(height: 10),
+          GestureDetector(
+            onTap: onTap,
+            child: Container(
+              height: 50,
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: const Color(0xFF9E9E9E))),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: _size.width - 120,
+                    child: Text(
+                      url ?? '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Spacer(),
+                  Container(
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      color: _theme.iconTheme.color,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(
+                      Icons.file_upload,
+                      color: _theme.accentIconTheme.color,
+                      size: 20,
+                    ),
+                  ),
+                ],
               ),
             ),
           )

@@ -2,6 +2,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action, Page;
 import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/actions/http/base_api.dart';
+import 'package:movie/routes/routes.dart';
 import 'package:movie/widgets/searchbar_delegate.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/enums/time_window.dart';
@@ -101,7 +102,8 @@ Future _trendingMore(Action action, Context<HomePageState> ctx) async {
       .push(PageRouteBuilder(pageBuilder: (context, animation, secAnimation) {
     return FadeTransition(
       opacity: animation,
-      child: TrendingPage().buildPage({'data': ctx.state.trending}),
+      child:
+          Routes.routes.buildPage('trendingPage', {'data': ctx.state.trending}),
     );
   }));
 }

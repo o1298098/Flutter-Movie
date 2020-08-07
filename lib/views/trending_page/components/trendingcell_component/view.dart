@@ -10,6 +10,7 @@ import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/trending_page/action.dart';
 import 'package:parallax_image/parallax_image.dart';
 
+import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
@@ -46,8 +47,13 @@ Widget buildView(
             child: IconButton(
               padding: EdgeInsets.only(left: Adapt.px(20)),
               iconSize: Adapt.px(40),
-              icon: const Icon(Icons.favorite_border),
-              onPressed: () {},
+              icon: state.liked
+                  ? const Icon(
+                      Icons.favorite,
+                      color: const Color(0xFFFF0000),
+                    )
+                  : const Icon(Icons.favorite_border),
+              onPressed: () => dispatch(TrendingCellActionCreator.onLikeTap()),
             ),
           )
         ],

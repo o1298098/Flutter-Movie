@@ -42,6 +42,7 @@ void _onDeactivate(Action action, Context<MyListsPageState> ctx) {
 
 void _createList(Action action, Context<MyListsPageState> ctx) async {
   ctx.state.animationController.value = 0;
+  ctx.state.cellAnimationController.reset();
   ctx.dispatch(MyListsPageActionCreator.onEdit(false));
   await Navigator.of(ctx.context)
       .pushNamed('createListPage', arguments: action.payload)

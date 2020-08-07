@@ -120,10 +120,20 @@ Widget buildView(
                   case 'notifications':
                     dispatch(AccountPageActionCreator.notificationsTapped());
                     break;
+                  case 'newDesign':
+                    Navigator.of(viewService.context)
+                        .pushNamed('testAccountPage');
                 }
               },
               itemBuilder: (ctx) {
                 return [
+                  PopupMenuItem<String>(
+                    value: 'newDesign',
+                    child: const _DropDownItem(
+                      title: 'new design',
+                      icon: Icons.pageview,
+                    ),
+                  ),
                   PopupMenuItem<String>(
                     value: 'notifications',
                     child: const _DropDownItem(

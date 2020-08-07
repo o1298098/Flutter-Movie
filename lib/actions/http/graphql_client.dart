@@ -52,6 +52,28 @@ class BaseGraphQLClient {
     return _service.mutate(_query);
   }
 
+  Future<QueryResult> getMovieLiked(int movieId, String uid) {
+    String _query = '''
+   {
+      movie{
+      userLiked(id:$movieId,uid:"$uid")
+     }
+   }
+    ''';
+    return _service.mutate(_query);
+  }
+
+  Future<QueryResult> getTvShowLiked(int tvId, String uid) {
+    String _query = '''
+   {
+      tvshow{
+      userLiked(id:$tvId,uid:"$uid")
+     }
+   }
+    ''';
+    return _service.mutate(_query);
+  }
+
   Future<QueryResult> updateCastList(BaseCastList list) {
     String _query = '''
     mutation {

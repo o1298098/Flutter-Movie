@@ -11,8 +11,10 @@ class CreateListPageState
   String backGroundUrl;
   String description;
   TextEditingController nameTextController;
-  TextEditingController backGroundTextController;
   TextEditingController descriptionTextController;
+  FocusNode nameFoucsNode;
+  FocusNode descriptionFoucsNode;
+  bool loading;
   @override
   CreateListPageState clone() {
     return CreateListPageState()
@@ -21,9 +23,11 @@ class CreateListPageState
       ..backGroundUrl = backGroundUrl
       ..description = description
       ..user = user
-      ..backGroundTextController = backGroundTextController
       ..nameTextController = nameTextController
-      ..descriptionTextController = descriptionTextController;
+      ..descriptionTextController = descriptionTextController
+      ..nameFoucsNode = nameFoucsNode
+      ..descriptionFoucsNode = descriptionFoucsNode
+      ..loading = loading;
   }
 
   @override
@@ -43,5 +47,8 @@ CreateListPageState initState(Map<String, dynamic> args) {
   state.name = _listData != null ? _listData.listName : '';
   state.backGroundUrl = _listData != null ? _listData.backGroundUrl : '';
   state.description = _listData != null ? _listData.description : '';
+  state.nameFoucsNode = FocusNode();
+  state.descriptionFoucsNode = FocusNode();
+  state.loading = false;
   return state;
 }

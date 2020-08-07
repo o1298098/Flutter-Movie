@@ -28,21 +28,19 @@ import 'package:movie/views/seasondetail_page/page.dart';
 import 'package:movie/views/seasons_page/page.dart';
 import 'package:movie/views/setting_page/page.dart';
 import 'package:movie/views/start_page/page.dart';
-import 'package:movie/views/stream_link_page/addlink_page/page.dart';
 import 'package:movie/views/stream_link_page/allstreamlink_page/page.dart';
 import 'package:movie/views/stream_link_page/episode_livestream_page/page.dart';
-import 'package:movie/views/stream_link_page/livestream_page/page.dart';
 import 'package:movie/views/stream_link_page/movie_livestream_page/page.dart';
 import 'package:movie/views/stream_link_page/season_link_page/page.dart';
-import 'package:movie/views/stream_link_page/streamlinks_page/page.dart';
-import 'package:movie/views/stream_link_page/tvshow_livestream_page/page.dart';
 import 'package:movie/views/test_page/page.dart';
+import 'package:movie/views/trending_page/page.dart';
 import 'package:movie/views/tvdetail_page/page.dart';
 import 'package:movie/views/tvshow_detail_page/page.dart';
 import 'package:movie/views/watchlist_page/page.dart';
 import 'package:movie/views/watchlistdetail_page/page.dart';
 
 import 'package:movie/views/detail_page/page.dart' as detail;
+import 'package:movie/views/account_test/page.dart' as testAccount;
 
 class Routes {
   static final PageRoutes routes = PageRoutes(
@@ -54,6 +52,7 @@ class Routes {
       'comingPage': ComingPage(),
       'accountPage': AccountPage(),
       'loginpage': LoginPage(),
+      'trendingPage': TrendingPage(),
       'moviedetailpage': MovieDetailPage(),
       'tvdetailpage': TVDetailPage(),
       'peopledetailpage': PeopleDetailPage(),
@@ -68,13 +67,9 @@ class Routes {
       'WatchlistDetailPage': WatchlistDetailPage(),
       'detailpage': detail.MovieDetailPage(),
       'GalleryPage': GalleryPage(),
-      'streamLinksPage': StreamLinksPage(),
-      'addLinkPage': AddLinkPage(),
       'registerPage': RegisterPage(),
       'createListPage': CreateListPage(),
       'allStreamLinkPage': AllStreamLinkPage(),
-      'liveStreamPage': LiveStreamPage(),
-      'tvShowLiveStreamPage': TvShowLiveStreamPage(),
       'seasonLinkPage': SeasonLinkPage(),
       'testPage': TestPage(),
       'settingPage': SettingPage(),
@@ -88,6 +83,7 @@ class Routes {
       'movieLiveStreamPage': MovieLiveStreamPage(),
       'castListPage': CastListPage(),
       'castListDetailPage': CastListDetailPage(),
+      'testAccountPage': testAccount.AccountPage(),
     },
     visitor: (String path, Page<Object, dynamic> page) {
       if (page.isTypeof<GlobalBaseState>()) {

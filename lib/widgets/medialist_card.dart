@@ -50,20 +50,13 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
       });
   }
 
-  void _createList(String name, String description) {
+  void _createList(BuildContext context) async {
     if (_user != null) {
       setState(() {
         _userList = null;
       });
-      _baseApi
-          .createUserList(UserList.fromParams(
-              uid: _user.firebaseUser.uid,
-              listName: name,
-              description: description,
-              backGroundUrl: ImageUrl.getUrl(widget.photourl, ImageSize.w300)))
-          .then((d) => initUserlist());
-
-      Navigator.pop(context);
+      await Navigator.of(context).pushNamed('createListPage');
+      initUserlist();
     }
   }
 
@@ -96,69 +89,6 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
     }
   }
 
-  void _buildCreateListDialog() {
-    String _name = '';
-    String _description = '';
-    showDialog(
-        context: context,
-        builder: (ctx) {
-          return SimpleDialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            contentPadding: EdgeInsets.zero,
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(Adapt.px(30)),
-                width: Adapt.px(600),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    TextField(
-                      cursorColor: Colors.grey,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'ListName',
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey)),
-                      ),
-                      onChanged: (s) => _name = s,
-                    ),
-                    SizedBox(
-                      height: Adapt.px(30),
-                    ),
-                    TextField(
-                      maxLines: 12,
-                      cursorColor: Colors.grey,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'description',
-                          labelStyle: TextStyle(fontSize: Adapt.px(24)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey))),
-                      onChanged: (s) => _description = s,
-                    ),
-                    SizedBox(
-                      height: Adapt.px(30),
-                    ),
-                    FlatButton(
-                      color: Color(0xFF505050),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(Adapt.px(20))),
-                      onPressed: () => _createList(_name, _description),
-                      child: Text(
-                        'Submit',
-                        style: TextStyle(
-                            color: Colors.white, fontSize: Adapt.px(28)),
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
-          );
-        });
-  }
-
   void _onSelected(UserList userlist) async {
     final l = await _userList;
     l.result.data.forEach((f) {
@@ -187,7 +117,7 @@ class MediaListCardDialogState extends State<MediaListCardDialog> {
     return SimpleDialog(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(Adapt.px(20))),
-        title: _Title(onAdd: () => _buildCreateListDialog()),
+        title: _Title(onAdd: () => _createList(context)),
         children: <Widget>[
           Container(
             width: _size.width,

@@ -55,6 +55,7 @@ class SearchResult {
   List<int> genreIds;
   List<KnownFor> knownFor;
   List<String> originCountry;
+  bool liked;
 
   SearchResult.fromParams(
       {this.id,
