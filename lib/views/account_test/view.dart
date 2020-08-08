@@ -5,7 +5,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie/style/themestyle.dart';
 import 'dart:math' as math;
 
-import 'action.dart';
 import 'state.dart';
 
 Widget buildView(

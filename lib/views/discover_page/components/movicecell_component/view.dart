@@ -140,9 +140,12 @@ class _Card extends StatelessWidget {
                     data.overview,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: Adapt.px(24)),
+                    style: TextStyle(
+                        fontSize: 14,
+                        height: 1.5,
+                        color: const Color(0xFF717171)),
                   ),
-                  Expanded(child: SizedBox()),
+                  Spacer(),
                   Align(
                     alignment: Alignment.centerRight,
                     child: Container(

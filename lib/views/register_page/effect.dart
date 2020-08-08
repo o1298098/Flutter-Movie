@@ -56,6 +56,7 @@ void _onRegisterWithEmail(Action action, Context<RegisterPageState> ctx) async {
           .user;
       if (user != null) {
         assert(ctx.state.nameTextController.text != '');
+        user.sendEmailVerification();
         final UserUpdateInfo userUpdateInfo = UserUpdateInfo()
           ..displayName = ctx.state.nameTextController.text;
         user.updateProfile(userUpdateInfo).then((d) {

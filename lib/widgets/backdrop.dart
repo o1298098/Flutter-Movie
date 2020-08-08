@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 
@@ -24,37 +25,61 @@ class BackDropState extends State<BackDrop> with TickerProviderStateMixin {
   final ClampingScrollPhysics _clampingScrollPhysics = ClampingScrollPhysics();
   final NeverScrollableScrollPhysics _neverScrollableScrollPhysics =
       NeverScrollableScrollPhysics();
+  bool _disableScroll;
   ScrollController _scrollController;
   Tween<double> topTween;
   GlobalKey key;
+
   @override
   void initState() {
+    _disableScroll = true;
     key = GlobalKey();
-    _scrollController = ScrollController();
+    _scrollController = ScrollController()
+      ..addListener(_scrollControllerListener);
     isrun = false;
     _fontBackGroundColor = widget.frontBackGroundColor ?? Colors.white;
     topTween = Tween<double>(begin: widget.height, end: 0.0);
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300))
-          ..addListener(() {
-            if (_animationController.value == 0 &&
-                _scrollController.position.pixels != 0)
-              _scrollController.animateTo(0,
-                  duration: Duration(milliseconds: 300), curve: Curves.ease);
-            setState(() {});
-          });
+          ..addListener(_animationControllerListener);
     super.initState();
   }
 
-  void _drag(DragUpdateDetails d) {
-    _animationController.value -= d.primaryDelta / widget.height;
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollControllerListener);
+    _animationController.removeListener(_animationControllerListener);
+    _animationController.dispose();
+    _scrollController.dispose();
+    super.dispose();
   }
 
-  void _dragEnd(DragEndDetails d) {
-    double minFlingVelocity = (widget.height) / 4;
+  void _scrollControllerListener() {
+    if (_scrollController.offset <= 0) {
+      _disableScroll = _scrollController.offset <= 0;
+    }
+  }
+
+  void _animationControllerListener() {
+    if (_animationController.value == 1) {
+      _disableScroll = false;
+      _scrollController.animateTo(0.01,
+          curve: Curves.easeOut, duration: const Duration(milliseconds: 100));
+    }
+  }
+
+  void _pointMove(PointerMoveEvent d) {
+    if (_scrollController.position.pixels == 0)
+      _animationController.value -= d.delta.dy / widget.height;
+  }
+
+  void _pointUp(PointerUpEvent d) {
     if (_animationController.isAnimating) return;
-    if (d.velocity.pixelsPerSecond.dy.abs() >= minFlingVelocity) {
-      double visualVelocity = -d.velocity.pixelsPerSecond.dy / widget.height;
+    if (_scrollController.position.pixels != 0) return;
+    double minFlingVelocity = (widget.height) / 4;
+
+    if (d.localDelta.dy.abs() >= minFlingVelocity) {
+      double visualVelocity = -d.delta.dy / widget.height;
       _animationController.fling(velocity: visualVelocity);
       return;
     }
@@ -63,13 +88,6 @@ class BackDropState extends State<BackDrop> with TickerProviderStateMixin {
     } else {
       _animationController.fling(velocity: -1.0);
     }
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    _scrollController.dispose();
-    super.dispose();
   }
 
   @override
@@ -83,6 +101,7 @@ class BackDropState extends State<BackDrop> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final _size = MediaQuery.of(context).size;
     return Stack(
       children: <Widget>[
         Container(
@@ -97,12 +116,12 @@ class BackDropState extends State<BackDrop> with TickerProviderStateMixin {
               right: 0.0,
               bottom: 0.0,
               top: (1 - _animationController.value) * widget.height,
-              child: Column(
-                children: <Widget>[
-                  GestureDetector(
-                    onVerticalDragUpdate: _drag,
-                    onVerticalDragEnd: _dragEnd,
-                    child: Container(
+              child: Listener(
+                onPointerMove: _pointMove,
+                onPointerUp: _pointUp,
+                child: Column(
+                  children: <Widget>[
+                    Container(
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: _fontBackGroundColor,
@@ -113,29 +132,34 @@ class BackDropState extends State<BackDrop> with TickerProviderStateMixin {
                           topRight: Radius.circular(Adapt.px(40)),
                         ),
                       ),
-                      width: Adapt.screenW(),
-                      height: Adapt.px(80),
+                      width: _size.width,
+                      height: 40,
                       child: Container(
-                        width: Adapt.px(80),
-                        height: Adapt.px(6),
+                        width: 50,
+                        height: 3,
                         color: const Color(0xFFE0E0E0),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      color: _fontBackGroundColor,
-                      child: ListView.builder(
-                        controller: _scrollController,
-                        physics: _animationController.value == 0
-                            ? _neverScrollableScrollPhysics
-                            : _clampingScrollPhysics,
-                        itemBuilder: (_, index) => widget.frontChildren[index],
-                        itemCount: widget.frontChildren?.length ?? 0,
+                    Expanded(
+                      child: Container(
+                        color: _fontBackGroundColor,
+                        child: Theme(
+                          data: Theme.of(context)
+                              .copyWith(accentColor: Colors.transparent),
+                          child: ListView.builder(
+                            controller: _scrollController,
+                            physics: _disableScroll
+                                ? _neverScrollableScrollPhysics
+                                : _clampingScrollPhysics,
+                            itemBuilder: (_, index) =>
+                                widget.frontChildren[index],
+                            itemCount: widget.frontChildren?.length ?? 0,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           },
