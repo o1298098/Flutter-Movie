@@ -28,7 +28,8 @@ class PlayerConnector extends ConnOp<MovieLiveStreamState, PlayerState> {
   PlayerState get(MovieLiveStreamState state) {
     PlayerState mstate = state.playerState.clone();
     mstate.useVideoSourceApi = state.bottomPanelState.useVideoSourceApi;
-    mstate.streamInBrowser = state.bottomPanelState.streamInBrowser;
+    mstate.streamInBrowser = state.bottomPanelState.streamInBrowser ||
+        (state.selectedLink?.externalBrowser ?? false);
     mstate.needAd = state.selectedLink?.needAd ?? false;
     mstate.background = state.background;
     mstate.streamLinkId = state.selectedLink?.sid ?? 0;

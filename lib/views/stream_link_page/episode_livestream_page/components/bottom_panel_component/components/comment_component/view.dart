@@ -233,13 +233,13 @@ class _CommentInputState extends State<_CommentInputCell> {
                     top: false,
                     child: Container(
                       alignment: Alignment.center,
-                      padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-                      margin: EdgeInsets.symmetric(
-                          vertical: Adapt.px(20), horizontal: Adapt.px(20)),
-                      height: 50,
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      margin:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                      height: 40,
                       decoration: BoxDecoration(
                           color: _theme.primaryColorLight,
-                          borderRadius: BorderRadius.circular(25)),
+                          borderRadius: BorderRadius.circular(20)),
                       child: TextField(
                         onSubmitted: (s) {
                           widget.submit(s);
@@ -248,8 +248,8 @@ class _CommentInputState extends State<_CommentInputCell> {
                         cursorColor: Colors.grey,
                         controller: _controller,
                         decoration: InputDecoration(
-                          hintStyle: TextStyle(fontSize: Adapt.px(24)),
-                          labelStyle: TextStyle(fontSize: Adapt.px(24)),
+                          hintStyle: TextStyle(fontSize: 16),
+                          labelStyle: TextStyle(fontSize: 16),
                           enabledBorder: InputBorder.none,
                           focusedBorder: InputBorder.none,
                           hintText: 'Add a comment',

@@ -38,6 +38,7 @@ class TvShowStreamLink {
   Language language;
   Quality quality;
   bool needAd;
+  bool externalBrowser;
   StreamLinkType streamLinkType;
 
   TvShowStreamLink.fromParams(
@@ -52,6 +53,7 @@ class TvShowStreamLink {
       this.streamLink,
       this.uid,
       this.needAd,
+      this.externalBrowser,
       this.updateTime});
 
   TvShowStreamLink.fromJson(jsonRes) {
@@ -64,6 +66,7 @@ class TvShowStreamLink {
     uid = jsonRes['uid'];
     updateTime = jsonRes['updateTime'];
     needAd = jsonRes['needAd'] == 1;
+    externalBrowser = jsonRes['externalBrowser'] == 1;
     language = jsonRes['languageNavigation'] == null
         ? null
         : new Language.fromJson(jsonRes['languageNavigation']);
@@ -77,7 +80,7 @@ class TvShowStreamLink {
 
   @override
   String toString() {
-    return '{"episode": $episode,"language": $language,"quality": $quality,"season": $season,"sid": $sid,"streamLinkType": ${streamLink != null ? '${json.encode(streamLink)}' : 'null'}Type,"tvId": $tvId,"linkName": ${linkName != null ? '${json.encode(linkName)}' : 'null'},"streamLink": ${streamLink != null ? '${json.encode(streamLink)}' : 'null'},"uid": ${uid != null ? '${json.encode(uid)}' : 'null'},"updateTime": ${updateTime != null ? '${json.encode(updateTime)}' : 'null'},"languageNavigation": $language,"qualityNavigation": $quality,"streamLinkTypeNavigation": $streamLinkType,"needAd":$needAd}';
+    return '{"episode": $episode,"language": $language,"quality": $quality,"season": $season,"sid": $sid,"streamLinkType": ${streamLink != null ? '${json.encode(streamLink)}' : 'null'}Type,"tvId": $tvId,"linkName": ${linkName != null ? '${json.encode(linkName)}' : 'null'},"streamLink": ${streamLink != null ? '${json.encode(streamLink)}' : 'null'},"uid": ${uid != null ? '${json.encode(uid)}' : 'null'},"updateTime": ${updateTime != null ? '${json.encode(updateTime)}' : 'null'},"languageNavigation": $language,"qualityNavigation": $quality,"streamLinkTypeNavigation": $streamLinkType,"needAd":$needAd,"externalBrowser":$externalBrowser}';
   }
 }
 

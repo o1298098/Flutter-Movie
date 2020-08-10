@@ -26,7 +26,7 @@ Widget buildView(
           ),
         ),
         body: BackDrop(
-          height: Adapt.px(520),
+          backLayerHeight: Adapt.px(580) + Adapt.padTopH(),
           backChild: viewService.buildComponent('header'),
           frontBackGroundColor: _theme.backgroundColor,
           frontChildren: <Widget>[

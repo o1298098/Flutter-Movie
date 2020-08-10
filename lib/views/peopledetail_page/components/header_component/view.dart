@@ -62,8 +62,7 @@ Widget buildView(
             child: Text(
               I18n.of(viewService.context).biography,
               softWrap: true,
-              style: TextStyle(
-                  fontWeight: FontWeight.w500, fontSize: Adapt.px(40)),
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
             ),
           ),
           SizedBox(height: Adapt.px(30)),
@@ -175,8 +174,7 @@ class _NameCell extends StatelessWidget {
             )
           : Text(
               profileName ?? '',
-              style: TextStyle(
-                  fontSize: Adapt.px(50), fontWeight: FontWeight.w700),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
             ),
     );
   }
@@ -198,7 +196,7 @@ class _YearsOld extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
           child: Text(
             '$yearold years old',
-            style: TextStyle(color: Colors.grey[600], fontSize: Adapt.px(32)),
+            style: TextStyle(color: Colors.grey[600], fontSize: 16),
           ));
     } else
       return SizedBox(

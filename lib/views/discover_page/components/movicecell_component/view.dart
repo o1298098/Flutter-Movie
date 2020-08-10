@@ -141,7 +141,7 @@ class _Card extends StatelessWidget {
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         height: 1.5,
                         color: const Color(0xFF717171)),
                   ),

@@ -19,7 +19,7 @@ Widget buildView(
         padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
         child: Text(
           'Trailers',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: Adapt.px(35)),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: Adapt.px(28)),
         ),
       ),
       SizedBox(

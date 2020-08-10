@@ -18,8 +18,7 @@ Widget buildView(
           Text(
             I18n.of(viewService.context).personalInfo,
             softWrap: true,
-            style:
-                TextStyle(fontWeight: FontWeight.w500, fontSize: Adapt.px(40)),
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
           ),
           SizedBox(height: Adapt.px(50)),
           _InfoBody(
@@ -39,10 +38,8 @@ class _InfoBody extends StatelessWidget {
   const _InfoBody({this.data, this.creditcount});
   @override
   Widget build(BuildContext context) {
-    final _titleStyle =
-        TextStyle(color: Colors.grey[600], fontSize: Adapt.px(26));
-    final _valueStyle =
-        TextStyle(fontSize: Adapt.px(30), fontWeight: FontWeight.w500);
+    final _titleStyle = TextStyle(color: Colors.grey[600], fontSize: 14);
+    final _valueStyle = TextStyle(fontSize: 16, fontWeight: FontWeight.w500);
     String birthday;
     if (data?.birthday != null)
       birthday = DateFormat.yMMMMd().format(DateTime.parse(data.birthday));

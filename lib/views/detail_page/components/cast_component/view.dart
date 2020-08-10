@@ -24,7 +24,7 @@ Widget buildView(CastState state, Dispatch dispatch, ViewService viewService) {
             child: Text(
               I18n.of(viewService.context).topBilledCast,
               style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: Adapt.px(35)),
+                  fontWeight: FontWeight.bold, fontSize: Adapt.px(28)),
             ),
           ),
           SizedBox(height: Adapt.px(30)),

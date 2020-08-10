@@ -33,8 +33,7 @@ Widget buildView(
               child: Text(
                 I18n.of(viewService.context).knownFor,
                 softWrap: true,
-                style: TextStyle(
-                    fontWeight: FontWeight.w500, fontSize: Adapt.px(40)),
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
               ),
             ),
             SizedBox(
@@ -52,27 +51,27 @@ Widget buildView(
 }
 
 class _ShimmerCell extends StatelessWidget {
+  const _ShimmerCell();
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: Adapt.px(240),
-      height: Adapt.px(480),
+      width: 100,
+      height: 160,
       child: Column(
         children: <Widget>[
           Container(
             color: Colors.grey[200],
-            width: Adapt.px(240),
-            height: Adapt.px(342),
+            width: 100,
+            height: 140,
           ),
           Container(
-            height: Adapt.px(24),
-            margin: EdgeInsets.fromLTRB(0, Adapt.px(15), Adapt.px(20), 0),
+            height: 10,
+            margin: EdgeInsets.fromLTRB(0, 8, 8, 0),
             color: Colors.grey[200],
           ),
           Container(
-            height: Adapt.px(24),
-            margin:
-                EdgeInsets.fromLTRB(0, Adapt.px(5), Adapt.px(50), Adapt.px(20)),
+            height: 10,
+            margin: EdgeInsets.fromLTRB(0, 5, 30, 0),
             color: Colors.grey[200],
           ),
         ],
@@ -82,18 +81,22 @@ class _ShimmerCell extends StatelessWidget {
 }
 
 class _ShimmerList extends StatelessWidget {
+  const _ShimmerList();
   @override
   Widget build(BuildContext context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
     return Shimmer.fromColors(
-        baseColor: _theme.primaryColorDark,
-        highlightColor: _theme.primaryColorLight,
-        child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-            itemBuilder: (_, __) => _ShimmerCell(),
-            separatorBuilder: (_, __) => SizedBox(width: Adapt.px(20)),
-            itemCount: 3));
+      baseColor: _theme.primaryColorDark,
+      highlightColor: _theme.primaryColorLight,
+      child: ListView.separated(
+        physics: NeverScrollableScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+        itemBuilder: (_, __) => const _ShimmerCell(),
+        separatorBuilder: (_, __) => SizedBox(width: Adapt.px(30)),
+        itemCount: 3,
+      ),
+    );
   }
 }
 
@@ -105,43 +108,43 @@ class _KownForCell extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
     return GestureDetector(
-        key: ValueKey('knowforCell${data.id}'),
-        onTap: onTap,
-        child: Container(
-          width: Adapt.px(240),
-          height: Adapt.px(400),
-          child: Card(
-            elevation: 1.0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  width: Adapt.px(240),
-                  height: Adapt.px(342),
-                  decoration: BoxDecoration(
-                      color: _theme.primaryColorLight,
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: CachedNetworkImageProvider(
-                            ImageUrl.getUrl(data.posterPath, ImageSize.w300)),
-                      )),
+      key: ValueKey('knowforCell${data.id}'),
+      onTap: onTap,
+      child: Container(
+        width: 100,
+        height: 200,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: 100,
+              height: 140,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: _theme.primaryColorLight,
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: CachedNetworkImageProvider(
+                      ImageUrl.getUrl(data.posterPath, ImageSize.w300)),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: Adapt.px(15),
-                      left: Adapt.px(20),
-                      right: Adapt.px(20)),
-                  child: Text(
-                    data.title ?? data.name,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: Adapt.px(26)),
-                  ),
-                )
-              ],
+              ),
             ),
-          ),
-        ));
+            SizedBox(height: 8),
+            Container(
+              height: 40,
+              alignment: Alignment.center,
+              child: Text(
+                data.title ?? data.name,
+                maxLines: 3,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 12),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -152,11 +155,12 @@ class _KownForList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Adapt.px(480),
+      height: 200,
       child: cast.length > 0
           ? ListView.separated(
-              padding: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
-              separatorBuilder: (_, __) => SizedBox(width: Adapt.px(20)),
+              physics: BouncingScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+              separatorBuilder: (_, __) => SizedBox(width: Adapt.px(30)),
               scrollDirection: Axis.horizontal,
               itemCount: cast.length,
               itemBuilder: (_, index) {
@@ -164,18 +168,20 @@ class _KownForList extends StatelessWidget {
                 return _KownForCell(
                   data: _d,
                   onTap: () => dispatch(
-                      PeopleDetailPageActionCreator.onCellTapped(
-                          _d.id,
-                          _d.backdropPath,
-                          _d.title ?? _d.name,
-                          _d.posterPath,
-                          _d.mediaType == 'movie'
-                              ? MediaType.movie
-                              : MediaType.person)),
+                    PeopleDetailPageActionCreator.onCellTapped(
+                      _d.id,
+                      _d.backdropPath,
+                      _d.title ?? _d.name,
+                      _d.posterPath,
+                      _d.mediaType == 'movie'
+                          ? MediaType.movie
+                          : MediaType.person,
+                    ),
+                  ),
                 );
               },
             )
-          : _ShimmerList(),
+          : const _ShimmerList(),
     );
   }
 }

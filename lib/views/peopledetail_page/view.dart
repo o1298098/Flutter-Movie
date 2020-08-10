@@ -121,8 +121,7 @@ class _Title extends StatelessWidget {
         : Text(
             department ?? '',
             softWrap: true,
-            style:
-                TextStyle(fontWeight: FontWeight.w500, fontSize: Adapt.px(40)),
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
           );
   }
 }

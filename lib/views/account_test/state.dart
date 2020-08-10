@@ -7,12 +7,14 @@ import 'package:movie/models/app_user.dart';
 class AccountState implements GlobalBaseState, Cloneable<AccountState> {
   String name;
   String avatar;
+  int selectedTabBarIndex;
   bool islogin;
   @override
   AccountState clone() {
     return AccountState()
       ..islogin = islogin
       ..avatar = avatar
+      ..selectedTabBarIndex = selectedTabBarIndex
       ..user = user;
   }
 
@@ -27,5 +29,7 @@ class AccountState implements GlobalBaseState, Cloneable<AccountState> {
 }
 
 AccountState initState(Map<String, dynamic> args) {
-  return AccountState();
+  AccountState state = AccountState();
+  state.selectedTabBarIndex = 0;
+  return state;
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/style/themestyle.dart';
+import 'package:movie/widgets/expandable_text.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'state.dart';
@@ -19,10 +20,16 @@ Widget buildView(
           Text(
             I18n.of(viewService.context).overView,
             style:
-                TextStyle(fontWeight: FontWeight.bold, fontSize: Adapt.px(35)),
+                TextStyle(fontWeight: FontWeight.bold, fontSize: Adapt.px(28)),
           ),
           SizedBox(height: Adapt.px(20)),
-          state.overView == null ? _ShimmerCell() : Text(state.overView ?? ''),
+          state.overView == null
+              ? _ShimmerCell()
+              : ExpandableText(
+                  state.overView ?? '',
+                  maxLines: 5,
+                  style: TextStyle(color: const Color(0xFF717171), height: 1.5),
+                ),
         ],
       ),
     ),

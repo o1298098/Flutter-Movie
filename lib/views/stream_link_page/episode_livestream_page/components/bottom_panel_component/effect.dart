@@ -59,7 +59,7 @@ Future _commentTap(Action action, Context<BottomPanelState> ctx) async {
 }
 
 void _onInit(Action action, Context<BottomPanelState> ctx) async {
-  bool _useVideoSourceApi = false;
+  bool _useVideoSourceApi = true;
   bool _streamInBrowser = false;
   final _pre = await SharedPreferences.getInstance();
   if (_pre.containsKey('useVideoSourceApi'))

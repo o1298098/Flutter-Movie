@@ -324,7 +324,9 @@ class _VoteFilterPanelState extends State<_VoteFilterPanel> {
   double lvote = 0.0;
   double rvote = 10.0;
   final _totalWidth = Adapt.screenW() - Adapt.px(80);
-  final _pinWidth = Adapt.px(25);
+  final double _pinWidth = 18.0;
+  final double _lineHeight = 8;
+  double _linerPadding;
   double _barSpace;
   double _leftMargin = 0.0;
   double _rightMargin = 0.0;
@@ -354,6 +356,7 @@ class _VoteFilterPanelState extends State<_VoteFilterPanel> {
 
   @override
   void initState() {
+    _linerPadding = (_pinWidth - _lineHeight) / 2;
     lvote = widget.lvote;
     rvote = widget.rvote;
     _barSpace = _totalWidth - _pinWidth * 2;
@@ -377,20 +380,20 @@ class _VoteFilterPanelState extends State<_VoteFilterPanel> {
         Container(
           child: Stack(children: [
             Container(
-              height: Adapt.px(15),
-              margin: EdgeInsets.symmetric(vertical: Adapt.px(5)),
+              height: _lineHeight,
+              margin: EdgeInsets.symmetric(vertical: _linerPadding),
               decoration: BoxDecoration(
                   color: _theme.primaryColorDark,
                   borderRadius: BorderRadius.circular(Adapt.px(6))),
             ),
             Column(children: [
               Container(
-                height: Adapt.px(15),
+                height: _lineHeight,
                 margin: EdgeInsets.only(
                     right: _rightMargin,
                     left: _leftMargin,
-                    top: Adapt.px(5),
-                    bottom: Adapt.px(5)),
+                    top: _linerPadding,
+                    bottom: _linerPadding),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Adapt.px(7.5)),
                   gradient: LinearGradient(colors: [
@@ -420,33 +423,43 @@ class _VoteFilterPanelState extends State<_VoteFilterPanel> {
                 left: _leftMargin,
               ),
               child: Row(children: [
-                GestureDetector(
-                  onHorizontalDragUpdate: _leftPinDrag,
-                  child: Container(
-                    width: _pinWidth,
-                    height: _pinWidth,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: const Color(0xFF334455),
-                    ),
-                  ),
+                _Pin(
+                  onDrap: _leftPinDrag,
+                  pinSize: _pinWidth,
+                  theme: _theme,
                 ),
                 Spacer(),
-                GestureDetector(
-                    onHorizontalDragUpdate: _rightPinDrag,
-                    child: Container(
-                      width: _pinWidth,
-                      height: _pinWidth,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: const Color(0xFF334455),
-                      ),
-                    ))
+                _Pin(
+                  onDrap: _rightPinDrag,
+                  pinSize: _pinWidth,
+                  theme: _theme,
+                )
               ]),
             )
           ]),
         )
       ]),
     );
+  }
+}
+
+class _Pin extends StatelessWidget {
+  final double pinSize;
+  final Function(DragUpdateDetails) onDrap;
+  final ThemeData theme;
+  const _Pin({this.onDrap, this.pinSize, this.theme});
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        onHorizontalDragUpdate: onDrap,
+        child: Container(
+          width: pinSize,
+          height: pinSize,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: const Color(0xFF717171)),
+            color: theme.backgroundColor,
+          ),
+        ));
   }
 }

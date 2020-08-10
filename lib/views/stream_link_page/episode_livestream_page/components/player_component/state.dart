@@ -29,7 +29,8 @@ class PlayerConnector extends ConnOp<EpisodeLiveStreamState, PlayerState> {
     PlayerState mstate = state.playerState.clone();
     mstate.loading = state.loading;
     mstate.useVideoSourceApi = state.bottomPanelState.useVideoSourceApi;
-    mstate.streamInBrowser = state.bottomPanelState.streamInBrowser;
+    mstate.streamInBrowser = state.bottomPanelState.streamInBrowser ||
+        (state.selectedLink?.externalBrowser ?? false);
     mstate.background = state.selectedEpisode.stillPath;
     mstate.streamLinkId = state.selectedLink?.sid ?? 0;
     mstate.needAd = state.selectedLink?.needAd ?? false;

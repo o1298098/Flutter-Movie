@@ -114,7 +114,7 @@ class _OptionItem extends StatelessWidget {
             SizedBox(width: 20),
             Text(
               title,
-              style: TextStyle(color: _baseColor, fontSize: 16),
+              style: TextStyle(color: _baseColor, fontSize: 14),
             ),
           ],
         ),
@@ -173,7 +173,7 @@ class _OptionCheckItemState extends State<_OptionCheckItem> {
             const SizedBox(width: 20),
             Text(
               widget.title,
-              style: TextStyle(color: _baseColor, fontSize: 16),
+              style: TextStyle(color: _baseColor, fontSize: 14),
             ),
             const Spacer(),
             Container(

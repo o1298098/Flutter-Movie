@@ -25,7 +25,7 @@ Widget buildView(
           child: Text(
             I18n.of(viewService.context).recommendations,
             style:
-                TextStyle(fontWeight: FontWeight.bold, fontSize: Adapt.px(35)),
+                TextStyle(fontWeight: FontWeight.bold, fontSize: Adapt.px(28)),
           ),
         ),
         SizedBox(height: Adapt.px(30)),

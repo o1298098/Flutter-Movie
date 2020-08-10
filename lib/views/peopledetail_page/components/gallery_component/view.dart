@@ -27,8 +27,7 @@ Widget buildView(
                 children: <Widget>[
                   Text(
                     'Photos',
-                    style: TextStyle(
-                        fontSize: Adapt.px(40), fontWeight: FontWeight.w500),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                   ),
                   Expanded(child: Container()),
                   InkWell(
