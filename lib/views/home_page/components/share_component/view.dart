@@ -33,6 +33,7 @@ Widget buildView(ShareState state, Dispatch dispatch, ViewService viewService) {
 }
 
 class _ShimmerCell extends StatelessWidget {
+  const _ShimmerCell();
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -50,7 +51,7 @@ class _ShimmerCell extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: Adapt.px(30),
+            height: Adapt.px(20),
           ),
           Container(
             width: Adapt.px(220),
@@ -64,19 +65,21 @@ class _ShimmerCell extends StatelessWidget {
 }
 
 class _ShimmerList extends StatelessWidget {
+  const _ShimmerList();
   @override
   Widget build(BuildContext context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
     return Shimmer.fromColors(
-        baseColor: _theme.primaryColorDark,
-        highlightColor: _theme.primaryColorLight,
-        child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-          separatorBuilder: (_, __) => SizedBox(width: Adapt.px(30)),
-          itemCount: 4,
-          itemBuilder: (_, __) => _ShimmerCell(),
-        ));
+      baseColor: _theme.primaryColorDark,
+      highlightColor: _theme.primaryColorLight,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+        separatorBuilder: (_, __) => SizedBox(width: Adapt.px(30)),
+        itemCount: 4,
+        itemBuilder: (_, __) => const _ShimmerCell(),
+      ),
+    );
   }
 }
 
@@ -108,18 +111,19 @@ class _Cell extends StatelessWidget {
             ),
           ),
           Container(
-              //alignment: Alignment.bottomCenter,
-              width: Adapt.px(250),
-              padding: EdgeInsets.all(Adapt.px(10)),
-              child: Text(
-                data.name,
-                maxLines: 2,
-                //textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: Adapt.px(28),
-                  fontWeight: FontWeight.bold,
-                ),
-              ))
+            //alignment: Alignment.bottomCenter,
+            width: Adapt.px(250),
+            padding: EdgeInsets.all(Adapt.px(10)),
+            child: Text(
+              data.name,
+              maxLines: 2,
+              //textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: Adapt.px(28),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -186,28 +190,29 @@ class _MoreCell extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
     return InkWell(
-        onTap: () => dispatch(HomePageActionCreator.onShareMore()),
-        child: Column(
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                color: _theme.primaryColorLight,
-                borderRadius: BorderRadius.circular(Adapt.px(15)),
-              ),
-              width: Adapt.px(250),
-              height: Adapt.px(350),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      I18n.of(context).more,
-                      style: TextStyle(fontSize: Adapt.px(35)),
-                    ),
-                    Icon(Icons.arrow_forward, size: Adapt.px(35))
-                  ]),
-            )
-          ],
-        ));
+      onTap: () => dispatch(HomePageActionCreator.onShareMore()),
+      child: Column(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              color: _theme.primaryColorLight,
+              borderRadius: BorderRadius.circular(Adapt.px(15)),
+            ),
+            width: Adapt.px(250),
+            height: Adapt.px(350),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    I18n.of(context).more,
+                    style: TextStyle(fontSize: Adapt.px(35)),
+                  ),
+                  Icon(Icons.arrow_forward, size: Adapt.px(35))
+                ]),
+          )
+        ],
+      ),
+    );
   }
 }
 
@@ -219,35 +224,36 @@ class _ShareBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
-        duration: Duration(milliseconds: 600),
-        child: Container(
-          key: ValueKey(model),
-          height: Adapt.px(450),
-          child: model.length > 0
-              ? ListView.separated(
-                  padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-                  scrollDirection: Axis.horizontal,
-                  physics: PageScrollPhysics(),
-                  shrinkWrap: true,
-                  separatorBuilder: (_, index) => SizedBox(width: Adapt.px(30)),
-                  itemCount: model.length + 1,
-                  itemBuilder: (_, index) {
-                    if (index == model.length)
-                      return _MoreCell(
-                        dispatch: dispatch,
-                      );
-                    final dynamic d = model[index];
-                    return _Cell(
-                      data: d,
-                      onTap: () => dispatch(HomePageActionCreator.onCellTapped(
-                          d.id,
-                          d.photourl,
-                          d.name,
-                          d.photourl,
-                          showMovie ? MediaType.movie : MediaType.tv)),
+      duration: Duration(milliseconds: 600),
+      child: Container(
+        key: ValueKey(model),
+        height: Adapt.px(450),
+        child: model.length > 0
+            ? ListView.separated(
+                padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+                scrollDirection: Axis.horizontal,
+                physics: PageScrollPhysics(),
+                shrinkWrap: true,
+                separatorBuilder: (_, index) => SizedBox(width: Adapt.px(30)),
+                itemCount: model.length + 1,
+                itemBuilder: (_, index) {
+                  if (index == model.length)
+                    return _MoreCell(
+                      dispatch: dispatch,
                     );
-                  })
-              : _ShimmerList(),
-        ));
+                  final dynamic d = model[index];
+                  return _Cell(
+                    data: d,
+                    onTap: () => dispatch(HomePageActionCreator.onCellTapped(
+                        d.id,
+                        d.photourl,
+                        d.name,
+                        d.photourl,
+                        showMovie ? MediaType.movie : MediaType.tv)),
+                  );
+                })
+            : _ShimmerList(),
+      ),
+    );
   }
 }

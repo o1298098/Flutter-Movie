@@ -18,19 +18,19 @@ Widget buildView(BodyState state, Dispatch dispatch, ViewService viewService) {
           icon: 'images/yoda.png',
           title: 'Watchlist',
           onTap: () =>
-              dispatch(AccountPageActionCreator.navigatorPush('WatchlistPage')),
+              dispatch(AccountPageActionCreator.navigatorPush('watchlistPage')),
         ),
         _GirdCell(
           icon: 'images/luke_skywalker.png',
           title: 'MyLists',
           onTap: () =>
-              dispatch(AccountPageActionCreator.navigatorPush('MyListsPage')),
+              dispatch(AccountPageActionCreator.navigatorPush('myListsPage')),
         ),
         _GirdCell(
           icon: 'images/darth_vader.png',
           title: 'Favorites',
           onTap: () =>
-              dispatch(AccountPageActionCreator.navigatorPush('FavoritesPage')),
+              dispatch(AccountPageActionCreator.navigatorPush('favoritesPage')),
         ),
         _GirdCell(
             icon: 'images/chewbacca.png',

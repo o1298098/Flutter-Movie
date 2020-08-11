@@ -48,7 +48,7 @@ class _ShimmerCell extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: Adapt.px(30),
+            height: Adapt.px(20),
           ),
           Container(
             width: Adapt.px(220),

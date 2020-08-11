@@ -13,7 +13,7 @@ Effect<FavoritesPageState> buildEffect() {
     FavoritesPageAction.action: _onAction,
     FavoritesPageAction.setColor: _setColor,
     Lifecycle.initState: _onInit,
-    Lifecycle.dispose: _onDispose
+    Lifecycle.dispose: _onDispose,
   });
 }
 
@@ -28,7 +28,7 @@ Future _onInit(Action action, Context<FavoritesPageState> ctx) async {
     final _baseApi = BaseApi.instance;
     final movie =
         await _baseApi.getFavorite(ctx.state.user.firebaseUser.uid, 'movie');
-    if (movie.success) ctx.state.animationController.forward(from: 0.0);
+    if (movie.success) ctx.state.animationController?.forward(from: 0.0);
     ctx.dispatch(
         FavoritesPageActionCreator.setBackground(movie.result.data[0]));
     ctx.dispatch(FavoritesPageActionCreator.setMovie(movie.result));

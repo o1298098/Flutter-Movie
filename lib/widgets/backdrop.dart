@@ -51,7 +51,7 @@ class BackDropState extends State<BackDrop> with TickerProviderStateMixin {
             minChildSize: _initialChildSize,
             builder: (BuildContext context, ScrollController scrollController) {
               return Container(
-                padding: EdgeInsets.only(top: 25),
+                padding: EdgeInsets.only(top: 20),
                 decoration: BoxDecoration(
                   color: widget.frontBackGroundColor,
                   borderRadius: BorderRadius.vertical(

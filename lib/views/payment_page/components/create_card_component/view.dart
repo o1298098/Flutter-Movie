@@ -576,7 +576,9 @@ class _InputPanel extends StatelessWidget {
                 focusNode: expriedDaterFocusNode,
                 textInputAction: TextInputAction.next,
                 onSubmitted: onSubmitted,
-                inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'\d+'))
+                ],
               );
               break;
             case 3:
@@ -588,7 +590,9 @@ class _InputPanel extends StatelessWidget {
                 focusNode: cvvFocusNode,
                 onSubmitted: onSubmitted,
                 textInputAction: TextInputAction.done,
-                inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'\d+'))
+                ],
               );
               break;
             default:
@@ -718,9 +722,7 @@ class _CreditCardTextFieldState extends State<_CreditCardTextField> {
       focusNode: widget.focusNode,
       textInputAction: widget.textInputAction,
       onSubmitted: widget.onSubmitted,
-      inputFormatters: [
-        WhitelistingTextInputFormatter.digitsOnly,
-      ],
+      inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'\d+'))],
       errorText: error ? 'invalid card number' : null,
     );
   }

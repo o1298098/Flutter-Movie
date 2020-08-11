@@ -84,10 +84,32 @@ class _CustomAppBarState extends State<_CustomAppBar> {
             key: ValueKey('AppBarHide'),
             backgroundColor: Colors.transparent,
             elevation: 0.0,
+            leading: InkWell(
+              child: Container(
+                margin: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle, color: const Color(0x60000000)),
+                child: Icon(
+                  Icons.keyboard_arrow_left,
+                  color: const Color(0xFFFFFFFF),
+                ),
+              ),
+              onTap: () => Navigator.of(context).pop(),
+            ),
             actions: [
-              IconButton(
-                onPressed: widget.menuPress,
-                icon: Icon(Icons.more_vert),
+              InkWell(
+                child: Container(
+                  margin: EdgeInsets.all(12),
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle, color: const Color(0x60000000)),
+                  child: Icon(
+                    Icons.more_vert,
+                    color: const Color(0xFFFFFFFF),
+                  ),
+                ),
+                onTap: widget.menuPress,
               )
             ],
           );

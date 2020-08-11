@@ -54,8 +54,10 @@ Widget buildView(
             children: <Widget>[
               InkWell(
                 onTap: () => dispatch(FilterActionCreator.dateChanged(true)),
-                child: Text('Today',
-                    style: state.isToday ? _selectTS : _unSelectTS),
+                child: Text(
+                  'Today',
+                  style: state.isToday ? _selectTS : _unSelectTS,
+                ),
               ),
               SizedBox(
                 width: Adapt.px(50),

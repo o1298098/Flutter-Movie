@@ -23,7 +23,9 @@ Widget buildView(StillState state, Dispatch dispatch, ViewService viewService) {
             child: Text(
               'Stills',
               style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: Adapt.px(28)),
+                fontWeight: FontWeight.bold,
+                fontSize: Adapt.px(28),
+              ),
             ),
           ),
           SizedBox(height: Adapt.px(30)),

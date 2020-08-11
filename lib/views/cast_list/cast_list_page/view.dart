@@ -19,6 +19,7 @@ Widget buildView(
       ),
       backgroundColor: _theme.backgroundColor,
       elevation: 0.0,
+      brightness: _theme.brightness,
       iconTheme: _theme.iconTheme,
       actions: [
         IconButton(

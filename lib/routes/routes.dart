@@ -59,14 +59,14 @@ class Routes {
       'seasondetailpage': SeasonDetailPage(),
       'episodedetailpage': EpisodeDetailPage(),
       'MoreMediaPage': MoreMediaPage(),
-      'SeasonsPage': SeasonsPage(),
-      'MyListsPage': MyListsPage(),
+      'seasonsPage': SeasonsPage(),
+      'myListsPage': MyListsPage(),
       'ListDetailPage': ListDetailPage(),
-      'FavoritesPage': FavoritesPage(),
-      'WatchlistPage': WatchlistPage(),
-      'WatchlistDetailPage': WatchlistDetailPage(),
+      'favoritesPage': FavoritesPage(),
+      'watchlistPage': WatchlistPage(),
+      'watchlistDetailPage': WatchlistDetailPage(),
       'detailpage': detail.MovieDetailPage(),
-      'GalleryPage': GalleryPage(),
+      'galleryPage': GalleryPage(),
       'registerPage': RegisterPage(),
       'createListPage': CreateListPage(),
       'allStreamLinkPage': AllStreamLinkPage(),
@@ -130,7 +130,7 @@ class Routes {
   );
 }
 
-EffectMiddleware<T> _pageAnalyticsMiddleware<T>({String tag = 'redux'}) {
+EffectMiddleware<T> _pageAnalyticsMiddleware<T>() {
   return (AbstractLogic<dynamic> logic, Store<T> store) {
     return (Effect<dynamic> effect) {
       return (Action action, Context<dynamic> ctx) {

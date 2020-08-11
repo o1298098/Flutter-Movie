@@ -110,14 +110,15 @@ class _Title extends StatelessWidget {
     return department == null
         ? SizedBox(
             child: Shimmer.fromColors(
-            baseColor: _theme.primaryColorDark,
-            highlightColor: _theme.primaryColorLight,
-            child: Container(
-              height: Adapt.px(40),
-              width: Adapt.px(150),
-              color: Colors.grey[200],
+              baseColor: _theme.primaryColorDark,
+              highlightColor: _theme.primaryColorLight,
+              child: Container(
+                height: Adapt.px(40),
+                width: Adapt.px(150),
+                color: Colors.grey[200],
+              ),
             ),
-          ))
+          )
         : Text(
             department ?? '',
             softWrap: true,

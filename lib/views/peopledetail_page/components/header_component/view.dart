@@ -242,7 +242,7 @@ class _NamePanel extends StatelessWidget {
           onTap: _showCsatList,
           child: Icon(
             Icons.add_circle_outline,
-            size: 25,
+            size: 20,
           ),
         ),
         SizedBox(width: 15),
@@ -252,7 +252,7 @@ class _NamePanel extends StatelessWidget {
             },
             child: Icon(
               Icons.favorite_border,
-              size: 25,
+              size: 20,
             )),
         SizedBox(width: Adapt.px(40))
       ],

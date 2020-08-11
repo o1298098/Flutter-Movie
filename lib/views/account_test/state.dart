@@ -8,6 +8,7 @@ class AccountState implements GlobalBaseState, Cloneable<AccountState> {
   String name;
   String avatar;
   int selectedTabBarIndex;
+  bool showTip;
   bool islogin;
   @override
   AccountState clone() {
@@ -15,6 +16,7 @@ class AccountState implements GlobalBaseState, Cloneable<AccountState> {
       ..islogin = islogin
       ..avatar = avatar
       ..selectedTabBarIndex = selectedTabBarIndex
+      ..showTip = showTip
       ..user = user;
   }
 
@@ -31,5 +33,6 @@ class AccountState implements GlobalBaseState, Cloneable<AccountState> {
 AccountState initState(Map<String, dynamic> args) {
   AccountState state = AccountState();
   state.selectedTabBarIndex = 0;
+  state.showTip = true;
   return state;
 }

@@ -11,87 +11,132 @@ Widget buildView(
     KeyWordState state, Dispatch dispatch, ViewService viewService) {
   return Builder(
     builder: (context) {
-      final ThemeData _theme = ThemeStyle.getTheme(context);
-      Widget _buildKeyWordCell(KeyWordData d) {
-        return Chip(
-          key: ValueKey('keyword${d.id}'),
-          elevation: 3.0,
-          backgroundColor: _theme.cardColor,
-          label: Text(d.name),
-        );
-      }
-
-      final _model = state.keyWords;
       return SliverToBoxAdapter(
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
-                child: Text(
-                  'KeyWords',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: Adapt.px(28)),
-                ),
-              ),
-              SizedBox(height: Adapt.px(10)),
-              Container(
-                padding: EdgeInsets.fromLTRB(
-                    Adapt.px(40), 0, Adapt.px(40), Adapt.px(30)),
-                child: _model.length == 0
-                    ? _ShimmerCell()
-                    : Wrap(
-                        spacing: Adapt.px(15),
-                        direction: Axis.horizontal,
-                        children:
-                            state.keyWords.map(_buildKeyWordCell).toList(),
-                      ),
-              ),
-              SizedBox(height: Adapt.px(30)),
-            ],
-          ),
-        ),
+        child: state.keyWords.length == 0
+            ? const _ShimmerList()
+            : _KeyWordPanel(keywords: state.keyWords),
       );
     },
   );
 }
 
-class _ShimmerCell extends StatelessWidget {
+class _KeyWordCell extends StatelessWidget {
+  final KeyWordData data;
+  const _KeyWordCell({this.data});
   @override
   Widget build(BuildContext context) {
-    final ThemeData _theme = ThemeStyle.getTheme(context);
-    return Shimmer.fromColors(
-        baseColor: _theme.primaryColorDark,
-        highlightColor: _theme.primaryColorLight,
-        child: Wrap(
-          spacing: Adapt.px(15),
-          direction: Axis.horizontal,
-          children: <Widget>[
-            Container(
-              width: Adapt.px(120),
-              height: Adapt.px(60),
-              decoration: BoxDecoration(
-                color: const Color(0xFFEEEEEE),
-                borderRadius: BorderRadius.circular(Adapt.px(30)),
+    final _theme = ThemeStyle.getTheme(context);
+    return Container(
+      padding: EdgeInsets.symmetric(
+          horizontal: Adapt.px(25), vertical: Adapt.px(13)),
+      height: Adapt.px(60),
+      decoration: BoxDecoration(
+          border: Border.all(color: _theme.primaryColorDark),
+          borderRadius: BorderRadius.circular(Adapt.px(30))),
+      child: Text(
+        data.name,
+        style:
+            TextStyle(fontSize: Adapt.px(24), color: const Color(0xFF717171)),
+      ),
+    );
+  }
+}
+
+class _KeyWordPanel extends StatelessWidget {
+  final List<KeyWordData> keywords;
+  const _KeyWordPanel({this.keywords});
+  @override
+  Widget build(BuildContext context) {
+    final _padding = Adapt.px(40);
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: _padding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Keywords',
+            style: TextStyle(
+              fontSize: Adapt.px(28),
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          SizedBox(height: Adapt.px(30)),
+          SizedBox(
+            width: Adapt.screenW(),
+            child: Wrap(
+              spacing: 12,
+              runSpacing: 12,
+              children:
+                  keywords.take(15).map((e) => _KeyWordCell(data: e)).toList(),
+            ),
+          ),
+          SizedBox(height: Adapt.px(30)),
+        ],
+      ),
+    );
+  }
+}
+
+class _ShimmerCell extends StatelessWidget {
+  final double width;
+  const _ShimmerCell(this.width);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+          horizontal: Adapt.px(25), vertical: Adapt.px(13)),
+      width: width,
+      height: Adapt.px(60),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFFFFF),
+        borderRadius: BorderRadius.circular(
+          Adapt.px(30),
+        ),
+      ),
+    );
+  }
+}
+
+class _ShimmerList extends StatelessWidget {
+  const _ShimmerList();
+  @override
+  Widget build(BuildContext context) {
+    final _padding = Adapt.px(40);
+    final _theme = ThemeStyle.getTheme(context);
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: _padding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Keywords',
+              style: TextStyle(
+                fontSize: Adapt.px(28),
+                fontWeight: FontWeight.w600,
               ),
             ),
-            Container(
-              width: Adapt.px(180),
-              height: Adapt.px(60),
-              decoration: BoxDecoration(
-                color: const Color(0xFFEEEEEE),
-                borderRadius: BorderRadius.circular(Adapt.px(30)),
+            SizedBox(height: Adapt.px(30)),
+            Shimmer.fromColors(
+              baseColor: _theme.primaryColorDark,
+              highlightColor: _theme.primaryColorLight,
+              child: SizedBox(
+                width: Adapt.screenW(),
+                child: Wrap(
+                  runAlignment: WrapAlignment.start,
+                  crossAxisAlignment: WrapCrossAlignment.start,
+                  spacing: 12,
+                  runSpacing: 12,
+                  children: [
+                    const _ShimmerCell(80),
+                    const _ShimmerCell(100),
+                    const _ShimmerCell(90),
+                    const _ShimmerCell(120),
+                    const _ShimmerCell(80),
+                  ],
+                ),
               ),
             ),
-            Container(
-              width: Adapt.px(200),
-              height: Adapt.px(60),
-              decoration: BoxDecoration(
-                color: const Color(0xFFEEEEEE),
-                borderRadius: BorderRadius.circular(Adapt.px(30)),
-              ),
-            ),
+            SizedBox(height: Adapt.px(30)),
           ],
         ));
   }
