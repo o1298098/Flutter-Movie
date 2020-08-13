@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart' hide Action;
-import 'package:movie/views/stream_link_page/episode_livestream_page/page.dart';
+import 'package:movie/views/stream_link/episode_livestream_page/page.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -30,10 +30,7 @@ Future _onCellTapped(Action action, Context<EpisodesState> ctx) async {
           child: FadeTransition(
             opacity: _curvedAnimation,
             child: EpisodeLiveStreamPage().buildPage(
-              {
-                'selectedEpisode': action.payload,
-                'season': ctx.state.episodes
-              },
+              {'selectedEpisode': action.payload, 'season': ctx.state.episodes},
             ),
           ),
         );

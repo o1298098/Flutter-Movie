@@ -8,6 +8,7 @@ Reducer<AccountState> buildReducer() {
     <Object, Reducer<AccountState>>{
       AccountAction.action: _onAction,
       AccountAction.onTabBarTap: _onTabBarTap,
+      AccountAction.hideTip: _hideTip,
       AccountAction.showTip: _showTip,
     },
   );
@@ -26,8 +27,15 @@ AccountState _onTabBarTap(AccountState state, Action action) {
 }
 
 AccountState _showTip(AccountState state, Action action) {
-  final bool _show = action.payload ?? true;
+  final String _tip = action.payload;
   final AccountState newState = state.clone();
-  newState.showTip = _show;
+  newState.showTip = true;
+  newState.tip = _tip;
+  return newState;
+}
+
+AccountState _hideTip(AccountState state, Action action) {
+  final AccountState newState = state.clone();
+  newState.showTip = false;
   return newState;
 }

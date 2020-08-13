@@ -54,7 +54,7 @@ Future _pushToMainPage(BuildContext context) async {
             Routes.routes.buildPage('homePage', null),
             Routes.routes.buildPage('discoverPage', null),
             Routes.routes.buildPage('comingPage', null),
-            Routes.routes.buildPage('accountPage', null)
+            Routes.routes.buildPage('testAccountPage', null)
           ])
         });
       },

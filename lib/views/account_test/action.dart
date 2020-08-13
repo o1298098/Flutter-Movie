@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 
-enum AccountAction { action, onTabBarTap, navigatorPush, showTip }
+enum AccountAction { action, onTabBarTap, navigatorPush, hideTip, showTip }
 
 class AccountActionCreator {
   static Action onAction() {
@@ -11,8 +11,12 @@ class AccountActionCreator {
     return Action(AccountAction.onTabBarTap, payload: index);
   }
 
-  static Action showTip(bool show) {
-    return Action(AccountAction.showTip, payload: show);
+  static Action showTip(String tip) {
+    return Action(AccountAction.showTip, payload: tip);
+  }
+
+  static Action hideTip() {
+    return const Action(AccountAction.hideTip);
   }
 
   static Action navigatorPush(String routeName, {Object arguments}) {

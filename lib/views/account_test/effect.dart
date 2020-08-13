@@ -13,7 +13,7 @@ Effect<AccountState> buildEffect() {
 void _onAction(Action action, Context<AccountState> ctx) {}
 
 void _navigatorPush(Action action, Context<AccountState> ctx) async {
-  if (ctx.state.user.firebaseUser == null)
+  if (ctx.state.user?.firebaseUser == null)
     await _onLogin(action, ctx);
   else {
     String routerName = action.payload[0];

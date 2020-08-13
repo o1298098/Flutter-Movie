@@ -66,7 +66,7 @@ Future _onLoadData(Action action, Context<DiscoverPageState> ctx) async {
   if (r.success) ctx.dispatch(DiscoverPageActionCreator.onLoadData(r.result));
 
   ctx.dispatch(DiscoverPageActionCreator.onBusyChanged(false));
-  ctx.state.scrollController.jumpTo(0);
+  ctx.state.scrollController?.jumpTo(0);
 }
 
 Future _onVideoCellTapped(Action action, Context<DiscoverPageState> ctx) async {
