@@ -61,5 +61,13 @@
     "budget": "Budget",
     "revenue": "Revenue",
     "company": "Company",
-    "play": "Play"
+    "play": "Play",
+    "welcomeBack": "お帰りなさい",
+    "settings": "設定",
+    "adultContent": "成人コンテンツ",
+    "notifications": "お知らせ",
+    "darkMode": "Dark Mode",
+    "language": "言語",
+    "feedback": "フィードバック",
+    "version": "バージョン"
 }

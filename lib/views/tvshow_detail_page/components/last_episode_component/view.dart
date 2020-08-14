@@ -83,6 +83,8 @@ class _LastEpisodePanel extends StatelessWidget {
                         children: [
                           Text(
                             data.name ?? '',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontSize: Adapt.px(24)),
                           ),
                           SizedBox(height: Adapt.px(5)),

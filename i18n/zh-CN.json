@@ -61,5 +61,13 @@
     "budget": "Budget",
     "revenue": "Revenue",
     "company": "Company",
-    "play": "播放"
+    "play": "播放",
+    "welcomeBack": "欢迎回来",
+    "settings": "设置",
+    "adultContent": "成人内容",
+    "notifications": "通知",
+    "darkMode": "黑暗模式",
+    "language": "语言",
+    "feedback": "反馈",
+    "version": "版本"
 }

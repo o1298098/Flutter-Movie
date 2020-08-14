@@ -4,9 +4,11 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/app_user.dart';
+import 'package:movie/models/item.dart';
 import 'package:movie/widgets/overlay_entry_manage.dart';
 
 import 'components/settings_component/state.dart';
+import 'components/user_data_component/state.dart';
 import 'components/user_info_component/state.dart';
 
 class AccountState implements GlobalBaseState, Cloneable<AccountState> {
@@ -17,6 +19,7 @@ class AccountState implements GlobalBaseState, Cloneable<AccountState> {
   String tip;
   UserInfoState userInfoState;
   SettingsState settingsState;
+  UserDataState userDataState;
   @override
   AccountState clone() {
     return AccountState()
@@ -26,7 +29,8 @@ class AccountState implements GlobalBaseState, Cloneable<AccountState> {
       ..tip = tip
       ..user = user
       ..userInfoState = userInfoState
-      ..settingsState = settingsState;
+      ..settingsState = settingsState
+      ..userDataState = userDataState;
   }
 
   @override
@@ -45,5 +49,10 @@ AccountState initState(Map<String, dynamic> args) {
   state.showTip = true;
   state.userInfoState = UserInfoState()
     ..overlayStateKey = GlobalKey<OverlayEntryManageState>();
+  state.userDataState = UserDataState();
+  state.settingsState = SettingsState()
+    ..appLanguage = Item.fromParams(name: "System Default")
+    ..adultContent = false
+    ..enableNotifications = true;
   return state;
 }

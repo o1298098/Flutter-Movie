@@ -158,6 +158,22 @@ class I18n implements WidgetsLocalizations {
   String get company => "Company";
   /// "Play"
   String get play => "Play";
+  /// "Welcome back"
+  String get welcomeBack => "Welcome back";
+  /// "Settings"
+  String get settings => "Settings";
+  /// "Adult Content"
+  String get adultContent => "Adult Content";
+  /// "Notifications"
+  String get notifications => "Notifications";
+  /// "Dark Mode"
+  String get darkMode => "Dark Mode";
+  /// "Language"
+  String get language => "Language";
+  /// "Feedback"
+  String get feedback => "Feedback";
+  /// "Version"
+  String get version => "Version";
 }
 
 class _I18n_en_US extends I18n {
@@ -359,6 +375,30 @@ class _I18n_zh_CN extends I18n {
   /// "播放"
   @override
   String get play => "播放";
+  /// "欢迎回来"
+  @override
+  String get welcomeBack => "欢迎回来";
+  /// "设置"
+  @override
+  String get settings => "设置";
+  /// "成人内容"
+  @override
+  String get adultContent => "成人内容";
+  /// "通知"
+  @override
+  String get notifications => "通知";
+  /// "黑暗模式"
+  @override
+  String get darkMode => "黑暗模式";
+  /// "语言"
+  @override
+  String get language => "语言";
+  /// "反馈"
+  @override
+  String get feedback => "反馈";
+  /// "版本"
+  @override
+  String get version => "版本";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
@@ -556,6 +596,30 @@ class _I18n_ja_JP extends I18n {
   /// "Play"
   @override
   String get play => "Play";
+  /// "お帰りなさい"
+  @override
+  String get welcomeBack => "お帰りなさい";
+  /// "設定"
+  @override
+  String get settings => "設定";
+  /// "成人コンテンツ"
+  @override
+  String get adultContent => "成人コンテンツ";
+  /// "お知らせ"
+  @override
+  String get notifications => "お知らせ";
+  /// "Dark Mode"
+  @override
+  String get darkMode => "Dark Mode";
+  /// "言語"
+  @override
+  String get language => "言語";
+  /// "フィードバック"
+  @override
+  String get feedback => "フィードバック";
+  /// "バージョン"
+  @override
+  String get version => "バージョン";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;

@@ -4,6 +4,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie/actions/adapt.dart';
+import 'package:movie/generated/i18n.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/account_test/components/user_info_component/component/user_menu.dart';
 import 'package:movie/widgets/overlay_entry_manage.dart';
@@ -55,11 +56,12 @@ Widget buildView(
   }
 
   return _Body(
-      isSignIn: true,
-      user: state.user?.firebaseUser,
-      openMenu: _showMenu,
-      onSignIn: () => dispatch(UserInfoActionCreator.signIn()),
-      overlayStateKey: state.overlayStateKey);
+    isSignIn: state.user?.firebaseUser != null,
+    user: state.user?.firebaseUser,
+    openMenu: _showMenu,
+    onSignIn: () => dispatch(UserInfoActionCreator.signIn()),
+    overlayStateKey: state.overlayStateKey,
+  );
 }
 
 class _Body extends StatelessWidget {
@@ -114,7 +116,7 @@ class _UserInfo extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Welcome back',
+              I18n.of(context).welcomeBack,
               style: TextStyle(color: const Color(0xFF717171), fontSize: 12),
             ),
             SizedBox(height: 5),

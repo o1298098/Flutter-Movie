@@ -1,3 +1,4 @@
+import 'package:movie/models/base_api_model/account_info.dart';
 import 'package:movie/models/base_api_model/movie_like_model.dart';
 import 'package:movie/models/base_api_model/tvshow_like_model.dart';
 
@@ -110,6 +111,8 @@ class ModelFactory {
         return CastListDetail(json) as T;
       case 'BaseCast':
         return BaseCast.fromJson(json) as T;
+      case 'AccountInfo':
+        return AccountInfo(json) as T;
       default:
         return json;
     }

@@ -45,19 +45,23 @@ class TMDBApi {
   SharedPreferences prefs;
   String _language = ui.window.locale.languageCode;
   final String region = ui.window.locale.countryCode;
-  bool includeAdult;
+  bool _includeAdult;
   final Request _http = Request('https://api.themoviedb.org/3');
   final Request _httpV4 = Request('https://api.themoviedb.org/4');
 
   Future<void> init() async {
     prefs = await SharedPreferences.getInstance();
-    includeAdult = prefs.getBool('adultItems') ?? false;
+    _includeAdult = prefs.getBool('adultItems') ?? false;
     final _appLanguage = prefs.getString('appLanguage');
     if (_appLanguage != null) {
       _language = Item(_appLanguage).value;
       GlobalStore.store
           .dispatch(GlobalActionCreator.changeLocale(ui.Locale(_language)));
     }
+  }
+
+  void setAdultValue(bool adult) {
+    _includeAdult = adult ?? false;
   }
 
   void setLanguage(String languageCode) {
@@ -590,7 +594,7 @@ class TMDBApi {
   Future<ResponseModel<SearchResultModel>> searchMulit(String query,
       {int page = 1, bool searchadult = false}) async {
     final String param =
-        '/search/multi?api_key=$_apikey&query=$query&page=$page&include_adult=$includeAdult&language=$_language';
+        '/search/multi?api_key=$_apikey&query=$query&page=$page&include_adult=$_includeAdult&language=$_language';
     final r = await _http.request<SearchResultModel>(param, cached: true);
     return r;
   }
@@ -694,7 +698,7 @@ class TMDBApi {
         : '&certification_country=$certificationCountry';
     param +=
         certificationLte == null ? '' : '&certification.lte=$certificationLte';
-    param += includeAdult == null ? '' : '&include_adult=$includeAdult';
+    param += _includeAdult == null ? '' : '&include_adult=$_includeAdult';
     param += includeVideo == null ? '' : '&include_video=$includeVideo';
     param += primaryReleaseYear == null
         ? ''
@@ -770,7 +774,7 @@ class TMDBApi {
       int year,
       int primaryReleaseYear}) async {
     String param =
-        '/search/movie?api_key=$_apikey&page=$page&include_adult=$includeAdult';
+        '/search/movie?api_key=$_apikey&page=$page&include_adult=$_includeAdult';
     param += region == null ? '' : '&region=$region';
     param += year == null ? '' : '&year=$year';
     param += primaryReleaseYear == null

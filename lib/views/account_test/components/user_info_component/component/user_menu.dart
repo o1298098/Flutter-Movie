@@ -39,7 +39,7 @@ class UserMenu extends StatelessWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: _arrowSize / 2),
+              margin: EdgeInsets.only(top: _arrowSize / 2 - 1),
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: _backGroundColor,

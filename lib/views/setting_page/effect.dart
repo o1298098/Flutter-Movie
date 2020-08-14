@@ -93,11 +93,11 @@ void _onBuild(Action action, Context<SettingPageState> ctx) {
 }
 
 void _adultCellTapped(Action action, Context<SettingPageState> ctx) async {
-  final _b = ctx.state.adultSwitchValue ?? false;
-  ctx.dispatch(SettingPageActionCreator.adultValueUpadte(!_b));
+  final _b = !(ctx.state.adultSwitchValue ?? false);
+  ctx.dispatch(SettingPageActionCreator.adultValueUpadte(_b));
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setBool('adultItems', !_b);
-  TMDBApi.instance.includeAdult = !_b;
+  prefs.setBool('adultItems', _b);
+  TMDBApi.instance.setAdultValue(_b);
 }
 
 void _getCachedSize(Context<SettingPageState> ctx) async {

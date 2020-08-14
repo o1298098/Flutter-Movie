@@ -2,6 +2,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:movie/actions/adapt.dart';
+import 'package:movie/generated/i18n.dart';
 import 'package:movie/style/themestyle.dart';
 
 import 'action.dart';
@@ -32,6 +33,7 @@ Widget buildView(
                     child: _TipPanel(
                   show: state.showTip,
                   tip: state.tip,
+                  autoClose: true,
                   onChange: (show) => dispatch(AccountActionCreator.hideTip()),
                 )),
                 SliverToBoxAdapter(
@@ -139,9 +141,11 @@ class _SecondPanel extends StatelessWidget {
 
 class _TipPanel extends StatefulWidget {
   final bool show;
+  final bool autoClose;
   final String tip;
   final Function(bool) onChange;
-  const _TipPanel({this.show = true, this.onChange, this.tip});
+  const _TipPanel(
+      {this.show = true, this.onChange, this.tip, this.autoClose = false});
   @override
   _TipPanelState createState() => _TipPanelState();
 }
@@ -200,6 +204,11 @@ class _TipPanelState extends State<_TipPanel> with TickerProviderStateMixin {
   _open() {
     _setShow(true);
     _controller.reverse();
+    if (widget.autoClose)
+      Future.delayed(Duration(seconds: 5), () {
+        _close();
+        if (widget.onChange != null) widget.onChange(_show);
+      });
   }
 
   _close() {
@@ -334,13 +343,13 @@ class _TabPanelState extends State<_TabBarPanel> with TickerProviderStateMixin {
           child: Row(
             children: [
               _TabCell(
-                title: 'Account',
+                title: I18n.of(context).account,
                 selected: widget.currentIndex == 0,
                 index: 0,
                 onTap: _onTap,
               ),
               _TabCell(
-                title: 'Settings',
+                title: I18n.of(context).settings,
                 selected: widget.currentIndex == 1,
                 index: 1,
                 onTap: _onTap,
@@ -401,113 +410,11 @@ class _FeaturesPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (index) {
       case 0:
-        return _UserDataPanel(dispatch: dispatch);
+        return viewService.buildComponent('userData');
       case 1:
         return viewService.buildComponent('settings');
       default:
         return SliverToBoxAdapter();
     }
-  }
-}
-
-class _UserDataPanel extends StatelessWidget {
-  final Dispatch dispatch;
-  const _UserDataPanel({this.dispatch});
-  @override
-  Widget build(BuildContext context) {
-    return SliverGrid.count(
-      crossAxisCount: 2,
-      mainAxisSpacing: Adapt.px(35),
-      crossAxisSpacing: Adapt.px(35),
-      childAspectRatio: 1.2,
-      children: [
-        _FeaturesCell(
-          title: 'Favorites',
-          value: '12',
-          icon: 'images/account_icon.png',
-          onTap: () =>
-              dispatch(AccountActionCreator.navigatorPush('favoritesPage')),
-        ),
-        _FeaturesCell(
-          title: 'My Lists',
-          value: '9',
-          icon: 'images/account_icon2.png',
-          onTap: () =>
-              dispatch(AccountActionCreator.navigatorPush('myListsPage')),
-        ),
-        _FeaturesCell(
-          title: 'Watch Lists',
-          value: '5',
-          icon: 'images/account_icon3.png',
-          onTap: () =>
-              dispatch(AccountActionCreator.navigatorPush('watchlistPage')),
-        ),
-        _FeaturesCell(
-          title: 'Cast Lists',
-          value: '9',
-          icon: 'images/account_icon4.png',
-          onTap: () =>
-              dispatch(AccountActionCreator.navigatorPush('castListPage')),
-        ),
-      ],
-    );
-  }
-}
-
-class _FeaturesCell extends StatelessWidget {
-  final String title;
-  final String value;
-  final Function onTap;
-  final String icon;
-  const _FeaturesCell({this.title, this.value, this.onTap, this.icon});
-  @override
-  Widget build(BuildContext context) {
-    final _theme = ThemeStyle.getTheme(context);
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          border: Border.all(color: _theme.primaryColorDark),
-          color: _theme.cardColor,
-          borderRadius: BorderRadius.circular(25),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: Adapt.px(100),
-              height: Adapt.px(80),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                image: icon != null
-                    ? DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage(icon),
-                      )
-                    : null,
-              ),
-            ),
-            SizedBox(height: Adapt.px(20)),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: Adapt.px(26),
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            SizedBox(height: Adapt.px(10)),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: Adapt.px(22),
-                color: const Color(0xFF717171),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
   }
 }

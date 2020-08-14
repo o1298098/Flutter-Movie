@@ -1,10 +1,19 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/item.dart';
 import 'package:movie/views/account_test/state.dart';
 
 class SettingsState implements Cloneable<SettingsState> {
+  bool adultContent;
+  bool enableNotifications;
+  Item appLanguage;
+  String version;
   @override
   SettingsState clone() {
-    return SettingsState();
+    return SettingsState()
+      ..adultContent = adultContent
+      ..enableNotifications = enableNotifications
+      ..appLanguage = appLanguage
+      ..version = version;
   }
 }
 

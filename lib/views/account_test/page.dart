@@ -2,6 +2,8 @@ import 'package:fish_redux/fish_redux.dart';
 
 import 'components/settings_component/component.dart';
 import 'components/settings_component/state.dart';
+import 'components/user_data_component/component.dart';
+import 'components/user_data_component/state.dart';
 import 'components/user_info_component/component.dart';
 import 'components/user_info_component/state.dart';
 import 'effect.dart';
@@ -20,6 +22,7 @@ class AccountPage extends Page<AccountState, Map<String, dynamic>> {
               adapter: null,
               slots: <String, Dependent<AccountState>>{
                 'userInfo': UserInfoConnector() + UserInfoComponent(),
+                'userData': UserDataConnector() + UserDataComponent(),
                 'settings': SettingsConnector() + SettingsComponent()
               }),
           middleware: <Middleware<AccountState>>[],

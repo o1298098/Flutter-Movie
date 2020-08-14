@@ -61,5 +61,13 @@
     "budget": "Budget",
     "revenue": "Revenue",
     "company": "Company",
-    "play": "Play"
+    "play": "Play",
+    "welcomeBack": "Welcome back",
+    "settings": "Settings",
+    "adultContent": "Adult Content",
+    "notifications": "Notifications",
+    "darkMode": "Dark Mode",
+    "language": "Language",
+    "feedback": "Feedback",
+    "version": "Version"
 }

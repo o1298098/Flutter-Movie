@@ -18,7 +18,7 @@ class BackDrop extends StatefulWidget {
 
 class BackDropState extends State<BackDrop> with TickerProviderStateMixin {
   GlobalKey key;
-  final BouncingScrollPhysics _bouncingScrollPhysics = BouncingScrollPhysics();
+  final ClampingScrollPhysics _clampingScrollPhysics = ClampingScrollPhysics();
   @override
   void initState() {
     key = GlobalKey();
@@ -63,7 +63,7 @@ class BackDropState extends State<BackDrop> with TickerProviderStateMixin {
                       .copyWith(accentColor: Colors.transparent),
                   child: ListView.builder(
                     controller: scrollController,
-                    physics: _bouncingScrollPhysics,
+                    physics: _clampingScrollPhysics,
                     itemBuilder: (_, index) => widget.frontChildren[index],
                     itemCount: widget.frontChildren?.length ?? 0,
                   ),

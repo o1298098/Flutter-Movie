@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie/models/base_api_model/account_info.dart';
 import 'package:movie/models/base_api_model/account_state.dart';
 import 'package:movie/models/base_api_model/base_movie.dart';
 import 'package:movie/models/base_api_model/base_tvshow.dart';
@@ -626,6 +627,12 @@ class BaseApi {
     final String _url =
         '/videoSpider/tvshow?tvId=$tvId&season=$season&episode=$epsiode';
     final _r = await _http.request<String>(_url);
+    return _r;
+  }
+
+  Future<ResponseModel<AccountInfo>> getUserAccountInfo(String uid) async {
+    final String _url = '/Users/$uid/AccountInfo';
+    final _r = await _http.request<AccountInfo>(_url);
     return _r;
   }
 }

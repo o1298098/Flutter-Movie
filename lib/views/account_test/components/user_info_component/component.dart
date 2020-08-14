@@ -8,12 +8,13 @@ import 'view.dart';
 class UserInfoComponent extends Component<UserInfoState> {
   UserInfoComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<UserInfoState>(
-                adapter: null,
-                slots: <String, Dependent<UserInfoState>>{
-                }),);
-
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          shouldUpdate: (o, n) {
+            return o.user != n.user;
+          },
+          dependencies: Dependencies<UserInfoState>(
+              adapter: null, slots: <String, Dependent<UserInfoState>>{}),
+        );
 }
