@@ -1,5 +1,6 @@
 import 'dart:convert' show json;
 
+import 'package:movie/models/production_companie.dart';
 import 'package:movie/models/release_date_model.dart';
 import 'package:movie/models/review.dart';
 import 'package:movie/models/video_list.dart';
@@ -7,6 +8,7 @@ import 'package:movie/models/video_model.dart';
 
 import 'credits_model.dart';
 import 'external_ids_model.dart';
+import 'genre.dart';
 import 'image_model.dart';
 import 'keyword.dart';
 
@@ -228,44 +230,5 @@ class ProductionCountrie {
   @override
   String toString() {
     return '{"iso_3166_1": ${iso_3166_1 != null ? '${json.encode(iso_3166_1)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'}}';
-  }
-}
-
-class ProductionCompanie {
-  int id;
-  String logoPath;
-  String name;
-  String originCountry;
-
-  ProductionCompanie.fromParams(
-      {this.id, this.logoPath, this.name, this.originCountry});
-
-  ProductionCompanie.fromJson(jsonRes) {
-    id = jsonRes['id'];
-    logoPath = jsonRes['logo_path'];
-    name = jsonRes['name'];
-    originCountry = jsonRes['origin_country'];
-  }
-
-  @override
-  String toString() {
-    return '{"id": $id,"logo_path": ${logoPath != null ? '${json.encode(logoPath)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"origin_country": ${originCountry != null ? '${json.encode(originCountry)}' : 'null'}}';
-  }
-}
-
-class Genre {
-  int id;
-  String name;
-
-  Genre.fromParams({this.id, this.name});
-
-  Genre.fromJson(jsonRes) {
-    id = jsonRes['id'];
-    name = jsonRes['name'];
-  }
-
-  @override
-  String toString() {
-    return '{"id": $id,"name": ${name != null ? '${json.encode(name)}' : 'null'}}';
   }
 }

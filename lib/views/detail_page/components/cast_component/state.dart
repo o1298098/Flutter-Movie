@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/credits_model.dart';
 import 'package:movie/views/detail_page/state.dart';
+import 'package:movie/models/models.dart';
 
 class CastState implements Cloneable<CastState> {
   List<CastData> cast;

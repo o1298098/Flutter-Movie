@@ -6,6 +6,7 @@ import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/base_api_model/user_media.dart';
 import 'package:movie/models/enums/imagesize.dart';
 
+import 'action.dart';
 import 'state.dart';
 
 Widget buildView(WatchlistDetailPageState state, Dispatch dispatch,
@@ -17,26 +18,31 @@ Widget buildView(WatchlistDetailPageState state, Dispatch dispatch,
           Hero(
             tag: 'Background${state.mediaData.mediaId}',
             child: Material(
-              child: Container(
-                height: Adapt.screenH() / 2 + Adapt.px(120),
-                alignment: Alignment.bottomRight,
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  image: DecorationImage(
-                    alignment: Alignment.bottomCenter,
-                    fit: BoxFit.cover,
-                    image: CachedNetworkImageProvider(
-                      ImageUrl.getUrl(state.mediaData.photoUrl, ImageSize.w500),
+              child: GestureDetector(
+                onTap: () =>
+                    dispatch(WatchlistDetailPageActionCreator.meidaTap()),
+                child: Container(
+                  height: Adapt.screenH() / 2 + Adapt.px(120),
+                  alignment: Alignment.bottomRight,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    image: DecorationImage(
+                      alignment: Alignment.bottomCenter,
+                      fit: BoxFit.cover,
+                      image: CachedNetworkImageProvider(
+                        ImageUrl.getUrl(
+                            state.mediaData.photoUrl, ImageSize.w500),
+                      ),
                     ),
-                  ),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        blurRadius: 20,
-                        offset: Offset(-5, 12),
-                        color: Colors.black26)
-                  ],
-                  borderRadius: BorderRadius.circular(
-                    Adapt.px(50),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                          blurRadius: 20,
+                          offset: Offset(-5, 12),
+                          color: Colors.black26)
+                    ],
+                    borderRadius: BorderRadius.circular(
+                      Adapt.px(50),
+                    ),
                   ),
                 ),
               ),

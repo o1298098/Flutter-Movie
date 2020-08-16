@@ -245,7 +245,7 @@ class _Button extends StatelessWidget {
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
     final _textStyle = TextStyle(
-        fontSize: 20,
+        fontSize: 16,
         color: _theme.brightness == Brightness.light
             ? const Color(0xFFFFFFFF)
             : const Color(0xFF000000));

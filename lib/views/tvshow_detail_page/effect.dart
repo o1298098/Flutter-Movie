@@ -69,8 +69,8 @@ void _moreEpisode(Action action, Context<TvShowDetailState> ctx) async {
 
 Future _onRecommendationTapped(
     Action action, Context<TvShowDetailState> ctx) async {
-  await Navigator.of(ctx.context).pushNamed('tvdetailpage',
-      arguments: {'tvid': action.payload[0], 'bgpic': action.payload[1]});
+  await Navigator.of(ctx.context).pushNamed('tvShowdetailpage',
+      arguments: {'id': action.payload[0], 'bgpic': action.payload[1]});
 }
 
 Future _onCastCellTapped(Action action, Context<TvShowDetailState> ctx) async {

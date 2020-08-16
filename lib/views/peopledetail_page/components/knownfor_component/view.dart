@@ -5,14 +5,13 @@ import 'package:flutter/rendering.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/generated/i18n.dart';
-import 'package:movie/models/combined_credits.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/media_type.dart';
+import 'package:movie/models/models.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/peopledetail_page/action.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../../style/themestyle.dart';
 import 'state.dart';
 
 Widget buildView(
@@ -102,7 +101,7 @@ class _ShimmerList extends StatelessWidget {
 
 class _KownForCell extends StatelessWidget {
   final Function onTap;
-  final CastData data;
+  final CombinedCastData data;
   const _KownForCell({this.data, this.onTap});
   @override
   Widget build(BuildContext context) {
@@ -149,7 +148,7 @@ class _KownForCell extends StatelessWidget {
 }
 
 class _KownForList extends StatelessWidget {
-  final List<CastData> cast;
+  final List<CombinedCastData> cast;
   final Dispatch dispatch;
   const _KownForList({this.cast, this.dispatch});
   @override

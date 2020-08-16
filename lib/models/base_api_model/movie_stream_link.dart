@@ -1,5 +1,9 @@
 import 'dart:convert' show json;
 
+import 'stream_link_language.dart';
+import 'stream_link_quality.dart';
+import 'stream_link_type.dart';
+
 class MovieStreamLinks {
   List<MovieStreamLink> list;
 
@@ -77,60 +81,5 @@ class MovieStreamLink {
   @override
   String toString() {
     return '{"language": $language,"movieId": $movieId,"quality": $quality,"sid": $sid,"streamLinkType": ${streamLink != null ? '${json.encode(streamLink)}' : 'null'}Type,"linkName": ${linkName != null ? '${json.encode(linkName)}' : 'null'},"streamLink": ${streamLink != null ? '${json.encode(streamLink)}' : 'null'},"uid": ${uid != null ? '${json.encode(uid)}' : 'null'},"updateTime": ${updateTime != null ? '${json.encode(updateTime)}' : 'null'},"languageNavigation": $language,"qualityNavigation": $quality,"streamLinkTypeNavigation": $streamLinkType,"needAd": $needAd,"externalBrowser": $externalBrowser}';
-  }
-}
-
-class StreamLinkType {
-  int id;
-  String name;
-
-  StreamLinkType.fromParams({this.id, this.name});
-
-  StreamLinkType.fromJson(jsonRes) {
-    id = jsonRes['id'];
-    name = jsonRes['name'];
-  }
-
-  @override
-  String toString() {
-    return '{"id": $id,"name": ${name != null ? '${json.encode(name)}' : 'null'}}';
-  }
-}
-
-class Quality {
-  int id;
-  String code;
-  String name;
-
-  Quality.fromParams({this.id, this.code, this.name});
-
-  Quality.fromJson(jsonRes) {
-    id = jsonRes['id'];
-    code = jsonRes['code'];
-    name = jsonRes['name'];
-  }
-
-  @override
-  String toString() {
-    return '{"id": $id,"code": ${code != null ? '${json.encode(code)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'}}';
-  }
-}
-
-class Language {
-  int id;
-  String code;
-  String name;
-
-  Language.fromParams({this.id, this.code, this.name});
-
-  Language.fromJson(jsonRes) {
-    id = jsonRes['id'];
-    code = jsonRes['code'];
-    name = jsonRes['name'];
-  }
-
-  @override
-  String toString() {
-    return '{"id": $id,"code": ${code != null ? '${json.encode(code)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'}}';
   }
 }

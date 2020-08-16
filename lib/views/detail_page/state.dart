@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/base_api_model/account_state.dart';
 import 'package:movie/models/image_model.dart';
-import 'package:movie/models/moviedetail.dart';
+import 'package:movie/models/movie_detail.dart';
 
 class MovieDetailPageState implements Cloneable<MovieDetailPageState> {
   GlobalKey<ScaffoldState> scaffoldkey;

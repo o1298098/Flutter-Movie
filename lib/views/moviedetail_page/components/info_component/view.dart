@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
+import 'package:movie/models/genre.dart';
+import 'package:movie/models/production_companie.dart';
 import 'package:movie/widgets/shimmercell.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/enums/releasedatetype.dart';
-import 'package:movie/models/moviedetail.dart';
 import 'package:movie/models/release_date_model.dart';
 
 import 'dart:ui' as ui;

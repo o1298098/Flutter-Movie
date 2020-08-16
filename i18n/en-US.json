@@ -10,6 +10,9 @@
     "overView": "OverView",
     "topBilledCast": "Top Billed Cast",
     "userScore": "User Score",
+    "stills": "Stills",
+    "keyWords": "Keywords",
+    "trailers": "Trailers",
     "playTrailer": "Play Trailer",
     "main": "Main",
     "videos": "Videos",
@@ -39,6 +42,7 @@
     "more": "More",
     "featuredCrew": "Featured Crew",
     "creator": "Creator",
+    "seasons": "Seasons",
     "currentSeason": "Current Season",
     "viewAllSeasons": "View All Seasons",
     "seasonDetail": "Season Detail",
@@ -69,5 +73,8 @@
     "darkMode": "Dark Mode",
     "language": "Language",
     "feedback": "Feedback",
-    "version": "Version"
+    "version": "Version",
+    "trending": "Trending",
+    "shared": "Shared",
+    "lastEpisode": "Last Episode"
 }

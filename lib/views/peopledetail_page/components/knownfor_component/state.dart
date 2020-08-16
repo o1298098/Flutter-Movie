@@ -1,9 +1,9 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/combined_credits.dart';
+import 'package:movie/models/models.dart';
 import 'package:movie/views/peopledetail_page/state.dart';
 
 class KnownForState implements Cloneable<KnownForState> {
-  List<CastData> cast;
+  List<CombinedCastData> cast;
 
   KnownForState({this.cast});
 

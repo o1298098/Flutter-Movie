@@ -19,7 +19,7 @@ class ListDetailModel {
   int revenue;
   List<VideoListResult> results;
   Comments comments;
-  CreatedBy createdBy;
+  ListCreatedBy createdBy;
   ObjectIds objectIds;
 
   ListDetailModel.fromParams(
@@ -74,7 +74,7 @@ class ListDetailModel {
     //comments = jsonRes['comments'] == null ? null : new Comments.fromJson(jsonRes['comments']);
     createdBy = jsonRes['created_by'] == null
         ? null
-        : new CreatedBy.fromJson(jsonRes['created_by']);
+        : new ListCreatedBy.fromJson(jsonRes['created_by']);
     //objectIds = jsonRes['object_ids'] == null ? null : new ObjectIds.fromJson(jsonRes['object_ids']);
   }
 
@@ -86,14 +86,14 @@ class ListDetailModel {
 
 class ObjectIds {}
 
-class CreatedBy {
+class ListCreatedBy {
   String gravatarHash;
   String name;
   String username;
 
-  CreatedBy.fromParams({this.gravatarHash, this.name, this.username});
+  ListCreatedBy.fromParams({this.gravatarHash, this.name, this.username});
 
-  CreatedBy.fromJson(jsonRes) {
+  ListCreatedBy.fromJson(jsonRes) {
     gravatarHash = jsonRes['gravatar_hash'];
     name = jsonRes['name'];
     username = jsonRes['username'];

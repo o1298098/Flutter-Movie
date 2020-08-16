@@ -54,6 +54,12 @@ class I18n implements WidgetsLocalizations {
   String get topBilledCast => "Top Billed Cast";
   /// "User Score"
   String get userScore => "User Score";
+  /// "Stills"
+  String get stills => "Stills";
+  /// "Keywords"
+  String get keyWords => "Keywords";
+  /// "Trailers"
+  String get trailers => "Trailers";
   /// "Play Trailer"
   String get playTrailer => "Play Trailer";
   /// "Main"
@@ -112,6 +118,8 @@ class I18n implements WidgetsLocalizations {
   String get featuredCrew => "Featured Crew";
   /// "Creator"
   String get creator => "Creator";
+  /// "Seasons"
+  String get seasons => "Seasons";
   /// "Current Season"
   String get currentSeason => "Current Season";
   /// "View All Seasons"
@@ -174,6 +182,12 @@ class I18n implements WidgetsLocalizations {
   String get feedback => "Feedback";
   /// "Version"
   String get version => "Version";
+  /// "Trending"
+  String get trending => "Trending";
+  /// "Shared"
+  String get shared => "Shared";
+  /// "Last Episode"
+  String get lastEpisode => "Last Episode";
 }
 
 class _I18n_en_US extends I18n {
@@ -219,6 +233,15 @@ class _I18n_zh_CN extends I18n {
   /// "用户评分"
   @override
   String get userScore => "用户评分";
+  /// "剧照"
+  @override
+  String get stills => "剧照";
+  /// "关键词"
+  @override
+  String get keyWords => "关键词";
+  /// "预告片"
+  @override
+  String get trailers => "预告片";
   /// "播放预告"
   @override
   String get playTrailer => "播放预告";
@@ -306,6 +329,9 @@ class _I18n_zh_CN extends I18n {
   /// "创作者"
   @override
   String get creator => "创作者";
+  /// "季节"
+  @override
+  String get seasons => "季节";
   /// "当前季"
   @override
   String get currentSeason => "当前季";
@@ -345,15 +371,15 @@ class _I18n_zh_CN extends I18n {
   /// "Network"
   @override
   String get network => "Network";
-  /// "Status"
+  /// "状态"
   @override
-  String get status => "Status";
+  String get status => "状态";
   /// "Type"
   @override
   String get type => "Type";
-  /// "Original Language"
+  /// "原始语言"
   @override
-  String get originalLanguage => "Original Language";
+  String get originalLanguage => "原始语言";
   /// "Runtime"
   @override
   String get runtime => "Runtime";
@@ -369,9 +395,9 @@ class _I18n_zh_CN extends I18n {
   /// "Revenue"
   @override
   String get revenue => "Revenue";
-  /// "Company"
+  /// "公司"
   @override
-  String get company => "Company";
+  String get company => "公司";
   /// "播放"
   @override
   String get play => "播放";
@@ -399,6 +425,12 @@ class _I18n_zh_CN extends I18n {
   /// "版本"
   @override
   String get version => "版本";
+  /// "趋势"
+  @override
+  String get trending => "趋势";
+  /// "分享"
+  @override
+  String get shared => "分享";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
@@ -440,6 +472,15 @@ class _I18n_ja_JP extends I18n {
   /// "ユーザースコア"
   @override
   String get userScore => "ユーザースコア";
+  /// "静止画"
+  @override
+  String get stills => "静止画";
+  /// "キーワード"
+  @override
+  String get keyWords => "キーワード";
+  /// "トレーラー"
+  @override
+  String get trailers => "トレーラー";
   /// "予告編を再生"
   @override
   String get playTrailer => "予告編を再生";
@@ -527,6 +568,9 @@ class _I18n_ja_JP extends I18n {
   /// "Creator"
   @override
   String get creator => "Creator";
+  /// "季節"
+  @override
+  String get seasons => "季節";
   /// "現在のシーズン"
   @override
   String get currentSeason => "現在のシーズン";
@@ -620,6 +664,1207 @@ class _I18n_ja_JP extends I18n {
   /// "バージョン"
   @override
   String get version => "バージョン";
+  /// "急上昇"
+  @override
+  String get trending => "急上昇";
+  /// "共有"
+  @override
+  String get shared => "共有";
+
+  @override
+  TextDirection get textDirection => TextDirection.ltr;
+}
+
+class _I18n_zh_TW extends _I18n_zh_CN {
+  const _I18n_zh_TW();
+
+  /// "电影"
+  @override
+  String get appname => "电影";
+  /// "搜索电影，电视节目，人物"
+  @override
+  String get searchbartxt => "搜索电影，电视节目，人物";
+  /// "家"
+  @override
+  String get home => "家";
+  /// "发现"
+  @override
+  String get discover => "发现";
+  /// "未来"
+  @override
+  String get coming => "未来";
+  /// "帐户"
+  @override
+  String get account => "帐户";
+  /// "在剧院"
+  @override
+  String get inTheaters => "在剧院";
+  /// "在电视上"
+  @override
+  String get onTV => "在电视上";
+  /// "概观"
+  @override
+  String get overView => "概观";
+  /// "热门付费演员表"
+  @override
+  String get topBilledCast => "热门付费演员表";
+  /// "用户分数"
+  @override
+  String get userScore => "用户分数";
+  /// "剧照"
+  @override
+  String get stills => "剧照";
+  /// "关键词"
+  @override
+  String get keyWords => "关键词";
+  /// "预告片"
+  @override
+  String get trailers => "预告片";
+  /// "播放预告片"
+  @override
+  String get playTrailer => "播放预告片";
+  /// "主要"
+  @override
+  String get main => "主要";
+  /// "影片"
+  @override
+  String get videos => "影片";
+  /// "图片"
+  @override
+  String get images => "图片";
+  /// "评论"
+  @override
+  String get reviews => "评论";
+  /// "标签"
+  @override
+  String get tags => "标签";
+  /// "推荐建议"
+  @override
+  String get recommendations => "推荐建议";
+  /// "传"
+  @override
+  String get biography => "传";
+  /// "闻名"
+  @override
+  String get knownFor => "闻名";
+  /// "代理"
+  @override
+  String get acting => "代理";
+  /// "电影"
+  @override
+  String get movies => "电影";
+  /// "电视节目"
+  @override
+  String get tvShows => "电视节目";
+  /// "个人信息"
+  @override
+  String get personalInfo => "个人信息";
+  /// "性别"
+  @override
+  String get gender => "性别";
+  /// "生日"
+  @override
+  String get birthday => "生日";
+  /// "已知学分"
+  @override
+  String get knownCredits => "已知学分";
+  /// "出生地"
+  @override
+  String get placeOfBirth => "出生地";
+  /// "官方网站"
+  @override
+  String get officialSite => "官方网站";
+  /// "也称为"
+  @override
+  String get alsoKnownAs => "也称为";
+  /// "排序方式"
+  @override
+  String get sortBy => "排序方式";
+  /// "过滤"
+  @override
+  String get filter => "过滤";
+  /// "监视清单"
+  @override
+  String get watchlist => "监视清单";
+  /// "清单"
+  @override
+  String get lists => "清单";
+  /// "收藏夹"
+  @override
+  String get favorites => "收藏夹";
+  /// "评分与评论"
+  @override
+  String get ratingsReviews => "评分与评论";
+  /// "流行"
+  @override
+  String get popular => "流行";
+  /// "更多"
+  @override
+  String get more => "更多";
+  /// "精选船员"
+  @override
+  String get featuredCrew => "精选船员";
+  /// "创作者"
+  @override
+  String get creator => "创作者";
+  /// "季节"
+  @override
+  String get seasons => "季节";
+  /// "当前季节"
+  @override
+  String get currentSeason => "当前季节";
+  /// "查看所有季节"
+  @override
+  String get viewAllSeasons => "查看所有季节";
+  /// "季节细节"
+  @override
+  String get seasonDetail => "季节细节";
+  /// "季播"
+  @override
+  String get seasonCast => "季播";
+  /// "集数"
+  @override
+  String get episodes => "集数";
+  /// "客串明星"
+  @override
+  String get guestStars => "客串明星";
+  /// "尚未添加来宾星级"
+  @override
+  String get guestStarsEmpty => "尚未添加来宾星级";
+  /// "船员"
+  @override
+  String get crew => "船员";
+  /// "尚未添加任何机组"
+  @override
+  String get crewEmpty => "尚未添加任何机组";
+  /// "情节图像"
+  @override
+  String get episodeImages => "情节图像";
+  /// "没有添加剧集图片"
+  @override
+  String get episodeImagesEmpty => "没有添加剧集图片";
+  /// "事实"
+  @override
+  String get facts => "事实";
+  /// "网络"
+  @override
+  String get network => "网络";
+  /// "状态"
+  @override
+  String get status => "状态";
+  /// "类型"
+  @override
+  String get type => "类型";
+  /// "原始语言"
+  @override
+  String get originalLanguage => "原始语言";
+  /// "运行"
+  @override
+  String get runtime => "运行";
+  /// "性别"
+  @override
+  String get genders => "性别";
+  /// "发布信息"
+  @override
+  String get releaseInformation => "发布信息";
+  /// "预算"
+  @override
+  String get budget => "预算";
+  /// "收入"
+  @override
+  String get revenue => "收入";
+  /// "公司"
+  @override
+  String get company => "公司";
+  /// "玩"
+  @override
+  String get play => "玩";
+  /// "欢迎回来"
+  @override
+  String get welcomeBack => "欢迎回来";
+  /// "设定值"
+  @override
+  String get settings => "设定值";
+  /// "成人内容"
+  @override
+  String get adultContent => "成人内容";
+  /// "通知事项"
+  @override
+  String get notifications => "通知事项";
+  /// "暗模式"
+  @override
+  String get darkMode => "暗模式";
+  /// "语言"
+  @override
+  String get language => "语言";
+  /// "反馈"
+  @override
+  String get feedback => "反馈";
+  /// "版本"
+  @override
+  String get version => "版本";
+  /// "趋势"
+  @override
+  String get trending => "趋势";
+  /// "分享"
+  @override
+  String get shared => "分享";
+
+  @override
+  TextDirection get textDirection => TextDirection.ltr;
+}
+
+class _I18n_es_ES extends I18n {
+  const _I18n_es_ES();
+
+  /// "Película"
+  @override
+  String get appname => "Película";
+  /// "Busca una película, un programa de televisión, una persona"
+  @override
+  String get searchbartxt => "Busca una película, un programa de televisión, una persona";
+  /// "Hogar"
+  @override
+  String get home => "Hogar";
+  /// "Descubrir"
+  @override
+  String get discover => "Descubrir";
+  /// "Viniendo"
+  @override
+  String get coming => "Viniendo";
+  /// "Cuenta"
+  @override
+  String get account => "Cuenta";
+  /// "En los cines"
+  @override
+  String get inTheaters => "En los cines";
+  /// "En TV"
+  @override
+  String get onTV => "En TV";
+  /// "Visión de conjunto"
+  @override
+  String get overView => "Visión de conjunto";
+  /// "Reparto más facturado"
+  @override
+  String get topBilledCast => "Reparto más facturado";
+  /// "Puntuación de usuario"
+  @override
+  String get userScore => "Puntuación de usuario";
+  /// "Fotogramas"
+  @override
+  String get stills => "Fotogramas";
+  /// "Palabras clave"
+  @override
+  String get keyWords => "Palabras clave";
+  /// "Remolques"
+  @override
+  String get trailers => "Remolques";
+  /// "Reproducir tráiler"
+  @override
+  String get playTrailer => "Reproducir tráiler";
+  /// "Principal"
+  @override
+  String get main => "Principal";
+  /// "Videos"
+  @override
+  String get videos => "Videos";
+  /// "Imagenes"
+  @override
+  String get images => "Imagenes";
+  /// "Reseñas"
+  @override
+  String get reviews => "Reseñas";
+  /// "Etiquetas"
+  @override
+  String get tags => "Etiquetas";
+  /// "Recomendaciones"
+  @override
+  String get recommendations => "Recomendaciones";
+  /// "Biografía"
+  @override
+  String get biography => "Biografía";
+  /// "Conocido por"
+  @override
+  String get knownFor => "Conocido por";
+  /// "Interino"
+  @override
+  String get acting => "Interino";
+  /// "Películas"
+  @override
+  String get movies => "Películas";
+  /// "Programas de tv"
+  @override
+  String get tvShows => "Programas de tv";
+  /// "Información personal"
+  @override
+  String get personalInfo => "Información personal";
+  /// "Género"
+  @override
+  String get gender => "Género";
+  /// "Cumpleaños"
+  @override
+  String get birthday => "Cumpleaños";
+  /// "Créditos conocidos"
+  @override
+  String get knownCredits => "Créditos conocidos";
+  /// "Lugar de nacimiento"
+  @override
+  String get placeOfBirth => "Lugar de nacimiento";
+  /// "sitio oficial"
+  @override
+  String get officialSite => "sitio oficial";
+  /// "También conocido como"
+  @override
+  String get alsoKnownAs => "También conocido como";
+  /// "Ordenar por"
+  @override
+  String get sortBy => "Ordenar por";
+  /// "Filtrar"
+  @override
+  String get filter => "Filtrar";
+  /// "Lista de seguimiento"
+  @override
+  String get watchlist => "Lista de seguimiento";
+  /// "Liza"
+  @override
+  String get lists => "Liza";
+  /// "Favoritos"
+  @override
+  String get favorites => "Favoritos";
+  /// "Calificaciones y reseñas"
+  @override
+  String get ratingsReviews => "Calificaciones y reseñas";
+  /// "Popular"
+  @override
+  String get popular => "Popular";
+  /// "Más"
+  @override
+  String get more => "Más";
+  /// "Tripulación destacada"
+  @override
+  String get featuredCrew => "Tripulación destacada";
+  /// "Creador"
+  @override
+  String get creator => "Creador";
+  /// "Estaciones"
+  @override
+  String get seasons => "Estaciones";
+  /// "Temporada actual"
+  @override
+  String get currentSeason => "Temporada actual";
+  /// "Ver todas las temporadas"
+  @override
+  String get viewAllSeasons => "Ver todas las temporadas";
+  /// "Detalle de temporada"
+  @override
+  String get seasonDetail => "Detalle de temporada";
+  /// "Reparto de la temporada"
+  @override
+  String get seasonCast => "Reparto de la temporada";
+  /// "Episodios"
+  @override
+  String get episodes => "Episodios";
+  /// "Estrellas invitadas"
+  @override
+  String get guestStars => "Estrellas invitadas";
+  /// "No se ha agregado ninguna estrella invitada"
+  @override
+  String get guestStarsEmpty => "No se ha agregado ninguna estrella invitada";
+  /// "Tripulación"
+  @override
+  String get crew => "Tripulación";
+  /// "No se ha agregado tripulación"
+  @override
+  String get crewEmpty => "No se ha agregado tripulación";
+  /// "Imágenes del episodio"
+  @override
+  String get episodeImages => "Imágenes del episodio";
+  /// "No se ha agregado ninguna imagen de episodio"
+  @override
+  String get episodeImagesEmpty => "No se ha agregado ninguna imagen de episodio";
+  /// "Hechos"
+  @override
+  String get facts => "Hechos";
+  /// "Red"
+  @override
+  String get network => "Red";
+  /// "Estado"
+  @override
+  String get status => "Estado";
+  /// "Tipo"
+  @override
+  String get type => "Tipo";
+  /// "Idioma original"
+  @override
+  String get originalLanguage => "Idioma original";
+  /// "Tiempo de ejecución"
+  @override
+  String get runtime => "Tiempo de ejecución";
+  /// "Géneros"
+  @override
+  String get genders => "Géneros";
+  /// "Información de lanzamiento"
+  @override
+  String get releaseInformation => "Información de lanzamiento";
+  /// "Presupuesto"
+  @override
+  String get budget => "Presupuesto";
+  /// "Ingresos"
+  @override
+  String get revenue => "Ingresos";
+  /// "Empresa"
+  @override
+  String get company => "Empresa";
+  /// "Jugar"
+  @override
+  String get play => "Jugar";
+  /// "Dar una buena acogida"
+  @override
+  String get welcomeBack => "Dar una buena acogida";
+  /// "Settings"
+  @override
+  String get settings => "Settings";
+  /// "Contenido para adultos"
+  @override
+  String get adultContent => "Contenido para adultos";
+  /// "Notificaciones"
+  @override
+  String get notifications => "Notificaciones";
+  /// "Modo oscuro"
+  @override
+  String get darkMode => "Modo oscuro";
+  /// "Idioma"
+  @override
+  String get language => "Idioma";
+  /// "Realimentación"
+  @override
+  String get feedback => "Realimentación";
+  /// "Versión"
+  @override
+  String get version => "Versión";
+  /// "Tendencias"
+  @override
+  String get trending => "Tendencias";
+  /// "Compartido"
+  @override
+  String get shared => "Compartido";
+
+  @override
+  TextDirection get textDirection => TextDirection.ltr;
+}
+
+class _I18n_fr_FR extends I18n {
+  const _I18n_fr_FR();
+
+  /// "Film"
+  @override
+  String get appname => "Film";
+  /// "Rechercher un film, une émission de télévision, une personne"
+  @override
+  String get searchbartxt => "Rechercher un film, une émission de télévision, une personne";
+  /// "Accueil"
+  @override
+  String get home => "Accueil";
+  /// "Découvrir"
+  @override
+  String get discover => "Découvrir";
+  /// "À venir"
+  @override
+  String get coming => "À venir";
+  /// "Compte"
+  @override
+  String get account => "Compte";
+  /// "Dans les théâtres"
+  @override
+  String get inTheaters => "Dans les théâtres";
+  /// "À la télé"
+  @override
+  String get onTV => "À la télé";
+  /// "Aperçu"
+  @override
+  String get overView => "Aperçu";
+  /// "Meilleur casting facturé"
+  @override
+  String get topBilledCast => "Meilleur casting facturé";
+  /// "Score de l'utilisateur"
+  @override
+  String get userScore => "Score de l'utilisateur";
+  /// "Photos"
+  @override
+  String get stills => "Photos";
+  /// "Mots clés"
+  @override
+  String get keyWords => "Mots clés";
+  /// "Bandes annonces"
+  @override
+  String get trailers => "Bandes annonces";
+  /// "Jouer la bande-annonce"
+  @override
+  String get playTrailer => "Jouer la bande-annonce";
+  /// "Principale"
+  @override
+  String get main => "Principale";
+  /// "Vidéos"
+  @override
+  String get videos => "Vidéos";
+  /// "Images"
+  @override
+  String get images => "Images";
+  /// "Commentaires"
+  @override
+  String get reviews => "Commentaires";
+  /// "Mots clés"
+  @override
+  String get tags => "Mots clés";
+  /// "Recommandations"
+  @override
+  String get recommendations => "Recommandations";
+  /// "Biographie"
+  @override
+  String get biography => "Biographie";
+  /// "Connu pour"
+  @override
+  String get knownFor => "Connu pour";
+  /// "Agissant"
+  @override
+  String get acting => "Agissant";
+  /// "Films"
+  @override
+  String get movies => "Films";
+  /// "Émissions de télévision"
+  @override
+  String get tvShows => "Émissions de télévision";
+  /// "Informations personnelles"
+  @override
+  String get personalInfo => "Informations personnelles";
+  /// "Le sexe"
+  @override
+  String get gender => "Le sexe";
+  /// "Anniversaire"
+  @override
+  String get birthday => "Anniversaire";
+  /// "Crédits connus"
+  @override
+  String get knownCredits => "Crédits connus";
+  /// "Lieu de naissance"
+  @override
+  String get placeOfBirth => "Lieu de naissance";
+  /// "site officiel"
+  @override
+  String get officialSite => "site officiel";
+  /// "Aussi connu sous le nom"
+  @override
+  String get alsoKnownAs => "Aussi connu sous le nom";
+  /// "Trier par"
+  @override
+  String get sortBy => "Trier par";
+  /// "Filtre"
+  @override
+  String get filter => "Filtre";
+  /// "Liste de surveillance"
+  @override
+  String get watchlist => "Liste de surveillance";
+  /// "Listes"
+  @override
+  String get lists => "Listes";
+  /// "Favoris"
+  @override
+  String get favorites => "Favoris";
+  /// "Notes et avis"
+  @override
+  String get ratingsReviews => "Notes et avis";
+  /// "Populaire"
+  @override
+  String get popular => "Populaire";
+  /// "Plus"
+  @override
+  String get more => "Plus";
+  /// "Équipage en vedette"
+  @override
+  String get featuredCrew => "Équipage en vedette";
+  /// "Créateur"
+  @override
+  String get creator => "Créateur";
+  /// "Saisons"
+  @override
+  String get seasons => "Saisons";
+  /// "Saison en cours"
+  @override
+  String get currentSeason => "Saison en cours";
+  /// "Voir toutes les saisons"
+  @override
+  String get viewAllSeasons => "Voir toutes les saisons";
+  /// "Détail de la saison"
+  @override
+  String get seasonDetail => "Détail de la saison";
+  /// "Distribution de la saison"
+  @override
+  String get seasonCast => "Distribution de la saison";
+  /// "Épisodes"
+  @override
+  String get episodes => "Épisodes";
+  /// "Des invités de prestige"
+  @override
+  String get guestStars => "Des invités de prestige";
+  /// "Aucune guest star n'a été ajoutée"
+  @override
+  String get guestStarsEmpty => "Aucune guest star n'a été ajoutée";
+  /// "Équipage"
+  @override
+  String get crew => "Équipage";
+  /// "Aucun équipage n'a été ajouté"
+  @override
+  String get crewEmpty => "Aucun équipage n'a été ajouté";
+  /// "Images d'épisode"
+  @override
+  String get episodeImages => "Images d'épisode";
+  /// "Aucune image d'épisode n'a été ajoutée"
+  @override
+  String get episodeImagesEmpty => "Aucune image d'épisode n'a été ajoutée";
+  /// "Les faits"
+  @override
+  String get facts => "Les faits";
+  /// "Réseau"
+  @override
+  String get network => "Réseau";
+  /// "Statut"
+  @override
+  String get status => "Statut";
+  /// "Type"
+  @override
+  String get type => "Type";
+  /// "Langue originale"
+  @override
+  String get originalLanguage => "Langue originale";
+  /// "Durée"
+  @override
+  String get runtime => "Durée";
+  /// "Les genres"
+  @override
+  String get genders => "Les genres";
+  /// "Divulguer des renseignements"
+  @override
+  String get releaseInformation => "Divulguer des renseignements";
+  /// "Budget"
+  @override
+  String get budget => "Budget";
+  /// "Revenu"
+  @override
+  String get revenue => "Revenu";
+  /// "Compagnie"
+  @override
+  String get company => "Compagnie";
+  /// "Jouer"
+  @override
+  String get play => "Jouer";
+  /// "Nous saluons le retour"
+  @override
+  String get welcomeBack => "Nous saluons le retour";
+  /// "Paramètres"
+  @override
+  String get settings => "Paramètres";
+  /// "Contenu adulte"
+  @override
+  String get adultContent => "Contenu adulte";
+  /// "Notifications"
+  @override
+  String get notifications => "Notifications";
+  /// "Mode sombre"
+  @override
+  String get darkMode => "Mode sombre";
+  /// "Langue"
+  @override
+  String get language => "Langue";
+  /// "Retour d'information"
+  @override
+  String get feedback => "Retour d'information";
+  /// "Version"
+  @override
+  String get version => "Version";
+  /// "Tendance"
+  @override
+  String get trending => "Tendance";
+  /// "partagé"
+  @override
+  String get shared => "partagé";
+
+  @override
+  TextDirection get textDirection => TextDirection.ltr;
+}
+
+class _I18n_ru_RU extends I18n {
+  const _I18n_ru_RU();
+
+  /// "Фильм"
+  @override
+  String get appname => "Фильм";
+  /// "Искать фильм, сериал, человека"
+  @override
+  String get searchbartxt => "Искать фильм, сериал, человека";
+  /// "Домой"
+  @override
+  String get home => "Домой";
+  /// "Обнаружить"
+  @override
+  String get discover => "Обнаружить";
+  /// "приход"
+  @override
+  String get coming => "приход";
+  /// "учетная запись"
+  @override
+  String get account => "учетная запись";
+  /// "В театрах"
+  @override
+  String get inTheaters => "В театрах";
+  /// "По телевизору"
+  @override
+  String get onTV => "По телевизору";
+  /// "OverView"
+  @override
+  String get overView => "OverView";
+  /// "Лучшие актеры"
+  @override
+  String get topBilledCast => "Лучшие актеры";
+  /// "Оценка пользователей"
+  @override
+  String get userScore => "Оценка пользователей";
+  /// "Кадры из фильма"
+  @override
+  String get stills => "Кадры из фильма";
+  /// "Ключевые слова"
+  @override
+  String get keyWords => "Ключевые слова";
+  /// "Прицепы"
+  @override
+  String get trailers => "Прицепы";
+  /// "Слушать трейлер"
+  @override
+  String get playTrailer => "Слушать трейлер";
+  /// "Основной"
+  @override
+  String get main => "Основной";
+  /// "Ролики"
+  @override
+  String get videos => "Ролики";
+  /// "Изображений"
+  @override
+  String get images => "Изображений";
+  /// "Отзывы"
+  @override
+  String get reviews => "Отзывы";
+  /// "Теги"
+  @override
+  String get tags => "Теги";
+  /// "рекомендации"
+  @override
+  String get recommendations => "рекомендации";
+  /// "биография"
+  @override
+  String get biography => "биография";
+  /// "Известный"
+  @override
+  String get knownFor => "Известный";
+  /// "Действующий"
+  @override
+  String get acting => "Действующий";
+  /// "Фильмы"
+  @override
+  String get movies => "Фильмы";
+  /// "ТВ шоу"
+  @override
+  String get tvShows => "ТВ шоу";
+  /// "Личная информация"
+  @override
+  String get personalInfo => "Личная информация";
+  /// "Пол"
+  @override
+  String get gender => "Пол";
+  /// "день рождения"
+  @override
+  String get birthday => "день рождения";
+  /// "Известные кредиты"
+  @override
+  String get knownCredits => "Известные кредиты";
+  /// "Место рождения"
+  @override
+  String get placeOfBirth => "Место рождения";
+  /// "официальный сайт"
+  @override
+  String get officialSite => "официальный сайт";
+  /// "Также известный как"
+  @override
+  String get alsoKnownAs => "Также известный как";
+  /// "Сортировать по"
+  @override
+  String get sortBy => "Сортировать по";
+  /// "Фильтр"
+  @override
+  String get filter => "Фильтр";
+  /// "Список"
+  @override
+  String get watchlist => "Список";
+  /// "Списки"
+  @override
+  String get lists => "Списки";
+  /// "Избранные"
+  @override
+  String get favorites => "Избранные";
+  /// "Рейтинги и отзывы"
+  @override
+  String get ratingsReviews => "Рейтинги и отзывы";
+  /// "Популярный"
+  @override
+  String get popular => "Популярный";
+  /// "Больше"
+  @override
+  String get more => "Больше";
+  /// "Избранный экипаж"
+  @override
+  String get featuredCrew => "Избранный экипаж";
+  /// "творец"
+  @override
+  String get creator => "творец";
+  /// "Времена года"
+  @override
+  String get seasons => "Времена года";
+  /// "Текущий сезон"
+  @override
+  String get currentSeason => "Текущий сезон";
+  /// "Просмотреть все сезоны"
+  @override
+  String get viewAllSeasons => "Просмотреть все сезоны";
+  /// "Детали сезона"
+  @override
+  String get seasonDetail => "Детали сезона";
+  /// "Сезонный состав"
+  @override
+  String get seasonCast => "Сезонный состав";
+  /// "Эпизоды"
+  @override
+  String get episodes => "Эпизоды";
+  /// "Приглашенные звезды"
+  @override
+  String get guestStars => "Приглашенные звезды";
+  /// "Приглашенная звезда не добавлена"
+  @override
+  String get guestStarsEmpty => "Приглашенная звезда не добавлена";
+  /// "экипаж"
+  @override
+  String get crew => "экипаж";
+  /// "Экипаж не добавлен"
+  @override
+  String get crewEmpty => "Экипаж не добавлен";
+  /// "Изображения эпизодов"
+  @override
+  String get episodeImages => "Изображения эпизодов";
+  /// "Изображение эпизода не добавлено"
+  @override
+  String get episodeImagesEmpty => "Изображение эпизода не добавлено";
+  /// "факты"
+  @override
+  String get facts => "факты";
+  /// "сеть"
+  @override
+  String get network => "сеть";
+  /// "Положение дел"
+  @override
+  String get status => "Положение дел";
+  /// "Тип"
+  @override
+  String get type => "Тип";
+  /// "Исходный язык"
+  @override
+  String get originalLanguage => "Исходный язык";
+  /// "время выполнения"
+  @override
+  String get runtime => "время выполнения";
+  /// "Genders"
+  @override
+  String get genders => "Genders";
+  /// "Информация о выпуске"
+  @override
+  String get releaseInformation => "Информация о выпуске";
+  /// "бюджет"
+  @override
+  String get budget => "бюджет";
+  /// "доходов"
+  @override
+  String get revenue => "доходов";
+  /// "Компания"
+  @override
+  String get company => "Компания";
+  /// "Играть"
+  @override
+  String get play => "Играть";
+  /// "Добро пожаловать"
+  @override
+  String get welcomeBack => "Добро пожаловать";
+  /// "настройки"
+  @override
+  String get settings => "настройки";
+  /// "Контент для взрослых"
+  @override
+  String get adultContent => "Контент для взрослых";
+  /// "Уведомления"
+  @override
+  String get notifications => "Уведомления";
+  /// "Темный режим"
+  @override
+  String get darkMode => "Темный режим";
+  /// "язык"
+  @override
+  String get language => "язык";
+  /// "Обратная связь"
+  @override
+  String get feedback => "Обратная связь";
+  /// "Версия"
+  @override
+  String get version => "Версия";
+  /// "Trending"
+  @override
+  String get trending => "Trending";
+  /// "Общий"
+  @override
+  String get shared => "Общий";
+
+  @override
+  TextDirection get textDirection => TextDirection.ltr;
+}
+
+class _I18n_de_DE extends I18n {
+  const _I18n_de_DE();
+
+  /// "Film"
+  @override
+  String get appname => "Film";
+  /// "Suche nach einem Film, einer Fernsehsendung, einer Person"
+  @override
+  String get searchbartxt => "Suche nach einem Film, einer Fernsehsendung, einer Person";
+  /// "Zuhause"
+  @override
+  String get home => "Zuhause";
+  /// "Entdecken"
+  @override
+  String get discover => "Entdecken";
+  /// "Kommen"
+  @override
+  String get coming => "Kommen";
+  /// "Konto"
+  @override
+  String get account => "Konto";
+  /// "In Theatern"
+  @override
+  String get inTheaters => "In Theatern";
+  /// "Im Fernsehen"
+  @override
+  String get onTV => "Im Fernsehen";
+  /// "Überblick"
+  @override
+  String get overView => "Überblick";
+  /// "Top Billed Cast"
+  @override
+  String get topBilledCast => "Top Billed Cast";
+  /// "User Score"
+  @override
+  String get userScore => "User Score";
+  /// "Stills"
+  @override
+  String get stills => "Stills";
+  /// "Schlüsselwörter"
+  @override
+  String get keyWords => "Schlüsselwörter";
+  /// "Anhänger"
+  @override
+  String get trailers => "Anhänger";
+  /// "Trailer abspielen"
+  @override
+  String get playTrailer => "Trailer abspielen";
+  /// "Main"
+  @override
+  String get main => "Main";
+  /// "Videos"
+  @override
+  String get videos => "Videos";
+  /// "Bilder"
+  @override
+  String get images => "Bilder";
+  /// "Bewertungen"
+  @override
+  String get reviews => "Bewertungen";
+  /// "Stichworte"
+  @override
+  String get tags => "Stichworte";
+  /// "Empfehlungen"
+  @override
+  String get recommendations => "Empfehlungen";
+  /// "Biografie"
+  @override
+  String get biography => "Biografie";
+  /// "Bekannt für"
+  @override
+  String get knownFor => "Bekannt für";
+  /// "Schauspielkunst"
+  @override
+  String get acting => "Schauspielkunst";
+  /// "Filme"
+  @override
+  String get movies => "Filme";
+  /// "Fernsehshows"
+  @override
+  String get tvShows => "Fernsehshows";
+  /// "Persönliche Informationen"
+  @override
+  String get personalInfo => "Persönliche Informationen";
+  /// "Geschlecht"
+  @override
+  String get gender => "Geschlecht";
+  /// "Geburtstag"
+  @override
+  String get birthday => "Geburtstag";
+  /// "Bekannte Credits"
+  @override
+  String get knownCredits => "Bekannte Credits";
+  /// "Geburtsort"
+  @override
+  String get placeOfBirth => "Geburtsort";
+  /// "offizielle Seite"
+  @override
+  String get officialSite => "offizielle Seite";
+  /// "Auch bekannt als"
+  @override
+  String get alsoKnownAs => "Auch bekannt als";
+  /// "Sortiere nach"
+  @override
+  String get sortBy => "Sortiere nach";
+  /// "Filter"
+  @override
+  String get filter => "Filter";
+  /// "Beobachtungsliste"
+  @override
+  String get watchlist => "Beobachtungsliste";
+  /// "Listen"
+  @override
+  String get lists => "Listen";
+  /// "Favoriten"
+  @override
+  String get favorites => "Favoriten";
+  /// "Bewertungen & Bewertungen"
+  @override
+  String get ratingsReviews => "Bewertungen & Bewertungen";
+  /// "Beliebt"
+  @override
+  String get popular => "Beliebt";
+  /// "Mehr"
+  @override
+  String get more => "Mehr";
+  /// "Ausgewählte Crew"
+  @override
+  String get featuredCrew => "Ausgewählte Crew";
+  /// "Schöpfer"
+  @override
+  String get creator => "Schöpfer";
+  /// "Jahreszeiten"
+  @override
+  String get seasons => "Jahreszeiten";
+  /// "Aktuelle Saison"
+  @override
+  String get currentSeason => "Aktuelle Saison";
+  /// "Alle Jahreszeiten anzeigen"
+  @override
+  String get viewAllSeasons => "Alle Jahreszeiten anzeigen";
+  /// "Saison Detail"
+  @override
+  String get seasonDetail => "Saison Detail";
+  /// "Staffelbesetzung"
+  @override
+  String get seasonCast => "Staffelbesetzung";
+  /// "Folgen"
+  @override
+  String get episodes => "Folgen";
+  /// "Gaststars"
+  @override
+  String get guestStars => "Gaststars";
+  /// "Es wurde kein Gaststar hinzugefügt"
+  @override
+  String get guestStarsEmpty => "Es wurde kein Gaststar hinzugefügt";
+  /// "Besatzung"
+  @override
+  String get crew => "Besatzung";
+  /// "Es wurde keine Crew hinzugefügt"
+  @override
+  String get crewEmpty => "Es wurde keine Crew hinzugefügt";
+  /// "Episodenbilder"
+  @override
+  String get episodeImages => "Episodenbilder";
+  /// "Es wurde kein Episodenbild hinzugefügt"
+  @override
+  String get episodeImagesEmpty => "Es wurde kein Episodenbild hinzugefügt";
+  /// "Fakten"
+  @override
+  String get facts => "Fakten";
+  /// "Netzwerk"
+  @override
+  String get network => "Netzwerk";
+  /// "Status"
+  @override
+  String get status => "Status";
+  /// "Art"
+  @override
+  String get type => "Art";
+  /// "Ursprache"
+  @override
+  String get originalLanguage => "Ursprache";
+  /// "Laufzeit"
+  @override
+  String get runtime => "Laufzeit";
+  /// "Geschlechter"
+  @override
+  String get genders => "Geschlechter";
+  /// "Release-Informationen"
+  @override
+  String get releaseInformation => "Release-Informationen";
+  /// "Budget"
+  @override
+  String get budget => "Budget";
+  /// "Einnahmen"
+  @override
+  String get revenue => "Einnahmen";
+  /// "Unternehmen"
+  @override
+  String get company => "Unternehmen";
+  /// "abspielen"
+  @override
+  String get play => "abspielen";
+  /// "Willkommen zurück"
+  @override
+  String get welcomeBack => "Willkommen zurück";
+  /// "Settings"
+  @override
+  String get settings => "Settings";
+  /// "Inhalt für Erwachsene"
+  @override
+  String get adultContent => "Inhalt für Erwachsene";
+  /// "Benachrichtigungen"
+  @override
+  String get notifications => "Benachrichtigungen";
+  /// "Dunkler Modus"
+  @override
+  String get darkMode => "Dunkler Modus";
+  /// "Sprache"
+  @override
+  String get language => "Sprache";
+  /// "Feedback"
+  @override
+  String get feedback => "Feedback";
+  /// "Ausführung"
+  @override
+  String get version => "Ausführung";
+  /// "Trend"
+  @override
+  String get trending => "Trend";
+  /// "Geteilt"
+  @override
+  String get shared => "Geteilt";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
@@ -631,7 +1876,12 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<WidgetsLocali
     return const <Locale>[
       Locale("en", "US"),
       Locale("zh", "CN"),
-      Locale("ja", "JP")
+      Locale("ja", "JP"),
+      Locale("zh", "TW"),
+      Locale("es", "ES"),
+      Locale("fr", "FR"),
+      Locale("ru", "RU"),
+      Locale("de", "DE")
     ];
   }
 
@@ -660,6 +1910,21 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<WidgetsLocali
     else if ("ja_JP" == lang) {
       return SynchronousFuture<WidgetsLocalizations>(const _I18n_ja_JP());
     }
+    else if ("zh_TW" == lang) {
+      return SynchronousFuture<WidgetsLocalizations>(const _I18n_zh_TW());
+    }
+    else if ("es_ES" == lang) {
+      return SynchronousFuture<WidgetsLocalizations>(const _I18n_es_ES());
+    }
+    else if ("fr_FR" == lang) {
+      return SynchronousFuture<WidgetsLocalizations>(const _I18n_fr_FR());
+    }
+    else if ("ru_RU" == lang) {
+      return SynchronousFuture<WidgetsLocalizations>(const _I18n_ru_RU());
+    }
+    else if ("de_DE" == lang) {
+      return SynchronousFuture<WidgetsLocalizations>(const _I18n_de_DE());
+    }
     else if ("en" == languageCode) {
       return SynchronousFuture<WidgetsLocalizations>(const _I18n_en_US());
     }
@@ -668,6 +1933,18 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<WidgetsLocali
     }
     else if ("ja" == languageCode) {
       return SynchronousFuture<WidgetsLocalizations>(const _I18n_ja_JP());
+    }
+    else if ("es" == languageCode) {
+      return SynchronousFuture<WidgetsLocalizations>(const _I18n_es_ES());
+    }
+    else if ("fr" == languageCode) {
+      return SynchronousFuture<WidgetsLocalizations>(const _I18n_fr_FR());
+    }
+    else if ("ru" == languageCode) {
+      return SynchronousFuture<WidgetsLocalizations>(const _I18n_ru_RU());
+    }
+    else if ("de" == languageCode) {
+      return SynchronousFuture<WidgetsLocalizations>(const _I18n_de_DE());
     }
 
     return SynchronousFuture<WidgetsLocalizations>(const I18n());

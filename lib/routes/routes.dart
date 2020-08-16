@@ -1,46 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/globalbasestate/store.dart';
-import 'package:movie/views/account_page/page.dart';
-import 'package:movie/views/cast_list/cast_list_detail_page/page.dart';
-import 'package:movie/views/cast_list/cast_list_page/page.dart';
-import 'package:movie/views/checkout_page/page.dart';
-import 'package:movie/views/coming_page/page.dart';
-import 'package:movie/views/createlist_page/page.dart';
-import 'package:movie/views/discover_page/page.dart';
-import 'package:movie/views/download_page/page.dart';
-import 'package:movie/views/episodedetail_page/page.dart';
-import 'package:movie/views/favorites_page/page.dart';
-import 'package:movie/views/gallery_page/page.dart';
-import 'package:movie/views/home_page/page.dart';
-import 'package:movie/views/listdetail_page/page.dart';
-import 'package:movie/views/login_page/page.dart';
-import 'package:movie/views/main_page/page.dart';
-import 'package:movie/views/moremedia_page/page.dart';
-import 'package:movie/views/moviedetail_page/page.dart';
-import 'package:movie/views/mylists_page/page.dart';
-import 'package:movie/views/notification_page/page.dart';
-import 'package:movie/views/payment_page/page.dart';
-import 'package:movie/views/peopledetail_page/page.dart';
-import 'package:movie/views/premium_page/page.dart';
-import 'package:movie/views/register_page/page.dart';
-import 'package:movie/views/seasondetail_page/page.dart';
-import 'package:movie/views/seasons_page/page.dart';
-import 'package:movie/views/setting_page/page.dart';
-import 'package:movie/views/start_page/page.dart';
-import 'package:movie/views/stream_link/allstreamlink_page/page.dart';
-import 'package:movie/views/stream_link/episode_livestream_page/page.dart';
-import 'package:movie/views/stream_link/movie_livestream_page/page.dart';
-import 'package:movie/views/stream_link/season_link_page/page.dart';
-import 'package:movie/views/test_page/page.dart';
-import 'package:movie/views/trending_page/page.dart';
-import 'package:movie/views/tvdetail_page/page.dart';
-import 'package:movie/views/tvshow_detail_page/page.dart';
-import 'package:movie/views/watchlist_page/page.dart';
-import 'package:movie/views/watchlistdetail_page/page.dart';
-
-import 'package:movie/views/detail_page/page.dart' as detail;
-import 'package:movie/views/account_test/page.dart' as testAccount;
+import 'package:movie/views/views.dart';
 
 class Routes {
   static final PageRoutes routes = PageRoutes(
@@ -50,11 +11,8 @@ class Routes {
       'homePage': HomePage(),
       'discoverPage': DiscoverPage(),
       'comingPage': ComingPage(),
-      'accountPage': AccountPage(),
       'loginpage': LoginPage(),
       'trendingPage': TrendingPage(),
-      'moviedetailpage': MovieDetailPage(),
-      'tvdetailpage': TVDetailPage(),
       'peopledetailpage': PeopleDetailPage(),
       'seasondetailpage': SeasonDetailPage(),
       'episodedetailpage': EpisodeDetailPage(),
@@ -65,7 +23,7 @@ class Routes {
       'favoritesPage': FavoritesPage(),
       'watchlistPage': WatchlistPage(),
       'watchlistDetailPage': WatchlistDetailPage(),
-      'detailpage': detail.MovieDetailPage(),
+      'detailpage': MovieDetailPage(),
       'galleryPage': GalleryPage(),
       'registerPage': RegisterPage(),
       'createListPage': CreateListPage(),
@@ -83,7 +41,7 @@ class Routes {
       'movieLiveStreamPage': MovieLiveStreamPage(),
       'castListPage': CastListPage(),
       'castListDetailPage': CastListDetailPage(),
-      'testAccountPage': testAccount.AccountPage(),
+      'testAccountPage': AccountPage(),
     },
     visitor: (String path, Page<Object, dynamic> page) {
       if (page.isTypeof<GlobalBaseState>()) {

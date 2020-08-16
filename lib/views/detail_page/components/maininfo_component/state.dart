@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/models/moviedetail.dart';
+import 'package:movie/models/movie_detail.dart';
 import 'package:movie/views/detail_page/state.dart';
 
 class MainInfoState implements Cloneable<MainInfoState> {

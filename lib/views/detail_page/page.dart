@@ -1,13 +1,9 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/views/detail_page/components/trailer_component/component.dart';
-import 'package:movie/views/detail_page/components/trailer_component/state.dart';
 
 import 'components/appbar_component/component.dart';
 import 'components/appbar_component/state.dart';
 import 'components/cast_component/component.dart';
 import 'components/cast_component/state.dart';
-import 'components/header_component/component.dart';
-import 'components/header_component/state.dart';
 import 'components/keyword_component/component.dart';
 import 'components/keyword_component/state.dart';
 import 'components/maininfo_component/component.dart';
@@ -20,6 +16,8 @@ import 'components/recommendation_component/component.dart';
 import 'components/recommendation_component/state.dart';
 import 'components/still_component/component.dart';
 import 'components/still_component/state.dart';
+import 'components/trailer_component/component.dart';
+import 'components/trailer_component/state.dart';
 import 'effect.dart';
 import 'reducer.dart';
 import 'state.dart';
@@ -42,7 +40,6 @@ class MovieDetailPage extends Page<MovieDetailPageState, Map<String, dynamic>>
                 'appbar': AppBarConnector() + AppBarComponent(),
                 'mainInfo': MainInfoConnector() + MainInfoComponent(),
                 'menu': MenuConnector() + MenuComponent(),
-                'header': HeaderConnector() + HeaderComponent(),
                 'overView': OverViewConnector() + OverViewComponent(),
                 'cast': CastConnector() + CastComponent(),
                 'still': StillConnector() + StillComponent(),

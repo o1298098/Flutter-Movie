@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/combined_credits.dart';
 import 'package:movie/models/enums/media_type.dart';
+import 'package:movie/models/models.dart';
 import 'package:movie/models/people_detail.dart';
 
 enum PeopleDetailPageAction {
@@ -21,7 +21,8 @@ class PeopleDetailPageActionCreator {
     return Action(PeopleDetailPageAction.init, payload: p);
   }
 
-  static Action onSetCreditModel(CombinedCreditsModel p, List<CastData> cast) {
+  static Action onSetCreditModel(
+      CombinedCreditsModel p, List<CombinedCastData> cast) {
     return Action(PeopleDetailPageAction.setCreditModel, payload: [p, cast]);
   }
 

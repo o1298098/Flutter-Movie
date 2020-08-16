@@ -2,8 +2,8 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/models/combined_credits.dart';
 import 'package:movie/models/enums/media_type.dart';
+import 'package:movie/models/models.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/peopledetail_page/action.dart';
 import 'package:shimmer/shimmer.dart';
@@ -85,7 +85,7 @@ class _ShimmerList extends StatelessWidget {
 }
 
 class _Cell extends StatelessWidget {
-  final CastData data;
+  final CombinedCastData data;
   final Function onTap;
   const _Cell({Key key, @required this.data, this.onTap}) : super(key: key);
   @override
@@ -132,8 +132,8 @@ class _Cell extends StatelessWidget {
 
 class _ActingBody extends StatelessWidget {
   final bool showMovie;
-  final List<CastData> data;
-  final Function(CastData) onTap;
+  final List<CombinedCastData> data;
+  final Function(CombinedCastData) onTap;
   final ScrollPhysics scrollPhysics;
   const _ActingBody(
       {this.showMovie, this.data, this.onTap, this.scrollPhysics});

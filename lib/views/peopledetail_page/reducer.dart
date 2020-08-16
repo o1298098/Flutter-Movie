@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/models/combined_credits.dart';
+import 'package:movie/models/models.dart';
 import 'package:movie/models/people_detail.dart';
 
 import 'action.dart';
@@ -36,7 +36,7 @@ PeopleDetailPageState _onSetCreditModel(
     PeopleDetailPageState state, Action action) {
   final CombinedCreditsModel m =
       action.payload[0] ?? CombinedCreditsModel.fromParams(cast: [], crew: []);
-  final List<CastData> cast = action.payload[1] ?? [];
+  final List<CombinedCastData> cast = action.payload[1] ?? [];
   final PeopleDetailPageState newState = state.clone();
   newState.creditsModel = m;
   newState.knowForCast = cast;

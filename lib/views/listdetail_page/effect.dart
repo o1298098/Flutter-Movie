@@ -44,20 +44,14 @@ Future _onInit(Action action, Context<ListDetailPageState> ctx) async {
 Future _cellTapped(Action action, Context<ListDetailPageState> ctx) async {
   UserListDetail d = action.payload;
   if (d != null) {
-    if (d.mediaType == 'movie')
-      await Navigator.of(ctx.context).pushNamed('detailpage', arguments: {
-        'id': d.mediaid,
-        'bgpic': d.photoUrl,
-        'title': d.mediaName,
-        'posterpic': d.photoUrl
-      });
-    else
-      await Navigator.of(ctx.context).pushNamed('tvShowDetailPage', arguments: {
-        'tvid': d.mediaid,
-        'bgpic': d.photoUrl,
-        'name': d.mediaName,
-        'posterpic': d.photoUrl
-      });
+    await Navigator.of(ctx.context).pushNamed(
+        d.mediaType == 'movie' ? 'detailpage' : 'tvShowDetailPage',
+        arguments: {
+          'id': d.mediaid,
+          'bgpic': d.photoUrl,
+          'name': d.mediaName,
+          'posterpic': d.photoUrl
+        });
   }
 }
 

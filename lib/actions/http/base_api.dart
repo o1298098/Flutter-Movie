@@ -1,29 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movie/models/base_api_model/account_info.dart';
-import 'package:movie/models/base_api_model/account_state.dart';
-import 'package:movie/models/base_api_model/base_movie.dart';
-import 'package:movie/models/base_api_model/base_tvshow.dart';
-import 'package:movie/models/base_api_model/braintree_billing_address.dart';
-import 'package:movie/models/base_api_model/braintree_creditcard.dart';
-import 'package:movie/models/base_api_model/braintree_customer.dart';
-import 'package:movie/models/base_api_model/braintree_subscription.dart';
-import 'package:movie/models/base_api_model/braintree_transaction.dart';
-import 'package:movie/models/base_api_model/cast_list_detail.dart';
-import 'package:movie/models/base_api_model/movie_comment.dart';
-import 'package:movie/models/base_api_model/movie_like_model.dart';
-import 'package:movie/models/base_api_model/movie_stream_link.dart';
-import 'package:movie/models/base_api_model/purchase.dart';
-import 'package:movie/models/base_api_model/stream_link_report.dart';
-import 'package:movie/models/base_api_model/tvshow_comment.dart';
-import 'package:movie/models/base_api_model/tvshow_like_model.dart';
-import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
-import 'package:movie/models/base_api_model/user_list.dart';
-import 'package:movie/models/base_api_model/user_list_detail.dart';
-import 'package:movie/models/base_api_model/user_media.dart';
-import 'package:movie/models/base_api_model/user_premium_model.dart';
+
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/enums/premium_type.dart';
-import 'package:movie/models/response_model.dart';
+import 'package:movie/models/models.dart';
 
 import 'request.dart';
 

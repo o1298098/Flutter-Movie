@@ -41,7 +41,7 @@ TvShowDetailState initState(Map<String, dynamic> args) {
   TvShowDetailState state = TvShowDetailState();
   state.scaffoldkey =
       GlobalKey<ScaffoldState>(debugLabel: '_TvShowDetailPagekey');
-  state.tvid = args['tvid'];
+  state.tvid = args['id'];
 
   state.tvDetailModel = new TVDetailModel.fromParams();
   state.creditsModel = new CreditsModel.fromParams(

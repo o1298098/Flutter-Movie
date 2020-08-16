@@ -1,13 +1,13 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/models/combined_credits.dart';
+import 'package:movie/models/models.dart';
 import 'package:movie/views/peopledetail_page/state.dart';
 
 class TimeLineState implements Cloneable<TimeLineState> {
   String department;
   bool showmovie = true;
-  List<CastData> movies;
-  List<CastData> tvshows;
+  List<CombinedCastData> movies;
+  List<CombinedCastData> tvshows;
   ScrollPhysics scrollPhysics;
 
   TimeLineState(

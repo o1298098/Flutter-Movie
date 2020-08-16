@@ -1,8 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/http/tmdb_api.dart';
-import 'package:movie/models/combined_credits.dart';
 import 'package:movie/models/enums/media_type.dart';
+import 'package:movie/models/models.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -26,10 +26,10 @@ Future _onInit(Action action, Context<PeopleDetailPageState> ctx) async {
       ctx.dispatch(PeopleDetailPageActionCreator.onInit(_peopleDetail.result));
     var _combinedCredits = await _tmdb.getCombinedCredits(id);
     if (_combinedCredits.success) {
-      var cast = List<CastData>();
-      cast = new List<CastData>()..addAll(_combinedCredits.result.cast);
+      var cast = List<CombinedCastData>();
+      cast = new List<CombinedCastData>()..addAll(_combinedCredits.result.cast);
       cast.sort((a, b) => b.voteCount.compareTo(a.voteCount));
-      _combinedCredits.result.cast = new List<CastData>()
+      _combinedCredits.result.cast = new List<CombinedCastData>()
         ..addAll(_combinedCredits.result.cast);
       _combinedCredits.result.cast.sort((a, b) {
         String date1 = a.mediaType == 'movie' ? a.releaseDate : a.firstAirDate;
@@ -55,17 +55,15 @@ Future _onInit(Action action, Context<PeopleDetailPageState> ctx) async {
 void _cellTapped(Action action, Context<PeopleDetailPageState> ctx) async {
   final MediaType type = action.payload[4];
   final int id = action.payload[0];
-  final String bgpic = action.payload[1];
   final String title = action.payload[2];
   final String posterpic = action.payload[3];
   final String pagename =
       type == MediaType.movie ? 'detailpage' : 'tvShowDetailPage';
   var data = {
-    type == MediaType.movie ? 'id' : 'tvid': id,
-    'bgpic': type == MediaType.movie ? posterpic : bgpic,
-    type == MediaType.movie ? 'title' : 'name': title,
+    'id': id,
+    'bgpic': posterpic,
+    'name': title,
     'posterpic': posterpic
   };
-  //Page page = type == MediaType.movie ? MovieDetailPage() : TVDetailPage();
   await Navigator.of(ctx.context).pushNamed(pagename, arguments: data);
 }

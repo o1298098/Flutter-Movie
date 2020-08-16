@@ -77,7 +77,7 @@ Future _onVideoCellTapped(Action action, Context<DiscoverPageState> ctx) async {
     );
   else
     await Navigator.of(ctx.context).pushNamed('tvShowDetailPage', arguments: {
-      'tvid': action.payload[0],
+      'id': action.payload[0],
       'bgpic': action.payload[1],
       'posterpic': action.payload[2],
       'name': action.payload[3]

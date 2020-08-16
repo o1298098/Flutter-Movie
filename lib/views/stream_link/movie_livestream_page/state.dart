@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/models/base_api_model/movie_stream_link.dart';
-import 'package:movie/models/moviedetail.dart';
+import 'package:movie/models/movie_detail.dart';
 import 'package:movie/widgets/overlay_entry_manage.dart';
 
 import 'components/bottom_panel_component/components/comment_component/state.dart';

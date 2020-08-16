@@ -320,7 +320,7 @@ class _TabPanelState extends State<_TabBarPanel> with TickerProviderStateMixin {
         SlideTransition(
           position: _tween.animate(_controller),
           child: Container(
-            width: Adapt.px(180),
+            width: Adapt.px(160),
             height: Adapt.px(80),
             margin: EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(
@@ -387,7 +387,7 @@ class _TabCell extends StatelessWidget {
     return InkWell(
       onTap: () => onTap(index),
       child: Container(
-        width: Adapt.px(180),
+        width: Adapt.px(160),
         height: Adapt.px(80),
         margin: EdgeInsets.symmetric(horizontal: 5),
         child: Center(

@@ -3,6 +3,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
+import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/tvshow_detail.dart';
 import 'package:movie/style/themestyle.dart';
@@ -34,7 +35,7 @@ class _LastEpisodePanel extends StatelessWidget {
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(
-              'Last Episode',
+              I18n.of(context).lastEpisode,
               style: TextStyle(
                 fontSize: Adapt.px(28),
                 fontWeight: FontWeight.w600,

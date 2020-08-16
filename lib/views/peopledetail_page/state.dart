@@ -4,17 +4,17 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/globalbasestate/state.dart';
-import 'package:movie/models/combined_credits.dart';
 import 'package:movie/models/app_user.dart';
+import 'package:movie/models/models.dart';
 import 'package:movie/models/people_detail.dart';
 
 class PeopleDetailPageState
     implements GlobalBaseState, Cloneable<PeopleDetailPageState> {
   PeopleDetailModel peopleDetailModel;
   CombinedCreditsModel creditsModel;
-  List<CastData> knowForCast;
-  List<CastData> movies;
-  List<CastData> tvshows;
+  List<CombinedCastData> knowForCast;
+  List<CombinedCastData> movies;
+  List<CombinedCastData> tvshows;
   int peopleid;
   double biographyHeight;
   bool isBiographyOpen;
@@ -55,7 +55,7 @@ PeopleDetailPageState initState(Map<String, dynamic> args) {
   state.peopleDetailModel =
       PeopleDetailModel.fromParams(alsoKnownAs: List<String>());
   state.creditsModel = CombinedCreditsModel.fromParams(
-      cast: List<CastData>(), crew: List<CrewData>());
+      cast: List<CombinedCastData>(), crew: List<CombinedCrewData>());
   state.biographyHeight = Adapt.px(200.0);
   state.isBiographyOpen = false;
   state.showmovie = true;

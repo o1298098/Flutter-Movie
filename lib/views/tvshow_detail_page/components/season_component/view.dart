@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
+import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/season_detail.dart';
 import 'package:movie/style/themestyle.dart';
@@ -97,7 +98,7 @@ class _SeasonPanel extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: _padding),
           child: Text(
-            'Seasons',
+            I18n.of(context).seasons,
             style: TextStyle(
               fontSize: Adapt.px(28),
               fontWeight: FontWeight.w600,
@@ -179,7 +180,7 @@ class _ShimmerList extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: _padding),
           child: Text(
-            'Seasons',
+            I18n.of(context).seasons,
             style: TextStyle(
               fontSize: Adapt.px(28),
               fontWeight: FontWeight.w600,

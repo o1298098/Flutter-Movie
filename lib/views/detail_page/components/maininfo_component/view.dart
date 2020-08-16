@@ -5,10 +5,11 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
+import 'package:movie/models/genre.dart';
 import 'package:movie/widgets/scrollview_background.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/external_ids_model.dart';
-import 'package:movie/models/moviedetail.dart';
+import 'package:movie/models/movie_detail.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/detail_page/action.dart';
 import 'package:shimmer/shimmer.dart';
@@ -17,12 +18,13 @@ import 'state.dart';
 
 Widget buildView(
     MainInfoState state, Dispatch dispatch, ViewService viewService) {
-  final _height = Adapt.px(1150).floorToDouble();
+  final _height = Adapt.px(1150);
   return Builder(
     builder: (context) {
       return SliverToBoxAdapter(
-        child: Stack(children: [
-          AnimatedSwitcher(
+        child: Stack(
+          children: [
+            AnimatedSwitcher(
               duration: Duration(milliseconds: 600),
               child: SizedBox(
                 height: _height,
@@ -30,19 +32,23 @@ Widget buildView(
                   imgUrl: state.bgPic,
                   scrollController: state.scrollController,
                 ),
-              )),
-          Container(
+              ),
+            ),
+            SizedBox(
               height: _height,
-              alignment: Alignment.bottomCenter,
-              child: Column(children: [
-                Expanded(child: SizedBox()),
-                _FrontPanel(
-                  detail: state.detail,
-                  dispatch: dispatch,
-                  hasStreamLink: state.hasStreamLink,
-                )
-              ]))
-        ]),
+              child: Column(
+                children: [
+                  Spacer(),
+                  _FrontPanel(
+                    detail: state.detail,
+                    dispatch: dispatch,
+                    hasStreamLink: state.hasStreamLink,
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       );
     },
   );
@@ -142,7 +148,7 @@ class _HeaderTitle extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(Adapt.px(40), Adapt.px(40), Adapt.px(40), 0),
       decoration: BoxDecoration(
           color: _theme.backgroundColor,
-          border: Border.all(color: _theme.backgroundColor),
+          //border: Border.all(color: _theme.backgroundColor),
           borderRadius:
               BorderRadius.vertical(top: Radius.circular(Adapt.px(50)))),
       child: title == null

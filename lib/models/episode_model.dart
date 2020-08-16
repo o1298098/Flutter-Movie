@@ -1,7 +1,6 @@
 import 'dart:convert' show json;
 
 import 'package:movie/models/credits_model.dart';
-
 import 'base_api_model/tvshow_stream_link.dart';
 import 'image_model.dart';
 import 'video_model.dart';

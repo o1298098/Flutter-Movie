@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/moviedetail.dart';
+import 'package:movie/models/movie_detail.dart';
 import 'package:movie/models/video_list.dart';
 
 import 'action.dart';

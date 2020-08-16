@@ -41,7 +41,7 @@ class _FrontTitle extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            'Trending',
+            I18n.of(context).trending,
             style:
                 TextStyle(fontSize: Adapt.px(35), fontWeight: FontWeight.bold),
           ),

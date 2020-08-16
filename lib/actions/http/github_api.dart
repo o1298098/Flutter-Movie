@@ -1,5 +1,4 @@
-import 'package:movie/models/github_release.dart';
-import 'package:movie/models/response_model.dart';
+import 'package:movie/models/models.dart';
 
 import 'request.dart';
 

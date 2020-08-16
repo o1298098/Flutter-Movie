@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
+import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/video_model.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
@@ -18,7 +19,7 @@ Widget buildView(
       Padding(
         padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
         child: Text(
-          'Trailers',
+          I18n.of(viewService.context).trailers,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: Adapt.px(28)),
         ),
       ),

@@ -69,5 +69,12 @@
     "darkMode": "Dark Mode",
     "language": "言語",
     "feedback": "フィードバック",
-    "version": "バージョン"
+    "version": "バージョン",
+    "stills": "静止画",
+    "keyWords": "キーワード",
+    "trailers": "トレーラー",
+    "trending": "急上昇",
+    "newShare": "新しい共有",
+    "shared": "共有",
+    "seasons": "季節"
 }

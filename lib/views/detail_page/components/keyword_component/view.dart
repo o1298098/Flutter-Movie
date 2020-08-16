@@ -1,6 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
+import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/keyword.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:shimmer/shimmer.dart';
@@ -54,7 +55,7 @@ class _KeyWordPanel extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Keywords',
+            I18n.of(context).keyWords,
             style: TextStyle(
               fontSize: Adapt.px(28),
               fontWeight: FontWeight.w600,

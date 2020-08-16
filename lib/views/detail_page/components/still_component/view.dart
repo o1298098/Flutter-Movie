@@ -3,6 +3,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
+import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/image_model.dart';
 import 'package:movie/style/themestyle.dart';
@@ -21,7 +22,7 @@ Widget buildView(StillState state, Dispatch dispatch, ViewService viewService) {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
             child: Text(
-              'Stills',
+              I18n.of(viewService.context).stills,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: Adapt.px(28),

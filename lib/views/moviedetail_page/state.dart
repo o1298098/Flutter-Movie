@@ -6,7 +6,7 @@ import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/app_user.dart';
 import 'package:movie/models/image_model.dart';
 import 'package:movie/models/media_account_state_model.dart';
-import 'package:movie/models/moviedetail.dart';
+import 'package:movie/models/movie_detail.dart';
 import 'package:movie/models/review.dart';
 import 'package:movie/models/video_model.dart';
 import 'package:palette_generator/palette_generator.dart';

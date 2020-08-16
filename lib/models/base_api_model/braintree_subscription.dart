@@ -1,6 +1,8 @@
 import 'dart:convert' show json;
 
+import 'braintree_descriptor.dart';
 import 'braintree_item_type.dart';
+import 'braintree_status_history.dart';
 import 'braintree_transaction.dart';
 
 class BraintreeSubscription {
@@ -33,7 +35,7 @@ class BraintreeSubscription {
   List<dynamic> discounts;
   List<StatusHistory> statusHistory;
   List<Transaction> transactions;
-  Descriptor descriptor;
+  BraintreeDescriptor descriptor;
   ItemType status;
 
   BraintreeSubscription.fromParams(
@@ -133,7 +135,7 @@ class BraintreeSubscription {
 
     descriptor = jsonRes['Descriptor'] == null
         ? null
-        : new Descriptor.fromJson(jsonRes['Descriptor']);
+        : new BraintreeDescriptor.fromJson(jsonRes['Descriptor']);
     status = jsonRes['Status'] == null
         ? null
         : new ItemType.fromJson(jsonRes['Status']);
@@ -142,138 +144,5 @@ class BraintreeSubscription {
   @override
   String toString() {
     return '{"DaysPastDue": $daysPastDue,"Description": $description,"NumberOfBillingCycles": $numberOfBillingCycles,"TrialDuration": $trialDuration,"TrialDurationUnit": $trialDurationUnit,"BillingDayOfMonth": $billingDayOfMonth,"CurrentBillingCycle": $currentBillingCycle,"FailureCount": $failureCount,"Balance": $balance,"NextBillAmount": $nextBillAmount,"NextBillingPeriodAmount": $nextBillingPeriodAmount,"Price": $price,"HasTrialPeriod": $hasTrialPeriod,"NeverExpires": $neverExpires,"BillingPeriodEndDate": ${billingPeriodEndDate != null ? '${json.encode(billingPeriodEndDate)}' : 'null'},"BillingPeriodStartDate": ${billingPeriodStartDate != null ? '${json.encode(billingPeriodStartDate)}' : 'null'},"CreatedAt": ${createdAt != null ? '${json.encode(createdAt)}' : 'null'},"FirstBillingDate": ${firstBillingDate != null ? '${json.encode(firstBillingDate)}' : 'null'},"Id": ${id != null ? '${json.encode(id)}' : 'null'},"MerchantAccountId": ${merchantAccountId != null ? '${json.encode(merchantAccountId)}' : 'null'},"NextBillingDate": ${nextBillingDate != null ? '${json.encode(nextBillingDate)}' : 'null'},"PaidThroughDate": ${paidThroughDate != null ? '${json.encode(paidThroughDate)}' : 'null'},"PaymentMethodToken": ${paymentMethodToken != null ? '${json.encode(paymentMethodToken)}' : 'null'},"PlanId": ${planId != null ? '${json.encode(planId)}' : 'null'},"UpdatedAt": ${updatedAt != null ? '${json.encode(updatedAt)}' : 'null'},"AddOns": $addOns,"Discounts": $discounts,"StatusHistory": $statusHistory,"Transactions": $transactions,"Descriptor": $descriptor,"Status": $status}';
-  }
-}
-
-class Descriptor {
-  Object name;
-  Object phone;
-  Object url;
-
-  Descriptor.fromParams({this.name, this.phone, this.url});
-
-  Descriptor.fromJson(jsonRes) {
-    name = jsonRes['Name'];
-    phone = jsonRes['Phone'];
-    url = jsonRes['Url'];
-  }
-
-  @override
-  String toString() {
-    return '{"Name": $name,"Phone": $phone,"Url": $url}';
-  }
-}
-
-class SubscriptionDetails {
-  String billingPeriodEndDate;
-  String billingPeriodStartDate;
-
-  SubscriptionDetails.fromParams(
-      {this.billingPeriodEndDate, this.billingPeriodStartDate});
-
-  SubscriptionDetails.fromJson(jsonRes) {
-    billingPeriodEndDate = jsonRes['BillingPeriodEndDate'];
-    billingPeriodStartDate = jsonRes['BillingPeriodStartDate'];
-  }
-
-  @override
-  String toString() {
-    return '{"BillingPeriodEndDate": ${billingPeriodEndDate != null ? '${json.encode(billingPeriodEndDate)}' : 'null'},"BillingPeriodStartDate": ${billingPeriodStartDate != null ? '${json.encode(billingPeriodStartDate)}' : 'null'}}';
-  }
-}
-
-class DisbursementDetails {
-  Object disbursementDate;
-  Object fundsHeld;
-  Object settlementAmount;
-  Object settlementCurrencyExchangeRate;
-  Object settlementCurrencyIsoCode;
-  Object success;
-
-  DisbursementDetails.fromParams(
-      {this.disbursementDate,
-      this.fundsHeld,
-      this.settlementAmount,
-      this.settlementCurrencyExchangeRate,
-      this.settlementCurrencyIsoCode,
-      this.success});
-
-  DisbursementDetails.fromJson(jsonRes) {
-    disbursementDate = jsonRes['DisbursementDate'];
-    fundsHeld = jsonRes['FundsHeld'];
-    settlementAmount = jsonRes['SettlementAmount'];
-    settlementCurrencyExchangeRate = jsonRes['SettlementCurrencyExchangeRate'];
-    settlementCurrencyIsoCode = jsonRes['SettlementCurrencyIsoCode'];
-    success = jsonRes['Success'];
-  }
-
-  @override
-  String toString() {
-    return '{"DisbursementDate": $disbursementDate,"FundsHeld": $fundsHeld,"SettlementAmount": $settlementAmount,"SettlementCurrencyExchangeRate": $settlementCurrencyExchangeRate,"SettlementCurrencyIsoCode": $settlementCurrencyIsoCode,"Success": $success}';
-  }
-}
-
-class CustomerDetails {
-  Object company;
-  Object email;
-  Object fax;
-  Object firstName;
-  Object lastName;
-  Object phone;
-  Object website;
-  String id;
-
-  CustomerDetails.fromParams(
-      {this.company,
-      this.email,
-      this.fax,
-      this.firstName,
-      this.lastName,
-      this.phone,
-      this.website,
-      this.id});
-
-  CustomerDetails.fromJson(jsonRes) {
-    company = jsonRes['Company'];
-    email = jsonRes['Email'];
-    fax = jsonRes['Fax'];
-    firstName = jsonRes['FirstName'];
-    lastName = jsonRes['LastName'];
-    phone = jsonRes['Phone'];
-    website = jsonRes['Website'];
-    id = jsonRes['Id'];
-  }
-
-  @override
-  String toString() {
-    return '{"Company": $company,"Email": $email,"Fax": $fax,"FirstName": $firstName,"LastName": $lastName,"Phone": $phone,"Website": $website,"Id": ${id != null ? '${json.encode(id)}' : 'null'}}';
-  }
-}
-
-class StatusHistory {
-  double amount;
-  String timestamp;
-  String user;
-  ItemType source;
-  ItemType status;
-
-  StatusHistory.fromParams(
-      {this.amount, this.timestamp, this.user, this.source, this.status});
-
-  StatusHistory.fromJson(jsonRes) {
-    amount = jsonRes['Amount'];
-    timestamp = jsonRes['Timestamp'];
-    user = jsonRes['User'];
-    source = jsonRes['Source'] == null
-        ? null
-        : new ItemType.fromJson(jsonRes['Source']);
-    status = jsonRes['Status'] == null
-        ? null
-        : new ItemType.fromJson(jsonRes['Status']);
-  }
-
-  @override
-  String toString() {
-    return '{"Amount": $amount,"Timestamp": ${timestamp != null ? '${json.encode(timestamp)}' : 'null'},"User": ${user != null ? '${json.encode(user)}' : 'null'},"Source": $source,"Status": $status}';
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:convert' show json;
 
 import 'package:movie/models/external_ids_model.dart';
+import 'package:movie/models/production_companie.dart';
 import 'package:movie/models/season_detail.dart';
 
 import 'credits_model.dart';
@@ -245,28 +246,6 @@ class AirData {
   @override
   String toString() {
     return '{"still_path": $stillPath,"episode_number": $episodeNumber,"id": $id,"season_number": $seasonNumber,"show_id": $showId,"vote_average": $voteAverage,"vote_count": $voteCount,"air_date": ${airDate != null ? '${json.encode(airDate)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"overview": ${overview != null ? '${json.encode(overview)}' : 'null'},"production_code": ${productionCode != null ? '${json.encode(productionCode)}' : 'null'}}';
-  }
-}
-
-class ProductionCompanie {
-  int id;
-  String logoPath;
-  String name;
-  String originCountry;
-
-  ProductionCompanie.fromParams(
-      {this.id, this.logoPath, this.name, this.originCountry});
-
-  ProductionCompanie.fromJson(jsonRes) {
-    id = jsonRes['id'];
-    logoPath = jsonRes['logo_path'];
-    name = jsonRes['name'];
-    originCountry = jsonRes['origin_country'];
-  }
-
-  @override
-  String toString() {
-    return '{"id": $id,"logo_path": ${logoPath != null ? '${json.encode(logoPath)}' : 'null'},"name": ${name != null ? '${json.encode(name)}' : 'null'},"origin_country": ${originCountry != null ? '${json.encode(originCountry)}' : 'null'}}';
   }
 }
 

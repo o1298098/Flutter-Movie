@@ -84,8 +84,12 @@ void _darkModeTap(Action action, Context<SettingsState> ctx) {
   ctx.dispatch(AccountActionCreator.showTip('Unavailable at this moment'));
 }
 
-void _notificationsTap(Action action, Context<SettingsState> ctx) {
+void _notificationsTap(Action action, Context<SettingsState> ctx) async {
   ctx.dispatch(AccountActionCreator.showTip('Unavailable at this moment'));
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  String _movieTypeUsbcirbed = _prefs.getString('movieTypeSubscribed');
+  print(_movieTypeUsbcirbed);
+  //final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 }
 
 void _feedbackTap(Action action, Context<SettingsState> ctx) {

@@ -2,7 +2,11 @@ import 'dart:convert' show json;
 
 import 'braintree_billing_address.dart';
 import 'braintree_creditcard.dart';
+import 'braintree_customer_details.dart';
+import 'braintree_descriptor.dart';
 import 'braintree_item_type.dart';
+import 'braintree_status_history.dart';
+import 'branintree_disbursement_details.dart';
 
 class TransactionModel {
   List<Transaction> list;
@@ -94,7 +98,7 @@ class Transaction {
   BillingAddress billingAddress;
   CreditCard creditCard;
   CustomerDetails customerDetails;
-  Descriptor descriptor;
+  BraintreeDescriptor descriptor;
   DisbursementDetails disbursementDetails;
   ItemType escrowStatus;
   ItemType gatewayRejectionReason;
@@ -305,7 +309,7 @@ class Transaction {
         : new CustomerDetails.fromJson(jsonRes['CustomerDetails']);
     descriptor = jsonRes['Descriptor'] == null
         ? null
-        : new Descriptor.fromJson(jsonRes['Descriptor']);
+        : new BraintreeDescriptor.fromJson(jsonRes['Descriptor']);
     disbursementDetails = jsonRes['DisbursementDetails'] == null
         ? null
         : new DisbursementDetails.fromJson(jsonRes['DisbursementDetails']);
@@ -420,93 +424,6 @@ class PayPalDetails {
   }
 }
 
-class DisbursementDetails {
-  Object disbursementDate;
-  Object fundsHeld;
-  Object settlementAmount;
-  Object settlementCurrencyExchangeRate;
-  Object settlementCurrencyIsoCode;
-  Object success;
-
-  DisbursementDetails.fromParams(
-      {this.disbursementDate,
-      this.fundsHeld,
-      this.settlementAmount,
-      this.settlementCurrencyExchangeRate,
-      this.settlementCurrencyIsoCode,
-      this.success});
-
-  DisbursementDetails.fromJson(jsonRes) {
-    disbursementDate = jsonRes['DisbursementDate'];
-    fundsHeld = jsonRes['FundsHeld'];
-    settlementAmount = jsonRes['SettlementAmount'];
-    settlementCurrencyExchangeRate = jsonRes['SettlementCurrencyExchangeRate'];
-    settlementCurrencyIsoCode = jsonRes['SettlementCurrencyIsoCode'];
-    success = jsonRes['Success'];
-  }
-
-  @override
-  String toString() {
-    return '{"DisbursementDate": $disbursementDate,"FundsHeld": $fundsHeld,"SettlementAmount": $settlementAmount,"SettlementCurrencyExchangeRate": $settlementCurrencyExchangeRate,"SettlementCurrencyIsoCode": $settlementCurrencyIsoCode,"Success": $success}';
-  }
-}
-
-class Descriptor {
-  Object name;
-  Object phone;
-  Object url;
-
-  Descriptor.fromParams({this.name, this.phone, this.url});
-
-  Descriptor.fromJson(jsonRes) {
-    name = jsonRes['Name'];
-    phone = jsonRes['Phone'];
-    url = jsonRes['Url'];
-  }
-
-  @override
-  String toString() {
-    return '{"Name": $name,"Phone": $phone,"Url": $url}';
-  }
-}
-
-class CustomerDetails {
-  Object company;
-  Object email;
-  Object fax;
-  Object firstName;
-  Object lastName;
-  Object phone;
-  Object website;
-  String id;
-
-  CustomerDetails.fromParams(
-      {this.company,
-      this.email,
-      this.fax,
-      this.firstName,
-      this.lastName,
-      this.phone,
-      this.website,
-      this.id});
-
-  CustomerDetails.fromJson(jsonRes) {
-    company = jsonRes['Company'];
-    email = jsonRes['Email'];
-    fax = jsonRes['Fax'];
-    firstName = jsonRes['FirstName'];
-    lastName = jsonRes['LastName'];
-    phone = jsonRes['Phone'];
-    website = jsonRes['Website'];
-    id = jsonRes['Id'];
-  }
-
-  @override
-  String toString() {
-    return '{"Company": $company,"Email": $email,"Fax": $fax,"FirstName": $firstName,"LastName": $lastName,"Phone": $phone,"Website": $website,"Id": ${id != null ? '${json.encode(id)}' : 'null'}}';
-  }
-}
-
 class AndroidPayDetails {
   Object countryOfIssuance;
   Object globalId;
@@ -589,33 +506,5 @@ class AndroidPayDetails {
   @override
   String toString() {
     return '{"CountryOfIssuance": $countryOfIssuance,"GlobalId": $globalId,"IssuingBank": $issuingBank,"Token": $token,"IsNetworkTokenized": $isNetworkTokenized,"Bin": ${bin != null ? '${json.encode(bin)}' : 'null'},"CardType": ${cardType != null ? '${json.encode(cardType)}' : 'null'},"Commercial": ${commercial != null ? '${json.encode(commercial)}' : 'null'},"Debit": ${debit != null ? '${json.encode(debit)}' : 'null'},"DurbinRegulated": ${durbinRegulated != null ? '${json.encode(durbinRegulated)}' : 'null'},"ExpirationMonth": ${expirationMonth != null ? '${json.encode(expirationMonth)}' : 'null'},"ExpirationYear": ${expirationYear != null ? '${json.encode(expirationYear)}' : 'null'},"GoogleTransactionId": ${googleTransactionId != null ? '${json.encode(googleTransactionId)}' : 'null'},"Healthcare": ${healthcare != null ? '${json.encode(healthcare)}' : 'null'},"ImageUrl": ${imageUrl != null ? '${json.encode(imageUrl)}' : 'null'},"Last4": ${last4 != null ? '${json.encode(last4)}' : 'null'},"Payroll": ${payroll != null ? '${json.encode(payroll)}' : 'null'},"Prepaid": ${prepaid != null ? '${json.encode(prepaid)}' : 'null'},"ProductId": ${productId != null ? '${json.encode(productId)}' : 'null'},"SourceCardLast4": ${sourceCardLast4 != null ? '${json.encode(sourceCardLast4)}' : 'null'},"SourceCardType": ${sourceCardType != null ? '${json.encode(sourceCardType)}' : 'null'},"SourceDescription": ${sourceDescription != null ? '${json.encode(sourceDescription)}' : 'null'},"VirtualCardLast4": ${virtualCardLast4 != null ? '${json.encode(virtualCardLast4)}' : 'null'},"VirtualCardType": ${virtualCardType != null ? '${json.encode(virtualCardType)}' : 'null'}}';
-  }
-}
-
-class StatusHistory {
-  double amount;
-  String timestamp;
-  String user;
-  ItemType source;
-  ItemType status;
-
-  StatusHistory.fromParams(
-      {this.amount, this.timestamp, this.user, this.source, this.status});
-
-  StatusHistory.fromJson(jsonRes) {
-    amount = jsonRes['Amount'];
-    timestamp = jsonRes['Timestamp'];
-    user = jsonRes['User'];
-    source = jsonRes['Source'] == null
-        ? null
-        : new ItemType.fromJson(jsonRes['Source']);
-    status = jsonRes['Status'] == null
-        ? null
-        : new ItemType.fromJson(jsonRes['Status']);
-  }
-
-  @override
-  String toString() {
-    return '{"Amount": $amount,"Timestamp": ${timestamp != null ? '${json.encode(timestamp)}' : 'null'},"User": ${user != null ? '${json.encode(user)}' : 'null'},"Source": $source,"Status": $status}';
   }
 }

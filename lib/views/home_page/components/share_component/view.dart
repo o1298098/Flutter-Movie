@@ -149,7 +149,7 @@ class _FrontTitel extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            'New Share',
+            I18n.of(context).shared,
             style:
                 TextStyle(fontSize: Adapt.px(35), fontWeight: FontWeight.bold),
           ),
