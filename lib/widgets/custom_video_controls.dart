@@ -3,10 +3,15 @@ import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:chewie/chewie.dart';
+// ignore: implementation_imports
 import 'package:chewie/src/cupertino_progress_bar.dart';
+// ignore: implementation_imports
 import 'package:chewie/src/utils.dart';
+// ignore: unused_import
 import 'package:dart_chromecast/casting/cast_device.dart';
+// ignore: unused_import
 import 'package:dart_chromecast/casting/cast_media.dart';
+// ignore: unused_import
 import 'package:dart_chromecast/casting/cast_sender.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

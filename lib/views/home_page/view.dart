@@ -30,6 +30,7 @@ Widget buildView(
           backChild: viewService.buildComponent('header'),
           frontBackGroundColor: _theme.backgroundColor,
           frontChildren: <Widget>[
+            const _Line(),
             viewService.buildComponent('swiper'),
             viewService.buildComponent('trending'),
             viewService.buildComponent('share'),
@@ -72,6 +73,24 @@ class _SearchBar extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Line extends StatelessWidget {
+  const _Line({Key key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    final _theme = ThemeStyle.getTheme(context);
+    return Padding(
+      padding: EdgeInsets.only(bottom: 20),
+      child: Center(
+        child: Container(
+          width: 40,
+          height: 3,
+          color: _theme.primaryColorDark,
         ),
       ),
     );

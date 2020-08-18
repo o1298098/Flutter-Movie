@@ -9,7 +9,6 @@ import 'package:movie/models/genre.dart';
 import 'package:movie/widgets/scrollview_background.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/external_ids_model.dart';
-import 'package:movie/models/movie_detail.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/detail_page/action.dart';
 import 'package:shimmer/shimmer.dart';
@@ -23,6 +22,7 @@ Widget buildView(
     builder: (context) {
       return SliverToBoxAdapter(
         child: Stack(
+          alignment: Alignment.bottomCenter,
           children: [
             AnimatedSwitcher(
               duration: Duration(milliseconds: 600),
@@ -34,19 +34,20 @@ Widget buildView(
                 ),
               ),
             ),
-            SizedBox(
-              height: _height,
-              child: Column(
-                children: [
-                  Spacer(),
-                  _FrontPanel(
-                    detail: state.detail,
-                    dispatch: dispatch,
-                    hasStreamLink: state.hasStreamLink,
-                  )
-                ],
-              ),
-            )
+            _HeaderTitle(
+              title: state.detail?.title,
+              releaseDate: state.detail?.releaseDate,
+              genres: state.detail?.genres ?? [],
+              voteAverage: state.detail?.voteAverage ?? 0,
+              voteCount: state.detail?.voteCount ?? 0,
+              runtime: state.detail?.runtime ?? 0,
+            ),
+            _OperatePanel(
+              dispatch: dispatch,
+              hasStreamLink: state.hasStreamLink,
+              externalIds: state.detail.externalIds,
+              homePage: state.detail.homepage,
+            ),
           ],
         ),
       );
@@ -54,39 +55,8 @@ Widget buildView(
   );
 }
 
-class _FrontPanel extends StatelessWidget {
-  final bool hasStreamLink;
-  final Dispatch dispatch;
-  final MovieDetailModel detail;
-  const _FrontPanel({this.detail, this.dispatch, this.hasStreamLink});
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomRight,
-      children: <Widget>[
-        _HeaderTitle(
-          title: detail?.title,
-          releaseDate: detail?.releaseDate,
-          genres: detail?.genres ?? [],
-          voteAverage: detail?.voteAverage ?? 0,
-          voteCount: detail?.voteCount ?? 0,
-          runtime: detail?.runtime ?? 0,
-        ),
-        _PlayButton(
-          dispatch: dispatch,
-          hasStreamLink: hasStreamLink,
-        ),
-        _ExternalGroup(
-          dispatch: dispatch,
-          externalIds: detail.externalIds,
-          homePage: detail.homepage,
-        ),
-      ],
-    );
-  }
-}
-
 class _HeaderTitleShimmer extends StatelessWidget {
+  const _HeaderTitleShimmer();
   @override
   Widget build(BuildContext context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
@@ -152,7 +122,7 @@ class _HeaderTitle extends StatelessWidget {
           borderRadius:
               BorderRadius.vertical(top: Radius.circular(Adapt.px(50)))),
       child: title == null
-          ? _HeaderTitleShimmer()
+          ? const _HeaderTitleShimmer()
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -236,7 +206,9 @@ class _PlayButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: Adapt.px(60), bottom: Adapt.px(200)),
+      margin: EdgeInsets.only(
+        right: Adapt.px(60),
+      ),
       width: Adapt.px(100),
       height: Adapt.px(100),
       child: FlatButton(
@@ -252,6 +224,34 @@ class _PlayButton extends StatelessWidget {
         ),
         onPressed: () => dispatch(MovieDetailPageActionCreator.playTrailer()),
       ),
+    );
+  }
+}
+
+class _OperatePanel extends StatelessWidget {
+  final bool hasStreamLink;
+  final Dispatch dispatch;
+  final String homePage;
+  final ExternalIdsModel externalIds;
+  const _OperatePanel(
+      {this.dispatch, this.externalIds, this.hasStreamLink, this.homePage});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: Adapt.px(300),
+      width: Adapt.screenW(),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+        _PlayButton(
+          dispatch: dispatch,
+          hasStreamLink: hasStreamLink,
+        ),
+        Spacer(),
+        _ExternalGroup(
+          dispatch: dispatch,
+          externalIds: externalIds,
+          homePage: homePage,
+        )
+      ]),
     );
   }
 }
@@ -321,6 +321,7 @@ class _HeaderBackgroundState extends State<_HeaderBackground> {
 }
 
 class _ExternalShimmerCell extends StatelessWidget {
+  const _ExternalShimmerCell();
   @override
   Widget build(BuildContext context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
@@ -347,7 +348,9 @@ class _ExternalShimmerCell extends StatelessWidget {
               width: Adapt.px(60),
               height: Adapt.px(60),
               decoration: BoxDecoration(
-                  shape: BoxShape.circle, color: const Color(0xFFFFFFFF)),
+                shape: BoxShape.circle,
+                color: const Color(0xFFFFFFFF),
+              ),
             )
           ],
         ));
@@ -445,7 +448,7 @@ class _ExternalGroup extends StatelessWidget {
                     : SizedBox(),
               ],
             )
-          : _ExternalShimmerCell(),
+          : const _ExternalShimmerCell(),
     );
   }
 }

@@ -45,20 +45,32 @@ Widget buildView(
           backgroundColor: _theme.backgroundColor,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home, size: Adapt.px(44)),
+              icon: Icon(
+                  state.selectedIndex == 0 ? Icons.home : Icons.home_outlined,
+                  size: Adapt.px(44)),
               title: Text(I18n.of(context).home),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.movie_creation, size: Adapt.px(44)),
+              icon: Icon(
+                  state.selectedIndex == 1
+                      ? Icons.movie_creation
+                      : Icons.movie_creation_outlined,
+                  size: Adapt.px(44)),
               title: Text(I18n.of(context).discover),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today, size: Adapt.px(44)),
+              icon: Icon(
+                  state.selectedIndex == 2
+                      ? Icons.calendar_today
+                      : Icons.calendar_today_outlined,
+                  size: Adapt.px(44)),
               title: Text(I18n.of(context).coming),
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.account_circle,
+                state.selectedIndex == 3
+                    ? Icons.account_circle
+                    : Icons.account_circle_outlined,
                 size: Adapt.px(44),
               ),
               title: Text(

@@ -386,7 +386,7 @@ Widget _buildResultCell(SearchResult s, BuildContext ctx) {
         case 'tv':
           return await Navigator.of(ctx).pushNamed('tvShowDetailPage',
               arguments: {
-                'tvid': s.id,
+                'id': s.id,
                 'bgpic': s.backdropPath,
                 'name': s.name,
                 'posterpic': s.posterPath

@@ -16,7 +16,7 @@ Widget buildView(CastState state, Dispatch dispatch, ViewService viewService) {
   return AnimatedSwitcher(
     duration: Duration(milliseconds: 300),
     child: state.casts == null
-        ? _ShimmerList()
+        ? const _ShimmerList()
         : state.casts.length > 0
             ? _CastPanel(
                 casts: state.casts,
@@ -98,6 +98,7 @@ class _CastPanel extends StatelessWidget {
           height: _listviewHeight,
           child: ListView.separated(
             padding: EdgeInsets.symmetric(horizontal: _padding),
+            physics: BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
             separatorBuilder: (_, __) => SizedBox(width: Adapt.px(40)),
             itemCount: casts.length,
@@ -116,6 +117,7 @@ class _CastPanel extends StatelessWidget {
 }
 
 class _ShimmerCell extends StatelessWidget {
+  const _ShimmerCell();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -147,6 +149,7 @@ class _ShimmerCell extends StatelessWidget {
 }
 
 class _ShimmerList extends StatelessWidget {
+  const _ShimmerList();
   @override
   Widget build(BuildContext context) {
     final _listviewHeight = Adapt.px(230);
@@ -178,7 +181,7 @@ class _ShimmerList extends StatelessWidget {
               separatorBuilder: (_, __) => SizedBox(width: Adapt.px(40)),
               itemCount: 5,
               itemBuilder: (_, index) {
-                return _ShimmerCell();
+                return const _ShimmerCell();
               },
             ),
           ),
