@@ -34,4 +34,4 @@ export 'watchlist_page/page.dart';
 export 'watchlistdetail_page/page.dart';
 
 export 'detail_page/page.dart';
-export 'account_test/page.dart';
+export 'account_page/page.dart';

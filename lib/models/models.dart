@@ -19,6 +19,7 @@ export 'base_api_model/braintree_transaction.dart';
 export 'base_api_model/braintree_creditcard.dart';
 export 'base_api_model/purchase.dart';
 export 'base_api_model/stream_link_report.dart';
+export 'base_api_model/topic_subscription.dart';
 export 'item.dart';
 export 'credits_model.dart';
 export 'episode_model.dart';

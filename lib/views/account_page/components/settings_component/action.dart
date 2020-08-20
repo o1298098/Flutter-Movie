@@ -6,6 +6,7 @@ enum SettingsAction {
   adultContentTapped,
   adultContentUpadte,
   notificationsTap,
+  notificationsUpdate,
   checkUpdate,
   languageTap,
   setLanguage,
@@ -20,6 +21,10 @@ class SettingsActionCreator {
 
   static Action notificationsTap() {
     return const Action(SettingsAction.notificationsTap);
+  }
+
+  static Action notificationsUpdate(bool enable) {
+    return Action(SettingsAction.notificationsUpdate, payload: enable);
   }
 
   static Action adultContentTapped() {

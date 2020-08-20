@@ -86,11 +86,12 @@ class _CustomAppBarState extends State<_CustomAppBar> {
             elevation: 0.0,
             leading: InkWell(
               child: Container(
-                margin: EdgeInsets.all(12),
+                margin: EdgeInsets.all(Adapt.px(22)),
                 decoration: BoxDecoration(
                     shape: BoxShape.circle, color: const Color(0x60000000)),
                 child: Icon(
                   Icons.keyboard_arrow_left,
+                  size: Adapt.px(40),
                   color: const Color(0xFFFFFFFF),
                 ),
               ),
@@ -99,13 +100,14 @@ class _CustomAppBarState extends State<_CustomAppBar> {
             actions: [
               InkWell(
                 child: Container(
-                  margin: EdgeInsets.all(12),
+                  margin: EdgeInsets.all(Adapt.px(22)),
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
                       shape: BoxShape.circle, color: const Color(0x60000000)),
                   child: Icon(
                     Icons.more_vert,
+                    size: Adapt.px(40),
                     color: const Color(0xFFFFFFFF),
                   ),
                 ),

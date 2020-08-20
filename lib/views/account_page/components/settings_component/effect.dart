@@ -1,5 +1,8 @@
 import 'dart:io';
+import 'dart:convert' show json;
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/http/github_api.dart';
@@ -8,7 +11,7 @@ import 'package:movie/actions/version_comparison.dart';
 import 'package:movie/globalbasestate/action.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/item.dart';
-import 'package:movie/views/account_test/action.dart';
+import 'package:movie/views/account_page/action.dart';
 import 'package:movie/widgets/update_info_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
@@ -82,14 +85,34 @@ void _languageTap(Action action, Context<SettingsState> ctx) async {
 
 void _darkModeTap(Action action, Context<SettingsState> ctx) {
   ctx.dispatch(AccountActionCreator.showTip('Unavailable at this moment'));
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  print(_firebaseMessaging.getToken());
 }
 
 void _notificationsTap(Action action, Context<SettingsState> ctx) async {
-  ctx.dispatch(AccountActionCreator.showTip('Unavailable at this moment'));
+  final _enable = ctx.state.enableNotifications;
+  ctx.dispatch(SettingsActionCreator.notificationsUpdate(!_enable));
   SharedPreferences _prefs = await SharedPreferences.getInstance();
+  _prefs.setBool('enableNotifications', !_enable);
   String _movieTypeUsbcirbed = _prefs.getString('movieTypeSubscribed');
-  print(_movieTypeUsbcirbed);
-  //final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  String _tvTypeUsbcirbed = _prefs.getString('tvTypeSubscribed');
+  var _movieList = (json.decode(_movieTypeUsbcirbed) as List)
+      .where((e) => e['value'])
+      .toList();
+  var _tvList =
+      (json.decode(_tvTypeUsbcirbed) as List).where((e) => e['value']).toList();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  if (_enable) {
+    for (var a in _movieList)
+      _firebaseMessaging.unsubscribeFromTopic('movie_${a['name']}');
+    for (var a in _tvList)
+      _firebaseMessaging.unsubscribeFromTopic('tvshow_${a['name']}');
+  } else {
+    for (var a in _movieList)
+      _firebaseMessaging.subscribeToTopic('movie_${a['name']}');
+    for (var a in _tvList)
+      _firebaseMessaging.subscribeToTopic('tvshow_${a['name']}');
+  }
 }
 
 void _feedbackTap(Action action, Context<SettingsState> ctx) {

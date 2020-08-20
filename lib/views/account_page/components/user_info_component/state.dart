@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/models/app_user.dart';
-import 'package:movie/views/account_test/state.dart';
+import 'package:movie/views/account_page/state.dart';
 import 'package:movie/widgets/overlay_entry_manage.dart';
 
 class UserInfoState implements Cloneable<UserInfoState> {

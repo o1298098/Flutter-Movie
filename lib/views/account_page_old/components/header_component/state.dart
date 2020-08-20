@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/app_user.dart';
-import 'package:movie/views/account_page/state.dart';
+import 'package:movie/views/account_page_old/state.dart';
 
 class HeaderState implements Cloneable<HeaderState> {
   AppUser user;

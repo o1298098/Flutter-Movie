@@ -41,10 +41,14 @@ Widget buildView(
           icon: FontAwesomeIcons.bell,
           iconBackgroundColor: const Color(0xFF5568E8),
           onTap: () => dispatch(SettingsActionCreator.notificationsTap()),
-          value: 'On',
+          value: state.enableNotifications ? 'On' : 'Off',
           trailing: Transform.scale(
             scale: 0.8,
-            child: CupertinoSwitch(value: true, onChanged: (d) {}),
+            child: CupertinoSwitch(
+              value: state.enableNotifications,
+              onChanged: (d) =>
+                  dispatch(SettingsActionCreator.notificationsTap()),
+            ),
           ),
         ),
         SizedBox(height: 15),

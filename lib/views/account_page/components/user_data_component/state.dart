@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/app_user.dart';
 import 'package:movie/models/base_api_model/account_info.dart';
-import 'package:movie/views/account_test/state.dart';
+import 'package:movie/views/account_page/state.dart';
 
 class UserDataState implements Cloneable<UserDataState> {
   AppUser user;

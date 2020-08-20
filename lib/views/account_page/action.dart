@@ -1,42 +1,25 @@
 import 'package:fish_redux/fish_redux.dart';
 
-enum AccountPageAction {
-  action,
-  login,
-  init,
-  logout,
-  navigatorPush,
-  settingCellTapped,
-  notificationsTapped
-}
+enum AccountAction { action, onTabBarTap, navigatorPush, hideTip, showTip }
 
-class AccountPageActionCreator {
+class AccountActionCreator {
   static Action onAction() {
-    return const Action(AccountPageAction.action);
+    return const Action(AccountAction.action);
   }
 
-  static Action onLogin() {
-    return Action(AccountPageAction.login);
+  static Action onTabBarTap(int index) {
+    return Action(AccountAction.onTabBarTap, payload: index);
   }
 
-  static Action onInit(String name, String avatar, bool islogin) {
-    return Action(AccountPageAction.init, payload: [name, avatar, islogin]);
+  static Action showTip(String tip) {
+    return Action(AccountAction.showTip, payload: tip);
   }
 
-  static Action onLogout() {
-    return Action(AccountPageAction.logout);
+  static Action hideTip() {
+    return const Action(AccountAction.hideTip);
   }
 
   static Action navigatorPush(String routeName, {Object arguments}) {
-    return Action(AccountPageAction.navigatorPush,
-        payload: [routeName, arguments]);
-  }
-
-  static Action settingCellTapped() {
-    return const Action(AccountPageAction.settingCellTapped);
-  }
-
-  static Action notificationsTapped() {
-    return const Action(AccountPageAction.notificationsTapped);
+    return Action(AccountAction.navigatorPush, payload: [routeName, arguments]);
   }
 }

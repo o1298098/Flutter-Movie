@@ -10,6 +10,7 @@ Reducer<SettingsState> buildReducer() {
       SettingsAction.action: _onAction,
       SettingsAction.adultContentUpadte: _adultContentUpadte,
       SettingsAction.setLanguage: _setLanguage,
+      SettingsAction.notificationsUpdate: _notificationsUpdate,
     },
   );
 }
@@ -23,6 +24,13 @@ SettingsState _adultContentUpadte(SettingsState state, Action action) {
   final bool _adult = action.payload;
   final SettingsState newState = state.clone();
   newState.adultContent = _adult;
+  return newState;
+}
+
+SettingsState _notificationsUpdate(SettingsState state, Action action) {
+  final bool _enbale = action.payload;
+  final SettingsState newState = state.clone();
+  newState.enableNotifications = _enbale;
   return newState;
 }
 

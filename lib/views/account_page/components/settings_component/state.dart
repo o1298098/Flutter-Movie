@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/item.dart';
-import 'package:movie/views/account_test/state.dart';
+import 'package:movie/views/account_page/state.dart';
 
 class SettingsState implements Cloneable<SettingsState> {
   bool adultContent;

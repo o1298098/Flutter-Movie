@@ -7,6 +7,7 @@ import 'package:movie/widgets/overlay_entry_manage.dart';
 import 'components/comment_component/state.dart';
 
 class BottomPanelState implements Cloneable<BottomPanelState> {
+  String movieName;
   MovieStreamLinks streamLinks;
   MovieStreamLink selectedLink;
   CommentState commentState;
@@ -16,14 +17,12 @@ class BottomPanelState implements Cloneable<BottomPanelState> {
   bool userLiked;
   int likeCount;
   int movieId;
-  int season;
   int commentCount;
-  int selectEpisode;
   @override
   BottomPanelState clone() {
     return BottomPanelState()
+      ..movieName = movieName
       ..movieId = movieId
-      ..season = season
       ..userLiked = userLiked
       ..useVideoSourceApi = useVideoSourceApi
       ..streamInBrowser = streamInBrowser
@@ -31,7 +30,6 @@ class BottomPanelState implements Cloneable<BottomPanelState> {
       ..streamLinks = streamLinks
       ..selectedLink = selectedLink
       ..commentCount = commentCount
-      ..selectEpisode = selectEpisode
       ..commentState = commentState
       ..overlayStateKey = overlayStateKey;
   }
@@ -42,6 +40,7 @@ class BottomPanelConnector
   @override
   BottomPanelState get(MovieLiveStreamState state) {
     BottomPanelState mstate = state.bottomPanelState.clone();
+    mstate.movieName = state.name;
     mstate.streamLinks = state.streamLinks;
     mstate.selectedLink = state.selectedLink;
     mstate.commentCount =

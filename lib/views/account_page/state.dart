@@ -4,25 +4,33 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/globalbasestate/state.dart';
 import 'package:movie/models/app_user.dart';
+import 'package:movie/models/item.dart';
+import 'package:movie/widgets/overlay_entry_manage.dart';
 
-class AccountPageState implements GlobalBaseState, Cloneable<AccountPageState> {
-  GlobalKey<ScaffoldState> scafoldState =
-      GlobalKey<ScaffoldState>(debugLabel: 'accountPageScafold');
+import 'components/settings_component/state.dart';
+import 'components/user_data_component/state.dart';
+import 'components/user_info_component/state.dart';
+
+class AccountState implements GlobalBaseState, Cloneable<AccountState> {
   String name;
   String avatar;
-  bool islogin;
-  AnimationController animationController;
+  int selectedTabBarIndex;
+  bool showTip;
+  String tip;
+  UserInfoState userInfoState;
+  SettingsState settingsState;
+  UserDataState userDataState;
   @override
-  AccountPageState clone() {
-    return AccountPageState()
-      ..name = name
+  AccountState clone() {
+    return AccountState()
       ..avatar = avatar
-      ..islogin = islogin
-      ..animationController = animationController
-      ..locale = locale
-      ..themeColor = themeColor
-      ..scafoldState = scafoldState
-      ..user = user;
+      ..selectedTabBarIndex = selectedTabBarIndex
+      ..showTip = showTip
+      ..tip = tip
+      ..user = user
+      ..userInfoState = userInfoState
+      ..settingsState = settingsState
+      ..userDataState = userDataState;
   }
 
   @override
@@ -35,8 +43,16 @@ class AccountPageState implements GlobalBaseState, Cloneable<AccountPageState> {
   AppUser user;
 }
 
-AccountPageState initState(Map<String, dynamic> args) {
-  return AccountPageState()
-    ..name = ''
-    ..islogin = false;
+AccountState initState(Map<String, dynamic> args) {
+  AccountState state = AccountState();
+  state.selectedTabBarIndex = 0;
+  state.showTip = true;
+  state.userInfoState = UserInfoState()
+    ..overlayStateKey = GlobalKey<OverlayEntryManageState>();
+  state.userDataState = UserDataState();
+  state.settingsState = SettingsState()
+    ..appLanguage = Item.fromParams(name: "System Default")
+    ..adultContent = false
+    ..enableNotifications = true;
+  return state;
 }

@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/views/account_page/state.dart';
+import 'package:movie/views/account_page_old/state.dart';
 
 class BodyState implements Cloneable<BodyState> {
   @override

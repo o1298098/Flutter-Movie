@@ -79,6 +79,8 @@ class ModelFactory {
         return BaseCast.fromJson(json) as T;
       case 'AccountInfo':
         return AccountInfo(json) as T;
+      case 'TopicSubscription':
+        return TopicSubscription(json) as T;
       default:
         return json;
     }

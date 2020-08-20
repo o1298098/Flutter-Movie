@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/enums/premium_type.dart';
 import 'package:movie/models/models.dart';
@@ -263,7 +261,7 @@ class BaseApi {
   }
 
   Future<ResponseModel<dynamic>> getMovieLikes(
-      {@required int movieid, String uid = ''}) async {
+      {int movieid, String uid = ''}) async {
     final String _url = '/Movies/Like/$movieid?uid=$uid';
     final r = await _http.request(_url);
     return r;
@@ -309,10 +307,7 @@ class BaseApi {
   }
 
   Future<ResponseModel<dynamic>> getTvShowLikes(
-      {@required int tvid,
-      int season = 0,
-      int episode = 0,
-      String uid = ''}) async {
+      {int tvid, int season = 0, int episode = 0, String uid = ''}) async {
     final String _url =
         '/TvShows/Like/$tvid?season=$season&episode=$episode&uid=$uid';
     final r = await _http.request(_url);
@@ -613,5 +608,18 @@ class BaseApi {
     final String _url = '/Users/$uid/AccountInfo';
     final _r = await _http.request<AccountInfo>(_url);
     return _r;
+  }
+
+  Future<ResponseModel<TopicSubscription>> subscribeTpoic(
+      TopicSubscription topic) async {
+    final _url = '/Topic/Subscribe';
+    final _data = {
+      'topicId': topic.topicId,
+      'cloudMessagingToken': topic.cloudMessagingToken,
+      'localCode': topic.localCode
+    };
+    final _result = await _http.request<TopicSubscription>(_url,
+        method: 'POST', data: _data);
+    return _result;
   }
 }

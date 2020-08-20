@@ -8,15 +8,11 @@ class CommentState implements Cloneable<CommentState> {
   ScrollController scrollController;
   bool isBusy;
   int movieId;
-  int episode;
-  int season;
 
   @override
   CommentState clone() {
     return CommentState()
       ..comments = comments
-      ..season = season
-      ..episode = episode
       ..movieId = movieId
       ..isBusy = isBusy
       ..scrollController = scrollController;
@@ -28,8 +24,6 @@ class CommentConnector extends ConnOp<BottomPanelState, CommentState> {
   CommentState get(BottomPanelState state) {
     CommentState mstate = state.commentState;
     mstate.movieId = state.movieId;
-    mstate.season = state.season;
-    mstate.episode = state.selectEpisode;
     return mstate;
   }
 

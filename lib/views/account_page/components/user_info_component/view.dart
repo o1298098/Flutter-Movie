@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/generated/i18n.dart';
 import 'package:movie/style/themestyle.dart';
-import 'package:movie/views/account_test/components/user_info_component/component/user_menu.dart';
+import 'package:movie/views/account_page/components/user_info_component/component/user_menu.dart';
 import 'package:movie/widgets/overlay_entry_manage.dart';
 
 import 'action.dart';

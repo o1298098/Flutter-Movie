@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/views/account_page/action.dart';
+import 'package:movie/views/account_page_old/action.dart';
 
 import 'state.dart';
 

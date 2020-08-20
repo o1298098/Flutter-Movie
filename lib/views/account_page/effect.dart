@@ -1,64 +1,23 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/user_info_operate.dart';
-import 'package:movie/views/setting_page/page.dart';
+import 'package:movie/models/item.dart';
+import 'package:package_info/package_info.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'action.dart';
 import 'state.dart';
 
-Effect<AccountPageState> buildEffect() {
-  return combineEffects(<Object, Effect<AccountPageState>>{
+Effect<AccountState> buildEffect() {
+  return combineEffects(<Object, Effect<AccountState>>{
+    AccountAction.action: _onAction,
+    AccountAction.navigatorPush: _navigatorPush,
     Lifecycle.initState: _onInit,
-    Lifecycle.build: _onBuild,
-    Lifecycle.dispose: _onDispose,
-    AccountPageAction.action: _onAction,
-    AccountPageAction.login: _onLogin,
-    AccountPageAction.logout: _onLogout,
-    AccountPageAction.navigatorPush: _navigatorPush,
-    AccountPageAction.settingCellTapped: _settingCellTapped,
-    AccountPageAction.notificationsTapped: _notificationsTapped,
   });
 }
 
-void _onAction(Action action, Context<AccountPageState> ctx) {}
+void _onAction(Action action, Context<AccountState> ctx) {}
 
-Future _onLogin(Action action, Context<AccountPageState> ctx) async {
-  var r = (await Navigator.of(ctx.context).pushNamed('loginpage')) as Map;
-  if (r == null) return;
-  if (r['s'] == true) {
-    String name = r['name'];
-    String avatar = ctx.state.user?.firebaseUser?.photoUrl;
-    bool islogin = ctx.state.user != null;
-    ctx.dispatch(AccountPageActionCreator.onInit(name, avatar, islogin));
-  }
-}
-
-Future _onInit(Action action, Context<AccountPageState> ctx) async {
-  if (ctx.state.animationController == null) {
-    final Object ticker = ctx.stfState;
-    ctx.state.animationController = AnimationController(
-        vsync: ticker, duration: Duration(milliseconds: 1000));
-  }
-  String name = ctx.state.user?.firebaseUser?.displayName;
-  String avatar = ctx.state.user?.firebaseUser?.photoUrl;
-  bool islogin = ctx.state.user != null;
-  ctx.dispatch(AccountPageActionCreator.onInit(name, avatar, islogin));
-}
-
-void _onBuild(Action action, Context<AccountPageState> ctx) {
-  ctx.state.animationController.forward();
-}
-
-void _onDispose(Action action, Context<AccountPageState> ctx) {
-  ctx.state.animationController.dispose();
-}
-
-Future _onLogout(Action action, Context<AccountPageState> ctx) async {
-  bool isLogout = await UserInfoOperate.whenLogout();
-  if (isLogout) await _onInit(action, ctx);
-}
-
-Future _navigatorPush(Action action, Context<AccountPageState> ctx) async {
-  if (!ctx.state.islogin)
+void _navigatorPush(Action action, Context<AccountState> ctx) async {
+  if (ctx.state.user?.firebaseUser == null)
     await _onLogin(action, ctx);
   else {
     String routerName = action.payload[0];
@@ -67,12 +26,20 @@ Future _navigatorPush(Action action, Context<AccountPageState> ctx) async {
   }
 }
 
-void _settingCellTapped(Action action, Context<AccountPageState> ctx) async {
-  Navigator.of(ctx.context).push(PageRouteBuilder(pageBuilder: (_, __, ___) {
-    return SettingPage().buildPage(null);
-  }));
+Future _onLogin(Action action, Context<AccountState> ctx) async {
+  await Navigator.of(ctx.context).pushNamed('loginpage');
 }
 
-void _notificationsTapped(Action action, Context<AccountPageState> ctx) async {
-  await Navigator.of(ctx.context).pushNamed('notificationPage');
+void _onInit(Action action, Context<AccountState> ctx) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final _adultItem = prefs.getBool('adultItems');
+  if (_adultItem != null) ctx.state.settingsState.adultContent = _adultItem;
+  final _enableNotifications = prefs.getBool('enableNotifications');
+  if (_enableNotifications != null)
+    ctx.state.settingsState.enableNotifications = _enableNotifications;
+  final _packageInfo = await PackageInfo.fromPlatform();
+  ctx.state.settingsState.version = _packageInfo?.version ?? '-';
+  final _appLanguage = prefs.getString('appLanguage');
+  if (_appLanguage != null)
+    ctx.state.settingsState.appLanguage = Item(_appLanguage);
 }

@@ -49,6 +49,7 @@ class _PlayerPanelState extends State<PlayerPanel>
   bool _isRewarded = false;
   bool _needAd = false;
   bool _loading = false;
+  bool _haveOpenAds = false;
 
   @override
   bool get wantKeepAlive => true;
@@ -76,7 +77,7 @@ class _PlayerPanelState extends State<PlayerPanel>
         _play = false;
       });
     }
-    if (_needAd != widget.needAd) _setNeedAd(widget.needAd);
+    if (_needAd != widget.needAd && !_haveOpenAds) _setNeedAd(widget.needAd);
     if (_loading != widget.loading) _setLoading(widget.loading);
     super.didUpdateWidget(oldWidget);
   }
@@ -103,6 +104,7 @@ class _PlayerPanelState extends State<PlayerPanel>
           break;
         case RewardedVideoAdEvent.closed:
           if (_isRewarded) {
+            _haveOpenAds = true;
             _setNeedAd(false);
             _startPlayer();
           } else

@@ -3,8 +3,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/globalbasestate/store.dart';
-import 'package:movie/models/base_api_model/movie_like_model.dart';
-import 'package:movie/models/base_api_model/stream_link_report.dart';
+import 'package:movie/models/models.dart';
 import 'package:movie/widgets/stream_link_report_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
@@ -104,14 +103,17 @@ void _reportStreamLink(Action action, Context<BottomPanelState> ctx) {
 }
 
 void _requestStreamLink(Action action, Context<BottomPanelState> ctx) async {
-  final _name = 'S${ctx.state.season}E${ctx.state.selectEpisode}';
-  FirebaseMessaging().subscribeToTopic('movie_${ctx.state.movieId}');
+  final _topic = 'movie_${ctx.state.movieId}';
+  final _firebaseMessaging = FirebaseMessaging();
+  final _token = await _firebaseMessaging.getToken();
+  //_firebaseMessaging.subscribeToTopic(_topic);
   final _baseApi = BaseApi.instance;
   _baseApi.sendRequestStreamLink(StreamLinkReport()
     ..mediaId = ctx.state.movieId
-    ..mediaName = _name
-    ..type = 'movie'
-    ..season = ctx.state.season);
+    ..mediaName = ctx.state.movieName
+    ..type = 'movie');
+  _baseApi.subscribeTpoic(TopicSubscription.fromParams(
+      topicId: _topic, cloudMessagingToken: _token));
   Toast.show(
       'You will be notified when the stream link has been added', ctx.context,
       duration: Toast.LENGTH_LONG);
