@@ -8,7 +8,10 @@ import 'package:flutter/material.dart' hide Action;
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:movie/routes/routes.dart';
+import 'actions/app_config.dart';
+import 'actions/http/tmdb_api.dart';
 import 'actions/timeline.dart';
+import 'actions/user_info_operate.dart';
 import 'generated/i18n.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -26,17 +29,25 @@ class _AppState extends State<App> {
   final ThemeData _lightTheme = ThemeData.light();
   final ThemeData _darkTheme = ThemeData.dark();
   final FirebaseAnalytics analytics = FirebaseAnalytics();
+
   Future _init() async {
     if (Platform.isAndroid)
       await PermissionHandler().requestPermissions([PermissionGroup.storage]);
     setLocaleInfo('zh', TimelineInfoCN());
     setLocaleInfo('en', TimelineInfoEN());
     setLocaleInfo('Ja', TimelineInfoJA());
+
+    await AppConfig.instance.init(context);
+
+    await TMDBApi.instance.init();
+
+    await UserInfoOperate.whenAppStart();
   }
 
   @override
   void initState() {
     I18n.onLocaleChanged = onLocaleChange;
+
     _init();
     super.initState();
   }

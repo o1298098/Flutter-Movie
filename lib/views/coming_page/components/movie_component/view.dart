@@ -169,7 +169,7 @@ class _ItemCell extends StatelessWidget {
                       ? Text(
                           data.genreIds
                               .take(3)
-                              .map((e) => Genres.movieList[e])
+                              .map((e) => Genres.instance.movieList[e])
                               .join(', '),
                           style: TextStyle(
                             color: const Color(0xFF9E9E9E),

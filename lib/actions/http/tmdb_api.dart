@@ -1,6 +1,7 @@
 import 'dart:convert' show json;
 import 'dart:ui' as ui;
 import 'package:dio/dio.dart';
+import 'package:movie/actions/app_config.dart';
 import 'package:movie/globalbasestate/action.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/enums/media_type.dart';
@@ -14,21 +15,24 @@ class TMDBApi {
   TMDBApi._();
   static final TMDBApi instance = TMDBApi._();
 
-  final String _apikey = 'd7ff494718186ed94ee75cf73c1a3214';
-  final String _apikeyV4 =
-      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkN2ZmNDk0NzE4MTg2ZWQ5NGVlNzVjZjczYzFhMzIxNCIsInN1YiI6IjVkMDQ1OWM1OTI1MTQxNjNkMWJjNDZjYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.tTDwJEVH88cCWCfTd42zvN4AsMR2pgix0QdzVJQzzDM';
+  String _apikey;
+  String _apikeyV4;
   String _requestToken;
   String accessTokenV4;
   String session;
   DateTime _sessionExpiresTime;
   SharedPreferences prefs;
   String _language = ui.window.locale.languageCode;
-  final String region = ui.window.locale.countryCode;
+  String region = ui.window.locale.countryCode;
   bool _includeAdult;
-  final Request _http = Request('https://api.themoviedb.org/3');
-  final Request _httpV4 = Request('https://api.themoviedb.org/4');
+  Request _http;
+  Request _httpV4;
 
   Future<void> init() async {
+    _http = Request(AppConfig.instance.theMovieDBHostV3);
+    _httpV4 = Request(AppConfig.instance.theMovieDBHostV4);
+    _apikey = AppConfig.instance.theMovieDBApiKeyV3;
+    _apikeyV4 = AppConfig.instance.theMovieDBApiKeyV4;
     prefs = await SharedPreferences.getInstance();
     _includeAdult = prefs.getBool('adultItems') ?? false;
     final _appLanguage = prefs.getString('appLanguage');

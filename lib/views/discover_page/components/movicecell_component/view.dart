@@ -115,8 +115,9 @@ class _Card extends StatelessWidget {
                   Text(
                     data.genreIds
                         .take(3)
-                        .map((e) =>
-                            _isMovie ? Genres.movieList[e] : Genres.tvList[e])
+                        .map((e) => _isMovie
+                            ? Genres.instance.movieList[e]
+                            : Genres.instance.tvList[e])
                         .join(' / '),
                     style: TextStyle(
                         fontSize: Adapt.px(18), color: const Color(0xFF9E9E9E)),

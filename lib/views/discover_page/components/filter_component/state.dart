@@ -20,13 +20,14 @@ class FilterState implements Cloneable<FilterState> {
     SortCondition(name: 'Vote Count', isSelected: false, value: 'vote_count'),
   ];
   List<SortCondition> movieGenres = new List<SortCondition>()
-    ..addAll(Genres.movieList.keys.map((i) {
+    ..addAll(Genres.instance.movieList.keys.map((i) {
       return SortCondition(
-          name: Genres.movieList[i], isSelected: false, value: i);
+          name: Genres.instance.movieList[i], isSelected: false, value: i);
     }).toList());
   List<SortCondition> tvGenres = new List<SortCondition>()
-    ..addAll(Genres.tvList.keys.map((i) {
-      return SortCondition(name: Genres.tvList[i], isSelected: false, value: i);
+    ..addAll(Genres.instance.tvList.keys.map((i) {
+      return SortCondition(
+          name: Genres.instance.tvList[i], isSelected: false, value: i);
     }).toList());
   List<SortCondition> currentGenres = [];
   String keywords;

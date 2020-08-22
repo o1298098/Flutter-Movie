@@ -120,8 +120,8 @@ class _Info extends StatelessWidget {
                   .take(3)
                   .map((f) {
                     return data.mediaType == 'movie'
-                        ? Genres.movieList[f]?.replaceAll('_', ' & ')
-                        : Genres.tvList[f]?.replaceAll('_', ' & ');
+                        ? Genres.instance.movieList[f]?.replaceAll('_', ' & ')
+                        : Genres.instance.tvList[f]?.replaceAll('_', ' & ');
                   })
                   .toList()
                   .join(' / '),

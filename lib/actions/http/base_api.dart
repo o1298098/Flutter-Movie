@@ -1,3 +1,4 @@
+import 'package:movie/actions/app_config.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/enums/premium_type.dart';
 import 'package:movie/models/models.dart';
@@ -8,7 +9,7 @@ class BaseApi {
   BaseApi._();
   static final BaseApi instance = BaseApi._();
 
-  final Request _http = Request('https://www.fluttermovie.top/api');
+  final Request _http = Request(AppConfig.instance.baseApiHost);
 
   Future<ResponseModel<dynamic>> updateUser(String uid, String email,
       String photoUrl, String userName, String phone) async {

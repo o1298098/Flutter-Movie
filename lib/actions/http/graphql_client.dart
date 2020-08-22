@@ -1,4 +1,5 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:movie/actions/app_config.dart';
 import 'package:movie/actions/http/graphql_service.dart';
 import 'package:movie/models/base_api_model/base_cast_list.dart';
 import 'package:movie/models/base_api_model/cast_list_detail.dart';
@@ -8,8 +9,8 @@ class BaseGraphQLClient {
   static final BaseGraphQLClient instance = BaseGraphQLClient._();
   final GraphQLService _service = GraphQLService()
     ..setupClient(
-        httpLink: 'https://www.fluttermovie.top/api/graphql',
-        webSocketLink: 'wss://www.fluttermovie.top/graphql');
+        httpLink: AppConfig.instance.graphQLHttpLink,
+        webSocketLink: AppConfig.instance.graphQlWebSocketLink);
 
   Stream<FetchResult> castListSubscription(String uid) {
     String _sub = '''

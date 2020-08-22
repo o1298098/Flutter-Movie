@@ -13,10 +13,10 @@ import 'state.dart';
 
 Widget buildView(
     StartPageState state, Dispatch dispatch, ViewService viewService) {
-  final _movielist = Genres.movieList.values
+  final _movielist = Genres.instance.movieList.values
       .map((e) => Item.fromParams(name: e, value: false))
       .toList();
-  final _tvShowList = Genres.tvList.values
+  final _tvShowList = Genres.instance.tvList.values
       .map((e) => Item.fromParams(name: e, value: false))
       .toList();
   final pages = [

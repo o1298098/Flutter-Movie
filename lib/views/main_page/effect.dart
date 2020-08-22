@@ -6,11 +6,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action, Page;
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/actions/downloader_callback.dart';
 import 'package:movie/actions/http/github_api.dart';
 import 'package:movie/actions/local_notification.dart';
-import 'package:movie/actions/user_info_operate.dart';
 import 'package:movie/actions/version_comparison.dart';
 import 'package:movie/models/notification_model.dart';
 import 'package:movie/views/tvshow_detail_page/page.dart';
@@ -33,9 +31,6 @@ ReceivePort _port = ReceivePort();
 void _onAction(Action action, Context<MainPageState> ctx) {}
 
 void _onInit(Action action, Context<MainPageState> ctx) async {
-  await TMDBApi.instance.init();
-  await UserInfoOperate.whenAppStart();
-
   final _preferences = await SharedPreferences.getInstance();
 
   final _localNotification = LocalNotification.instance;
