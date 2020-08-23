@@ -1,6 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/views/discover_page/components/movicecell_component/component.dart';
-import 'reducer.dart';
 import 'state.dart';
 
 class DiscoverListAdapter extends SourceFlowAdapter<DiscoverPageState> {
@@ -9,6 +8,5 @@ class DiscoverListAdapter extends SourceFlowAdapter<DiscoverPageState> {
           pool: <String, Component<Object>>{
             'moviecell': MovieCellComponent(),
           },
-          reducer: buildReducer(),
         );
 }
