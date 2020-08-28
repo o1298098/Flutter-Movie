@@ -4,8 +4,10 @@ import 'dart:convert' show json;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
+import 'package:movie/actions/app_language.dart';
 import 'package:movie/actions/http/github_api.dart';
 import 'package:movie/actions/http/tmdb_api.dart';
+import 'package:movie/actions/notification_topic.dart';
 import 'package:movie/actions/version_comparison.dart';
 import 'package:movie/globalbasestate/action.dart';
 import 'package:movie/globalbasestate/store.dart';
@@ -70,16 +72,45 @@ Future _checkUpdate(Action action, Context<SettingsState> ctx) async {
 
 void _languageTap(Action action, Context<SettingsState> ctx) async {
   final Item _language = action.payload;
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (_language.name == ctx.state.appLanguage.name) return;
+  final Item _currentLanguage = ctx.state.appLanguage;
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
   if (_language.name == 'System Default')
-    prefs.remove('appLanguage');
+    _prefs.remove('appLanguage');
   else
-    prefs.setString('appLanguage', _language.toString());
+    _prefs.setString('appLanguage', _language.toString());
   ctx.dispatch(SettingsActionCreator.setLanguage(_language));
   GlobalStore.store.dispatch(GlobalActionCreator.changeLocale(
       _language.value == null ? null : Locale(_language.value)));
   TMDBApi.instance.setLanguage(_language.value);
-  //ctx.dispatch(AccountActionCreator.showTip('need to reopen app'));
+  if (ctx.state.enableNotifications) {
+    final List<String> _topics = List<String>();
+    final List<String> _unsubscribetopics = List<String>();
+
+    String _movieTypeUsbcirbed = _prefs.getString('movieTypeSubscribed');
+    String _tvTypeUsbcirbed = _prefs.getString('tvTypeSubscribed');
+
+    final _movieGenres = (json.decode(_movieTypeUsbcirbed) as List)
+        .where((e) => e['value'])
+        .toList();
+    final _tvGenres = (json.decode(_tvTypeUsbcirbed) as List)
+        .where((e) => e['value'])
+        .toList();
+
+    _unsubscribetopics.addAll(_movieGenres
+        .map((e) => 'movie_genre_${e['name']}_${_currentLanguage.value}'));
+    _unsubscribetopics.addAll(_tvGenres
+        .map((e) => 'tvshow_genre_${e['name']}_${_currentLanguage.value}'));
+    _topics.addAll(
+        _movieGenres.map((e) => 'movie_genre_${e['name']}_${_language.value}'));
+    _topics.addAll(
+        _tvGenres.map((e) => 'tvshow_genre_${e['name']}_${_language.value}'));
+
+    NotificationTopic _topic = NotificationTopic();
+
+    _topic.unsubscribeFromTopic(_unsubscribetopics);
+    _topic.subscribeToTopic(_topics);
+  }
 }
 
 void _darkModeTap(Action action, Context<SettingsState> ctx) {
@@ -93,25 +124,24 @@ void _notificationsTap(Action action, Context<SettingsState> ctx) async {
   ctx.dispatch(SettingsActionCreator.notificationsUpdate(!_enable));
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   _prefs.setBool('enableNotifications', !_enable);
+  final List<String> topics = List<String>();
+  final Item _language = await AppLanguage.instance.getApplanguage();
   String _movieTypeUsbcirbed = _prefs.getString('movieTypeSubscribed');
   String _tvTypeUsbcirbed = _prefs.getString('tvTypeSubscribed');
-  var _movieList = (json.decode(_movieTypeUsbcirbed) as List)
+  final _movieGenres = (json.decode(_movieTypeUsbcirbed) as List)
       .where((e) => e['value'])
       .toList();
-  var _tvList =
+  final _tvGenres =
       (json.decode(_tvTypeUsbcirbed) as List).where((e) => e['value']).toList();
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  if (_enable) {
-    for (var a in _movieList)
-      _firebaseMessaging.unsubscribeFromTopic('movie_${a['name']}');
-    for (var a in _tvList)
-      _firebaseMessaging.unsubscribeFromTopic('tvshow_${a['name']}');
-  } else {
-    for (var a in _movieList)
-      _firebaseMessaging.subscribeToTopic('movie_${a['name']}');
-    for (var a in _tvList)
-      _firebaseMessaging.subscribeToTopic('tvshow_${a['name']}');
-  }
+  topics.addAll(
+      _movieGenres.map((e) => 'movie_genre_${e['name']}_${_language.value}'));
+  topics.addAll(
+      _tvGenres.map((e) => 'tvshow_genre_${e['name']}_${_language.value}'));
+  NotificationTopic _topic = NotificationTopic();
+  if (_enable)
+    _topic.subscribeToTopic(topics);
+  else
+    _topic.unsubscribeFromTopic(topics);
 }
 
 void _feedbackTap(Action action, Context<SettingsState> ctx) {

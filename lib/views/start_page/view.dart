@@ -3,50 +3,64 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:movie/actions/adapt.dart';
+import 'package:movie/generated/i18n.dart';
+import 'package:movie/models/models.dart';
 import 'package:movie/widgets/keepalive_widget.dart';
 import 'package:movie/models/enums/genres.dart';
 import 'package:movie/models/item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'dart:ui' as ui;
 
 import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
     StartPageState state, Dispatch dispatch, ViewService viewService) {
-  final _movielist = Genres.instance.movieList.values
-      .map((e) => Item.fromParams(name: e, value: false))
-      .toList();
-  final _tvShowList = Genres.instance.tvList.values
-      .map((e) => Item.fromParams(name: e, value: false))
-      .toList();
+  final Map<int, bool> _movieGenres = Map<int, bool>();
+  final Map<int, bool> _tvGenres = Map<int, bool>();
+  Genres.instance.movieList.keys.forEach((e) => _movieGenres[e] = false);
+  Genres.instance.tvList.keys.forEach((e) => _tvGenres[e] = false);
   final pages = [
     _FirstPage(
       continueTapped: () => state.pageController
           .nextPage(duration: Duration(milliseconds: 400), curve: Curves.ease),
     ),
     _SubscribeTopicPage(
-        title: '1.What kind of movie do you like?',
-        buttonTitle: 'Next >',
+        title: '1.${I18n.of(viewService.context).whatKindOfMovieDoYouLike}?',
+        buttonTitle: '${I18n.of(viewService.context).next} >',
         tag: 'movie_',
-        genres: _movielist,
+        isMovie: true,
+        genres: _movieGenres,
         backTapped: () => state.pageController.previousPage(
             duration: Duration(milliseconds: 400), curve: Curves.ease),
         nextTapped: () {
-          SharedPreferences.getInstance().then((_p) =>
-              _p.setString('movieTypeSubscribed', _movielist.toString()));
+          SharedPreferences.getInstance().then((_p) => _p.setString(
+              'movieTypeSubscribed',
+              _movieGenres.keys
+                  .map((e) => Item.fromParams(
+                      name: e.toString(), value: _movieGenres[e]))
+                  .toList()
+                  .toString()));
           state.pageController.nextPage(
               duration: Duration(milliseconds: 400), curve: Curves.ease);
         }),
     _SubscribeTopicPage(
-        title: '2.What kind of tv show do you like?',
-        buttonTitle: 'Start >',
+        title: '2.${I18n.of(viewService.context).whatKindOfTvShowDoYouLike}?',
+        buttonTitle: '${I18n.of(viewService.context).start} >',
         tag: 'tvshow_',
-        genres: _tvShowList,
+        isMovie: false,
+        genres: _tvGenres,
         backTapped: () => state.pageController.previousPage(
             duration: Duration(milliseconds: 400), curve: Curves.ease),
         nextTapped: () {
-          SharedPreferences.getInstance().then(
-              (_p) => _p.setString('tvTypeSubscribed', _tvShowList.toString()));
+          SharedPreferences.getInstance().then((_p) => _p.setString(
+              'tvTypeSubscribed',
+              _tvGenres.keys
+                  .map((e) =>
+                      Item.fromParams(name: e.toString(), value: _tvGenres[e]))
+                  .toList()
+                  .toString()));
           dispatch(StartPageActionCreator.onStart());
         }),
   ];
@@ -107,12 +121,12 @@ class _FirstPage extends StatelessWidget {
               'images/landscape.json', //Lottie.network(https://assets4.lottiefiles.com/packages/lf20_umBOmV.json')
             )),
         Text(
-          'Welcome,',
+          '${I18n.of(context).welcome},',
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
         ),
         SizedBox(height: Adapt.px(20)),
         Text(
-          'let start with few steps.',
+          '${I18n.of(context).letStartWithFewSteps}.',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
         ),
         Expanded(child: SizedBox()),
@@ -126,7 +140,7 @@ class _FirstPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30)),
               child: Center(
                   child: Text(
-                'Continue',
+                I18n.of(context).continueA,
                 style: TextStyle(
                     color: const Color(0xFFFFFFFF),
                     fontSize: 20,
@@ -142,14 +156,16 @@ class _FirstPage extends StatelessWidget {
 class _SubscribeTopicPage extends StatefulWidget {
   final String title;
   final String buttonTitle;
+  final bool isMovie;
   final String tag;
   final Function backTapped;
   final Function nextTapped;
-  final List<Item> genres;
+  final Map<int, bool> genres;
   _SubscribeTopicPage(
       {this.backTapped,
       this.nextTapped,
       this.genres,
+      this.isMovie,
       @required this.title,
       @required this.buttonTitle,
       this.tag});
@@ -159,9 +175,16 @@ class _SubscribeTopicPage extends StatefulWidget {
 
 class _SubscribeTopicPageState extends State<_SubscribeTopicPage> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-
+  final List<Item> _genres = List<Item>();
+  final _languageCode = ui.window.locale.languageCode;
   @override
   void initState() {
+    final _genresMap = widget.isMovie
+        ? Genres.instance.getMovieGenresList(_languageCode)
+        : Genres.instance.getTvGenresList(_languageCode);
+    _genresMap.forEach((key, value) {
+      _genres.add(Item.fromParams(name: value, value: key));
+    });
     super.initState();
   }
 
@@ -186,14 +209,17 @@ class _SubscribeTopicPageState extends State<_SubscribeTopicPage> {
                   direction: Axis.vertical,
                   runSpacing: Adapt.px(20),
                   spacing: Adapt.px(20),
-                  children: widget.genres.map<Widget>((d) {
-                    final _index = widget.genres.indexOf(d);
+                  children: _genres.map<Widget>((d) {
+                    final _index = _genres.indexOf(d);
+                    bool _selected = widget.genres[d.value];
                     return GestureDetector(
                         key: ValueKey(d.name),
                         onTap: () {
-                          d.value = !d.value;
-                          final _topic = '${widget.tag}${d.name}';
-                          d.value
+                          _selected = !_selected;
+                          widget.genres[d.value] = _selected;
+                          final _topic =
+                              '${widget.tag}genre_${d.value}_$_languageCode';
+                          _selected
                               ? _firebaseMessaging.subscribeToTopic(_topic)
                               : _firebaseMessaging.unsubscribeFromTopic(_topic);
                           setState(() {});
@@ -206,7 +232,7 @@ class _SubscribeTopicPageState extends State<_SubscribeTopicPage> {
                               top: (_index + 4) % 8 == 0 ? Adapt.px(80) : 0),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: d.value
+                            color: _selected
                                 ? const Color(0xFF202F39)
                                 : const Color(0xFFF0F0F0),
                           ),
@@ -214,7 +240,7 @@ class _SubscribeTopicPageState extends State<_SubscribeTopicPage> {
                               child: Text(
                             d.name,
                             style: TextStyle(
-                                color: d.value
+                                color: _selected
                                     ? const Color(0xFFFFFFFF)
                                     : const Color(0xFF0000000),
                                 fontSize: Adapt.px(26),
@@ -234,7 +260,7 @@ class _SubscribeTopicPageState extends State<_SubscribeTopicPage> {
                   width: Adapt.px(100),
                   height: Adapt.px(80),
                   child: Center(
-                    child: Text('Back',
+                    child: Text(I18n.of(context).back,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,

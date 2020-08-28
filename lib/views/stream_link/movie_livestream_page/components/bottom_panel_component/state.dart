@@ -52,5 +52,6 @@ class BottomPanelConnector
   void set(MovieLiveStreamState state, BottomPanelState subState) {
     state.bottomPanelState = subState;
     state.selectedLink = subState.selectedLink;
+    state.streamLinks = subState.streamLinks;
   }
 }

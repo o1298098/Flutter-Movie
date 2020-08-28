@@ -257,7 +257,6 @@ class Genres {
   };
 
   final Map<int, String> zhTvList = {
-    12: "冒险",
     14: "奇幻",
     16: "动画",
     18: "剧情",
@@ -272,9 +271,7 @@ class Genres {
     878: "科幻",
     9648: "悬疑",
     10402: "音乐",
-    10749: "爱情",
     10751: "家庭",
-    10752: "战争",
     10759: "动作冒险",
     10762: "儿童",
     10763: "新闻",
@@ -283,11 +280,9 @@ class Genres {
     10766: "肥皂剧",
     10767: "脱口秀",
     10768: "War_Politics",
-    10770: "电视电影",
   };
 
   final Map<int, String> deTvList = {
-    12: "Abenteuer",
     14: "Fantasy",
     16: "Animation",
     18: "Drama",
@@ -302,9 +297,7 @@ class Genres {
     878: "Science_Fiction",
     9648: "Mystery",
     10402: "Musik",
-    10749: "Liebesfilm",
     10751: "Familie",
-    10752: "Kriegsfilm",
     10759: "Action_Adventure",
     10762: "Kids",
     10763: "News",
@@ -313,11 +306,9 @@ class Genres {
     10766: "Soap",
     10767: "Talk",
     10768: "War_Politics",
-    10770: "TV_Film",
   };
 
   final Map<int, String> esTvList = {
-    12: "Aventura",
     14: "Fantasía",
     16: "Animación",
     18: "Drama",
@@ -332,9 +323,7 @@ class Genres {
     878: "Ciencia_ficción",
     9648: "Misterio",
     10402: "Música",
-    10749: "Romance",
     10751: "Familia",
-    10752: "Bélica",
     10759: "Action_Adventure",
     10762: "Kids",
     10763: "News",
@@ -343,11 +332,9 @@ class Genres {
     10766: "Soap",
     10767: "Talk",
     10768: "War_Politics",
-    10770: "Película_de_TV",
   };
 
   final Map<int, String> frTvList = {
-    12: "Aventure",
     14: "Fantastique",
     16: "Animation",
     18: "Drame",
@@ -362,9 +349,7 @@ class Genres {
     878: "Science_Fiction",
     9648: "Mystère",
     10402: "Musique",
-    10749: "Romance",
     10751: "Familial",
-    10752: "Guerre",
     10759: "Action_Adventure",
     10762: "Kids",
     10763: "News",
@@ -373,11 +358,9 @@ class Genres {
     10766: "Soap",
     10767: "Talk",
     10768: "War_Politics",
-    10770: "Téléfilm",
   };
 
   final Map<int, String> jaTvList = {
-    12: "アドベンチャー",
     14: "奇幻",
     16: "アニメーション",
     18: "ドラマ",
@@ -392,9 +375,7 @@ class Genres {
     878: "サイエンスフィクション",
     9648: "謎",
     10402: "音楽",
-    10749: "ロマンス",
     10751: "ファミリー",
-    10752: "戦争",
     10759: "Action_Adventure",
     10762: "Kids",
     10763: "News",
@@ -403,11 +384,9 @@ class Genres {
     10766: "Soap",
     10767: "Talk",
     10768: "War_Politics",
-    10770: "テレビ映画",
   };
 
   final Map<int, String> ruTvList = {
-    12: "приключения",
     14: "фэнтези",
     16: "мультфильм",
     18: "драма",
@@ -422,9 +401,7 @@ class Genres {
     878: "фантастика",
     9648: "детектив",
     10402: "музыка",
-    10749: "мелодрама",
     10751: "семейный",
-    10752: "военный",
     10759: "Боевик_и_Приключения",
     10762: "Детский",
     10763: "Новости",
@@ -433,6 +410,5 @@ class Genres {
     10766: "Мыльная_опера",
     10767: "Ток_шоу",
     10768: "War_Politics",
-    10770: "телевизионный_фильм",
   };
 }

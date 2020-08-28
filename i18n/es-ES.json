@@ -76,5 +76,13 @@
     "trending": "Tendencias",
     "newShare": "Compartir nuevo",
     "shared": "Compartido",
-    "seasons": "Estaciones"
+    "seasons": "Estaciones",
+    "welcome": "Bienvenidos",
+    "letStartWithFewSteps": "vamos a empezar con unos pocos pasos",
+    "continueA": "Seguir",
+    "next": "Próximo",
+    "back": "Espalda",
+    "start": "Comienzo",
+    "whatKindOfMovieDoYouLike": "Que tipo de peliculas te gustan",
+    "whatKindOfTvShowDoYouLike": "¿Qué tipo de programa de televisión te gusta"
 }

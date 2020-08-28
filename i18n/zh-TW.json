@@ -75,5 +75,13 @@
     "trailers": "预告片",
     "trending": "趋势",
     "shared": "分享",
-    "seasons": "季节"
+    "seasons": "季节",
+    "welcome": "Welcome",
+    "letStartWithFewSteps": "let start with few steps",
+    "continueA": "Continue",
+    "next": "Next",
+    "back": "Back",
+    "start": "Start",
+    "whatKindOfMovieDoYouLike": "What kind of movie do you like",
+    "whatKindOfTvShowDoYouLike": "What kind of tvshow do you like"
 }

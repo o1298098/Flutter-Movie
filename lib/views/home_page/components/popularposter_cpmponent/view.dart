@@ -226,7 +226,7 @@ class _PopBody extends StatelessWidget {
               ? ListView.separated(
                   padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
                   scrollDirection: Axis.horizontal,
-                  physics: PageScrollPhysics(),
+                  physics: BouncingScrollPhysics(),
                   shrinkWrap: true,
                   separatorBuilder: (_, index) => SizedBox(width: Adapt.px(30)),
                   itemCount: model.results.length + 1,

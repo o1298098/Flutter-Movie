@@ -1,7 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
-
 import 'components/comment_component/component.dart';
 import 'components/comment_component/state.dart';
+import 'components/streamlink_filter_component/component.dart';
+import 'components/streamlink_filter_component/state.dart';
 import 'effect.dart';
 import 'reducer.dart';
 import 'state.dart';
@@ -27,6 +28,8 @@ class BottomPanelComponent extends Component<BottomPanelState> {
               adapter: null,
               slots: <String, Dependent<BottomPanelState>>{
                 'comments': CommentConnector() + CommentComponent(),
+                'streamLinkFilter':
+                    StreamLinkFilterConnector() + StreamLinkFilterComponent(),
               }),
         );
 }

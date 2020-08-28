@@ -76,5 +76,13 @@
     "trending": "趋势",
     "newShare": "新股",
     "shared": "分享",
-    "seasons": "季节"
+    "seasons": "季节",
+    "welcome": "欢迎",
+    "letStartWithFewSteps": "让我们从几个步骤开始",
+    "continueA": "继续",
+    "next": "前进",
+    "back": "后退",
+    "start": "开始",
+    "whatKindOfMovieDoYouLike": "你喜欢什么类型的电影",
+    "whatKindOfTvShowDoYouLike": "你喜欢什么类型的电视节目"
 }

@@ -76,5 +76,13 @@
     "version": "Version",
     "trending": "Trending",
     "shared": "Shared",
-    "lastEpisode": "Last Episode"
+    "lastEpisode": "Last Episode",
+    "welcome": "Welcome",
+    "letStartWithFewSteps": "let start with few steps",
+    "continueA": "Continue",
+    "next": "Next",
+    "back": "Back",
+    "start": "Start",
+    "whatKindOfMovieDoYouLike": "What kind of movie do you like",
+    "whatKindOfTvShowDoYouLike": "What kind of tvshow do you like"
 }

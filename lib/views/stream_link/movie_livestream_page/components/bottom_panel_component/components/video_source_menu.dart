@@ -9,9 +9,14 @@ class VideoSourceMenu extends StatelessWidget {
   final List<MovieStreamLink> links;
   final int selectedLinkId;
   final Function(MovieStreamLink) onTap;
+  final Function moreTap;
   final Function streamLinkRequestTap;
   const VideoSourceMenu(
-      {this.links, this.onTap, this.selectedLinkId, this.streamLinkRequestTap});
+      {this.links,
+      this.onTap,
+      this.selectedLinkId,
+      this.streamLinkRequestTap,
+      this.moreTap});
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
@@ -20,7 +25,7 @@ class VideoSourceMenu extends StatelessWidget {
         : _theme.primaryColorDark;
     final double _width = 160;
     final double _arrowSize = 20.0;
-    final double _menuHeight = 200.0;
+    final double _menuHeight = 180.0;
     return Positioned(
       bottom: 80,
       left: Adapt.px(275) - _width / 2,
@@ -48,25 +53,18 @@ class VideoSourceMenu extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 20.0),
               child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 height: _menuHeight,
                 decoration: BoxDecoration(
                   color: _backGroundColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: links.length > 0
-                    ? ListView.separated(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                        separatorBuilder: (_, __) => SizedBox(height: 5),
-                        itemBuilder: (_, index) {
-                          final _link = links[index];
-                          return _LinkCell(
-                            data: _link,
-                            selected: _link.sid == selectedLinkId,
-                            onTap: onTap,
-                          );
-                        },
-                        itemCount: links.length,
+                    ? _LinkSourcePanel(
+                        links: links.take(3).toList(),
+                        selectedLink: selectedLinkId,
+                        onTap: onTap,
+                        moreTap: moreTap,
                       )
                     : Center(
                         child: SizedBox(
@@ -124,5 +122,59 @@ class _LinkCell extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _LinkSourcePanel extends StatelessWidget {
+  final List<MovieStreamLink> links;
+  final int selectedLink;
+  final Function(MovieStreamLink) onTap;
+  final Function moreTap;
+  const _LinkSourcePanel({
+    this.links,
+    this.selectedLink,
+    this.onTap,
+    this.moreTap,
+  });
+  @override
+  Widget build(BuildContext context) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+      Expanded(
+        child: ListView.separated(
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.zero,
+          separatorBuilder: (_, __) => SizedBox(height: 5),
+          itemBuilder: (_, index) {
+            final _link = links[index];
+            return _LinkCell(
+              data: _link,
+              selected: _link.sid == selectedLink,
+              onTap: onTap,
+            );
+          },
+          itemCount: links.length,
+        ),
+      ),
+      SizedBox(height: 10),
+      GestureDetector(
+        onTap: moreTap,
+        child: Container(
+          padding: EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(
+              color: const Color(0xFFFFFFFF),
+            ),
+          ),
+          child: Text(
+            'More',
+            style: TextStyle(
+              fontSize: 10,
+              color: const Color(0xFFFFFFFF),
+            ),
+          ),
+        ),
+      ),
+    ]);
   }
 }

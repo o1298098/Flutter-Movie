@@ -72,6 +72,10 @@ Widget buildView(
                 _closeMenu(menuOverlayEntry);
                 dispatch(BottomPanelActionCreator.seletedLink(d));
               },
+              moreTap: () {
+                _closeMenu(menuOverlayEntry);
+                dispatch(BottomPanelActionCreator.showStreamLinkFilter());
+              },
               streamLinkRequestTap: () {
                 dispatch(BottomPanelActionCreator.requestStreamLink());
                 _closeMenu(menuOverlayEntry);

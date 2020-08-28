@@ -23,7 +23,7 @@ void _cellTapped(Action action, Context<TVCellState> ctx) async {
   VideoListResult _d = action.payload;
   if (_d != null)
     await Navigator.of(ctx.context).pushNamed('tvShowDetailPage', arguments: {
-      'tvid': _d.id,
+      'id': _d.id,
       'bgpic': _d.backdropPath,
       'name': _d.name,
       'posterpic': _d.posterPath

@@ -16,5 +16,5 @@ void _cellTapped(Action action, Context<RecommendationState> ctx) async {
   final VideoListResult _data = action.payload;
   if (_data == null) return;
   await Navigator.of(ctx.context).pushNamed('tvShowDetailPage',
-      arguments: {'tvid': _data.id, 'bgpic': _data.backdropPath});
+      arguments: {'id': _data.id, 'bgpic': _data.backdropPath});
 }

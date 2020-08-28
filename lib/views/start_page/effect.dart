@@ -24,7 +24,7 @@ void _onInit(Action action, Context<StartPageState> ctx) async {
   _firebaseMessaging.autoInitEnabled();
   ctx.state.pageController = PageController();
   SharedPreferences.getInstance().then((_p) async {
-    final _isFirst = _p.getBool('isFirstTime') ?? true;
+    final _isFirst = _p.getBool('firstStart') ?? true;
     if (!_isFirst)
       await _pushToMainPage(ctx.context);
     else
@@ -41,7 +41,7 @@ void _onBuild(Action action, Context<StartPageState> ctx) {
 }
 void _onStart(Action action, Context<StartPageState> ctx) async {
   SharedPreferences.getInstance().then((_p) {
-    _p.setBool('isFirstTime', false);
+    _p.setBool('firstStart', false);
   });
   await _pushToMainPage(ctx.context);
 }

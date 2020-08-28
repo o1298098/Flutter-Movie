@@ -49,24 +49,16 @@ class VideoSourceMenu extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 20.0),
               child: Container(
                 height: _menuHeight,
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 decoration: BoxDecoration(
                   color: _backGroundColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: links.length > 0
-                    ? ListView.separated(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                        separatorBuilder: (_, __) => SizedBox(height: 5),
-                        itemBuilder: (_, index) {
-                          final _link = links[index];
-                          return _LinkCell(
-                            data: _link,
-                            selected: _link.sid == selectedLinkId,
-                            onTap: onTap,
-                          );
-                        },
-                        itemCount: links.length,
+                    ? _LinkSourcePanel(
+                        links: links,
+                        selectedLink: selectedLinkId,
+                        onTap: onTap,
                       )
                     : Center(
                         child: SizedBox(
@@ -124,5 +116,53 @@ class _LinkCell extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _LinkSourcePanel extends StatelessWidget {
+  final List<TvShowStreamLink> links;
+  final int selectedLink;
+  final Function(TvShowStreamLink) onTap;
+  const _LinkSourcePanel({
+    this.links,
+    this.selectedLink,
+    this.onTap,
+  });
+  @override
+  Widget build(BuildContext context) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+      Expanded(
+        child: ListView.separated(
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.zero,
+          separatorBuilder: (_, __) => SizedBox(height: 5),
+          itemBuilder: (_, index) {
+            final _link = links[index];
+            return _LinkCell(
+              data: _link,
+              selected: _link.sid == selectedLink,
+              onTap: onTap,
+            );
+          },
+          itemCount: links.length,
+        ),
+      ),
+      Container(
+        padding: EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+            color: const Color(0xFFFFFFFF),
+          ),
+        ),
+        child: Text(
+          'More',
+          style: TextStyle(
+            fontSize: 10,
+            color: const Color(0xFFFFFFFF),
+          ),
+        ),
+      ),
+    ]);
   }
 }

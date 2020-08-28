@@ -76,5 +76,13 @@
     "trending": "急上昇",
     "newShare": "新しい共有",
     "shared": "共有",
-    "seasons": "季節"
+    "seasons": "季節",
+    "welcome": "ようこそ",
+    "letStartWithFewSteps": "いくつかのステップから始めましょう",
+    "continueA": "継続する",
+    "next": "Next",
+    "back": "Back",
+    "start": "Start",
+    "whatKindOfMovieDoYouLike": "どんな映画が好きですか",
+    "whatKindOfTvShowDoYouLike": "どんなテレビ番組が好きですか"
 }

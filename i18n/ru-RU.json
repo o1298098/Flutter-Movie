@@ -76,5 +76,13 @@
     "trending": "Trending",
     "newShare": "Новая акция",
     "shared": "Общий",
-    "seasons": "Времена года"
+    "seasons": "Времена года",
+    "welcome": "Добро пожаловать",
+    "letStartWithFewSteps": "давай начнем с нескольких шагов",
+    "continueA": "Продолжать",
+    "next": "Next",
+    "back": "Back",
+    "start": "Start",
+    "whatKindOfMovieDoYouLike": "Какой фильм тебе нравится",
+    "whatKindOfTvShowDoYouLike": "Какое телешоу тебе нравится"
 }

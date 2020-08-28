@@ -188,6 +188,22 @@ class I18n implements WidgetsLocalizations {
   String get shared => "Shared";
   /// "Last Episode"
   String get lastEpisode => "Last Episode";
+  /// "Welcome"
+  String get welcome => "Welcome";
+  /// "let start with few steps"
+  String get letStartWithFewSteps => "let start with few steps";
+  /// "Continue"
+  String get continueA => "Continue";
+  /// "Next"
+  String get next => "Next";
+  /// "Back"
+  String get back => "Back";
+  /// "Start"
+  String get start => "Start";
+  /// "What kind of movie do you like"
+  String get whatKindOfMovieDoYouLike => "What kind of movie do you like";
+  /// "What kind of tvshow do you like"
+  String get whatKindOfTvShowDoYouLike => "What kind of tvshow do you like";
 }
 
 class _I18n_en_US extends I18n {
@@ -431,6 +447,30 @@ class _I18n_zh_CN extends I18n {
   /// "分享"
   @override
   String get shared => "分享";
+  /// "欢迎"
+  @override
+  String get welcome => "欢迎";
+  /// "让我们从几个步骤开始"
+  @override
+  String get letStartWithFewSteps => "让我们从几个步骤开始";
+  /// "继续"
+  @override
+  String get continueA => "继续";
+  /// "前进"
+  @override
+  String get next => "前进";
+  /// "后退"
+  @override
+  String get back => "后退";
+  /// "开始"
+  @override
+  String get start => "开始";
+  /// "你喜欢什么类型的电影"
+  @override
+  String get whatKindOfMovieDoYouLike => "你喜欢什么类型的电影";
+  /// "你喜欢什么类型的电视节目"
+  @override
+  String get whatKindOfTvShowDoYouLike => "你喜欢什么类型的电视节目";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
@@ -670,6 +710,30 @@ class _I18n_ja_JP extends I18n {
   /// "共有"
   @override
   String get shared => "共有";
+  /// "ようこそ"
+  @override
+  String get welcome => "ようこそ";
+  /// "いくつかのステップから始めましょう"
+  @override
+  String get letStartWithFewSteps => "いくつかのステップから始めましょう";
+  /// "継続する"
+  @override
+  String get continueA => "継続する";
+  /// "Next"
+  @override
+  String get next => "Next";
+  /// "Back"
+  @override
+  String get back => "Back";
+  /// "Start"
+  @override
+  String get start => "Start";
+  /// "どんな映画が好きですか"
+  @override
+  String get whatKindOfMovieDoYouLike => "どんな映画が好きですか";
+  /// "どんなテレビ番組が好きですか"
+  @override
+  String get whatKindOfTvShowDoYouLike => "どんなテレビ番組が好きですか";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
@@ -909,6 +973,30 @@ class _I18n_zh_TW extends _I18n_zh_CN {
   /// "分享"
   @override
   String get shared => "分享";
+  /// "Welcome"
+  @override
+  String get welcome => "Welcome";
+  /// "let start with few steps"
+  @override
+  String get letStartWithFewSteps => "let start with few steps";
+  /// "Continue"
+  @override
+  String get continueA => "Continue";
+  /// "Next"
+  @override
+  String get next => "Next";
+  /// "Back"
+  @override
+  String get back => "Back";
+  /// "Start"
+  @override
+  String get start => "Start";
+  /// "What kind of movie do you like"
+  @override
+  String get whatKindOfMovieDoYouLike => "What kind of movie do you like";
+  /// "What kind of tvshow do you like"
+  @override
+  String get whatKindOfTvShowDoYouLike => "What kind of tvshow do you like";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
@@ -1148,6 +1236,30 @@ class _I18n_es_ES extends I18n {
   /// "Compartido"
   @override
   String get shared => "Compartido";
+  /// "Bienvenidos"
+  @override
+  String get welcome => "Bienvenidos";
+  /// "vamos a empezar con unos pocos pasos"
+  @override
+  String get letStartWithFewSteps => "vamos a empezar con unos pocos pasos";
+  /// "Seguir"
+  @override
+  String get continueA => "Seguir";
+  /// "Próximo"
+  @override
+  String get next => "Próximo";
+  /// "Espalda"
+  @override
+  String get back => "Espalda";
+  /// "Comienzo"
+  @override
+  String get start => "Comienzo";
+  /// "Que tipo de peliculas te gustan"
+  @override
+  String get whatKindOfMovieDoYouLike => "Que tipo de peliculas te gustan";
+  /// "¿Qué tipo de programa de televisión te gusta"
+  @override
+  String get whatKindOfTvShowDoYouLike => "¿Qué tipo de programa de televisión te gusta";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
@@ -1387,6 +1499,30 @@ class _I18n_fr_FR extends I18n {
   /// "partagé"
   @override
   String get shared => "partagé";
+  /// "Bienvenu"
+  @override
+  String get welcome => "Bienvenu";
+  /// "commençons par quelques étapes"
+  @override
+  String get letStartWithFewSteps => "commençons par quelques étapes";
+  /// "Continuer"
+  @override
+  String get continueA => "Continuer";
+  /// "Prochain"
+  @override
+  String get next => "Prochain";
+  /// "Arrière"
+  @override
+  String get back => "Arrière";
+  /// "Début"
+  @override
+  String get start => "Début";
+  /// "Quel genre de film aimez-vous"
+  @override
+  String get whatKindOfMovieDoYouLike => "Quel genre de film aimez-vous";
+  /// "Quel genre de télé-émission aimez-vous"
+  @override
+  String get whatKindOfTvShowDoYouLike => "Quel genre de télé-émission aimez-vous";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
@@ -1626,6 +1762,30 @@ class _I18n_ru_RU extends I18n {
   /// "Общий"
   @override
   String get shared => "Общий";
+  /// "Добро пожаловать"
+  @override
+  String get welcome => "Добро пожаловать";
+  /// "давай начнем с нескольких шагов"
+  @override
+  String get letStartWithFewSteps => "давай начнем с нескольких шагов";
+  /// "Продолжать"
+  @override
+  String get continueA => "Продолжать";
+  /// "Next"
+  @override
+  String get next => "Next";
+  /// "Back"
+  @override
+  String get back => "Back";
+  /// "Start"
+  @override
+  String get start => "Start";
+  /// "Какой фильм тебе нравится"
+  @override
+  String get whatKindOfMovieDoYouLike => "Какой фильм тебе нравится";
+  /// "Какое телешоу тебе нравится"
+  @override
+  String get whatKindOfTvShowDoYouLike => "Какое телешоу тебе нравится";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
@@ -1865,6 +2025,30 @@ class _I18n_de_DE extends I18n {
   /// "Geteilt"
   @override
   String get shared => "Geteilt";
+  /// "Herzlich willkommen"
+  @override
+  String get welcome => "Herzlich willkommen";
+  /// "Beginnen wir mit wenigen Schritten"
+  @override
+  String get letStartWithFewSteps => "Beginnen wir mit wenigen Schritten";
+  /// "Fortsetzen"
+  @override
+  String get continueA => "Fortsetzen";
+  /// "Nächster"
+  @override
+  String get next => "Nächster";
+  /// "Zurück"
+  @override
+  String get back => "Zurück";
+  /// "Anfang"
+  @override
+  String get start => "Anfang";
+  /// "Welche Art von Film gefällt Ihnen"
+  @override
+  String get whatKindOfMovieDoYouLike => "Welche Art von Film gefällt Ihnen";
+  /// "Was für eine TV-Show magst du"
+  @override
+  String get whatKindOfTvShowDoYouLike => "Was für eine TV-Show magst du";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
