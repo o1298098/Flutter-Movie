@@ -21,11 +21,11 @@ class StreamLinkFilterActionCreator {
     return const Action(StreamLinkFilterAction.action);
   }
 
-  static Action streamlinkTap(MovieStreamLink link) {
+  static Action streamlinkTap(TvShowStreamLink link) {
     return Action(StreamLinkFilterAction.selectedLinkTap, payload: link);
   }
 
-  static Action setSelectedLink(MovieStreamLink link) {
+  static Action setSelectedLink(TvShowStreamLink link) {
     return Action(StreamLinkFilterAction.setSelectedLink, payload: link);
   }
 
@@ -53,7 +53,7 @@ class StreamLinkFilterActionCreator {
     return Action(StreamLinkFilterAction.setQuality, payload: quality);
   }
 
-  static Action setFilterList(List<MovieStreamLink> list) {
+  static Action setFilterList(List<TvShowStreamLink> list) {
     return Action(StreamLinkFilterAction.setFilterList, payload: list);
   }
 

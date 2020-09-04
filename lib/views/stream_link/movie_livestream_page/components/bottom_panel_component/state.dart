@@ -5,12 +5,14 @@ import 'package:movie/views/stream_link/movie_livestream_page/state.dart';
 import 'package:movie/widgets/overlay_entry_manage.dart';
 
 import 'components/comment_component/state.dart';
+import 'components/streamlink_filter_component/state.dart';
 
 class BottomPanelState implements Cloneable<BottomPanelState> {
   String movieName;
   MovieStreamLinks streamLinks;
   MovieStreamLink selectedLink;
   CommentState commentState;
+  StreamLinkFilterState streamLinkFilterState;
   GlobalKey<OverlayEntryManageState> overlayStateKey;
   bool useVideoSourceApi;
   bool streamInBrowser;
@@ -31,6 +33,7 @@ class BottomPanelState implements Cloneable<BottomPanelState> {
       ..selectedLink = selectedLink
       ..commentCount = commentCount
       ..commentState = commentState
+      ..streamLinkFilterState = streamLinkFilterState
       ..overlayStateKey = overlayStateKey;
   }
 }

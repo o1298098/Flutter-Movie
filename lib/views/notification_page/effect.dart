@@ -43,8 +43,8 @@ void _cellTapped(Action action, Context<NotificationState> ctx) async {
       NotificationActionCreator.setNotifications(ctx.state.notificationList));
 
   var data = {
-    _model.type == 'movie' ? 'id' : 'tvid': int.parse(_model.id.toString()),
-    _model.type == 'movie' ? 'title' : 'name': _model.name,
+    'id': int.parse(_model.id.toString()),
+    'name': _model.name,
   };
   Page page = _model.type == 'movie' ? MovieDetailPage() : TvShowDetailPage();
   await Navigator.of(ctx.context)

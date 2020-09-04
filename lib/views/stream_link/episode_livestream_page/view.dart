@@ -109,7 +109,14 @@ class _Header extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(season.name),
+                  SizedBox(
+                    width: Adapt.screenW() - Adapt.px(410),
+                    child: Text(
+                      season.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                   Text(
                     DateFormat.yMMMd().format(DateTime.parse(season.airDate)),
                     style: TextStyle(
@@ -162,7 +169,8 @@ class _CastCell extends StatelessWidget {
                   image: DecorationImage(
                     fit: BoxFit.cover,
                     image: CachedNetworkImageProvider(
-                        ImageUrl.getUrl(e.profilePath, ImageSize.w300)),
+                      ImageUrl.getUrl(e.profilePath, ImageSize.w300),
+                    ),
                   ),
                 ),
               );

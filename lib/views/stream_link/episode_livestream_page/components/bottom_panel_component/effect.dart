@@ -21,7 +21,8 @@ Effect<BottomPanelState> buildEffect() {
     BottomPanelAction.commentTap: _commentTap,
     BottomPanelAction.likeTvShow: _likeTvShow,
     BottomPanelAction.reportStreamLink: _reportStreamLink,
-    BottomPanelAction.requestStreamLink: _requestStreamLink
+    BottomPanelAction.requestStreamLink: _requestStreamLink,
+    BottomPanelAction.showStreamlinkFilter: _showStreamlinkFilter,
   });
 }
 
@@ -127,4 +128,26 @@ void _requestStreamLink(Action action, Context<BottomPanelState> ctx) async {
   Toast.show(
       'You will be notified when the stream link has been added', ctx.context,
       duration: Toast.LENGTH_LONG);
+}
+
+void _showStreamlinkFilter(Action action, Context<BottomPanelState> ctx) async {
+  await Navigator.of(ctx.context).push(
+    PageRouteBuilder(
+      transitionDuration: Duration(milliseconds: 300),
+      pageBuilder: (BuildContext context, Animation animation,
+          Animation secondaryAnimation) {
+        final _curvedAnimation =
+            CurvedAnimation(parent: animation, curve: Curves.ease);
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: Offset(0, 1),
+            end: Offset.zero,
+          ).animate(_curvedAnimation),
+          child: FadeTransition(
+              opacity: _curvedAnimation,
+              child: ctx.buildComponent('streamLinkFilter')),
+        );
+      },
+    ),
+  );
 }

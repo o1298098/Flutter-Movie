@@ -98,13 +98,17 @@ void _languageTap(Action action, Context<SettingsState> ctx) async {
         .toList();
 
     _unsubscribetopics.addAll(_movieGenres
-        .map((e) => 'movie_genre_${e['name']}_${_currentLanguage.value}'));
+        .map((e) => 'movie_genre_${e['name']}_${_currentLanguage.value}')
+        .toList());
     _unsubscribetopics.addAll(_tvGenres
-        .map((e) => 'tvshow_genre_${e['name']}_${_currentLanguage.value}'));
-    _topics.addAll(
-        _movieGenres.map((e) => 'movie_genre_${e['name']}_${_language.value}'));
-    _topics.addAll(
-        _tvGenres.map((e) => 'tvshow_genre_${e['name']}_${_language.value}'));
+        .map((e) => 'tvshow_genre_${e['name']}_${_currentLanguage.value}')
+        .toList());
+    _topics.addAll(_movieGenres
+        .map((e) => 'movie_genre_${e['name']}_${_language.value}')
+        .toList());
+    _topics.addAll(_tvGenres
+        .map((e) => 'tvshow_genre_${e['name']}_${_language.value}')
+        .toList());
 
     NotificationTopic _topic = NotificationTopic();
 

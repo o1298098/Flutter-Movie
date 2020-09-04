@@ -25,10 +25,10 @@ StreamLinkFilterState _onAction(StreamLinkFilterState state, Action action) {
 
 StreamLinkFilterState _setSelectedLink(
     StreamLinkFilterState state, Action action) {
-  final MovieStreamLink _link = action.payload;
+  final TvShowStreamLink _link = action.payload;
   final StreamLinkFilterState newState = state.clone();
-  newState.streamLinks.list.remove(_link);
-  newState.streamLinks.list.insert(0, _link);
+  newState.streamLinks.remove(_link);
+  newState.streamLinks.insert(0, _link);
   newState.selectedLink = _link;
   return newState;
 }
@@ -56,7 +56,7 @@ StreamLinkFilterState _setQuality(StreamLinkFilterState state, Action action) {
 
 StreamLinkFilterState _setFilterList(
     StreamLinkFilterState state, Action action) {
-  final List<MovieStreamLink> _list = action.payload;
+  final List<TvShowStreamLink> _list = action.payload;
   final StreamLinkFilterState newState = state.clone();
   newState.filterLinks = _list;
   return newState;

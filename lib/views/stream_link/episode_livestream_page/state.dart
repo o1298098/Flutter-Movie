@@ -7,6 +7,7 @@ import 'package:movie/views/stream_link/episode_livestream_page/components/botto
 import 'package:movie/views/stream_link/episode_livestream_page/components/bottom_panel_component/state.dart';
 import 'package:movie/widgets/overlay_entry_manage.dart';
 
+import 'components/bottom_panel_component/components/streamlink_filter_component/state.dart';
 import 'components/player_component/state.dart';
 
 class EpisodeLiveStreamState implements Cloneable<EpisodeLiveStreamState> {
@@ -47,6 +48,8 @@ EpisodeLiveStreamState initState(Map<String, dynamic> args) {
     ..useVideoSourceApi = true
     ..streamInBrowser = false
     ..commentState = CommentState()
+    ..streamLinkFilterState = StreamLinkFilterState(
+        overlayStateKey: GlobalKey<OverlayEntryManageState>())
     ..likeCount = 0
     ..userLiked = false;
   state.playerState = PlayerState()

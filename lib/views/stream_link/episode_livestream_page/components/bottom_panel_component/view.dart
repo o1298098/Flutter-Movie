@@ -76,6 +76,10 @@ Widget buildView(
                 dispatch(BottomPanelActionCreator.requestStreamLink());
                 _closeMenu(menuOverlayEntry);
               },
+              moreTap: () {
+                _closeMenu(menuOverlayEntry);
+                dispatch(BottomPanelActionCreator.showStreamLinkFilter());
+              },
               selectedLinkId: state.selectedLink?.sid ?? 0,
               links: state.streamLinks?.list
                       ?.where((e) => e.episode == state.selectEpisode)

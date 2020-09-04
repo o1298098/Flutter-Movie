@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/style/themestyle.dart';
-
-import 'arrow_clipper.dart';
+import 'package:movie/widgets/arrow_clipper.dart';
 
 class OptionMenu extends StatelessWidget {
   final bool useVideoSourceApi;

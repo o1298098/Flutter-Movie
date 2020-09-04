@@ -1,13 +1,13 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/models/models.dart';
-import 'package:movie/views/stream_link/movie_livestream_page/components/bottom_panel_component/state.dart';
+import 'package:movie/views/stream_link/episode_livestream_page/components/bottom_panel_component/state.dart';
 import 'package:movie/widgets/overlay_entry_manage.dart';
 
 class StreamLinkFilterState implements Cloneable<StreamLinkFilterState> {
-  MovieStreamLinks streamLinks;
-  List<MovieStreamLink> filterLinks;
-  MovieStreamLink selectedLink;
+  List<TvShowStreamLink> streamLinks;
+  List<TvShowStreamLink> filterLinks;
+  TvShowStreamLink selectedLink;
   String selectHost;
   String selectLanguage;
   String selectQuality;
@@ -35,7 +35,9 @@ class StreamLinkFilterConnector
   @override
   StreamLinkFilterState get(BottomPanelState state) {
     StreamLinkFilterState mstate = StreamLinkFilterState();
-    mstate.streamLinks = state.streamLinks;
+    mstate.streamLinks = state.streamLinks?.list
+        ?.where((e) => e.episode == state.selectEpisode)
+        ?.toList();
     mstate.selectedLink = state.selectedLink;
     mstate.overlayStateKey = state.streamLinkFilterState.overlayStateKey;
     mstate.selectHost = state.streamLinkFilterState.selectHost;
@@ -43,15 +45,17 @@ class StreamLinkFilterConnector
     mstate.selectQuality = state.streamLinkFilterState.selectQuality;
     mstate.sort = state.streamLinkFilterState.sort;
     mstate.sortAsc = state.streamLinkFilterState.sortAsc;
-    mstate.filterLinks =
-        state.streamLinkFilterState.filterLinks ?? state.streamLinks?.list;
+    mstate.filterLinks = state.streamLinkFilterState.filterLinks ??
+        state.streamLinks?.list
+            ?.where((e) => e.episode == state.selectEpisode)
+            ?.toList();
     return mstate;
   }
 
   @override
   void set(BottomPanelState state, StreamLinkFilterState subState) {
     state.selectedLink = subState.selectedLink;
-    state.streamLinks = subState.streamLinks;
+    state.streamLinks.list = subState.streamLinks;
     state.streamLinkFilterState = subState;
   }
 }

@@ -10,8 +10,13 @@ class VideoSourceMenu extends StatelessWidget {
   final int selectedLinkId;
   final Function(TvShowStreamLink) onTap;
   final Function streamLinkRequestTap;
+  final Function moreTap;
   const VideoSourceMenu(
-      {this.links, this.onTap, this.selectedLinkId, this.streamLinkRequestTap});
+      {this.links,
+      this.onTap,
+      this.selectedLinkId,
+      this.streamLinkRequestTap,
+      this.moreTap});
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
@@ -20,7 +25,7 @@ class VideoSourceMenu extends StatelessWidget {
         : _theme.primaryColorDark;
     final double _width = 160;
     final double _arrowSize = 20.0;
-    final double _menuHeight = 200.0;
+    final double _menuHeight = 180.0;
     return Positioned(
       bottom: 80,
       left: Adapt.px(275) - _width / 2,
@@ -59,6 +64,7 @@ class VideoSourceMenu extends StatelessWidget {
                         links: links,
                         selectedLink: selectedLinkId,
                         onTap: onTap,
+                        moreTap: moreTap,
                       )
                     : Center(
                         child: SizedBox(
@@ -123,11 +129,9 @@ class _LinkSourcePanel extends StatelessWidget {
   final List<TvShowStreamLink> links;
   final int selectedLink;
   final Function(TvShowStreamLink) onTap;
-  const _LinkSourcePanel({
-    this.links,
-    this.selectedLink,
-    this.onTap,
-  });
+  final Function moreTap;
+  const _LinkSourcePanel(
+      {this.links, this.selectedLink, this.onTap, this.moreTap});
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
@@ -147,19 +151,22 @@ class _LinkSourcePanel extends StatelessWidget {
           itemCount: links.length,
         ),
       ),
-      Container(
-        padding: EdgeInsets.all(4),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          border: Border.all(
-            color: const Color(0xFFFFFFFF),
+      GestureDetector(
+        onTap: moreTap,
+        child: Container(
+          padding: EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(
+              color: const Color(0xFFFFFFFF),
+            ),
           ),
-        ),
-        child: Text(
-          'More',
-          style: TextStyle(
-            fontSize: 10,
-            color: const Color(0xFFFFFFFF),
+          child: Text(
+            'More',
+            style: TextStyle(
+              fontSize: 10,
+              color: const Color(0xFFFFFFFF),
+            ),
           ),
         ),
       ),

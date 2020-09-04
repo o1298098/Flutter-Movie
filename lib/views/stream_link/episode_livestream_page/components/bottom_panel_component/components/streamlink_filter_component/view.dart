@@ -115,8 +115,8 @@ Widget buildView(
 }
 
 class _LinkCell extends StatelessWidget {
-  final MovieStreamLink link;
-  final Function(MovieStreamLink) onTap;
+  final TvShowStreamLink link;
+  final Function(TvShowStreamLink) onTap;
   const _LinkCell({this.link, this.onTap});
 
   @override

@@ -21,6 +21,6 @@ class MovieLikeModel {
 
   @override
   String toString() {
-    return '{"id": $id"movieId": $movieId,"uid": ${uid != null ? '${json.encode(uid)}' : 'null'}}';
+    return '{"id": $id",movieId": $movieId,"uid": ${uid != null ? '${json.encode(uid)}' : 'null'}}';
   }
 }

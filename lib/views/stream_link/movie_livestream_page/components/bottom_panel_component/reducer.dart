@@ -39,8 +39,6 @@ BottomPanelState _setStreamInBrowser(BottomPanelState state, Action action) {
 BottomPanelState _selectedLink(BottomPanelState state, Action action) {
   final MovieStreamLink _link = action.payload;
   final BottomPanelState newState = state.clone();
-  //newState.streamLinks.list.remove(_link);
-  //newState.streamLinks.list.insert(0, _link);
   newState.selectedLink = _link;
   return newState;
 }

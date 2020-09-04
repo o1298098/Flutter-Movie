@@ -75,13 +75,10 @@ void _onDispose(Action action, Context<MainPageState> ctx) {
 Future _push(Map<String, dynamic> message, Context<MainPageState> ctx) async {
   if (message != null) {
     final _notificationMessage = NotificationModel.fromMap(message);
-    final _messageData = message['data'];
     var data = {
-      _messageData['type'] == 'movie' ? 'id' : 'tvid':
-          int.parse(_notificationMessage.id.toString()),
+      'id': int.parse(_notificationMessage.id.toString()),
       'bgpic': _notificationMessage.posterPic,
-      _notificationMessage.type == 'movie' ? 'title' : 'name':
-          _notificationMessage.name,
+      'name': _notificationMessage.name,
       'posterpic': _notificationMessage.posterPic
     };
     Page page = _notificationMessage.type == 'movie'

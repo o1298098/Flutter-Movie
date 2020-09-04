@@ -18,7 +18,7 @@ Effect<StreamLinkFilterState> buildEffect() {
 void _onAction(Action action, Context<StreamLinkFilterState> ctx) {}
 
 void _selectedLinkTap(Action action, Context<StreamLinkFilterState> ctx) {
-  final MovieStreamLink _link = action.payload;
+  final TvShowStreamLink _link = action.payload;
   ctx.dispatch(StreamLinkFilterActionCreator.setSelectedLink(_link));
   Navigator.of(ctx.context).pop();
 }
@@ -49,7 +49,7 @@ void _sortTap(Action action, Context<StreamLinkFilterState> ctx) {
 }
 
 void _updateFilter(Action action, Context<StreamLinkFilterState> ctx) {
-  List<MovieStreamLink> _list = ctx.state.streamLinks.list;
+  List<TvShowStreamLink> _list = ctx.state.streamLinks;
   if (ctx.state.selectHost != null)
     _list = _list
         .where((e) => e.streamLink.contains(ctx.state.selectHost))

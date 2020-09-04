@@ -3,7 +3,7 @@ import 'package:movie/actions/adapt.dart';
 import 'package:movie/models/base_api_model/movie_stream_link.dart';
 import 'package:movie/style/themestyle.dart';
 
-import 'arrow_clipper.dart';
+import '../../../../../../widgets/arrow_clipper.dart';
 
 class VideoSourceMenu extends StatelessWidget {
   final List<MovieStreamLink> links;
