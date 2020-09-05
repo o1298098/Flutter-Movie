@@ -148,7 +148,7 @@ void _notificationsTap(Action action, Context<SettingsState> ctx) async {
     _topic.unsubscribeFromTopic(topics);
 }
 
-void _feedbackTap(Action action, Context<SettingsState> ctx) {
+void _feedbackTap(Action action, Context<SettingsState> ctx) async {
   ctx.dispatch(
       AccountActionCreator.showTip('Feedback unavailable at this moment'));
 }

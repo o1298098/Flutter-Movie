@@ -6,6 +6,7 @@ import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
+import 'package:movie/actions/stream_link_convert/stream_link_convert_factory.dart';
 import 'package:movie/models/ad_target_info.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/widgets/web_torrent_player.dart';
@@ -50,6 +51,8 @@ class _PlayerPanelState extends State<PlayerPanel>
   bool _needAd = false;
   bool _loading = false;
   bool _haveOpenAds = false;
+  String _playerType;
+  String _directUrl;
 
   @override
   bool get wantKeepAlive => true;
@@ -57,6 +60,7 @@ class _PlayerPanelState extends State<PlayerPanel>
   void initState() {
     _needAd = widget.needAd;
     _loading = widget.loading;
+    _playerType = widget.playerType;
     _addAdsListener();
     super.initState();
   }
@@ -79,13 +83,8 @@ class _PlayerPanelState extends State<PlayerPanel>
     }
     if (_needAd != widget.needAd && !_haveOpenAds) _setNeedAd(widget.needAd);
     if (_loading != widget.loading) _setLoading(widget.loading);
+    if (_playerType != widget.playerType) _setPlayerType(widget.playerType);
     super.didUpdateWidget(oldWidget);
-  }
-
-  _setNeedAd(bool needAd) {
-    setState(() {
-      _needAd = needAd;
-    });
   }
 
   _addAdsListener() {
@@ -142,10 +141,21 @@ class _PlayerPanelState extends State<PlayerPanel>
         widget.streamLink,
         enableJavaScript: true,
       );
-    } else
-      setState(() {
-        _play = true;
-      });
+    } else if (widget.playerType == 'WebView') await _getDirectUrl();
+    setState(() {
+      _play = true;
+    });
+  }
+
+  _getDirectUrl() async {
+    _setLoading(true);
+    _directUrl =
+        await StreamLinkConvertFactory.instance.getLink(widget.streamLink);
+    print(_directUrl);
+    if (_directUrl != null) {
+      _playerType = 'urlresolver';
+    }
+    _setLoading(false);
   }
 
   _setLoading(bool loading) {
@@ -154,13 +164,26 @@ class _PlayerPanelState extends State<PlayerPanel>
     });
   }
 
+  _setPlayerType(String type) {
+    setState(() {
+      _playerType = type;
+    });
+  }
+
+  _setNeedAd(bool needAd) {
+    setState(() {
+      _needAd = needAd;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return _play
         ? _Player(
-            streamLink: widget.streamLink,
-            playerType: widget.playerType,
+            streamLink:
+                _playerType == 'urlresolver' ? _directUrl : widget.streamLink,
+            playerType: _playerType,
           )
         : GestureDetector(
             onTap: () => _playTapped(context),
@@ -183,6 +206,7 @@ class _Player extends StatelessWidget {
         return YoutubePlayer(streamLink: streamLink);
       case 'WebView':
         return WebViewPlayer(streamLink: streamLink, filterUrl: streamLink);
+      case 'urlresolver':
       case 'other':
         return VideoPlayer(videoUrl: streamLink);
       case 'Torrent':

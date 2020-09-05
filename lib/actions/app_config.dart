@@ -22,6 +22,10 @@ class AppConfig {
 
   String get graphQlWebSocketLink => _config['graphQlWebSocketLink'];
 
+  String get urlresolverApiHost => _config['urlresolverApiHost'];
+
+  String get urlresolverApiKey => _config['urlresolverApiKey'];
+
   Future init(BuildContext context) async {
     final _jsonStr = await _getConfigJson(context);
     if (_jsonStr == null) {

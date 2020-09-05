@@ -1,5 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:movie/actions/adapt.dart';
@@ -15,7 +16,6 @@ import 'state.dart';
 
 Widget buildView(
     StreamLinkFilterState state, Dispatch dispatch, ViewService viewService) {
-  final _theme = ThemeStyle.getTheme(viewService.context);
   void _closeMenu(OverlayEntry overlayEntry) {
     overlayEntry?.remove();
     state.overlayStateKey.currentState.setOverlayEntry(null);
@@ -81,36 +81,45 @@ Widget buildView(
     Overlay.of(viewService.context).insert(menuOverlayEntry);
   }
 
-  return Scaffold(
-    backgroundColor: _theme.backgroundColor,
-    //appBar: AppBar(),
-    body: SafeArea(
-      child: CustomScrollView(
-        slivers: [
-          _FilterPanel(
-            openFilter: _openFilter,
-            openSort: _openSort,
-            overlayStateKey: state.overlayStateKey,
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (_, index) {
-                final _d = state.filterLinks[index];
-                return _LinkCell(
-                  link: _d,
-                  onTap: (link) => dispatch(
-                      StreamLinkFilterActionCreator.streamlinkTap(link)),
-                );
-              },
-              childCount: state.filterLinks?.length ?? 0,
+  return Builder(
+    builder: (context) {
+      final _theme = ThemeStyle.getTheme(context);
+      return Scaffold(
+        backgroundColor: _theme.backgroundColor,
+        body: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: _theme.brightness == Brightness.light
+              ? SystemUiOverlayStyle.dark
+              : SystemUiOverlayStyle.light,
+          child: SafeArea(
+            child: CustomScrollView(
+              slivers: [
+                _FilterPanel(
+                  openFilter: _openFilter,
+                  openSort: _openSort,
+                  overlayStateKey: state.overlayStateKey,
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (_, index) {
+                      final _d = state.filterLinks[index];
+                      return _LinkCell(
+                        link: _d,
+                        onTap: (link) => dispatch(
+                            StreamLinkFilterActionCreator.streamlinkTap(link)),
+                      );
+                    },
+                    childCount: state.filterLinks?.length ?? 0,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: SizedBox(height: 20),
+                ),
+              ],
             ),
           ),
-          SliverToBoxAdapter(
-            child: SizedBox(height: 20),
-          ),
-        ],
-      ),
-    ),
+        ),
+      );
+    },
   );
 }
 
@@ -246,7 +255,7 @@ class _FilterPanel extends StatelessWidget {
                       width: 28,
                       height: 28,
                       decoration: BoxDecoration(
-                        border: Border.all(),
+                        border: Border.all(color: _theme.iconTheme.color),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Icon(
