@@ -9,13 +9,16 @@ class Dood {
     String _embedRegex = "\\/pass_md5\\/(.*?)[\'|\"]";
     String _downloadRegex = "\\/download\\/(.*?)[\'|\"]";
     try {
-      _response = await Dio().get(_replaceLink);
+      _response = await Dio()
+          .get(_replaceLink, options: Options(headers: {'referrer': link}));
       RegExp _regExp = new RegExp(_downloadRegex, dotAll: true);
       RegExpMatch _m = _regExp.firstMatch(_response.data);
       if (_m.groupCount > 0) {
         String _downloadLink = "https://dood.watch/download/" + _m.group(1);
+        _response = await Dio()
+            .get(_downloadLink, options: Options(headers: {'referrer': link}));
         final _result = await UrlResolverApi.instance
-            .getDirectUrl(_downloadLink, 'dood', mode: 'direct');
+            .getDirectUrl(_response.data, 'dood', mode: 'direct');
         if (_result.success) if (_result.result['status'] == 'ok')
           _link = _result.result['url'];
       }

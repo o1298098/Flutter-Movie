@@ -1,6 +1,12 @@
+import 'package:movie/actions/stream_link_convert/archive.dart';
+import 'package:movie/actions/stream_link_convert/bitporno.dart';
 import 'package:movie/actions/stream_link_convert/clipwatching.dart';
+import 'package:movie/actions/stream_link_convert/gamovideo.dart';
+import 'package:movie/actions/stream_link_convert/powvideo.dart';
 import 'package:movie/actions/stream_link_convert/prostream.dart';
 import 'package:movie/actions/stream_link_convert/upstream.dart';
+import 'package:movie/actions/stream_link_convert/vidtodo.dart';
+import 'package:movie/actions/stream_link_convert/waaw.dart';
 
 import 'cloudvideo.dart';
 import 'dood.dart';
@@ -28,15 +34,21 @@ class StreamLinkConvertFactory {
   StreamLinkConvertFactory._();
   static final StreamLinkConvertFactory instance = StreamLinkConvertFactory._();
   List<String> _hosts = [
+    'archive',
+    'bitporno',
     'clipwatching',
     'cloudvideo',
     'dood',
     'fembed',
+    'gamovideo',
+    'gounlimited',
     'jawcloud',
     'jetload',
+    'mediafire',
     'mixdrop',
     'mp4upload',
     'openlay',
+    'powvideo',
     'prostream',
     'streamtape',
     'supervideo',
@@ -51,12 +63,20 @@ class StreamLinkConvertFactory {
     'vidia',
     'vidlox',
     'vidoza',
-    'vup'
+    'vidtodo',
+    'vup',
+    'waaw'
   ];
   Future<String> getLink(String link) async {
     final String _domain = _getDomain(link);
     String _link;
     switch (_domain) {
+      case 'archive':
+        _link = await Archive.getUrl(link);
+        break;
+      case 'bitporno':
+        _link = await Bitporno.getUrl(link);
+        break;
       case 'clipwatching':
         _link = await Clipwatching.getUrl(link);
         break;
@@ -68,6 +88,11 @@ class StreamLinkConvertFactory {
         break;
       case 'fembed':
         _link = await Fembed.getUrl(link);
+        break;
+      case 'gamovideo':
+        _link = await GamoVideo.getUrl(link);
+        break;
+      case 'gounlimited':
         break;
       case 'jawcloud':
         _link = await Jawcloud.getUrl(link);
@@ -86,6 +111,9 @@ class StreamLinkConvertFactory {
         break;
       case 'prostream':
         _link = await Prostream.getUrl(link);
+        break;
+      case 'powvideo':
+        _link = await PowVideo.getUrl(link);
         break;
       case 'streamtape':
         _link = await Streamtape.getUrl(link);
@@ -126,8 +154,14 @@ class StreamLinkConvertFactory {
       case 'vidoza':
         _link = await Vidoza.getUrl(link);
         break;
+      case 'vidtodo':
+        _link = await Vidtodo.getUrl(link);
+        break;
       case 'vup':
         _link = await Vup.getUrl(link);
+        break;
+      case 'waaw':
+        _link = await Waaw.getUrl(link);
         break;
     }
     return _link;

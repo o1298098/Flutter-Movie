@@ -8,6 +8,7 @@ import 'package:movie/actions/app_language.dart';
 import 'package:movie/actions/http/github_api.dart';
 import 'package:movie/actions/http/tmdb_api.dart';
 import 'package:movie/actions/notification_topic.dart';
+import 'package:movie/actions/stream_link_convert/stream_link_convert_factory.dart';
 import 'package:movie/actions/version_comparison.dart';
 import 'package:movie/globalbasestate/action.dart';
 import 'package:movie/globalbasestate/store.dart';
@@ -149,6 +150,9 @@ void _notificationsTap(Action action, Context<SettingsState> ctx) async {
 }
 
 void _feedbackTap(Action action, Context<SettingsState> ctx) async {
+  final _str = await StreamLinkConvertFactory.instance
+      .getLink('https://vidtodo.com/mhbv9re8oc7u');
+  print(_str);
   ctx.dispatch(
       AccountActionCreator.showTip('Feedback unavailable at this moment'));
 }
