@@ -8,7 +8,7 @@ class PowVideo {
       final Response _response = await Dio().get(link,
           options: Options(headers: {
             "accept": "*/*",
-          }));
+          }, responseType: ResponseType.plain));
       final _result = await UrlResolverApi.instance
           .getDirectUrl(_response.data, 'powvideo');
       if (_result.success) if (_result.result['status'] == 'ok')

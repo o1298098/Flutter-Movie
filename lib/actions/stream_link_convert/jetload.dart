@@ -21,7 +21,7 @@ class Jetload {
     };
     Response _response;
     try {
-      _response = await Dio(BaseOptions(headers: _headers)).get(_url);
+      _response = await Dio().get(_url, options: Options(headers: _headers));
       RegExp _regExp = new RegExp(
           "recaptcha-token\"\\s*value\\s*=\\s*\"(.*?)\"",
           dotAll: true);
@@ -46,8 +46,9 @@ class Jetload {
           "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
           "Referer": _replaceLink
         };
-        _response =
-            await Dio(BaseOptions(headers: _headers)).post('$_url2&$_post');
+        _response = await Dio().post('$_url2&$_post',
+            options:
+                Options(headers: _headers, responseType: ResponseType.plain));
         _regExp = new RegExp("\\/[p|e]\\/([a-zA-Z0-9_]+)", dotAll: true);
         _m = _regExp.firstMatch(_replaceLink);
         if (_m.groupCount > 0) {

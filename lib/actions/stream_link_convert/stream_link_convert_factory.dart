@@ -2,8 +2,10 @@ import 'package:movie/actions/stream_link_convert/archive.dart';
 import 'package:movie/actions/stream_link_convert/bitporno.dart';
 import 'package:movie/actions/stream_link_convert/clipwatching.dart';
 import 'package:movie/actions/stream_link_convert/gamovideo.dart';
+import 'package:movie/actions/stream_link_convert/gounlimited.dart';
 import 'package:movie/actions/stream_link_convert/powvideo.dart';
 import 'package:movie/actions/stream_link_convert/prostream.dart';
+import 'package:movie/actions/stream_link_convert/streamplay.dart';
 import 'package:movie/actions/stream_link_convert/upstream.dart';
 import 'package:movie/actions/stream_link_convert/vidtodo.dart';
 import 'package:movie/actions/stream_link_convert/waaw.dart';
@@ -50,6 +52,7 @@ class StreamLinkConvertFactory {
     'openlay',
     'powvideo',
     'prostream',
+    'streamplay',
     'streamtape',
     'supervideo',
     'upstream',
@@ -93,6 +96,7 @@ class StreamLinkConvertFactory {
         _link = await GamoVideo.getUrl(link);
         break;
       case 'gounlimited':
+        _link = await Gounlimited.getUrl(link);
         break;
       case 'jawcloud':
         _link = await Jawcloud.getUrl(link);
@@ -114,6 +118,9 @@ class StreamLinkConvertFactory {
         break;
       case 'powvideo':
         _link = await PowVideo.getUrl(link);
+        break;
+      case 'streamplay':
+        _link = await StreamPlay.getUrl(link);
         break;
       case 'streamtape':
         _link = await Streamtape.getUrl(link);

@@ -23,9 +23,9 @@ class VideoSourceMenu extends StatelessWidget {
     final _backGroundColor = _theme.brightness == Brightness.light
         ? const Color(0xFF25272E)
         : _theme.primaryColorDark;
-    final double _width = 160;
+    final double _width = 180;
     final double _arrowSize = 20.0;
-    final double _menuHeight = 180.0;
+    final double _menuHeight = 210.0;
     return Positioned(
       bottom: 80,
       left: Adapt.px(275) - _width / 2,
@@ -96,7 +96,10 @@ class _LinkCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _textStyle =
-        const TextStyle(color: const Color(0xFFFFFFFF), fontSize: 14);
+        const TextStyle(color: const Color(0xFFFFFFFF), fontSize: 12);
+    final _subTextStyle =
+        const TextStyle(color: const Color(0xFFD0D0D0), fontSize: 10);
+    final _domain = _getDomain(data.streamLink, data.streamLinkType.name);
     return InkWell(
       onTap: () => onTap(data),
       child: Container(
@@ -106,17 +109,27 @@ class _LinkCell extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(color: const Color(0xFFFFFFFF)))
             : null,
-        height: 35,
+        height: 45,
         child: Row(
           children: [
-            Text(
-              data.language.name,
-              style: _textStyle,
-            ),
+            Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _domain,
+                    style: _textStyle,
+                  ),
+                  SizedBox(height: 3),
+                  Text(
+                    data.language.name,
+                    style: _subTextStyle,
+                  ),
+                ]),
             Spacer(),
             Text(
               data.quality.name,
-              style: _textStyle,
+              style: _subTextStyle,
             ),
           ],
         ),
@@ -172,4 +185,12 @@ class _LinkSourcePanel extends StatelessWidget {
       ),
     ]);
   }
+}
+
+_getDomain(String url, String type) {
+  if (type.toLowerCase() == 'youtube') return 'youtube';
+  if (type.toLowerCase() == 'torrent') return 'torrent';
+  final _strArray = url.split('/');
+  if (_strArray.length > 3) return _strArray[2];
+  return url;
 }

@@ -45,8 +45,9 @@ class Vidcloud {
           "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
           "Referer": link
         };
-        _response =
-            await Dio(BaseOptions(headers: _headers)).post('$_url2&$_post');
+        _response = await Dio().post('$_url2&$_post',
+            options:
+                Options(headers: _headers, responseType: ResponseType.plain));
         _regExp = new RegExp("\\/[p|e]\\/([a-zA-Z0-9_]+)", dotAll: true);
         _m = _regExp.firstMatch(link);
         if (_m.groupCount > 0) {
