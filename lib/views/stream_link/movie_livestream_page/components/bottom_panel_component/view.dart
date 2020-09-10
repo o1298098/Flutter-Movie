@@ -2,6 +2,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/style/themestyle.dart';
+import 'package:movie/views/stream_link/movie_livestream_page/components/bottom_panel_component/components/download_menu.dart';
 import 'package:movie/widgets/overlay_entry_manage.dart';
 
 import 'action.dart';
@@ -91,6 +92,35 @@ Widget buildView(
     Overlay.of(viewService.context).insert(menuOverlayEntry);
   }
 
+  void _showDownloadMenu() {
+    OverlayEntry menuOverlayEntry;
+    menuOverlayEntry = OverlayEntry(
+      builder: (context) {
+        return Stack(
+          children: <Widget>[
+            Positioned.fill(
+                child: GestureDetector(
+              onTap: () => _closeMenu(menuOverlayEntry),
+              child: Container(
+                color: Colors.transparent,
+              ),
+            )),
+            DownloadMenu(
+              links: state.streamLinks?.list ?? [],
+              movieName: state.movieName,
+              playVideo: (d) {
+                _closeMenu(menuOverlayEntry);
+                BottomPanelActionCreator.seletedLink(d);
+              },
+            ),
+          ],
+        );
+      },
+    );
+    state.overlayStateKey.currentState.setOverlayEntry(menuOverlayEntry);
+    Overlay.of(viewService.context).insert(menuOverlayEntry);
+  }
+
   final _theme = ThemeStyle.getTheme(viewService.context);
   return OverlayEntryManage(
     key: state.overlayStateKey,
@@ -138,7 +168,7 @@ Widget buildView(
               )),
           SizedBox(width: Adapt.px(70)),
           GestureDetector(
-            onTap: () {},
+            onTap: _showDownloadMenu,
             child: Icon(
               Icons.file_download,
               size: Adapt.px(30),

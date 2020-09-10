@@ -43,7 +43,11 @@ class MovieStreamLink {
   bool selected;
   bool needAd;
   bool externalBrowser;
-
+  factory MovieStreamLink(jsonStr) => jsonStr == null
+      ? null
+      : jsonStr is String
+          ? new MovieStreamLink.fromJson(json.decode(jsonStr))
+          : new MovieStreamLink.fromJson(jsonStr);
   MovieStreamLink.fromParams(
       {this.language,
       this.movieId,

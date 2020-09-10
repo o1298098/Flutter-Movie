@@ -20,12 +20,14 @@ class BottomPanelState implements Cloneable<BottomPanelState> {
   int season;
   int commentCount;
   int selectEpisode;
+  String tvName;
   GlobalKey<OverlayEntryManageState> overlayStateKey;
 
   @override
   BottomPanelState clone() {
     return BottomPanelState()
       ..tvId = tvId
+      ..tvName = tvName
       ..season = season
       ..userLiked = userLiked
       ..useVideoSourceApi = useVideoSourceApi
@@ -49,6 +51,7 @@ class BottomPanelConnector
     mstate.selectEpisode = state.selectedEpisode.episodeNumber;
     mstate.streamLinks = state.streamLinks;
     mstate.selectedLink = state.selectedLink;
+    mstate.tvName = state.tvName;
     mstate.commentCount =
         state.bottomPanelState.commentState.comments?.totalCount ?? 0;
     return mstate;

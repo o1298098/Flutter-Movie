@@ -21,6 +21,7 @@ Effect<BottomPanelState> buildEffect() {
     BottomPanelAction.reportStreamLink: _reportStreamLink,
     BottomPanelAction.requestStreamLink: _requestStreamLink,
     BottomPanelAction.showStreamlinkFilter: _showStreamlinkFilter,
+    BottomPanelAction.downloadTap: _downloadTap,
   });
 }
 
@@ -141,3 +142,5 @@ void _showStreamlinkFilter(Action action, Context<BottomPanelState> ctx) async {
     ),
   );
 }
+
+void _downloadTap(Action action, Context<BottomPanelState> ctx) async {}

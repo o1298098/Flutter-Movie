@@ -76,7 +76,7 @@ class Jetload {
             };
             _response = await Dio(BaseOptions(headers: _headers))
                 .post('https://jetload.net/jet_secure', data: pars);
-            if (_response.data != null) {
+            if (_response.data != null) if (_response.data["err"] == null) {
               final _srcData = _response.data["src"];
               _link = _srcData["src"];
             }

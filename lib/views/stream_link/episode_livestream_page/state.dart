@@ -12,6 +12,7 @@ import 'components/player_component/state.dart';
 
 class EpisodeLiveStreamState implements Cloneable<EpisodeLiveStreamState> {
   int tvid;
+  String tvName;
   bool loading;
   TvShowStreamLinks streamLinks;
   TvShowStreamLink selectedLink;
@@ -26,6 +27,7 @@ class EpisodeLiveStreamState implements Cloneable<EpisodeLiveStreamState> {
     return EpisodeLiveStreamState()
       ..loading = loading
       ..tvid = tvid
+      ..tvName = tvName
       ..season = season
       ..streamLinks = streamLinks
       ..selectedEpisode = selectedEpisode
@@ -39,6 +41,7 @@ class EpisodeLiveStreamState implements Cloneable<EpisodeLiveStreamState> {
 EpisodeLiveStreamState initState(Map<String, dynamic> args) {
   EpisodeLiveStreamState state = EpisodeLiveStreamState();
   state.tvid = args['tvid'];
+  state.tvName = args['tvName'];
   state.season = args['season'];
   state.selectedEpisode = args['selectedEpisode'];
   state.bottomPanelState = BottomPanelState()

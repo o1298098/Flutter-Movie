@@ -5,6 +5,7 @@ import 'package:movie/style/themestyle.dart';
 import 'package:movie/widgets/overlay_entry_manage.dart';
 
 import 'action.dart';
+import 'components/download_menu.dart';
 import 'components/option_menu.dart';
 import 'components/video_source_menu.dart';
 import 'state.dart';
@@ -94,6 +95,35 @@ Widget buildView(
     Overlay.of(viewService.context).insert(menuOverlayEntry);
   }
 
+  void _showDownloadMenu() {
+    OverlayEntry menuOverlayEntry;
+    menuOverlayEntry = OverlayEntry(
+      builder: (context) {
+        return Stack(
+          children: <Widget>[
+            Positioned.fill(
+                child: GestureDetector(
+              onTap: () => _closeMenu(menuOverlayEntry),
+              child: Container(
+                color: Colors.transparent,
+              ),
+            )),
+            DownloadMenu(
+              links: state.streamLinks?.list ?? [],
+              tvName: state.tvName,
+              playVideo: (d) {
+                _closeMenu(menuOverlayEntry);
+                BottomPanelActionCreator.seletedLink(d);
+              },
+            ),
+          ],
+        );
+      },
+    );
+    state.overlayStateKey.currentState.setOverlayEntry(menuOverlayEntry);
+    Overlay.of(viewService.context).insert(menuOverlayEntry);
+  }
+
   final _theme = ThemeStyle.getTheme(viewService.context);
   return OverlayEntryManage(
     key: state.overlayStateKey,
@@ -140,10 +170,13 @@ Widget buildView(
                 color: const Color(0xFFFFFFFF),
               )),
           SizedBox(width: Adapt.px(70)),
-          Icon(
-            Icons.file_download,
-            size: Adapt.px(30),
-            color: const Color(0xFFFFFFFF),
+          GestureDetector(
+            onTap: _showDownloadMenu,
+            child: Icon(
+              Icons.file_download,
+              size: Adapt.px(30),
+              color: const Color(0xFFFFFFFF),
+            ),
           ),
           Spacer(),
           GestureDetector(

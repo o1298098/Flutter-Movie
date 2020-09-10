@@ -131,7 +131,7 @@ class _LinkCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
-    final _domain = _getDomain(link.streamLink);
+    final _domain = _getDomain(link.streamLink, link.streamLinkType.name);
     final _date = DateFormat.yMMMd().format(DateTime.parse(link.updateTime));
     final _borderColor = _theme.brightness == Brightness.light
         ? const Color(0xFF858585)
@@ -306,7 +306,9 @@ class _FilterOption extends StatelessWidget {
   }
 }
 
-_getDomain(String url) {
+_getDomain(String url, String type) {
+  if (type.toLowerCase() == 'youtube') return 'youtube';
+  if (type.toLowerCase() == 'torrent') return 'torrent';
   final _strArray = url.split('/');
   if (_strArray.length > 3) return _strArray[2];
   return url;

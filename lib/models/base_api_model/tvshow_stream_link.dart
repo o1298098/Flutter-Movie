@@ -44,7 +44,11 @@ class TvShowStreamLink {
   bool needAd;
   bool externalBrowser;
   StreamLinkType streamLinkType;
-
+  factory TvShowStreamLink(jsonStr) => jsonStr == null
+      ? null
+      : jsonStr is String
+          ? new TvShowStreamLink.fromJson(json.decode(jsonStr))
+          : new TvShowStreamLink.fromJson(jsonStr);
   TvShowStreamLink.fromParams(
       {this.episode,
       this.language,

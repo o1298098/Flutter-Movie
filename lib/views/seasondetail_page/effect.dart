@@ -69,6 +69,7 @@ Future _episodeCellTapped(
             child: EpisodeLiveStreamPage().buildPage(
               {
                 'tvid': ctx.state.tvid,
+                'tvName': ctx.state.name,
                 'selectedEpisode': action.payload,
                 'season': ctx.state.seasonDetailModel
               },

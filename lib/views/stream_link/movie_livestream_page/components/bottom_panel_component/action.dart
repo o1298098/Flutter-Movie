@@ -15,6 +15,7 @@ enum BottomPanelAction {
   reportStreamLink,
   requestStreamLink,
   showStreamlinkFilter,
+  downloadTap,
 }
 
 class BottomPanelActionCreator {
@@ -70,5 +71,9 @@ class BottomPanelActionCreator {
 
   static Action showStreamLinkFilter() {
     return const Action(BottomPanelAction.showStreamlinkFilter);
+  }
+
+  static Action downloadTap() {
+    return const Action(BottomPanelAction.downloadTap);
   }
 }

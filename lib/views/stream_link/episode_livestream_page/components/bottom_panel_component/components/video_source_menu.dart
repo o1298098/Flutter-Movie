@@ -112,12 +112,16 @@ class _LinkCell extends StatelessWidget {
         height: 45,
         child: Row(
           children: [
-            Column(
+            SizedBox(
+              width: 110,
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     _domain,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: _textStyle,
                   ),
                   SizedBox(height: 3),
@@ -125,7 +129,9 @@ class _LinkCell extends StatelessWidget {
                     data.language.name,
                     style: _subTextStyle,
                   ),
-                ]),
+                ],
+              ),
+            ),
             Spacer(),
             Text(
               data.quality.name,

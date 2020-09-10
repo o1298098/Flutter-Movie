@@ -68,7 +68,7 @@ dependencies:
   firebase_ml_vision: ^0.9.4
   lottie: ^0.4.0+1
   package_info: ^0.4.0+16
-  flutter_downloader: ^1.4.3
+  flutter_downloader: ^1.5.0
   flutter_braintree: ^0.6.0
   camera: ^0.5.8+2
   flutter_local_notifications: ^1.4.4+1
