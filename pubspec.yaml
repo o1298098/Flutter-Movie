@@ -81,13 +81,6 @@ dev_dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  flutter_launcher_icons: ^0.7.3
-
-flutter_icons:
-  android: true
-  ios: true
-  image_path: "images/icons/icon3.png"
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

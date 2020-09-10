@@ -41,9 +41,14 @@ Paypal: sb-dhwa71528371@personal.example.com   password: o1298098
 <img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios7.jpeg" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios23.jpeg" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios12.jpeg" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios13.jpeg" width="150">  
 <img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios24.jpeg" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios19.gif" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios20.jpeg" width="150"><img src="https://github.com/o1298098/Flutter-Movie/blob/master/srceenshot/ios22.jpeg" width="150">
 
+## Other
+home page based on https://dribbble.com/shots/6070474--Movie  
+season page based on https://dribbble.com/shots/6379112-TV-Streaming-App  
+premium page based on https://dribbble.com/shots/10558858--1-UI-Challenge-OTT-Subscription  
+create card page based on https://dribbble.com/shots/6440077-Add-a-New-Credit-Card-alternate-flow
 
 ## LICENSE
-    Copyright 2020 Tejaswa Gupta
+    Copyright 2019 o1298098
     
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

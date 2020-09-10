@@ -141,6 +141,7 @@ class _CastCell extends StatelessWidget {
             ),
             SizedBox(height: Adapt.px(8)),
             Flexible(
+              //* Added FLexible and AutoResize text due to facing renderflex overflow error here
               child: AutoSizeText(
                 data.name,
                 textAlign: TextAlign.center,
