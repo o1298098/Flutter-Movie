@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
@@ -139,15 +140,18 @@ class _CastCell extends StatelessWidget {
               ),
             ),
             SizedBox(height: Adapt.px(8)),
-            Text(
-              data.name,
-              textAlign: TextAlign.center,
-              maxLines: 3,
-              overflow: TextOverflow.fade,
-              style: TextStyle(
-                fontSize: Adapt.px(24),
-                color: const Color(0xFF717171),
-                fontWeight: FontWeight.w600,
+            Flexible(
+              //* Added FLexible and AutoResize text due to facing renderflex overflow error here
+              child: AutoSizeText(
+                data.name,
+                textAlign: TextAlign.center,
+                maxLines: 3,
+                overflow: TextOverflow.fade,
+                style: TextStyle(
+                  fontSize: Adapt.px(24),
+                  color: const Color(0xFF717171),
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ],
