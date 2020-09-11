@@ -48,7 +48,7 @@ Widget buildView(
               icon: Icon(
                   state.selectedIndex == 0 ? Icons.home : Icons.home_outlined,
                   size: Adapt.px(44)),
-              title: Text(I18n.of(context).home),
+              label: I18n.of(context).home,
             ),
             BottomNavigationBarItem(
               icon: Icon(
@@ -56,7 +56,7 @@ Widget buildView(
                       ? Icons.movie_creation
                       : Icons.movie_creation_outlined,
                   size: Adapt.px(44)),
-              title: Text(I18n.of(context).discover),
+              label: I18n.of(context).discover,
             ),
             BottomNavigationBarItem(
               icon: Icon(
@@ -64,7 +64,7 @@ Widget buildView(
                       ? Icons.calendar_today
                       : Icons.calendar_today_outlined,
                   size: Adapt.px(44)),
-              title: Text(I18n.of(context).coming),
+              label: I18n.of(context).coming,
             ),
             BottomNavigationBarItem(
               icon: Icon(
@@ -73,7 +73,7 @@ Widget buildView(
                     : Icons.account_circle_outlined,
                 size: Adapt.px(44),
               ),
-              title: Text(I18n.of(context).account),
+              label: I18n.of(context).account,
             ),
           ],
           currentIndex: state.selectedIndex,
