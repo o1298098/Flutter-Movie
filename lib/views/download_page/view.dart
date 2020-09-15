@@ -1,15 +1,12 @@
 import 'dart:isolate';
 import 'dart:ui';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:intl/intl.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/download_queue.dart';
-import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/style/themestyle.dart';
 import 'action.dart';
 import 'state.dart';
@@ -33,46 +30,30 @@ Widget buildView(
         ),
         body: Container(
           color: _theme.primaryColorLight,
-          child: Stack(
-            fit: StackFit.passthrough,
-            children: [
-              _NewTaskCell(
-                name: state.name,
-                posterUrl: state.posterUrl,
-                onDownload: () =>
-                    dispatch(DownloadPageActionCreator.createTask()),
+          child: Container(
+            decoration: BoxDecoration(
+              color: _theme.backgroundColor,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(Adapt.px(60)),
               ),
-              SlideTransition(
-                position: Tween(begin: Offset(0, 0.2), end: Offset.zero)
-                    .animate(CurvedAnimation(
-                        parent: state.animationController, curve: Curves.ease)),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: _theme.backgroundColor,
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(Adapt.px(60)),
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      SizedBox(height: Adapt.px(40)),
-                      _OperateGroup(
-                        startAllTasks: () =>
-                            dispatch(DownloadPageActionCreator.startAllTasks()),
-                        pauseAllTasks: () =>
-                            dispatch(DownloadPageActionCreator.pauseAllTasks()),
-                      ),
-                      SizedBox(height: Adapt.px(20)),
-                      _DownLoadTaskList(
-                        key: ValueKey("downloadKey"),
-                        dispatch: dispatch,
-                        tasks: state.downloadTask,
-                      ),
-                    ],
-                  ),
+            ),
+            child: Column(
+              children: [
+                SizedBox(height: Adapt.px(40)),
+                _OperateGroup(
+                  startAllTasks: () =>
+                      dispatch(DownloadPageActionCreator.startAllTasks()),
+                  pauseAllTasks: () =>
+                      dispatch(DownloadPageActionCreator.pauseAllTasks()),
                 ),
-              ),
-            ],
+                SizedBox(height: Adapt.px(20)),
+                _DownLoadTaskList(
+                  key: ValueKey("downloadKey"),
+                  dispatch: dispatch,
+                  tasks: state.downloadTask,
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -91,8 +72,7 @@ class _OperateGroup extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: Adapt.px(50)),
       child: Row(children: [
         Text('Download tasks',
-            style:
-                TextStyle(fontWeight: FontWeight.bold, fontSize: Adapt.px(35))),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
         Expanded(child: SizedBox()),
         GestureDetector(
           onTap: startAllTasks,
@@ -100,81 +80,31 @@ class _OperateGroup extends StatelessWidget {
             padding: EdgeInsets.all(Adapt.px(10)),
             decoration: BoxDecoration(
                 color: Colors.blueAccent,
-                borderRadius: BorderRadius.circular(Adapt.px(20))),
-            child: Icon(Icons.file_download, color: Color(0xFFFFFFFF)),
+                borderRadius: BorderRadius.circular(8)),
+            child: Icon(
+              Icons.file_download,
+              color: Color(0xFFFFFFFF),
+              size: 18,
+            ),
           ),
         ),
-        SizedBox(width: Adapt.px(40)),
+        SizedBox(width: 10),
         GestureDetector(
           onTap: pauseAllTasks,
           child: Container(
             padding: EdgeInsets.all(Adapt.px(10)),
             decoration: BoxDecoration(
                 color: Colors.redAccent,
-                borderRadius: BorderRadius.circular(Adapt.px(20))),
-            child: Icon(Icons.pause, color: Color(0xFFFFFFFF)),
+                borderRadius: BorderRadius.circular(8)),
+            child: Icon(
+              Icons.pause,
+              color: Color(0xFFFFFFFF),
+              size: 18,
+            ),
           ),
         ),
       ]),
     );
-  }
-}
-
-class _NewTaskCell extends StatelessWidget {
-  final String posterUrl;
-  final String name;
-  final String streamAddress;
-  final Function onDownload;
-  const _NewTaskCell(
-      {this.name, this.posterUrl, this.streamAddress, this.onDownload});
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: Adapt.px(40), vertical: Adapt.px(20)),
-        child: Row(
-          children: [
-            Container(
-              width: Adapt.px(200),
-              height: Adapt.px(230),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: CachedNetworkImageProvider(
-                    ImageUrl.getUrl(posterUrl, ImageSize.w400),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: Adapt.px(350),
-              child: Text(
-                name ?? '',
-                style: TextStyle(
-                    fontSize: Adapt.px(30), fontWeight: FontWeight.bold),
-              ),
-            ),
-            SizedBox(height: Adapt.px(30)),
-            GestureDetector(
-              onTap: onDownload,
-              child: Container(
-                width: Adapt.px(100),
-                height: Adapt.px(100),
-                decoration: BoxDecoration(
-                  color: Colors.blueAccent,
-                  borderRadius: BorderRadius.circular(
-                    Adapt.px(20),
-                  ),
-                ),
-                child: Center(
-                  child: Icon(
-                    Icons.file_download,
-                    color: Color(0xFFFFFFFF),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ));
   }
 }
 
@@ -239,10 +169,10 @@ class _TaskItem extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: Adapt.px(80),
-              height: Adapt.px(80),
+              width: 30,
+              height: 30,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Adapt.px(20)),
+                borderRadius: BorderRadius.circular(8),
                 color: _taskCellColors[_fileExtension],
               ),
               child: Center(
@@ -250,7 +180,7 @@ class _TaskItem extends StatelessWidget {
                 _fileExtension,
                 style: TextStyle(
                     color: const Color(0xFFFFFFFF),
-                    fontSize: Adapt.px(24),
+                    fontSize: 10,
                     fontWeight: FontWeight.bold),
               )),
             ),
@@ -264,7 +194,7 @@ class _TaskItem extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: Adapt.px(28),
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -272,7 +202,7 @@ class _TaskItem extends StatelessWidget {
                     Text(
                       'Added ${DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(task.timeCreated))}',
                       style: TextStyle(
-                        fontSize: Adapt.px(26),
+                        fontSize: 10,
                         color: const Color(0xFF9E9E9E),
                       ),
                     )
@@ -280,10 +210,10 @@ class _TaskItem extends StatelessWidget {
             ),
             SizedBox(width: Adapt.px(30)),
             Container(
-              width: Adapt.px(65),
-              height: Adapt.px(65),
+              width: 30,
+              height: 30,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Adapt.px(20)),
+                borderRadius: BorderRadius.circular(8),
                 color: _theme.primaryColorDark,
               ),
               child: GestureDetector(
@@ -293,15 +223,15 @@ class _TaskItem extends StatelessWidget {
                     color: task.status == DownloadTaskStatus.running
                         ? Colors.red
                         : Colors.blueAccent,
-                    size: Adapt.px(35),
+                    size: 18,
                   )),
             ),
             Container(
-              width: Adapt.px(65),
-              height: Adapt.px(65),
-              margin: EdgeInsets.only(left: Adapt.px(40)),
+              width: 30,
+              height: 30,
+              margin: EdgeInsets.only(left: 10),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Adapt.px(20)),
+                borderRadius: BorderRadius.circular(8),
                 color: _theme.primaryColorDark,
               ),
               child: GestureDetector(
@@ -309,7 +239,7 @@ class _TaskItem extends StatelessWidget {
                 child: Icon(
                   Icons.delete,
                   color: Colors.red,
-                  size: Adapt.px(35),
+                  size: 18,
                 ),
               ),
             )

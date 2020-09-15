@@ -109,8 +109,8 @@ Widget buildView(
               links: state.streamLinks?.list ?? [],
               movieName: state.movieName,
               playVideo: (d) {
+                dispatch(BottomPanelActionCreator.seletedLink(d));
                 _closeMenu(menuOverlayEntry);
-                BottomPanelActionCreator.seletedLink(d);
               },
             ),
           ],

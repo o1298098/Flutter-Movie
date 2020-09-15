@@ -5,6 +5,7 @@ import 'package:movie/models/app_user.dart';
 import 'package:movie/models/item.dart';
 import 'package:movie/widgets/overlay_entry_manage.dart';
 
+import 'components/data_panel_component/state.dart';
 import 'components/settings_component/state.dart';
 import 'components/user_data_component/state.dart';
 import 'components/user_info_component/state.dart';
@@ -18,6 +19,7 @@ class AccountState implements GlobalBaseState, Cloneable<AccountState> {
   UserInfoState userInfoState;
   SettingsState settingsState;
   UserDataState userDataState;
+  DataPanelState dataPanelState;
   @override
   AccountState clone() {
     return AccountState()
@@ -28,7 +30,8 @@ class AccountState implements GlobalBaseState, Cloneable<AccountState> {
       ..user = user
       ..userInfoState = userInfoState
       ..settingsState = settingsState
-      ..userDataState = userDataState;
+      ..userDataState = userDataState
+      ..dataPanelState = dataPanelState;
   }
 
   @override
@@ -48,6 +51,7 @@ AccountState initState(Map<String, dynamic> args) {
   state.userInfoState = UserInfoState()
     ..overlayStateKey = GlobalKey<OverlayEntryManageState>();
   state.userDataState = UserDataState();
+  state.dataPanelState = DataPanelState();
   state.settingsState = SettingsState()
     ..appLanguage = Item.fromParams(name: "System Default")
     ..adultContent = false

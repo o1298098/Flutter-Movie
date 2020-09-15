@@ -25,10 +25,7 @@ Widget buildView(
               physics: BouncingScrollPhysics(),
               slivers: [
                 viewService.buildComponent('userInfo'),
-                _SecondPanel(
-                  onTap: () => dispatch(
-                      AccountActionCreator.showTip('show tip by user tapped')),
-                ),
+                viewService.buildComponent('dataPanel'),
                 SliverToBoxAdapter(
                     child: _TipPanel(
                   show: state.showTip,
@@ -55,88 +52,6 @@ Widget buildView(
       );
     },
   );
-}
-
-class _SecondPanel extends StatelessWidget {
-  final Function onTap;
-  const _SecondPanel({this.onTap});
-  @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          margin: EdgeInsets.only(bottom: 25),
-          height: Adapt.px(220),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: const Color(0xFF5568E8),
-            image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage('images/account_bar_background.png')),
-          ),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('100',
-                        style: TextStyle(
-                          color: const Color(0xFFFFFFFF),
-                          fontSize: Adapt.px(24),
-                        )),
-                    SizedBox(height: 5),
-                    Text('Place',
-                        style: TextStyle(
-                            color: const Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.bold,
-                            fontSize: Adapt.px(26)))
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('80',
-                        style: TextStyle(
-                          color: const Color(0xFFFFFFFF),
-                          fontSize: Adapt.px(24),
-                        )),
-                    SizedBox(height: 5),
-                    Text('What',
-                        style: TextStyle(
-                            color: const Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.bold,
-                            fontSize: Adapt.px(26)))
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('203',
-                        style: TextStyle(
-                          color: const Color(0xFFFFFFFF),
-                          fontSize: Adapt.px(24),
-                        )),
-                    SizedBox(height: 5),
-                    Text('Here?',
-                        style: TextStyle(
-                            color: const Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.bold,
-                            fontSize: Adapt.px(26)))
-                  ],
-                ),
-                Icon(
-                  Icons.keyboard_arrow_right,
-                  color: const Color(0xFFFFFFFF),
-                  size: 30,
-                )
-              ]),
-        ),
-      ),
-    );
-  }
 }
 
 class _TipPanel extends StatefulWidget {

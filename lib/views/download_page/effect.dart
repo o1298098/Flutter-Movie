@@ -1,17 +1,12 @@
-import 'dart:io';
-
 import 'package:fish_redux/fish_redux.dart';
-import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:movie/models/download_queue.dart';
-import 'package:path_provider/path_provider.dart';
 import 'action.dart';
 import 'state.dart';
 
 Effect<DownloadPageState> buildEffect() {
   return combineEffects(<Object, Effect<DownloadPageState>>{
     DownloadPageAction.action: _onAction,
-    DownloadPageAction.createTask: _createTask,
     DownloadPageAction.startAllTasks: _startAllTasks,
     DownloadPageAction.pauseAllTasks: _pauseAllTasks,
     DownloadPageAction.taskCellActionTapped: _taskCellActionTapped,
@@ -24,45 +19,11 @@ Effect<DownloadPageState> buildEffect() {
 void _onAction(Action action, Context<DownloadPageState> ctx) async {}
 
 void _onInit(Action action, Context<DownloadPageState> ctx) async {
-  Object _ticker = ctx.stfState;
-  ctx.state.animationController = AnimationController(
-      vsync: _ticker, duration: Duration(milliseconds: 300));
-  if (ctx.state.name == null ||
-      ctx.state.posterUrl == null ||
-      ctx.state.streamAddress == null)
-    ctx.state.animationController.value = 1.0;
   final _task = await FlutterDownloader.loadTasks();
   ctx.dispatch(DownloadPageActionCreator.setDownloadTaks(_task));
 }
 
-void _onDispose(Action action, Context<DownloadPageState> ctx) async {
-  ctx.state.animationController?.dispose();
-}
-
-void _createTask(Action action, Context<DownloadPageState> ctx) async {
-  ctx.state.animationController.forward();
-  try {
-    final _localPath =
-        (await _findLocalPath()) + Platform.pathSeparator + 'Download';
-    final _savedDir = Directory(_localPath);
-    bool hasExisted = await _savedDir.exists();
-    if (!hasExisted) {
-      _savedDir.create();
-    }
-    final _taskId = await FlutterDownloader.enqueue(
-      url: ctx.state.streamAddress,
-      fileName: ctx.state.name + _getFileExtension(ctx.state.streamAddress),
-      savedDir: _localPath,
-      showNotification: true,
-      openFileFromNotification: true,
-    );
-    print(_taskId);
-    ctx.dispatch(DownloadPageActionCreator.setDownloadTaks(
-        await FlutterDownloader.loadTasks()));
-  } on Exception catch (_) {
-    print(_);
-  }
-}
+void _onDispose(Action action, Context<DownloadPageState> ctx) async {}
 
 void _deleteTask(Action action, Context<DownloadPageState> ctx) async {
   final String _taskId = action.payload;
@@ -127,17 +88,4 @@ void _taskCellActionTapped(
   if (_shouldRefesh)
     ctx.dispatch(DownloadPageActionCreator.setDownloadTaks(
         await FlutterDownloader.loadTasks()));
-}
-
-Future<String> _findLocalPath() async {
-  final directory = Platform.isAndroid
-      ? await getExternalStorageDirectory()
-      : await getApplicationDocumentsDirectory();
-  return directory.path;
-}
-
-String _getFileExtension(String address) {
-  List<String> _fileExtensions = ['mp4', 'm3u8', 'mkv', 'mov', 'webm'];
-  String _fileExtension = address.split('.').last ?? '';
-  return _fileExtensions.contains(_fileExtension) ? '.$_fileExtension' : '';
 }

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -26,6 +27,7 @@ class PlayerPanel extends StatefulWidget {
   final bool useVideoSourceApi;
   final bool needAd;
   final bool loading;
+  final bool autoPlay;
   final int linkId;
   const PlayerPanel({
     Key key,
@@ -37,6 +39,7 @@ class PlayerPanel extends StatefulWidget {
     this.useVideoSourceApi = true,
     this.streamInBrowser = false,
     this.needAd = false,
+    this.autoPlay = false,
   })  : assert(streamLink != null),
         super(key: key);
   @override
@@ -209,6 +212,11 @@ class _Player extends StatelessWidget {
       case 'urlresolver':
       case 'other':
         return VideoPlayer(videoUrl: streamLink);
+      case 'localFile':
+        return VideoPlayer(
+          videoUrl: streamLink,
+          localFile: true,
+        );
       case 'Torrent':
         return WebTorrentPlayer(
           key: ValueKey(streamLink),
@@ -225,7 +233,8 @@ class _Player extends StatelessWidget {
 
 class VideoPlayer extends StatefulWidget {
   final String videoUrl;
-  const VideoPlayer({@required this.videoUrl});
+  final bool localFile;
+  const VideoPlayer({@required this.videoUrl, this.localFile = false});
   @override
   _VideoPlayerState createState() => _VideoPlayerState();
 }
@@ -241,7 +250,9 @@ class _VideoPlayerState extends State<VideoPlayer> {
   }
 
   _init() {
-    _videoPlayerController = VideoPlayerController.network(widget.videoUrl);
+    _videoPlayerController = widget.localFile
+        ? VideoPlayerController.file(File(widget.videoUrl))
+        : VideoPlayerController.network(widget.videoUrl);
     _videoPlayerController.initialize().then((value) {
       _chewieController = ChewieController(
         videoPlayerController: _videoPlayerController,

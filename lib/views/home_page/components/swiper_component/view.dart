@@ -89,7 +89,7 @@ class _Cell extends StatelessWidget {
                             style: TextStyle(
                                 //color: Colors.black,
                                 fontWeight: FontWeight.w800,
-                                fontSize: Adapt.px(35)),
+                                fontSize: Adapt.px(28)),
                           ),
                         ),
                         Container(
@@ -120,7 +120,7 @@ class _Cell extends StatelessWidget {
                         data.overview,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: Adapt.px(24)),
+                        style: TextStyle(fontSize: Adapt.px(22)),
                       ),
                     )
                   ],

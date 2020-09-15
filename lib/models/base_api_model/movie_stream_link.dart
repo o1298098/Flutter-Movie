@@ -84,6 +84,6 @@ class MovieStreamLink {
 
   @override
   String toString() {
-    return '{"language": $language,"movieId": $movieId,"quality": $quality,"sid": $sid,"streamLinkType": ${streamLink != null ? '${json.encode(streamLink)}' : 'null'}Type,"linkName": ${linkName != null ? '${json.encode(linkName)}' : 'null'},"streamLink": ${streamLink != null ? '${json.encode(streamLink)}' : 'null'},"uid": ${uid != null ? '${json.encode(uid)}' : 'null'},"updateTime": ${updateTime != null ? '${json.encode(updateTime)}' : 'null'},"languageNavigation": $language,"qualityNavigation": $quality,"streamLinkTypeNavigation": $streamLinkType,"needAd": $needAd,"externalBrowser": $externalBrowser}';
+    return '{"languageNavigation": $language,"movieId": $movieId,"qualityNavigation": $quality,"sid": $sid,"streamLinkTypeNavigation": $streamLinkType,"needAd": $needAd,"externalBrowser": $externalBrowser,"streamLink":${streamLink != null ? '${json.encode(streamLink)}' : 'null'},"needAd":$needAd,"externalBrowser":$externalBrowser}';
   }
 }

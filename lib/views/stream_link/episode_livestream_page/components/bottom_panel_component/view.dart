@@ -109,11 +109,14 @@ Widget buildView(
               ),
             )),
             DownloadMenu(
-              links: state.streamLinks?.list ?? [],
+              links: state.streamLinks?.list
+                      ?.where((e) => e.episode == state.selectEpisode)
+                      ?.toList() ??
+                  [],
               tvName: state.tvName,
               playVideo: (d) {
                 _closeMenu(menuOverlayEntry);
-                BottomPanelActionCreator.seletedLink(d);
+                dispatch(BottomPanelActionCreator.seletedLink(d));
               },
             ),
           ],

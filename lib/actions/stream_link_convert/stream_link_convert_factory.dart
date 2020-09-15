@@ -41,6 +41,7 @@ class StreamLinkConvertFactory {
     'clipwatching',
     'cloudvideo',
     'dood',
+    'feurl',
     'fembed',
     'gamovideo',
     'gounlimited',
@@ -89,6 +90,7 @@ class StreamLinkConvertFactory {
       case 'dood':
         _link = await Dood.getUrl(link);
         break;
+      case 'feurl':
       case 'fembed':
         _link = await Fembed.getUrl(link);
         break;

@@ -88,6 +88,6 @@ class TvShowStreamLink {
 
   @override
   String toString() {
-    return '{"episode": $episode,"language": $language,"quality": $quality,"season": $season,"sid": $sid,"streamLinkType": ${streamLink != null ? '${json.encode(streamLink)}' : 'null'}Type,"tvId": $tvId,"linkName": ${linkName != null ? '${json.encode(linkName)}' : 'null'},"streamLink": ${streamLink != null ? '${json.encode(streamLink)}' : 'null'},"uid": ${uid != null ? '${json.encode(uid)}' : 'null'},"updateTime": ${updateTime != null ? '${json.encode(updateTime)}' : 'null'},"languageNavigation": $language,"qualityNavigation": $quality,"streamLinkTypeNavigation": $streamLinkType,"needAd":$needAd,"externalBrowser":$externalBrowser}';
+    return '{"episode": $episode,"season": $season,"sid": $sid,"streamLink": ${streamLink != null ? '${json.encode(streamLink)}' : 'null'},"tvId": $tvId,"linkName": ${linkName != null ? '${json.encode(linkName)}' : 'null'},"streamLink": ${streamLink != null ? '${json.encode(streamLink)}' : 'null'},"uid": ${uid != null ? '${json.encode(uid)}' : 'null'},"updateTime": ${updateTime != null ? '${json.encode(updateTime)}' : 'null'},"languageNavigation": $language,"qualityNavigation": $quality,"streamLinkTypeNavigation": $streamLinkType,"needAd":$needAd,"externalBrowser":$externalBrowser}';
   }
 }

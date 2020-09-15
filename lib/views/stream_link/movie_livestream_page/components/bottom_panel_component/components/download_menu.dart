@@ -183,9 +183,9 @@ class _DownLoadTaskListState extends State<_DownLoadTaskList> {
         orElse: () => null);
     if (_task == null) return;
     MovieStreamLink _link = MovieStreamLink(link.toString());
-    _link.streamLink = _task.savedDir;
+    _link.streamLink = '${_task.savedDir}/${_task.filename}';
     _link.streamLinkType.id = 99;
-    _link.streamLinkType.name = 'loaclFile';
+    _link.streamLinkType.name = 'localFile';
     widget.onPlayVideo(_link);
   }
 

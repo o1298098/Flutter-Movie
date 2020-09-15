@@ -102,9 +102,9 @@ Future<AuthResult> _emailSignIn(
   if (ctx.state.accountTextController.text != '' &&
       ctx.state.passWordTextController.text != '') {
     try {
+      final _email = ctx.state.accountTextController.text.trim();
       return await _auth.signInWithEmailAndPassword(
-          email: ctx.state.accountTextController.text,
-          password: ctx.state.passWordTextController.text);
+          email: _email, password: ctx.state.passWordTextController.text);
     } on Exception catch (e) {
       Toast.show(e.toString(), ctx.context, duration: 3, gravity: Toast.BOTTOM);
       ctx.state.submitAnimationController.reverse();
