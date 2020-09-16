@@ -21,6 +21,8 @@ class BottomPanelState implements Cloneable<BottomPanelState> {
   int commentCount;
   int selectEpisode;
   String tvName;
+  String preferHost;
+  String defaultVideoLanguage;
   GlobalKey<OverlayEntryManageState> overlayStateKey;
 
   @override
@@ -39,7 +41,9 @@ class BottomPanelState implements Cloneable<BottomPanelState> {
       ..selectEpisode = selectEpisode
       ..commentState = commentState
       ..overlayStateKey = overlayStateKey
-      ..streamLinkFilterState = streamLinkFilterState;
+      ..streamLinkFilterState = streamLinkFilterState
+      ..preferHost = preferHost
+      ..defaultVideoLanguage = defaultVideoLanguage;
   }
 }
 

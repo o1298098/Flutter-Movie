@@ -1,23 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/style/themestyle.dart';
+import 'package:movie/widgets/host_dialog.dart';
+import 'package:movie/widgets/language_dialog.dart';
 
 import 'arrow_clipper.dart';
 
 class OptionMenu extends StatelessWidget {
   final bool useVideoSourceApi;
   final bool streamInBrowser;
+  final String languageCode;
+  final String host;
+  final Function closeMenu;
   final Function(bool) onUseApiTap;
   final Function(bool) onStreamInBrowserTap;
+  final Function(String) onLanguageSelected;
+  final Function(String) onHostSelected;
   final Function reportTap;
   final Function streamLinkRequestTap;
-  const OptionMenu(
-      {this.useVideoSourceApi = false,
-      this.streamInBrowser = false,
-      this.onUseApiTap,
-      this.onStreamInBrowserTap,
-      this.reportTap,
-      this.streamLinkRequestTap});
+  const OptionMenu({
+    this.useVideoSourceApi = false,
+    this.streamInBrowser = false,
+    this.languageCode,
+    this.host,
+    this.closeMenu,
+    this.onHostSelected,
+    this.onLanguageSelected,
+    this.onUseApiTap,
+    this.onStreamInBrowserTap,
+    this.reportTap,
+    this.streamLinkRequestTap,
+  });
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
@@ -61,14 +74,32 @@ class OptionMenu extends StatelessWidget {
                 ),
                 child: Column(children: [
                   _OptionItem(
-                    icon: Icons.flag,
-                    title: 'Report',
-                    onTap: reportTap,
+                    onTap: () {
+                      closeMenu();
+                      showDialog(
+                        context: context,
+                        builder: (_) => HostDialog(
+                          onSelected: onHostSelected,
+                          selectedHost: host,
+                        ),
+                      );
+                    },
+                    icon: Icons.web,
+                    title: 'Prefer Host',
                   ),
                   _OptionItem(
-                    onTap: streamLinkRequestTap,
-                    icon: Icons.link,
-                    title: 'Request StreamLink',
+                    onTap: () {
+                      closeMenu();
+                      showDialog(
+                        context: context,
+                        builder: (_) => LanguageDialog(
+                          onTap: onLanguageSelected,
+                          selected: languageCode,
+                        ),
+                      );
+                    },
+                    icon: Icons.language,
+                    title: 'Default Language',
                   ),
                   _OptionCheckItem(
                     icon: Icons.settings_applications,
@@ -81,6 +112,16 @@ class OptionMenu extends StatelessWidget {
                     title: 'Stream in browser',
                     selected: streamInBrowser,
                     onTap: onStreamInBrowserTap,
+                  ),
+                  _OptionItem(
+                    onTap: streamLinkRequestTap,
+                    icon: Icons.link,
+                    title: 'Request StreamLink',
+                  ),
+                  _OptionItem(
+                    icon: Icons.flag,
+                    title: 'Report',
+                    onTap: reportTap,
                   ),
                 ]),
               ),

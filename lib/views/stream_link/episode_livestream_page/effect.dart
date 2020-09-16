@@ -4,6 +4,7 @@ import 'package:movie/actions/http/base_api.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/base_api_model/tvshow_stream_link.dart';
 import 'package:movie/models/episode_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -41,15 +42,18 @@ void _onInit(Action action, Context<EpisodeLiveStreamState> ctx) async {
   BaseApi.instance
       .getTvSeasonStreamLinks(
           ctx.state.tvid, ctx.state.selectedEpisode.seasonNumber)
-      .then((value) {
+      .then((value) async {
     TvShowStreamLink _link;
     if (value.success) {
-      if (value.result.list.length > 0)
+      TvShowStreamLinks _links = value.result;
+      if (value.result.list.length > 0) {
+        _links = await _sortStreamLink(_links);
         _link = value.result.list.firstWhere(
             (e) => e.episode == ctx.state.selectedEpisode.episodeNumber,
             orElse: () => null);
-      ctx.dispatch(
-          EpisodeLiveStreamActionCreator.setStreamLink(value.result, _link));
+      }
+
+      ctx.dispatch(EpisodeLiveStreamActionCreator.setStreamLink(_links, _link));
     } else
       ctx.dispatch(EpisodeLiveStreamActionCreator.setLoading(false));
   });
@@ -80,4 +84,28 @@ Future _getLike(Action action, Context<EpisodeLiveStreamState> ctx) async {
   if (_like.success)
     ctx.dispatch(EpisodeLiveStreamActionCreator.setLike(
         _like.result['likes'], _like.result['userLike']));
+}
+
+Future<TvShowStreamLinks> _sortStreamLink(TvShowStreamLinks links) async {
+  List<TvShowStreamLink> _lists = links.list;
+  final _pre = await SharedPreferences.getInstance();
+  if (_pre.containsKey('defaultVideoLanguage')) {
+    final _defaultVideoLanguage = _pre.getString('defaultVideoLanguage');
+    final _languageList =
+        _lists.where((e) => e.language.code == _defaultVideoLanguage).toList();
+    if (_languageList.length > 0) {
+      for (var d in _languageList) links.list.remove(d);
+      links.list.insertAll(0, _languageList);
+    }
+  }
+  if (_pre.containsKey('preferHost')) {
+    final _preferHost = _pre.getString('preferHost');
+    final _hostList =
+        _lists.where((e) => e.streamLink.contains(_preferHost)).toList();
+    if (_hostList.length > 0) {
+      for (var d in _hostList) links.list.remove(d);
+      links.list.insertAll(0, _hostList);
+    }
+  }
+  return links;
 }

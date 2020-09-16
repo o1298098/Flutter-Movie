@@ -23,6 +23,8 @@ Effect<BottomPanelState> buildEffect() {
     BottomPanelAction.reportStreamLink: _reportStreamLink,
     BottomPanelAction.requestStreamLink: _requestStreamLink,
     BottomPanelAction.showStreamlinkFilter: _showStreamlinkFilter,
+    BottomPanelAction.preferHostTap: _preferHostTap,
+    BottomPanelAction.defaultLanguageTap: _defaultLanguageTap,
   });
 }
 
@@ -63,13 +65,19 @@ Future _commentTap(Action action, Context<BottomPanelState> ctx) async {
 void _onInit(Action action, Context<BottomPanelState> ctx) async {
   bool _useVideoSourceApi = true;
   bool _streamInBrowser = false;
+  String _defaultVideoLanguage;
+  String _preferHost;
   final _pre = await SharedPreferences.getInstance();
   if (_pre.containsKey('useVideoSourceApi'))
     _useVideoSourceApi = _pre.getBool('useVideoSourceApi');
   if (_pre.containsKey('streamInBrowser'))
     _streamInBrowser = _pre.getBool('streamInBrowser');
-  ctx.dispatch(
-      BottomPanelActionCreator.setOption(_useVideoSourceApi, _streamInBrowser));
+  if (_pre.containsKey('defaultVideoLanguage'))
+    _defaultVideoLanguage = _pre.getString('defaultVideoLanguage');
+  if (_pre.containsKey('preferHost'))
+    _preferHost = _pre.getString('preferHost');
+  ctx.dispatch(BottomPanelActionCreator.setOption(_useVideoSourceApi,
+      _streamInBrowser, _defaultVideoLanguage, _preferHost));
 }
 
 Future _likeTvShow(Action action, Context<BottomPanelState> ctx) async {
@@ -150,4 +158,24 @@ void _showStreamlinkFilter(Action action, Context<BottomPanelState> ctx) async {
       },
     ),
   );
+}
+
+void _preferHostTap(Action action, Context<BottomPanelState> ctx) async {
+  final String _host = action.payload;
+  final _pre = await SharedPreferences.getInstance();
+  if (_host == null)
+    _pre.remove('preferHost');
+  else
+    _pre.setString('preferHost', _host);
+  ctx.dispatch(BottomPanelActionCreator.setPreferHost(_host));
+}
+
+void _defaultLanguageTap(Action action, Context<BottomPanelState> ctx) async {
+  final String _code = action.payload;
+  final _pre = await SharedPreferences.getInstance();
+  if (_code == null)
+    _pre.remove('defaultVideoLanguage');
+  else
+    _pre.setString('defaultVideoLanguage', _code);
+  ctx.dispatch(BottomPanelActionCreator.setDefaultLanguage(_code));
 }

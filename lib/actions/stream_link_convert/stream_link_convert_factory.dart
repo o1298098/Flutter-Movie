@@ -35,7 +35,7 @@ import 'vup.dart';
 class StreamLinkConvertFactory {
   StreamLinkConvertFactory._();
   static final StreamLinkConvertFactory instance = StreamLinkConvertFactory._();
-  List<String> _hosts = [
+  List<String> hosts = [
     'archive',
     'bitporno',
     'clipwatching',
@@ -177,7 +177,7 @@ class StreamLinkConvertFactory {
   }
 
   String _getDomain(String link) {
-    for (var e in _hosts) if (link.contains(e)) return e;
+    for (var e in hosts) if (link.contains(e)) return e;
     return '';
   }
 }

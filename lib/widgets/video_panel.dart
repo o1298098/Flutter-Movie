@@ -87,6 +87,7 @@ class _PlayerPanelState extends State<PlayerPanel>
     if (_needAd != widget.needAd && !_haveOpenAds) _setNeedAd(widget.needAd);
     if (_loading != widget.loading) _setLoading(widget.loading);
     if (_playerType != widget.playerType) _setPlayerType(widget.playerType);
+    //if (widget.autoPlay) _playTapped(context);
     super.didUpdateWidget(oldWidget);
   }
 
@@ -211,11 +212,11 @@ class _Player extends StatelessWidget {
         return WebViewPlayer(streamLink: streamLink, filterUrl: streamLink);
       case 'urlresolver':
       case 'other':
-        return VideoPlayer(videoUrl: streamLink);
+        return VideoPlayer(
+            controller: VideoPlayerController.network(streamLink));
       case 'localFile':
         return VideoPlayer(
-          videoUrl: streamLink,
-          localFile: true,
+          controller: VideoPlayerController.file(File(streamLink)),
         );
       case 'Torrent':
         return WebTorrentPlayer(
@@ -232,16 +233,14 @@ class _Player extends StatelessWidget {
 }
 
 class VideoPlayer extends StatefulWidget {
-  final String videoUrl;
-  final bool localFile;
-  const VideoPlayer({@required this.videoUrl, this.localFile = false});
+  final VideoPlayerController controller;
+  const VideoPlayer({this.controller});
   @override
   _VideoPlayerState createState() => _VideoPlayerState();
 }
 
 class _VideoPlayerState extends State<VideoPlayer> {
   ChewieController _chewieController;
-  VideoPlayerController _videoPlayerController;
 
   @override
   void initState() {
@@ -250,19 +249,16 @@ class _VideoPlayerState extends State<VideoPlayer> {
   }
 
   _init() {
-    _videoPlayerController = widget.localFile
-        ? VideoPlayerController.file(File(widget.videoUrl))
-        : VideoPlayerController.network(widget.videoUrl);
-    _videoPlayerController.initialize().then((value) {
+    widget.controller.initialize().then((value) {
       _chewieController = ChewieController(
-        videoPlayerController: _videoPlayerController,
+        videoPlayerController: widget.controller,
         customControls: CustomCupertinoControls(
           backgroundColor: Colors.black,
           iconColor: Colors.white,
         ),
         allowedScreenSleep: false,
         autoPlay: true,
-        aspectRatio: _videoPlayerController.value.aspectRatio,
+        aspectRatio: widget.controller.value.aspectRatio,
       );
       setState(() {});
     });
@@ -270,7 +266,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
 
   @override
   void dispose() {
-    _videoPlayerController?.dispose();
+    widget.controller?.dispose();
     _chewieController?.dispose();
     super.dispose();
   }
@@ -283,7 +279,9 @@ class _VideoPlayerState extends State<VideoPlayer> {
           ? Center(
               child: Container(
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation(const Color(0xFFFFFFFF)),
+                  valueColor: AlwaysStoppedAnimation(
+                    const Color(0xFFFFFFFF),
+                  ),
                 ),
               ),
             )

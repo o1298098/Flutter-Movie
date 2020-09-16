@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/app_language.dart';
+import 'package:movie/actions/stream_link_convert/stream_link_convert_factory.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/widgets/arrow_clipper.dart';
 
@@ -92,6 +93,7 @@ class _FilterMenuState extends State<FilterMenu> {
               ),
             ),
             Container(
+              width: _width,
               margin: EdgeInsets.only(top: _arrowSize / 2 - 1),
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -144,26 +146,10 @@ class _HostOption extends StatelessWidget {
   const _HostOption({this.selectedHost, this.onTap});
   @override
   Widget build(BuildContext context) {
-    final _hosts = [
-      "streamtape",
-      "upstream",
-      "uptostream",
-      "dood",
-      "mediafire",
-      "cloudvideo",
-      "onlystream",
-      "clipwatching",
-      "vidfast",
-      "vidoza",
-      "vidlox",
-      "gounlimited",
-      "supervideo",
-      "bitporno",
-    ];
     return Wrap(
       runSpacing: 8,
       spacing: 8,
-      children: _hosts
+      children: StreamLinkConvertFactory.instance.hosts
           .map(
             (e) => _WrapCell(
               title: e,

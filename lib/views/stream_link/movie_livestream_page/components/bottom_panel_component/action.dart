@@ -15,7 +15,10 @@ enum BottomPanelAction {
   reportStreamLink,
   requestStreamLink,
   showStreamlinkFilter,
-  downloadTap,
+  preferHostTap,
+  setPreferHost,
+  defaultLanguageTap,
+  setDefaultLanguage,
 }
 
 class BottomPanelActionCreator {
@@ -56,9 +59,10 @@ class BottomPanelActionCreator {
     return const Action(BottomPanelAction.commentTap);
   }
 
-  static Action setOption(bool useVideoSourceApi, bool streamInBrowser) {
+  static Action setOption(bool useVideoSourceApi, bool streamInBrowser,
+      String language, String host) {
     return Action(BottomPanelAction.setOption,
-        payload: [useVideoSourceApi, streamInBrowser]);
+        payload: [useVideoSourceApi, streamInBrowser, language, host]);
   }
 
   static Action reportStreamLink() {
@@ -73,7 +77,19 @@ class BottomPanelActionCreator {
     return const Action(BottomPanelAction.showStreamlinkFilter);
   }
 
-  static Action downloadTap() {
-    return const Action(BottomPanelAction.downloadTap);
+  static Action defaultLanguageTap(String code) {
+    return Action(BottomPanelAction.defaultLanguageTap, payload: code);
+  }
+
+  static Action setDefaultLanguage(String code) {
+    return Action(BottomPanelAction.setDefaultLanguage, payload: code);
+  }
+
+  static Action preferHostTap(String host) {
+    return Action(BottomPanelAction.preferHostTap, payload: host);
+  }
+
+  static Action setPreferHost(String host) {
+    return Action(BottomPanelAction.setPreferHost, payload: host);
   }
 }

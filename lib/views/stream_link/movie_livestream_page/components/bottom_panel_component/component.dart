@@ -22,6 +22,8 @@ class BottomPanelComponent extends Component<BottomPanelState> {
                 o.selectedLink != n.selectedLink ||
                 o.useVideoSourceApi != n.useVideoSourceApi ||
                 o.streamInBrowser != n.streamInBrowser ||
+                o.defaultVideoLanguage != n.defaultVideoLanguage ||
+                o.preferHost != n.preferHost ||
                 o.userLiked != n.userLiked;
           },
           dependencies: Dependencies<BottomPanelState>(

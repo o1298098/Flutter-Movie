@@ -9,6 +9,8 @@ import 'components/streamlink_filter_component/state.dart';
 
 class BottomPanelState implements Cloneable<BottomPanelState> {
   String movieName;
+  String preferHost;
+  String defaultVideoLanguage;
   MovieStreamLinks streamLinks;
   MovieStreamLink selectedLink;
   CommentState commentState;
@@ -34,7 +36,9 @@ class BottomPanelState implements Cloneable<BottomPanelState> {
       ..commentCount = commentCount
       ..commentState = commentState
       ..streamLinkFilterState = streamLinkFilterState
-      ..overlayStateKey = overlayStateKey;
+      ..overlayStateKey = overlayStateKey
+      ..preferHost = preferHost
+      ..defaultVideoLanguage = defaultVideoLanguage;
   }
 }
 

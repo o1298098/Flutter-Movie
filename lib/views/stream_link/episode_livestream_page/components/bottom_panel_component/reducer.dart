@@ -46,9 +46,13 @@ BottomPanelState _selectedLink(BottomPanelState state, Action action) {
 BottomPanelState _setOption(BottomPanelState state, Action action) {
   final bool _api = action.payload[0];
   final bool _streamInBrowser = action.payload[1];
+  final String _language = action.payload[2];
+  final String _host = action.payload[3];
   final BottomPanelState newState = state.clone();
   newState.useVideoSourceApi = _api;
   newState.streamInBrowser = _streamInBrowser;
+  newState.defaultVideoLanguage = _language;
+  newState.preferHost = _host;
   return newState;
 }
 
