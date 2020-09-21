@@ -13,7 +13,8 @@ import 'request.dart';
 
 class TMDBApi {
   TMDBApi._();
-  static final TMDBApi instance = TMDBApi._();
+  static final TMDBApi _instance = TMDBApi._();
+  static TMDBApi get instance => _instance;
 
   String _apikey;
   String _apikeyV4;

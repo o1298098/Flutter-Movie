@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/http/tmdb_api.dart';
-import 'package:movie/actions/http/base_api.dart';
+import 'package:movie/actions/api/tmdb_api.dart';
+import 'package:movie/actions/api/base_api.dart';
 import 'package:movie/widgets/gallery_photoview_wrapper.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/enums/imagesize.dart';

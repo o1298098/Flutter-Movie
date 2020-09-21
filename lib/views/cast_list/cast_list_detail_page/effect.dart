@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/http/base_api.dart';
-import 'package:movie/actions/http/graphql_client.dart';
+import 'package:movie/actions/api/base_api.dart';
+import 'package:movie/actions/api/graphql_client.dart';
 import 'package:movie/models/base_api_model/cast_list_detail.dart';
 import 'package:movie/views/peopledetail_page/page.dart';
 import 'package:toast/toast.dart';

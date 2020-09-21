@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/http/graphql_client.dart';
+import 'package:movie/actions/api/graphql_client.dart';
 import 'package:movie/models/base_api_model/base_cast_list.dart';
 import 'action.dart';
 import 'components/cast_list_create.dart';

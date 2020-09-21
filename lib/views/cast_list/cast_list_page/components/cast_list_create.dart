@@ -2,7 +2,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:movie/actions/http/graphql_client.dart';
+import 'package:movie/actions/api/graphql_client.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/base_api_model/base_cast_list.dart';
 import 'package:movie/style/themestyle.dart';

@@ -1,8 +1,7 @@
 import 'package:movie/models/enums/imagesize.dart';
 
 class ImageUrl {
-  static String emptyimage =
-      'http://www.shonephotography.com/wp-content/themes/trend/assets/img/empty/424x500.png';
+  static String emptyimage = 'https://www.color-hex.com/palettes/7707.png';
   static String getUrl(String param, ImageSize size) {
     String host = 'https://image.tmdb.org/t/p/';
     return param == null

@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:movie/actions/http/base_api.dart';
+import 'package:movie/actions/api/base_api.dart';
 import 'action.dart';
 import 'state.dart';
 

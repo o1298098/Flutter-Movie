@@ -1,10 +1,10 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/actions/http/tmdb_api.dart';
-import 'package:movie/actions/http/base_api.dart';
+import 'package:movie/actions/api/tmdb_api.dart';
+import 'package:movie/actions/api/base_api.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/base_api_model/user_media.dart';
 import 'package:movie/models/enums/media_type.dart';
-import 'package:movie/views/tvdetail_page/action.dart';
+import 'package:movie/views/tvshow_detail_page/action.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -43,7 +43,7 @@ void _setFavorite(Action action, Context<MenuState> ctx) async {
           mediaId: ctx.state.id,
           mediaType: 'tv'));
     await _baseApi.updateAccountState(ctx.state.accountState);
-    ctx.broadcast(TVDetailPageActionCreator.showSnackBar(!_isFavorite
+    ctx.broadcast(TvShowDetailActionCreator.showSnackBar(!_isFavorite
         ? 'has been mark as favorite'
         : 'has been removed from your favorites'));
   }
@@ -56,7 +56,7 @@ Future _setRating(Action action, Context<MenuState> ctx) async {
     final _baseApi = BaseApi.instance;
     _baseApi.updateAccountState(ctx.state.accountState);
     ctx.broadcast(
-        TVDetailPageActionCreator.showSnackBar('your rating has been saved'));
+        TvShowDetailActionCreator.showSnackBar('your rating has been saved'));
   }
 }
 
@@ -84,7 +84,7 @@ Future _setWatchlist(Action action, Context<MenuState> ctx) async {
           mediaId: ctx.state.id,
           mediaType: 'tv'));
     await _baseApi.updateAccountState(ctx.state.accountState);
-    ctx.broadcast(TVDetailPageActionCreator.showSnackBar(!_isWatchlist
+    ctx.broadcast(TvShowDetailActionCreator.showSnackBar(!_isWatchlist
         ? 'has been add to your watchlist'
         : 'has been removed from your watchlist'));
   }
@@ -93,7 +93,7 @@ Future _setWatchlist(Action action, Context<MenuState> ctx) async {
   final _tmdb = TMDBApi.instance;
   var r = await _tmdb.addToWatchlist(ctx.state.id, MediaType.movie, f);
   if (r)
-    ctx.broadcast(TVDetailPageActionCreator.showSnackBar(f
+    ctx.broadcast(TvShowDetailActionCreator.showSnackBar(f
         ? 'has been add to your watchlist'
         : 'has been removed from your watchlist'));
 }

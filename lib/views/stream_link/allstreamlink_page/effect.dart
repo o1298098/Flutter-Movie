@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action, Page;
-import 'package:movie/actions/http/base_api.dart';
+import 'package:movie/actions/api/base_api.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/sort_condition.dart';
 import 'package:movie/views/detail_page/page.dart';

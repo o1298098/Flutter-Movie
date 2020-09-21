@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/http/tmdb_api.dart';
-import 'package:movie/actions/http/base_api.dart';
+import 'package:movie/actions/api/tmdb_api.dart';
+import 'package:movie/actions/api/base_api.dart';
 import 'package:movie/models/episode_model.dart';
 import 'package:movie/models/season_detail.dart';
 import 'package:movie/views/stream_link/episode_livestream_page/page.dart';

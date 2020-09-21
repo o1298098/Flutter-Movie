@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/actions/http/base_api.dart';
+import 'package:movie/actions/api/base_api.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/base_api_model/user_list.dart';
 import 'package:movie/models/base_api_model/user_list_detail.dart';

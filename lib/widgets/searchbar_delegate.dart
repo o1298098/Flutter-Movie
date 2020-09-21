@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/actions/http/tmdb_api.dart';
+import 'package:movie/actions/api/tmdb_api.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/response_model.dart';
@@ -152,7 +152,7 @@ class SearchBarDelegate extends SearchDelegate<SearchResult> {
                           width: Adapt.screenW(),
                           child: Wrap(
                               spacing: Adapt.px(20),
-                              children: searchHistory.map((s) {
+                              children: searchHistory.take(10).map((s) {
                                 return ActionChip(
                                   avatar: Icon(
                                     Icons.history,

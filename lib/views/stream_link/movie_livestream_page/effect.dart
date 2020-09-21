@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/http/base_api.dart';
+import 'package:movie/actions/api/base_api.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/models/base_api_model/movie_stream_link.dart';
 import 'package:shared_preferences/shared_preferences.dart';

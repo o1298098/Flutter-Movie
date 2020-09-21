@@ -1,11 +1,12 @@
 import 'package:movie/actions/app_config.dart';
-import 'package:movie/actions/http/request.dart';
+import 'package:movie/actions/api/request.dart';
 import 'package:movie/models/models.dart';
 import 'dart:convert';
 
 class UrlResolverApi {
   UrlResolverApi._();
-  static final UrlResolverApi instance = UrlResolverApi._();
+  static final UrlResolverApi _instance = UrlResolverApi._();
+  static UrlResolverApi get instance => _instance;
   final Request _http = Request(AppConfig.instance.urlresolverApiHost);
   final String _apiKey = AppConfig.instance.urlresolverApiKey;
 

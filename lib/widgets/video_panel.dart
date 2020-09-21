@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/actions/imageurl.dart';
 import 'package:movie/actions/stream_link_convert/stream_link_convert_factory.dart';
-import 'package:movie/models/ad_target_info.dart';
+import 'package:movie/actions/ads_config.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/widgets/web_torrent_player.dart';
 import 'package:movie/widgets/webview_player.dart';
@@ -107,14 +107,14 @@ class _PlayerPanelState extends State<PlayerPanel>
           break;
         case RewardedVideoAdEvent.closed:
           if (_isRewarded) {
-            _haveOpenAds = true;
-            _setNeedAd(false);
             _startPlayer();
-          } else
-            print('closed');
+          }
+          print('closed');
           break;
         case RewardedVideoAdEvent.rewarded:
           _isRewarded = true;
+          _haveOpenAds = true;
+          _setNeedAd(false);
           print('rewarded');
           break;
         default:
@@ -131,7 +131,7 @@ class _PlayerPanelState extends State<PlayerPanel>
       _setLoading(true);
       _rewardedVideoAd.load(
           adUnitId: RewardedVideoAd.testAdUnitId,
-          targetingInfo: AdTargetInfo.targetingInfo);
+          targetingInfo: AdsConfig.targetingInfo);
       return;
     }
     await _startPlayer();
@@ -175,9 +175,7 @@ class _PlayerPanelState extends State<PlayerPanel>
   }
 
   _setNeedAd(bool needAd) {
-    setState(() {
-      _needAd = needAd;
-    });
+    _needAd = needAd;
   }
 
   @override

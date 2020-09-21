@@ -4,7 +4,8 @@ import 'request.dart';
 
 class GithubApi {
   GithubApi._();
-  static final GithubApi instance = GithubApi._();
+  static final GithubApi _instance = GithubApi._();
+  static GithubApi get instance => _instance;
   final Request _http = Request('https://api.github.com');
 
   Future<ResponseModel<GithubReleaseModel>> checkUpdate() async {

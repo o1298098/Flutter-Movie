@@ -9,7 +9,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:movie/routes/routes.dart';
 import 'actions/app_config.dart';
-import 'actions/http/tmdb_api.dart';
+import 'actions/api/tmdb_api.dart';
 import 'actions/timeline.dart';
 import 'actions/user_info_operate.dart';
 import 'generated/i18n.dart';

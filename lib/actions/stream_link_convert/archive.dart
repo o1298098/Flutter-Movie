@@ -1,4 +1,4 @@
-import 'package:movie/actions/http/urlresolver_api.dart';
+import 'package:movie/actions/api/urlresolver_api.dart';
 
 class Archive {
   static Future<String> getUrl(String link) async {

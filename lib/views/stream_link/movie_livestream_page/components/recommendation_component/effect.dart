@@ -1,9 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/animation.dart';
-import 'package:movie/actions/http/base_api.dart';
-import 'package:movie/actions/http/tmdb_api.dart';
-import 'package:movie/models/base_api_model/movie_stream_link.dart';
-import 'package:movie/models/video_list.dart';
+import 'package:movie/actions/api/base_api.dart';
+import 'package:movie/actions/api/tmdb_api.dart';
+import 'package:movie/models/models.dart';
 import 'package:movie/views/stream_link/movie_livestream_page/action.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'action.dart';

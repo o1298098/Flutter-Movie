@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/actions/http/tmdb_api.dart';
+import 'package:movie/actions/api/tmdb_api.dart';
 import 'action.dart';
 import 'state.dart';
 

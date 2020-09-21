@@ -1,12 +1,14 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:movie/actions/app_config.dart';
-import 'package:movie/actions/http/graphql_service.dart';
+import 'package:movie/actions/api/graphql_service.dart';
 import 'package:movie/models/base_api_model/base_cast_list.dart';
 import 'package:movie/models/base_api_model/cast_list_detail.dart';
 
 class BaseGraphQLClient {
   BaseGraphQLClient._();
-  static final BaseGraphQLClient instance = BaseGraphQLClient._();
+
+  static final BaseGraphQLClient _instance = BaseGraphQLClient._();
+  static BaseGraphQLClient get instance => _instance;
   final GraphQLService _service = GraphQLService()
     ..setupClient(
         httpLink: AppConfig.instance.graphQLHttpLink,

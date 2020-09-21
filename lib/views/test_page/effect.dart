@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/actions/http/graphql_client.dart';
+import 'package:movie/actions/api/graphql_client.dart';
 import 'action.dart';
 import 'state.dart';
 

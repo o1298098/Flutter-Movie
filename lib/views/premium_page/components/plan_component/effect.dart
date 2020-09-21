@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/actions/http/base_api.dart';
+import 'package:movie/actions/api/base_api.dart';
 import 'package:movie/globalbasestate/action.dart';
 import 'package:movie/globalbasestate/store.dart';
 import 'package:movie/views/premium_page/action.dart';

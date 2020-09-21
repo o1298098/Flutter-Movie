@@ -40,7 +40,9 @@ FavoritesPageState _setMovie(FavoritesPageState state, Action action) {
   final UserMediaModel movie = action.payload;
   final FavoritesPageState newState = state.clone();
   newState.movies = movie;
-  if (movie.data.length > 0) {
+  if (movie.data.length > 0 &&
+      newState.selectedMedia == null &&
+      newState.isMovie) {
     newState.selectedMedia = movie.data[0];
   }
   return newState;
@@ -50,5 +52,10 @@ FavoritesPageState _setTVShow(FavoritesPageState state, Action action) {
   final UserMediaModel tv = action.payload;
   final FavoritesPageState newState = state.clone();
   newState.tvshows = tv;
+  if (tv.data.length > 0 &&
+      newState.selectedMedia == null &&
+      !newState.isMovie) {
+    newState.selectedMedia = tv.data[0];
+  }
   return newState;
 }

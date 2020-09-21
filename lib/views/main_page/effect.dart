@@ -7,7 +7,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action, Page;
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:movie/actions/downloader_callback.dart';
-import 'package:movie/actions/http/github_api.dart';
+import 'package:movie/actions/api/github_api.dart';
 import 'package:movie/actions/local_notification.dart';
 import 'package:movie/actions/version_comparison.dart';
 import 'package:movie/models/notification_model.dart';

@@ -23,7 +23,11 @@ SwiperState _mediaTpyeChanged(SwiperState state, Action action) {
   final bool r = action.payload;
   final SwiperState newState = state.clone();
   newState.isMovie = r;
-  newState.selectedMedia = r ? state.movies?.data[0] : state.tvshows?.data[0];
+  if ((newState.isMovie && state.movies != null) ||
+      (!newState.isMovie && state.tvshows != null))
+    newState.selectedMedia = r ? state.movies?.data[0] : state.tvshows?.data[0];
+  else
+    newState.selectedMedia = null;
   return newState;
 }
 

@@ -5,7 +5,7 @@ import 'package:movie/models/app_user.dart';
 import 'package:movie/models/base_api_model/user_premium_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'http/base_api.dart';
+import 'api/base_api.dart';
 
 class UserInfoOperate {
   static bool isPremium = false;
