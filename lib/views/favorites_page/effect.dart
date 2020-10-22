@@ -29,8 +29,9 @@ Future _onInit(Action action, Context<FavoritesPageState> ctx) async {
     final movie =
         await _baseApi.getFavorite(ctx.state.user.firebaseUser.uid, 'movie');
     if (movie.success) ctx.state.animationController.forward(from: 0.0);
-    ctx.dispatch(
-        FavoritesPageActionCreator.setBackground(movie.result.data[0]));
+    if ((movie?.result?.data?.length ?? 0) > 0)
+      ctx.dispatch(
+          FavoritesPageActionCreator.setBackground(movie.result.data[0]));
     ctx.dispatch(FavoritesPageActionCreator.setMovie(movie.result));
     final tv =
         await _baseApi.getFavorite(ctx.state.user.firebaseUser.uid, 'tv');

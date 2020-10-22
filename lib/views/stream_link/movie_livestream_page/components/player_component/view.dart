@@ -20,7 +20,7 @@ Widget buildView(
           linkId: state.streamLinkId,
           streamInBrowser: state.streamInBrowser,
           useVideoSourceApi: state.useVideoSourceApi,
-          needAd: state.needAd,
+          needAd: state.user.isPremium ? false : state.needAd,
         ),
       ),
     ),

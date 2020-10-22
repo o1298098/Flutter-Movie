@@ -5,6 +5,7 @@ enum SwiperAction {
   action,
   mediaTpyeChanged,
   setBackground,
+  cellTapped,
 }
 
 class SwiperActionCreator {
@@ -18,5 +19,9 @@ class SwiperActionCreator {
 
   static Action setBackground(UserMedia result) {
     return Action(SwiperAction.setBackground, payload: result);
+  }
+
+  static Action cellTapped(UserMedia media) {
+    return Action(SwiperAction.cellTapped, payload: media);
   }
 }

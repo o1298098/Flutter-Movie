@@ -81,20 +81,24 @@ class _SwitchTitle extends StatelessWidget {
 
 class _ListCell extends StatelessWidget {
   final UserMedia data;
-  const _ListCell({this.data});
+  final Function(UserMedia) onTap;
+  const _ListCell({this.data, this.onTap});
   @override
   Widget build(BuildContext context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
-    return Container(
-      key: ValueKey(data),
-      width: Adapt.px(200),
-      decoration: BoxDecoration(
-        color: _theme.primaryColorDark,
-        borderRadius: BorderRadius.circular(Adapt.px(20)),
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: CachedNetworkImageProvider(
-            ImageUrl.getUrl(data.photoUrl, ImageSize.w500),
+    return GestureDetector(
+      onTap: () => onTap(data),
+      child: Container(
+        key: ValueKey(data),
+        width: Adapt.px(200),
+        decoration: BoxDecoration(
+          color: _theme.primaryColorDark,
+          borderRadius: BorderRadius.circular(Adapt.px(20)),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: CachedNetworkImageProvider(
+              ImageUrl.getUrl(data.photoUrl, ImageSize.w500),
+            ),
           ),
         ),
       ),
@@ -111,39 +115,44 @@ class _Swiper extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = (Adapt.screenW() * 0.55 - Adapt.px(40)) * 1.7;
     return AnimatedSwitcher(
-        switchOutCurve: Curves.easeOut,
-        switchInCurve: Curves.easeIn,
-        duration: Duration(milliseconds: 300),
-        child: data != null
-            ? Container(
-                key: ValueKey(data),
-                height: height,
-                child: Swiper(
-                  loop: false,
-                  scale: 0.65,
-                  fade: 0.1,
-                  viewportFraction: 0.55,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _ListCell(data: data[index]);
-                  },
-                  itemCount: data?.length ?? 0,
-                  onIndexChanged: (index) {
-                    var r = data[index];
-                    dispatch(SwiperActionCreator.setBackground(r));
-                    controller.forward(from: 0.0);
-                  },
-                ),
-              )
-            : Container(
-                height: height,
-                child: Swiper(
-                  loop: false,
-                  scale: 0.65,
-                  viewportFraction: 0.55,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ShimmerCell(Adapt.px(300), height, Adapt.px(20));
-                  },
-                  itemCount: 3,
-                )));
+      switchOutCurve: Curves.easeOut,
+      switchInCurve: Curves.easeIn,
+      duration: Duration(milliseconds: 300),
+      child: data != null
+          ? Container(
+              key: ValueKey(data),
+              height: height,
+              child: Swiper(
+                loop: false,
+                scale: 0.65,
+                fade: 0.1,
+                viewportFraction: 0.55,
+                itemBuilder: (BuildContext context, int index) {
+                  return _ListCell(
+                    data: data[index],
+                    onTap: (d) => dispatch(SwiperActionCreator.cellTapped(d)),
+                  );
+                },
+                itemCount: data?.length ?? 0,
+                onIndexChanged: (index) {
+                  var r = data[index];
+                  dispatch(SwiperActionCreator.setBackground(r));
+                  controller.forward(from: 0.0);
+                },
+              ),
+            )
+          : Container(
+              height: height,
+              child: Swiper(
+                loop: false,
+                scale: 0.65,
+                viewportFraction: 0.55,
+                itemBuilder: (BuildContext context, int index) {
+                  return ShimmerCell(Adapt.px(300), height, Adapt.px(20));
+                },
+                itemCount: 3,
+              ),
+            ),
+    );
   }
 }

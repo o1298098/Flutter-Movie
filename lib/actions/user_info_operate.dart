@@ -55,7 +55,8 @@ class UserInfoOperate {
       if (_data != null) _premiumData = UserPremiumData(_data);
       GlobalStore.store.dispatch(GlobalActionCreator.setUser(
           AppUser(firebaseUser: _user, premium: _premiumData)));
-    }
+    } else
+      GlobalStore.store.dispatch(GlobalActionCreator.setUser(AppUser()));
   }
 
   static Future setPremium(UserPremiumData userPremiumData) async {

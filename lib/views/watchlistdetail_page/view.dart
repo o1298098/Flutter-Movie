@@ -55,33 +55,51 @@ Widget buildView(WatchlistDetailPageState state, Dispatch dispatch,
             mediaData: state.mediaData,
             animationController: state.animationController,
           ),
-          Expanded(
-            child: Container(),
-          ),
-          Container(
-            width: Adapt.px(120),
-            height: Adapt.px(120),
-            decoration:
-                BoxDecoration(color: Colors.teal[200], shape: BoxShape.circle),
-            child: IconButton(
-              padding: EdgeInsets.zero,
-              icon: Icon(
-                Icons.arrow_back,
-                size: Adapt.px(50),
-                color: Colors.white,
+          Expanded(child: SizedBox()),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                    color: Colors.teal[200], shape: BoxShape.circle),
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: Icon(
+                    Icons.arrow_back,
+                    size: Adapt.px(50),
+                    color: Colors.white,
+                  ),
+                  onPressed: () async {
+                    state.animationController.reverse().then((f) {
+                      Future.delayed(Duration(milliseconds: 80), () {
+                        Navigator.of(viewService.context).pop();
+                      });
+                    });
+                  },
+                ),
               ),
-              onPressed: () async {
-                state.animationController.reverse().then((f) {
-                  Future.delayed(Duration(milliseconds: 80), () {
-                    Navigator.of(viewService.context).pop();
-                  });
-                });
-              },
-            ),
+              SizedBox(width: 20),
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                    color: Colors.orangeAccent[400], shape: BoxShape.circle),
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: Icon(
+                    Icons.more_vert_outlined,
+                    size: Adapt.px(50),
+                    color: Colors.white,
+                  ),
+                  onPressed: () =>
+                      dispatch(WatchlistDetailPageActionCreator.meidaTap()),
+                ),
+              ),
+            ],
           ),
-          SizedBox(
-            height: Adapt.px(40),
-          ),
+          SizedBox(height: Adapt.px(40)),
         ],
       ),
     ),

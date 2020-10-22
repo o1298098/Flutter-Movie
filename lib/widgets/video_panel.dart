@@ -131,7 +131,7 @@ class _PlayerPanelState extends State<PlayerPanel>
       _setLoading(true);
       _rewardedVideoAd.load(
           adUnitId: RewardedVideoAd.testAdUnitId,
-          targetingInfo: AdsConfig.targetingInfo);
+          targetingInfo: AdsConfig.instance.targetingInfo);
       return;
     }
     await _startPlayer();

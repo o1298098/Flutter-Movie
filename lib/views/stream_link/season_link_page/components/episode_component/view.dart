@@ -23,7 +23,7 @@ Widget buildView(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Stack(
-              overflow: Overflow.visible,
+              clipBehavior: Clip.antiAlias,
               children: <Widget>[
                 Container(
                   width: Adapt.px(220),

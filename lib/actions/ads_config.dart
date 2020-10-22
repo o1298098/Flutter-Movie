@@ -8,7 +8,7 @@ class AdsConfig {
   static final AdsConfig _instance = AdsConfig._();
   static AdsConfig get instance => _instance;
 
-  static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+  final MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
     //testDevices: testDevice != null ? <String>[testDevice] : null,
     keywords: <String>['movie', 'tv'],
     contentUrl: '',
@@ -16,7 +16,7 @@ class AdsConfig {
     nonPersonalizedAds: true,
   );
 
-  static final String unitId = Platform.isAndroid
+  final String unitId = Platform.isAndroid
       ? 'ca-app-pub-8117211796129035/4564399847'
       : 'ca-app-pub-8117211796129035/6998991498';
 }
