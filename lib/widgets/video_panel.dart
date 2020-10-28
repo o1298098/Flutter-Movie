@@ -29,6 +29,7 @@ class PlayerPanel extends StatefulWidget {
   final bool loading;
   final bool autoPlay;
   final int linkId;
+  final Function onPlay;
   const PlayerPanel({
     Key key,
     this.streamLink,
@@ -40,6 +41,7 @@ class PlayerPanel extends StatefulWidget {
     this.streamInBrowser = false,
     this.needAd = false,
     this.autoPlay = false,
+    this.onPlay,
   })  : assert(streamLink != null),
         super(key: key);
   @override

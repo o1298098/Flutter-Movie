@@ -3,6 +3,7 @@ import 'package:movie/actions/stream_link_convert/bitporno.dart';
 import 'package:movie/actions/stream_link_convert/clipwatching.dart';
 import 'package:movie/actions/stream_link_convert/gamovideo.dart';
 import 'package:movie/actions/stream_link_convert/gounlimited.dart';
+import 'package:movie/actions/stream_link_convert/ninjastream.dart';
 import 'package:movie/actions/stream_link_convert/powvideo.dart';
 import 'package:movie/actions/stream_link_convert/prostream.dart';
 import 'package:movie/actions/stream_link_convert/streamplay.dart';
@@ -50,6 +51,7 @@ class StreamLinkConvertFactory {
     'mediafire',
     'mixdrop',
     'mp4upload',
+    "ninjastream",
     'openlay',
     'powvideo',
     'prostream',
@@ -111,6 +113,9 @@ class StreamLinkConvertFactory {
         break;
       case 'mp4upload':
         _link = await Mp4upload.getUrl(link);
+        break;
+      case 'ninjastream':
+        _link = await NinjaStream.getUrl(link);
         break;
       case 'openlay':
         _link = await Openlay.getUrl(link);
