@@ -151,6 +151,7 @@ class _PlayerPanelState extends State<PlayerPanel>
     setState(() {
       _play = true;
     });
+    if (widget.onPlay != null) widget.onPlay();
   }
 
   _getDirectUrl() async {
@@ -325,13 +326,16 @@ class _PlayArrow extends StatelessWidget {
   const _PlayArrow();
   @override
   Widget build(BuildContext context) {
+    final _brightness = MediaQuery.of(context).platformBrightness;
     return Center(
         child: ClipRRect(
       borderRadius: BorderRadius.circular(Adapt.px(50)),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
         child: Container(
-          color: const Color(0x40FFFFFF),
+          color: _brightness == Brightness.light
+              ? const Color(0x40FFFFFF)
+              : const Color(0x40000000),
           width: Adapt.px(100),
           height: Adapt.px(100),
           child: Icon(

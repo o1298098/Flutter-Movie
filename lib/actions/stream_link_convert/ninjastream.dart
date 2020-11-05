@@ -7,7 +7,7 @@ class NinjaStream {
     try {
       final Response _response = await Dio().get(link);
       final _result = await UrlResolverApi.instance
-          .getDirectUrl(_response.data, 'ninjastream ', mode: 'local');
+          .getDirectUrl(_response.data, 'ninjastream', mode: 'local');
       if (_result.success) if (_result.result['status'] == 'ok')
         _link = _result.result['url'];
     } on DioError catch (_) {

@@ -124,7 +124,7 @@ void _openMenu(Action action, Context<MovieDetailPageState> ctx) {
 }
 
 void _showSnackBar(Action action, Context<MovieDetailPageState> ctx) {
-  ctx.state.scaffoldkey.currentState.showSnackBar(SnackBar(
+  ScaffoldMessenger.of(ctx.context).showSnackBar(SnackBar(
     content: Text(action.payload ?? ''),
   ));
 }

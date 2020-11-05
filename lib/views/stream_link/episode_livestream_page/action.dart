@@ -12,6 +12,7 @@ enum EpisodeLiveStreamAction {
   selectedStreamLink,
   setLike,
   setLoading,
+  markWatched,
 }
 
 class EpisodeLiveStreamActionCreator {
@@ -46,5 +47,9 @@ class EpisodeLiveStreamActionCreator {
 
   static Action setLoading(bool loading) {
     return Action(EpisodeLiveStreamAction.setLoading, payload: loading);
+  }
+
+  static Action markWatched(Episode episode) {
+    return Action(EpisodeLiveStreamAction.markWatched, payload: episode);
   }
 }

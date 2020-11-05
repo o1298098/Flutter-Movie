@@ -218,6 +218,7 @@ class _Episodes extends StatelessWidget {
         final int _index = _d < episodes.length ? _d : _d - episodes.length;
         return _EpisodeCell(
           episode: episodes[_index],
+          playing: episodeNumber == episodes[_index].episodeNumber,
           onTap: onTap,
         );
       }, childCount: episodes.length),
@@ -227,8 +228,9 @@ class _Episodes extends StatelessWidget {
 
 class _EpisodeCell extends StatelessWidget {
   final Episode episode;
+  final bool playing;
   final Function(Episode) onTap;
-  const _EpisodeCell({this.episode, this.onTap});
+  const _EpisodeCell({this.episode, this.onTap, this.playing = false});
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
@@ -244,12 +246,18 @@ class _EpisodeCell extends StatelessWidget {
               decoration: BoxDecoration(
                 color: _theme.primaryColorDark,
                 borderRadius: BorderRadius.circular(Adapt.px(15)),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: CachedNetworkImageProvider(
-                    ImageUrl.getUrl(episode.stillPath, ImageSize.w300),
-                  ),
-                ),
+                image: episode.stillPath == null
+                    ? null
+                    : DecorationImage(
+                        fit: BoxFit.cover,
+                        image: CachedNetworkImageProvider(
+                          ImageUrl.getUrl(episode.stillPath, ImageSize.w300),
+                        ),
+                      ),
+              ),
+              child: _WatchedCell(
+                watched: episode.playState,
+                playing: playing,
               ),
             ),
             SizedBox(width: Adapt.px(20)),
@@ -271,5 +279,36 @@ class _EpisodeCell extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _WatchedCell extends StatelessWidget {
+  final bool playing;
+  final bool watched;
+  const _WatchedCell({this.watched = false, this.playing = false});
+  @override
+  Widget build(BuildContext context) {
+    final _brightness = MediaQuery.of(context).platformBrightness;
+    return playing || watched
+        ? Align(
+            alignment: Alignment.bottomRight,
+            child: Container(
+              margin: EdgeInsets.all(4),
+              padding: EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                  color: _brightness == Brightness.light
+                      ? const Color(0xAAF0F0F0)
+                      : const Color(0xAA202020),
+                  borderRadius: BorderRadius.circular(5)),
+              child: Text(
+                playing ? 'Playing' : 'Watched',
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          )
+        : const SizedBox();
   }
 }

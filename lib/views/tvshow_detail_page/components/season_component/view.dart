@@ -8,6 +8,7 @@ import 'package:movie/generated/i18n.dart';
 import 'package:movie/models/enums/imagesize.dart';
 import 'package:movie/models/season_detail.dart';
 import 'package:movie/style/themestyle.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'action.dart';
@@ -30,8 +31,9 @@ Widget buildView(
 
 class _SeasonCell extends StatelessWidget {
   final Season data;
+  final bool watched;
   final Function(Season) onTap;
-  const _SeasonCell({this.data, this.onTap});
+  const _SeasonCell({this.data, this.onTap, this.watched = false});
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
@@ -59,6 +61,7 @@ class _SeasonCell extends StatelessWidget {
                             ImageUrl.getUrl(data.posterPath, ImageSize.w300)),
                       ),
               ),
+              child: watched ? const _WatchedCell() : const SizedBox(),
             ),
             SizedBox(height: Adapt.px(20)),
             Text(
@@ -83,15 +86,54 @@ class _SeasonCell extends StatelessWidget {
   }
 }
 
-class _SeasonPanel extends StatelessWidget {
+class _SeasonPanel extends StatefulWidget {
   final List<Season> seasons;
 
   final Function(Season) onTap;
   const _SeasonPanel({this.seasons, this.onTap});
   @override
+  _SeasonPanelState createState() => _SeasonPanelState();
+}
+
+class _SeasonPanelState extends State<_SeasonPanel> {
+  final _padding = Adapt.px(40);
+  final _listViewHeight = Adapt.px(320);
+  List<bool> _watchedMarks;
+  @override
+  void initState() {
+    _watchedMarks = List<bool>.filled(widget.seasons?.length ?? 0, false);
+    _markSeason();
+    super.initState();
+  }
+
+  void _markSeason() async {
+    final _marks = List<bool>(widget.seasons?.length ?? 0);
+    SharedPreferences _pre = await SharedPreferences.getInstance();
+
+    for (var q in widget.seasons) {
+      int _index = widget.seasons.indexOf(q);
+      List<String> _playStates = _pre.getStringList('TvSeason${q.id}');
+      if (_playStates == null)
+        _marks[_index] = false;
+      else {
+        bool _watched = true;
+        for (var e in _playStates) {
+          if (e == '0') {
+            _watched = false;
+            break;
+          }
+        }
+        _marks[_index] = _watched;
+      }
+    }
+
+    setState(() {
+      _watchedMarks = _marks;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final _padding = Adapt.px(40);
-    final _listViewHeight = Adapt.px(320);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -113,10 +155,11 @@ class _SeasonPanel extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: _padding),
             scrollDirection: Axis.horizontal,
             separatorBuilder: (_, __) => SizedBox(width: Adapt.px(40)),
-            itemCount: seasons.length,
+            itemCount: widget.seasons.length,
             itemBuilder: (_, index) => _SeasonCell(
-              data: seasons[(seasons.length - 1) - index],
-              onTap: onTap,
+              data: widget.seasons[(widget.seasons.length - 1) - index],
+              watched: _watchedMarks[(widget.seasons.length - 1) - index],
+              onTap: widget.onTap,
             ),
           ),
         ),
@@ -204,6 +247,33 @@ class _ShimmerList extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _WatchedCell extends StatelessWidget {
+  const _WatchedCell();
+  @override
+  Widget build(BuildContext context) {
+    final _brightness = MediaQuery.of(context).platformBrightness;
+    return Align(
+      alignment: Alignment.bottomRight,
+      child: Container(
+        margin: EdgeInsets.all(5),
+        padding: EdgeInsets.all(3),
+        decoration: BoxDecoration(
+            color: _brightness == Brightness.light
+                ? const Color(0xAAF0F0F0)
+                : const Color(0xAA202020),
+            borderRadius: BorderRadius.circular(3)),
+        child: Text(
+          'Watched',
+          style: TextStyle(
+            fontSize: 8,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
     );
   }
 }

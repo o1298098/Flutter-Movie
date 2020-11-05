@@ -1,4 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:movie/models/models.dart';
 import 'package:movie/views/stream_link/episode_livestream_page/state.dart';
 
 class PlayerState implements Cloneable<PlayerState> {
@@ -10,6 +11,7 @@ class PlayerState implements Cloneable<PlayerState> {
   bool streamInBrowser;
   bool needAd;
   bool loading;
+  Episode episode;
   @override
   PlayerState clone() {
     return PlayerState()
@@ -19,7 +21,8 @@ class PlayerState implements Cloneable<PlayerState> {
       ..useVideoSourceApi = useVideoSourceApi
       ..streamInBrowser = streamInBrowser
       ..needAd = needAd
-      ..loading = loading;
+      ..loading = loading
+      ..episode = episode;
   }
 }
 
@@ -27,6 +30,7 @@ class PlayerConnector extends ConnOp<EpisodeLiveStreamState, PlayerState> {
   @override
   PlayerState get(EpisodeLiveStreamState state) {
     PlayerState mstate = state.playerState.clone();
+    mstate.episode = state.selectedEpisode;
     mstate.loading = state.loading;
     mstate.useVideoSourceApi = state.bottomPanelState.useVideoSourceApi;
     mstate.streamInBrowser = state.bottomPanelState.streamInBrowser ||

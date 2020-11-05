@@ -1,6 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/actions/adapt.dart';
+import 'package:movie/views/stream_link/episode_livestream_page/action.dart';
 import 'package:movie/widgets/video_panel.dart';
 
 import 'state.dart';
@@ -21,6 +22,8 @@ Widget buildView(
           streamInBrowser: state.streamInBrowser,
           useVideoSourceApi: state.useVideoSourceApi,
           needAd: state.needAd,
+          onPlay: () => dispatch(
+              EpisodeLiveStreamActionCreator.markWatched(state.episode)),
         ),
       ),
     ),

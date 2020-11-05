@@ -11,6 +11,7 @@ Effect<EpisodeLiveStreamState> buildEffect() {
   return combineEffects(<Object, Effect<EpisodeLiveStreamState>>{
     EpisodeLiveStreamAction.action: _onAction,
     EpisodeLiveStreamAction.episodeTapped: _episodeTapped,
+    EpisodeLiveStreamAction.markWatched: _markWatched,
     Lifecycle.initState: _onInit,
     Lifecycle.dispose: _onDispose,
   });
@@ -107,4 +108,16 @@ Future<TvShowStreamLinks> _sortStreamLink(TvShowStreamLinks links) async {
     }
   }
   return links;
+}
+
+void _markWatched(Action action, Context<EpisodeLiveStreamState> ctx) async {
+  final _pre = await SharedPreferences.getInstance();
+  final _episode = action.payload as Episode;
+  final index = ctx.state.season.episodes.indexOf(_episode);
+  if (ctx.state.season.playStates[index] != '1') {
+    ctx.state.season.playStates[index] = '1';
+    _episode.playState = true;
+    _pre.setStringList(
+        'TvSeason${ctx.state.season.id}', ctx.state.season.playStates);
+  }
 }

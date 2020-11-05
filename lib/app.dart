@@ -26,8 +26,10 @@ class _AppState extends State<App> {
   final i18n = I18n.delegate;
 
   final AbstractRoutes routes = Routes.routes;
-  final ThemeData _lightTheme = ThemeData.light();
-  final ThemeData _darkTheme = ThemeData.dark();
+  final ThemeData _lightTheme =
+      ThemeData.light().copyWith(accentColor: Colors.transparent);
+  final ThemeData _darkTheme =
+      ThemeData.dark().copyWith(accentColor: Colors.transparent);
   final FirebaseAnalytics analytics = FirebaseAnalytics();
 
   Future _init() async {

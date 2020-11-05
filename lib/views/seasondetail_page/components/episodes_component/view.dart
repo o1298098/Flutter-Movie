@@ -185,14 +185,21 @@ class _EpisodeCell extends StatelessWidget {
                           blurRadius: Adapt.px(20),
                           spreadRadius: -Adapt.px(10))
                     ],
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: CachedNetworkImageProvider(
-                        ImageUrl.getUrl(data.stillPath, ImageSize.w300),
-                      ),
-                    ),
+                    image: data.stillPath == null
+                        ? null
+                        : DecorationImage(
+                            fit: BoxFit.cover,
+                            image: CachedNetworkImageProvider(
+                              ImageUrl.getUrl(data.stillPath, ImageSize.w300),
+                            ),
+                          ),
                   ),
-                  child: _canPlay ? _PlayArrow(height: _imageHeight) : null,
+                  child: Stack(children: [
+                    _canPlay
+                        ? _PlayArrow(height: _imageHeight)
+                        : const SizedBox(),
+                    data.playState ? const _WatchedCell() : const SizedBox(),
+                  ]),
                 ),
               ),
               Column(
@@ -260,24 +267,55 @@ class _PlayArrow extends StatelessWidget {
   const _PlayArrow({this.height});
   @override
   Widget build(BuildContext context) {
+    final _brightness = MediaQuery.of(context).platformBrightness;
     return Container(
-        height: height,
-        alignment: Alignment.center,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(Adapt.px(50)),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-            child: Container(
-              color: const Color(0x40FFFFFF),
-              width: Adapt.px(100),
-              height: Adapt.px(100),
-              child: Icon(
-                Icons.play_arrow,
-                size: 25,
-                color: const Color(0xFFFFFFFF),
-              ),
+      height: height,
+      alignment: Alignment.center,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(Adapt.px(50)),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+          child: Container(
+            color: _brightness == Brightness.light
+                ? const Color(0x40FFFFFF)
+                : const Color(0x40000000),
+            width: Adapt.px(100),
+            height: Adapt.px(100),
+            child: Icon(
+              Icons.play_arrow,
+              size: 25,
+              color: const Color(0xFFFFFFFF),
             ),
           ),
-        ));
+        ),
+      ),
+    );
+  }
+}
+
+class _WatchedCell extends StatelessWidget {
+  const _WatchedCell();
+  @override
+  Widget build(BuildContext context) {
+    final _brightness = MediaQuery.of(context).platformBrightness;
+    return Align(
+      alignment: Alignment.bottomRight,
+      child: Container(
+        margin: EdgeInsets.all(5),
+        padding: EdgeInsets.all(4),
+        decoration: BoxDecoration(
+            color: _brightness == Brightness.light
+                ? const Color(0xAAF0F0F0)
+                : const Color(0xAA202020),
+            borderRadius: BorderRadius.circular(5)),
+        child: Text(
+          'Watched',
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
   }
 }

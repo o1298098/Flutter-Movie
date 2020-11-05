@@ -91,7 +91,7 @@ void _openMenu(Action action, Context<TvShowDetailState> ctx) {
 }
 
 void _showSnackBar(Action action, Context<TvShowDetailState> ctx) {
-  ctx.state.scaffoldkey.currentState.showSnackBar(SnackBar(
+  ScaffoldMessenger.of(ctx.context).showSnackBar(SnackBar(
     content: Text(action.payload ?? ''),
   ));
 }
