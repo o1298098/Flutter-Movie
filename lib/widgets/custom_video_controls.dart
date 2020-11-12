@@ -15,7 +15,7 @@ import 'package:dart_chromecast/casting/cast_media.dart';
 import 'package:dart_chromecast/casting/cast_sender.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/widgets/device_picker.dart';
+import 'package:movie/widgets/chromecast_dialog.dart';
 import 'package:movie/widgets/service_discovery.dart';
 import 'package:open_iconic_flutter/open_iconic_flutter.dart';
 import 'package:video_player/video_player.dart';
@@ -40,7 +40,7 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
   double _latestVolume;
   bool _hideStuff = true;
   Timer _hideTimer;
-  final marginSize = 5.0;
+  final marginSize = 10.0;
   Timer _expandCollapseTimer;
   Timer _initTimer;
   ServiceDiscovery _serviceDiscovery;
@@ -67,7 +67,7 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
             );
     }
 
-    final backgroundColor = widget.backgroundColor;
+    final backgroundColor = widget.backgroundColor.withOpacity(.8);
     final iconColor = widget.iconColor;
     chewieController = ChewieController.of(context);
     controller = chewieController.videoPlayerController;
@@ -232,17 +232,38 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
     double buttonPadding,
   ) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         controller.pause();
-        showGeneralDialog(
-            context: context,
-            barrierLabel: '',
-            barrierColor: Colors.black87,
-            transitionDuration: Duration(milliseconds: 200),
-            barrierDismissible: true,
-            pageBuilder: (_, __, ___) => DevicePicker(
-                videoController: controller,
-                serviceDiscovery: _serviceDiscovery));
+        await Navigator.of(context).push(
+          PageRouteBuilder(
+              barrierColor: const Color(0xDD000000),
+              fullscreenDialog: true,
+              barrierDismissible: true,
+              opaque: false,
+              pageBuilder: (context, animation, subAnimation) {
+                return SlideTransition(
+                  position:
+                      Tween<Offset>(begin: Offset(0, 1), end: Offset(0, 0))
+                          .animate(CurvedAnimation(
+                              parent: animation, curve: Curves.ease)),
+                  child: ChromecastDialog(
+                    videoController: controller,
+                    serviceDiscovery: _serviceDiscovery,
+                  ),
+                );
+              }),
+        );
+        /*showGeneralDialog(
+          context: context,
+          barrierLabel: '',
+          barrierColor: Colors.black87,
+          transitionDuration: Duration(milliseconds: 200),
+          barrierDismissible: true,
+          pageBuilder: (_, __, ___) => DevicePicker(
+            videoController: controller,
+            serviceDiscovery: _serviceDiscovery,
+          ),
+        );*/
       },
       child: AnimatedOpacity(
         opacity: _hideStuff ? 0.0 : 1.0,

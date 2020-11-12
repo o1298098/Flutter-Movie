@@ -14,7 +14,6 @@ class ServiceDiscovery extends ChangeNotifier {
             onDiscoveryStopped: () => {},
             onDiscovered: (ServiceInfo serviceInfo) => {},
             onResolved: (ServiceInfo serviceInfo) {
-              // prevent duplicates
               print('found device ${serviceInfo.toString()}');
               if (null != serviceInfo.attr && null != serviceInfo.attr['fn']) {
                 Uint8List l = Uint8List.fromList(serviceInfo.attr['fn']);

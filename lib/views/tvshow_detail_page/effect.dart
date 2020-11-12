@@ -48,7 +48,7 @@ Future _onInit(Action action, Context<TvShowDetailState> ctx) async {
       if (_user != null) {
         final _baseApi = BaseApi.instance;
         final _accountstate = await _baseApi.getAccountState(
-            _user.firebaseUser.uid, ctx.state.tvid, MediaType.tv);
+            _user?.firebaseUser?.uid, ctx.state.tvid, MediaType.tv);
         if (_accountstate.success)
           ctx.dispatch(TvShowDetailActionCreator.onSetAccountState(
               _accountstate.result));

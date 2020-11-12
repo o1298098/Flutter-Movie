@@ -37,9 +37,19 @@ class DialogRatingBarState extends State<DialogRatingBar> {
             children: <Widget>[
               RatingBar(
                 initialRating: rating / 2,
-                itemBuilder: (context, _) => Icon(
-                  Icons.star,
-                  color: Colors.amber,
+                ratingWidget: RatingWidget(
+                  full: const Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  half: const Icon(
+                    Icons.star_half_outlined,
+                    color: Colors.amber,
+                  ),
+                  empty: const Icon(
+                    Icons.star_border_outlined,
+                    color: Colors.grey,
+                  ),
                 ),
                 glow: false,
                 allowHalfRating: true,

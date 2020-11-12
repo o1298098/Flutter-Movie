@@ -46,6 +46,7 @@ class _SecondPanel extends StatelessWidget {
                 value: '80',
               ),
               _DataItem(
+                onTap: () async => Navigator.of(context).pushNamed('testPage'),
                 title: 'Here?',
                 value: '100',
               ),
