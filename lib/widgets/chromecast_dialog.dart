@@ -410,11 +410,26 @@ class _VideoProgressBarState extends State<_ChromecastProgressBar> {
     };
   }
 
+  Duration _position = Duration(milliseconds: 0);
   VoidCallback listener;
 
   @override
   void initState() {
+    _updatePosition();
     super.initState();
+  }
+
+  _updatePosition() {
+    if (widget.castSender?.castSession?.castMediaStatus?.isPlaying ?? false)
+      setState(() {
+        _position = widget.position;
+      });
+  }
+
+  @override
+  void didUpdateWidget(covariant _ChromecastProgressBar oldWidget) {
+    if (widget.position != _position) _updatePosition();
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -437,6 +452,9 @@ class _VideoProgressBarState extends State<_ChromecastProgressBar> {
       final Offset tapPos = box.globalToLocal(globalPosition);
       final double relative = tapPos.dx / box.size.width;
       final Duration position = widget.duration * relative;
+      setState(() {
+        _position = position;
+      });
       widget.castSender.seek(position.inSeconds.toDouble());
     }
 
@@ -447,7 +465,7 @@ class _VideoProgressBarState extends State<_ChromecastProgressBar> {
           width: MediaQuery.of(context).size.width,
           color: Colors.transparent,
           child: CustomPaint(
-            painter: _ProgressBarPainter(widget.duration, widget.position,
+            painter: _ProgressBarPainter(widget.duration, _position,
                 barBackgroundColor: _barBackgroundColor,
                 barCircleColor: _barCircleColor,
                 barPlayedColor: _barPlayedColor),
