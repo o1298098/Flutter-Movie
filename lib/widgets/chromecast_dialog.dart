@@ -489,6 +489,7 @@ class _VideoProgressBarState extends State<_ChromecastProgressBar> {
         if (!(widget.castSender?.castSession?.isConnected == true)) {
           return;
         }
+        widget.castSender.togglePause();
         seekToRelativePosition(details.globalPosition);
 
         if (widget.onDragUpdate != null) {
