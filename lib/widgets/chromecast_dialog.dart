@@ -315,6 +315,7 @@ class _ControlsPanelState extends State<_ControlsPanel> {
     _castSender.seek(_castSender.castSession.castMediaStatus.position - 30.0);
   }
 
+  String format(Duration d) => d.toString().split('.').first.padLeft(8, "0");
   @override
   Widget build(BuildContext context) {
     final _theme = ThemeStyle.getTheme(context);
@@ -347,15 +348,17 @@ class _ControlsPanelState extends State<_ControlsPanel> {
               ],
             ),
             SizedBox(height: 50),
-            Text(duration.toString()),
-            /*SizedBox(height: 30),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30),
-              child: LinearProgressIndicator(
-                value: 0.9,
-                valueColor: AlwaysStoppedAnimation(Color(0xFFAAEECC)),
+            Text(format(Duration(milliseconds: (duration * 1000).toInt()))),
+            SizedBox(height: 30),
+            Container(
+              height: 50,
+              padding: EdgeInsets.symmetric(horizontal: 40),
+              child: _ChromecastProgressBar(
+                duration: widget.controller.value.duration,
+                position: Duration(milliseconds: (duration * 1000).toInt()),
+                castSender: _castSender,
               ),
-            )*/
+            )
           ],
         ),
       ),
@@ -375,6 +378,178 @@ class _ControlButton extends StatelessWidget {
         icon,
         size: 50,
       ),
+    );
+  }
+}
+
+class _ChromecastProgressBar extends StatefulWidget {
+  _ChromecastProgressBar(
+      {this.onDragEnd,
+      this.onDragStart,
+      this.onDragUpdate,
+      this.duration,
+      this.position,
+      this.castSender});
+  final Duration duration;
+  final Duration position;
+  final CastSender castSender;
+  final Function() onDragStart;
+  final Function() onDragEnd;
+  final Function() onDragUpdate;
+
+  @override
+  _VideoProgressBarState createState() {
+    return _VideoProgressBarState();
+  }
+}
+
+class _VideoProgressBarState extends State<_ChromecastProgressBar> {
+  _VideoProgressBarState() {
+    listener = () {
+      setState(() {});
+    };
+  }
+
+  VoidCallback listener;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final _theme = ThemeStyle.getTheme(context);
+    final bool _light = _theme.brightness == Brightness.light;
+    final Color _barBackgroundColor =
+        _light ? Color(0xA4202020) : Color(0xA4FFFFFF);
+    final Color _barPlayedColor =
+        _light ? Color(0xFF000000) : Color(0xFFFFFFFF);
+    final Color _barCircleColor =
+        _light ? Color(0xFF000000) : Color(0xFFFFFFFF);
+    void seekToRelativePosition(Offset globalPosition) {
+      final box = context.findRenderObject() as RenderBox;
+      final Offset tapPos = box.globalToLocal(globalPosition);
+      final double relative = tapPos.dx / box.size.width;
+      final Duration position = widget.duration * relative;
+      widget.castSender.seek(position.inSeconds.toDouble());
+    }
+
+    return GestureDetector(
+      child: Center(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          color: Colors.transparent,
+          child: CustomPaint(
+            painter: _ProgressBarPainter(widget.duration, widget.position,
+                barBackgroundColor: _barBackgroundColor,
+                barCircleColor: _barCircleColor,
+                barPlayedColor: _barPlayedColor),
+          ),
+        ),
+      ),
+      onHorizontalDragStart: (DragStartDetails details) {
+        if (!(widget.castSender?.castSession?.isConnected == true)) {
+          return;
+        }
+
+        if (widget.castSender.castSession.castMediaStatus.isPlaying) {
+          widget.castSender.togglePause();
+        }
+
+        if (widget.onDragStart != null) {
+          widget.onDragStart();
+        }
+      },
+      onHorizontalDragUpdate: (DragUpdateDetails details) {
+        if (!(widget.castSender?.castSession?.isConnected == true)) {
+          return;
+        }
+        seekToRelativePosition(details.globalPosition);
+
+        if (widget.onDragUpdate != null) {
+          widget.onDragUpdate();
+        }
+      },
+      onHorizontalDragEnd: (DragEndDetails details) {
+        if (!widget.castSender.castSession.castMediaStatus.isPlaying) {
+          widget.castSender.play();
+        }
+        if (widget.onDragEnd != null) {
+          widget.onDragEnd();
+        }
+      },
+      onTapDown: (TapDownDetails details) {
+        if (!(widget.castSender?.castSession?.isConnected == true)) {
+          return;
+        }
+        seekToRelativePosition(details.globalPosition);
+      },
+    );
+  }
+}
+
+class _ProgressBarPainter extends CustomPainter {
+  _ProgressBarPainter(this.duration, this.position,
+      {this.barBackgroundColor, this.barCircleColor, this.barPlayedColor});
+  final Duration position;
+  final Duration duration;
+  final Color barBackgroundColor;
+  final Color barPlayedColor;
+  final Color barCircleColor;
+  @override
+  bool shouldRepaint(CustomPainter painter) {
+    return true;
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final barHeight = 5.0;
+    final handleHeight = 6.0;
+    final baseOffset = size.height / 2 - barHeight / 2.0;
+
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromPoints(
+          Offset(0.0, baseOffset),
+          Offset(size.width, baseOffset + barHeight),
+        ),
+        Radius.circular(4.0),
+      ),
+      Paint()..color = barBackgroundColor,
+    );
+    final double playedPartPercent =
+        position.inMilliseconds / duration.inMilliseconds;
+    final double playedPart =
+        playedPartPercent > 1 ? size.width : playedPartPercent * size.width;
+
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromPoints(
+          Offset(0.0, baseOffset),
+          Offset(playedPart, baseOffset + barHeight),
+        ),
+        Radius.circular(4.0),
+      ),
+      Paint()..color = barPlayedColor,
+    );
+
+    final shadowPath = Path()
+      ..addOval(Rect.fromCircle(
+          center: Offset(playedPart, baseOffset + barHeight / 2),
+          radius: handleHeight));
+
+    canvas.drawShadow(shadowPath, Colors.black, 0.2, false);
+    canvas.drawCircle(
+      Offset(playedPart, baseOffset + barHeight / 2),
+      handleHeight,
+      Paint()..color = barCircleColor,
     );
   }
 }
