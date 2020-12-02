@@ -24,7 +24,7 @@ Widget buildView(
             elevation: 0.0,
             centerTitle: false,
             title: Text(
-              '${state.billingAddress == null ? 'Create' : 'Edit'} Address',
+              '${state.address == null ? 'Create' : 'Edit'} Address',
               style: TextStyle(color: _theme.textTheme.bodyText1.color),
             ),
             actions: [
@@ -58,22 +58,7 @@ Widget buildView(
                     _CustomTextField(
                       controller: state.firstNameController,
                       width: Adapt.px(300),
-                      title: 'First Name',
-                    ),
-                    _CustomTextField(
-                      controller: state.lastNameController,
-                      width: Adapt.px(300),
-                      title: 'Last Name',
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _CustomTextField(
-                      controller: state.companyController,
-                      width: Adapt.px(300),
-                      title: 'Company',
+                      title: 'Name',
                     ),
                     _CustomTextField(
                       controller: state.cityController,
@@ -107,7 +92,7 @@ Widget buildView(
                 ),
                 SizedBox(height: Adapt.px(30)),
                 _DeleteButton(
-                  show: state.billingAddress != null,
+                  show: state.address != null,
                   onTap: () => dispatch(CreateAddressActionCreator.onDelete()),
                 ),
               ],
@@ -192,10 +177,10 @@ class _RegionCell extends StatelessWidget {
         GestureDetector(
           onTap: () => showDialog(
               context: context,
-              child: _CountryCodeDialog(
-                countries: countries,
-                onCellTap: onTap,
-              )),
+              builder: (_) => _CountryCodeDialog(
+                    countries: countries,
+                    onCellTap: onTap,
+                  )),
           child: Container(
             height: Adapt.px(85),
             padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),

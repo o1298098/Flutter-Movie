@@ -8,22 +8,24 @@ Effect<HistoryState> buildEffect() {
     HistoryAction.action: _onAction,
     Lifecycle.initState: _onInit,
     Lifecycle.dispose: _onDispose,
+    Lifecycle.build: _didUpdateWidget,
   });
 }
 
 void _onAction(Action action, Context<HistoryState> ctx) {}
 
 void _onInit(Action action, Context<HistoryState> ctx) async {
-  if (ctx.state.transactions == null) {
+  if (ctx.state.charges == null) {
     ctx.dispatch(HistoryActionCreator.loading(true));
+    if (ctx.state.stripeId == null) return;
     final _baseApi = BaseApi.instance;
-    final _transaction =
-        await _baseApi.transactionSearch(ctx.state.user.firebaseUser.uid);
-    print(_transaction.toString());
-    if (_transaction.success)
-      ctx.dispatch(HistoryActionCreator.setTransactions(_transaction.result));
+    final _charges = await _baseApi.getStripeCharges(ctx.state.stripeId);
+    if (_charges.success)
+      ctx.dispatch(HistoryActionCreator.setCharges(_charges.result));
     ctx.dispatch(HistoryActionCreator.loading(false));
   }
 }
+
+void _didUpdateWidget(Action action, Context<HistoryState> ctx) async {}
 
 void _onDispose(Action action, Context<HistoryState> ctx) {}

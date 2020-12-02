@@ -12,7 +12,7 @@ class BillingAddressComponent extends Component<BillingAddressState> {
       : super(
           view: buildView,
           shouldUpdate: (oldState, newState) {
-            return oldState.addresses != newState.addresses ||
+            return oldState.address != newState.address ||
                 oldState.createAddressState != newState.createAddressState;
           },
           effect: buildEffect(),

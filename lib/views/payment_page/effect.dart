@@ -20,13 +20,18 @@ void _onAction(Action action, Context<PaymentPageState> ctx) {}
 
 void _onInit(Action action, Context<PaymentPageState> ctx) async {
   ctx.state.swiperController = SwiperController();
-  if (ctx.state.user == null) return;
+  if (ctx.state.user.firebaseUser == null) return;
   ctx.state.billingAddressState.customerId = ctx.state.user.firebaseUser.uid;
   final _baseApi = BaseApi.instance;
-  final _customer =
-      await _baseApi.getBraintreeCustomer(ctx.state.user.firebaseUser.uid);
-  if (_customer.success)
-    ctx.dispatch(PaymentPageActionCreator.setCustomer(_customer.result));
+
+  _baseApi.getStripeCustomer(ctx.state.user.firebaseUser.uid).then((d) {
+    if (d.success) ctx.dispatch(PaymentPageActionCreator.setCustomer(d.result));
+  });
+
+  _baseApi.getCreditCards(ctx.state.user.firebaseUser.uid).then((d) {
+    if (d.success)
+      ctx.dispatch(PaymentPageActionCreator.setCreditCards(d.result));
+  });
 }
 
 void _onDispose(Action action, Context<PaymentPageState> ctx) {
@@ -45,7 +50,7 @@ void _showBillingAddress(Action action, Context<PaymentPageState> ctx) async {
 
 void _createCard(Action action, Context<PaymentPageState> ctx) async {
   // if (ctx.state.customer != null && ctx.state.user?.firebaseUser != null) {
-  ctx.state.createCardState.customerId = ctx.state.user.firebaseUser.uid;
+  ctx.state.createCardState.customerId = ctx.state.customer?.id;
   ctx.state.createCardState.loading = false;
   await Navigator.of(ctx.context).push(
       MaterialPageRoute(builder: (_) => ctx.buildComponent('createCard')));

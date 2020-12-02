@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/base_api_model/braintree_transaction.dart';
+import 'package:movie/models/models.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -8,7 +8,7 @@ Reducer<HistoryState> buildReducer() {
   return asReducer(
     <Object, Reducer<HistoryState>>{
       HistoryAction.action: _onAction,
-      HistoryAction.setTransactions: _setTransactions,
+      HistoryAction.setCharges: _setCharges,
       HistoryAction.loading: _loading,
     },
   );
@@ -19,10 +19,10 @@ HistoryState _onAction(HistoryState state, Action action) {
   return newState;
 }
 
-HistoryState _setTransactions(HistoryState state, Action action) {
-  final TransactionModel _transasctions = action.payload;
+HistoryState _setCharges(HistoryState state, Action action) {
+  final StripeCharges _charges = action.payload;
   final HistoryState newState = state.clone();
-  newState.transactions = _transasctions;
+  newState.charges = _charges;
   return newState;
 }
 

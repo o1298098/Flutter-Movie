@@ -1,6 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/models/base_api_model/braintree_billing_address.dart';
+import 'package:movie/models/base_api_model/stripe_address.dart';
 import 'package:movie/models/country_phone_code.dart';
 
 import '../state.dart';
@@ -9,7 +9,8 @@ class CreateAddressState implements Cloneable<CreateAddressState> {
   List<CountryPhoneCode> countries;
   bool loading;
   String customerId;
-  BillingAddress billingAddress;
+  String customerName;
+  StripeAddress address;
   CountryPhoneCode region;
   TextEditingController firstNameController;
   TextEditingController lastNameController;
@@ -23,9 +24,10 @@ class CreateAddressState implements Cloneable<CreateAddressState> {
   CreateAddressState clone() {
     return CreateAddressState()
       ..customerId = customerId
+      ..customerName = customerName
       ..countries = countries
       ..loading = loading
-      ..billingAddress = billingAddress
+      ..address = address
       ..region = region
       ..firstNameController = firstNameController
       ..lastNameController = lastNameController

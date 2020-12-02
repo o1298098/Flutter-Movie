@@ -4,6 +4,7 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:movie/actions/api/base_api.dart';
 import 'package:movie/actions/creditcard_verify.dart';
 import 'package:movie/models/base_api_model/braintree_creditcard.dart';
+import 'package:movie/models/models.dart';
 import 'package:movie/views/payment_page/action.dart';
 import 'package:movie/views/payment_page/components/create_card_component/components/scan_component/state.dart';
 import 'package:toast/toast.dart';
@@ -62,7 +63,7 @@ void _nextTapped(Action action, Context<CreateCardState> ctx) async {
       ctx.state.cvvFocusNode.unfocus();
       ctx.dispatch(CreateCardActionCreator.loading(true));
       final _baseApi = BaseApi.instance;
-      final _r = await _baseApi.createCreditCard(CreditCard.fromParams(
+      final _r = await _baseApi.createStripeCreditCard(CreditCard.fromParams(
         customerId: ctx.state.customerId,
         expirationMonth: ctx.state.expriedDateController.text.substring(0, 2),
         expirationYear: ctx.state.expriedDateController.text.substring(2, 4),
@@ -72,7 +73,7 @@ void _nextTapped(Action action, Context<CreateCardState> ctx) async {
       ));
       if (_r.success) {
         if (_r.result['status']) {
-          final _card = CreditCard(_r.result['data']);
+          final _card = StripeCreditCard.fromJson(_r.result['data']);
           ctx.dispatch(PaymentPageActionCreator.insertCreditCard(_card));
           Navigator.of(ctx.context).pop();
         } else

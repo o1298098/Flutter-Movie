@@ -2,11 +2,13 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/braintree_creditcard.dart';
 import 'package:movie/models/base_api_model/braintree_customer.dart';
 import 'package:movie/models/base_api_model/braintree_transaction.dart';
+import 'package:movie/models/models.dart';
 
 enum PaymentPageAction {
   action,
   setTransactions,
   setCustomer,
+  setCreditCards,
   showHistory,
   showBillingAddress,
   createCard,
@@ -22,8 +24,12 @@ class PaymentPageActionCreator {
     return Action(PaymentPageAction.setTransactions, payload: transactions);
   }
 
-  static Action setCustomer(BraintreeCustomer customer) {
+  static Action setCustomer(StripeCustomer customer) {
     return Action(PaymentPageAction.setCustomer, payload: customer);
+  }
+
+  static Action setCreditCards(StripeCreditCards cards) {
+    return Action(PaymentPageAction.setCreditCards, payload: cards);
   }
 
   static Action showHistory() {
@@ -38,7 +44,7 @@ class PaymentPageActionCreator {
     return const Action(PaymentPageAction.createCard);
   }
 
-  static Action insertCreditCard(CreditCard card) {
+  static Action insertCreditCard(StripeCreditCard card) {
     return Action(PaymentPageAction.insertCreditCard, payload: card);
   }
 }

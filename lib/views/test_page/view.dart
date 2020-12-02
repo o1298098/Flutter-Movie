@@ -1,6 +1,12 @@
+import 'dart:io';
+
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:movie/actions/api/base_api.dart';
+import 'package:movie/models/enums/premium_type.dart';
+import 'package:movie/models/models.dart';
+import 'package:stripe_payment/stripe_payment.dart';
 
 import 'state.dart';
 
@@ -33,6 +39,7 @@ Widget buildView(
           },
         ),
       ),
+      _StripeTest()
     ]),
   );
 }
@@ -44,7 +51,60 @@ class _StripeTest extends StatefulWidget {
 
 class _StripeTestState extends State<_StripeTest> {
   @override
+  void initState() {
+    StripePayment.setStripeAccount('acct_1HlbgOKKzH6wLVHM');
+    StripePayment.setOptions(StripeOptions(
+        publishableKey:
+            "pk_test_51HlbgOKKzH6wLVHMfSddwqGGnS4srIMaHKqqaXFnldELEoBczwcmCUmLf8o7PakDWDHfwcXoJE3a7WqBqNN4BWAL00CjwRpUNN",
+        merchantId: "com.o1298098.movies",
+        androidPayMode: 'test'));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      child: RaisedButton(
+        child: Text("Native payment"),
+        onPressed: () async {
+          await StripePayment.canMakeNativePayPayments([])
+              .then((value) => print(value));
+          if (Platform.isIOS) {
+            //_controller.jumpTo(450);
+          }
+          StripePayment.paymentRequestWithNativePay(
+            androidPayOptions: AndroidPayPaymentRequest(
+              totalPrice: "1.20",
+              currencyCode: "usd",
+            ),
+            applePayOptions: ApplePayPaymentOptions(
+              countryCode: 'US',
+              currencyCode: 'usd',
+              items: [
+                ApplePayItem(
+                  label: 'Test',
+                  amount: '13',
+                )
+              ],
+            ),
+          ).then((token) async {
+            print(token.tokenId);
+            final _result = await BaseApi.instance
+                .createStripePremiumSubscription(
+                    Purchase(
+                        amount: 100,
+                        deviceData: '',
+                        paymentMethodNonce: token.tokenId,
+                        userId: 'WaViBxaJwEbRIzc0Jx3K4RM4fr02'),
+                    PremiumType.oneMonth);
+            if (_result.success) {
+              print(_result.result);
+              StripePayment.completeNativePayRequest();
+            } else
+              StripePayment.cancelNativePayRequest();
+          });
+        },
+      ),
+    );
   }
 }

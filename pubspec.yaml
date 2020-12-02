@@ -19,12 +19,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_mdns_plugin:
-    git: 
-      url: https://github.com/terrabythia/flutter_mdns_plugin.git
-      ref: master
   observable: any
-  dart_chromecast: ^0.2.2
+  dart_chromecast: ^0.2.4
+  flutter_mdns_plugin: ^0.0.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -40,7 +37,7 @@ dependencies:
   url_launcher: ^5.2.5
   chewie: ^0.9.10
   video_player: ^0.10.5+2
-  youtube_player_flutter: ^7.0.0+6
+  youtube_player_flutter: ^7.0.0+7
   intl: ^0.16.0
   cached_network_image: ^2.0.0
   parallax_image: ^0.3.1+1
@@ -55,7 +52,7 @@ dependencies:
   flutter_rating_bar: ^3.0.0
   flutter_swiper: ^1.1.6
   font_awesome_flutter: ^8.5.0
-  flutter_inappwebview: ^3.4.0+2
+  flutter_inappwebview: ^4.0.0
   flutter_cache_manager: ^1.1.3
   image_picker: ^0.6.7+2
   cloud_firestore: ^0.13.4+2
@@ -73,7 +70,7 @@ dependencies:
   camera: ^0.5.8+2
   flutter_local_notifications: ^1.4.4+1
   graphql_flutter: ^3.0.1
-  stripe_sdk: ^3.0.1+1
+  stripe_payment: ^1.0.8
   
 
 dev_dependencies:

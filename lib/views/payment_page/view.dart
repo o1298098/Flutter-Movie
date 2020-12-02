@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/models/app_user.dart';
-import 'package:movie/models/base_api_model/braintree_creditcard.dart';
+import 'package:movie/models/models.dart';
 import 'package:movie/style/themestyle.dart';
 import 'package:movie/views/payment_page/action.dart';
 
@@ -32,7 +32,7 @@ Widget buildView(
       body: Column(children: [
         _Header(user: state.user),
         _Body(
-          creditCards: state.customer?.creditCards,
+          creditCards: state.cards ?? null,
           dispatch: dispatch,
         ),
       ]),
@@ -94,95 +94,6 @@ class _Header extends StatelessWidget {
       ),
       SizedBox(height: Adapt.px(50))
     ]);
-  }
-}
-
-class _CreditCardCell extends StatelessWidget {
-  final CreditCard creditCard;
-  const _CreditCardCell({this.creditCard});
-
-  @override
-  Widget build(BuildContext context) {
-    final _creditCardTheme = {
-      'Visa': ['images/visa_logo.png', const Color(0xFF9E92E1)],
-      'JCB': ['images/jcb_logo.png', const Color(0xFFE3C4C2)],
-      'Discover': ['images/discover_logo.png', const Color(0XFF66AA9E)],
-      'MasterCard': ['images/mastercard_logo.png', const Color(0xFF556677)],
-      '-': ['images/visa_logo.png', const Color(0xFF556677)],
-    };
-    final Color _cardColor =
-        _creditCardTheme[creditCard?.cardType?.value ?? '-'][1];
-
-    final TextStyle _textStyle = TextStyle(
-      color: const Color(0xFFFFFFFF),
-      fontSize: Adapt.px(35),
-    );
-
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(Adapt.px(40)),
-        color: const Color(0xFFFFFFFF),
-      ),
-      child: Container(
-        width: Adapt.screenW(),
-        height: Adapt.px(420),
-        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 30),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(Adapt.px(40)),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              _cardColor.withAlpha(120),
-              _cardColor.withAlpha(200),
-              _cardColor,
-            ],
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: Container(
-                constraints: BoxConstraints(maxWidth: Adapt.px(150)),
-                height: Adapt.px(50),
-                child: Image.asset(
-                  _creditCardTheme[creditCard?.cardType?.value ?? '-'][0],
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
-            SizedBox(height: Adapt.px(80)),
-            Container(
-              height: Adapt.px(40),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('****', style: _textStyle),
-                  Text('****', style: _textStyle),
-                  Text('****', style: _textStyle),
-                  Text(
-                    '${creditCard?.lastFour ?? '****'}',
-                    style: _textStyle,
-                  )
-                ],
-              ),
-            ),
-            Expanded(child: SizedBox()),
-            Text(
-              'Expires',
-              style: TextStyle(color: Color(0xFFE0E0E0)),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              creditCard?.expirationDate ?? 'MM/yyyy',
-              style: TextStyle(color: Color(0xFFFFFFFF)),
-            )
-          ],
-        ),
-      ),
-    );
   }
 }
 
@@ -249,7 +160,7 @@ class _OptionCell extends StatelessWidget {
 }
 
 class _Body extends StatelessWidget {
-  final List<CreditCard> creditCards;
+  final List<StripeCreditCard> creditCards;
   final SwiperController controller;
   final Dispatch dispatch;
   const _Body({this.creditCards, this.controller, this.dispatch});
@@ -371,8 +282,96 @@ class _AddCardButton extends StatelessWidget {
   }
 }
 
+class _CreditCardCell extends StatelessWidget {
+  final StripeCreditCard creditCard;
+  const _CreditCardCell({this.creditCard});
+
+  @override
+  Widget build(BuildContext context) {
+    final _creditCardTheme = {
+      'Visa': ['images/visa_logo.png', const Color(0xFF9E92E1)],
+      'JCB': ['images/jcb_logo.png', const Color(0xFFE3C4C2)],
+      'Discover': ['images/discover_logo.png', const Color(0XFF66AA9E)],
+      'MasterCard': ['images/mastercard_logo.png', const Color(0xFF556677)],
+      '-': ['images/visa_logo.png', const Color(0xFF556677)],
+    };
+    final Color _cardColor = _creditCardTheme[creditCard?.brand ?? '-'][1];
+
+    final TextStyle _textStyle = TextStyle(
+      color: const Color(0xFFFFFFFF),
+      fontSize: Adapt.px(35),
+    );
+
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(Adapt.px(40)),
+        color: const Color(0xFFFFFFFF),
+      ),
+      child: Container(
+        width: Adapt.screenW(),
+        height: Adapt.px(420),
+        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 30),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(Adapt.px(40)),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              _cardColor.withAlpha(120),
+              _cardColor.withAlpha(200),
+              _cardColor,
+            ],
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: Container(
+                constraints: BoxConstraints(maxWidth: Adapt.px(150)),
+                height: Adapt.px(50),
+                child: Image.asset(
+                  _creditCardTheme[creditCard?.brand ?? '-'][0],
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+            SizedBox(height: Adapt.px(80)),
+            Container(
+              height: Adapt.px(40),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('****', style: _textStyle),
+                  Text('****', style: _textStyle),
+                  Text('****', style: _textStyle),
+                  Text(
+                    '${creditCard?.last4 ?? '****'}',
+                    style: _textStyle,
+                  )
+                ],
+              ),
+            ),
+            Expanded(child: SizedBox()),
+            Text(
+              'Expires',
+              style: TextStyle(color: Color(0xFFE0E0E0)),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              '${creditCard?.expMonth ?? 'MM'}/${creditCard?.expYear ?? 'yyyy'}',
+              style: TextStyle(color: Color(0xFFFFFFFF)),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _CreditCardSwiper extends StatelessWidget {
-  final List<CreditCard> creditCards;
+  final List<StripeCreditCard> creditCards;
   final SwiperController controller;
   const _CreditCardSwiper({this.creditCards, this.controller});
   @override

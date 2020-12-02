@@ -169,12 +169,12 @@ Future _checkUpdate(Action action, Context<SettingPageState> ctx) async {
     if (_apk != null && _shouldUpdate) {
       await showDialog(
           context: ctx.context,
-          child: UpdateInfoDialog(
-            version: _result.result.tagName,
-            describe: _result.result.body,
-            packageSize: (_apk.size / 1048576),
-            downloadUrl: _apk.browserDownloadUrl,
-          ));
+          builder: (_) => UpdateInfoDialog(
+                version: _result.result.tagName,
+                describe: _result.result.body,
+                packageSize: (_apk.size / 1048576),
+                downloadUrl: _apk.browserDownloadUrl,
+              ));
     }
   } else
     Toast.show(_result.message, ctx.context);

@@ -90,46 +90,50 @@ class _TrailerCell extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData _theme = ThemeStyle.getTheme(context);
     return GestureDetector(
-        onTap: onTap,
-        child: SizedBox(
-            width: Adapt.px(320),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Stack(children: [
-                Container(
-                  height: Adapt.px(180),
-                  width: Adapt.px(320),
-                  decoration: BoxDecoration(
-                    color: _theme.primaryColorDark,
-                    borderRadius: BorderRadius.circular(Adapt.px(15)),
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: CachedNetworkImageProvider(
-                            'https://i.ytimg.com/vi/${data.key}/hqdefault.jpg')),
-                  ),
+      onTap: onTap,
+      child: SizedBox(
+        width: Adapt.px(320),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(children: [
+              Container(
+                height: Adapt.px(180),
+                width: Adapt.px(320),
+                decoration: BoxDecoration(
+                  color: _theme.primaryColorDark,
+                  borderRadius: BorderRadius.circular(Adapt.px(15)),
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: CachedNetworkImageProvider(
+                          'https://i.ytimg.com/vi/${data.key}/hqdefault.jpg')),
                 ),
-                Container(
-                  height: Adapt.px(180),
-                  width: Adapt.px(320),
-                  decoration: BoxDecoration(
-                    color: const Color(0x55000000),
-                    borderRadius: BorderRadius.circular(Adapt.px(15)),
-                  ),
-                  child: Icon(
-                    Icons.play_circle_outline,
-                    size: Adapt.px(80),
-                    color: const Color(0xFFFFFFFF),
-                  ),
-                )
-              ]),
-              SizedBox(height: Adapt.px(15)),
-              Text(
-                data.name,
-                maxLines: 2,
-                style: TextStyle(
-                    fontSize: Adapt.px(24), fontWeight: FontWeight.w500),
+              ),
+              Container(
+                height: Adapt.px(180),
+                width: Adapt.px(320),
+                decoration: BoxDecoration(
+                  color: const Color(0x55000000),
+                  borderRadius: BorderRadius.circular(Adapt.px(15)),
+                ),
+                child: Icon(
+                  Icons.play_circle_outline,
+                  size: Adapt.px(80),
+                  color: const Color(0xFFFFFFFF),
+                ),
               )
-            ])));
+            ]),
+            SizedBox(height: Adapt.px(15)),
+            Text(
+              data.name,
+              maxLines: 2,
+              style: TextStyle(
+                  fontSize: Adapt.px(24), fontWeight: FontWeight.w500),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
 

@@ -41,10 +41,10 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
           onPressed: () => Navigator.of(context).pop(),
         )
       ],
-      progressIndicatorColor: Colors.red,
+      progressIndicatorColor: Colors.white,
       progressColors: youtube.ProgressBarColors(
-        playedColor: Colors.amber,
-        handleColor: Colors.amberAccent,
+        playedColor: Colors.white,
+        handleColor: Colors.white,
       ),
     );
   }

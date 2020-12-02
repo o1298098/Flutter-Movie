@@ -112,7 +112,7 @@ Future _checkAppUpdate(Context<MainPageState> ctx) async {
     if (_apk != null && _shouldUpdate) {
       await showDialog(
         context: ctx.context,
-        child: UpdateInfoDialog(
+        builder: (_) => UpdateInfoDialog(
           version: _result.result.tagName,
           describe: _result.result.body,
           packageSize: (_apk.size / 1048576),

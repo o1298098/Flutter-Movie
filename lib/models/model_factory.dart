@@ -81,6 +81,12 @@ class ModelFactory {
         return AccountInfo(json) as T;
       case 'TopicSubscription':
         return TopicSubscription(json) as T;
+      case 'StripeCustomer':
+        return StripeCustomer(json) as T;
+      case 'StripeCreditCards':
+        return StripeCreditCards(json) as T;
+      case 'StripeCharges':
+        return StripeCharges(json) as T;
       default:
         return json;
     }

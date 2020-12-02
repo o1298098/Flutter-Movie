@@ -6,6 +6,7 @@ enum CheckOutPageAction {
   selectPaymentMethod,
   updatePaymentMethod,
   pay,
+  getCreditCards,
   loading
 }
 
@@ -30,5 +31,9 @@ class CheckOutPageActionCreator {
 
   static Action loading(bool loading) {
     return Action(CheckOutPageAction.loading, payload: loading);
+  }
+
+  static Action getCreditCards() {
+    return const Action(CheckOutPageAction.getCreditCards);
   }
 }

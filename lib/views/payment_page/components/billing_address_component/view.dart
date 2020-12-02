@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/models/base_api_model/braintree_billing_address.dart';
+import 'package:movie/models/base_api_model/stripe_address.dart';
 import 'package:movie/style/themestyle.dart';
 
 import 'action.dart';
@@ -40,24 +41,25 @@ Widget buildView(
               top: Radius.circular(Adapt.px(60)),
             ),
           ),
-          child: state.addresses == null
+          child: state.address == null
               ? Center(
                   child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation(_theme.iconTheme.color),
                   ),
                 )
-              : (state.addresses?.length ?? 0) > 0
+              : state.address != null
                   ? ListView.separated(
                       physics: BouncingScrollPhysics(),
                       padding: EdgeInsets.symmetric(
                           horizontal: Adapt.px(40), vertical: Adapt.px(40)),
                       itemBuilder: (_, index) => _AddressCell(
-                        address: state.addresses[index],
+                        name: state.customerName,
+                        address: state.address,
                         onTap: (a) =>
                             dispatch(BillingAddressActionCreator.onEdit(a)),
                       ),
                       separatorBuilder: (_, __) => Divider(),
-                      itemCount: state.addresses?.length ?? 0,
+                      itemCount: state.address == null ? 0 : 1,
                     )
                   : const _EmptyListCell(),
         ),
@@ -93,9 +95,10 @@ class _AddButton extends StatelessWidget {
 }
 
 class _AddressCell extends StatelessWidget {
-  final BillingAddress address;
-  final Function(BillingAddress) onTap;
-  const _AddressCell({this.address, this.onTap});
+  final String name;
+  final StripeAddress address;
+  final Function(StripeAddress) onTap;
+  const _AddressCell({this.address, this.onTap, this.name});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -112,15 +115,15 @@ class _AddressCell extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${address?.firstName} ${address?.lastName}',
+                '$name',
                 style: TextStyle(
                     fontWeight: FontWeight.bold, fontSize: Adapt.px(28)),
               ),
               SizedBox(height: Adapt.px(10)),
-              // Text(address?.countryCodeAlpha3 ?? ''),
-              Text(address?.streetAddress ?? ''),
+              Text(address?.country ?? ''),
+              Text(address?.state ?? ''),
               Text(
-                  '${address?.locality}, ${address?.region} ${address?.postalCode}'),
+                  '${address?.city}, ${address?.line1} ${address?.postalCode}'),
             ],
           ),
           Expanded(child: SizedBox()),

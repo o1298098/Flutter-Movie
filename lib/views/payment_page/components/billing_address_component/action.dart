@@ -1,5 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:movie/models/base_api_model/braintree_billing_address.dart';
+import 'package:movie/models/base_api_model/stripe_address.dart';
 
 enum BillingAddressAction {
   action,
@@ -19,7 +20,7 @@ class BillingAddressActionCreator {
     return const Action(BillingAddressAction.create);
   }
 
-  static Action onEdit(BillingAddress address) {
+  static Action onEdit(StripeAddress address) {
     return Action(BillingAddressAction.edit, payload: address);
   }
 
@@ -27,11 +28,11 @@ class BillingAddressActionCreator {
     return Action(BillingAddressAction.insert, payload: address);
   }
 
-  static Action onUpdate(BillingAddress address) {
+  static Action onUpdate(StripeAddress address) {
     return Action(BillingAddressAction.update, payload: address);
   }
 
-  static Action onDelete(BillingAddress address) {
+  static Action onDelete(StripeAddress address) {
     return Action(BillingAddressAction.delete, payload: address);
   }
 }

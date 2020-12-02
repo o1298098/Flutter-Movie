@@ -1,6 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/actions/adapt.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'action.dart';
 import 'state.dart';
@@ -43,7 +42,6 @@ class _YoutubePlayerState extends State<_YoutubePlayer> {
     _controller = YoutubePlayerController(
         initialVideoId: widget.videoKey,
         flags: YoutubePlayerFlags(
-          mute: false,
           autoPlay: true,
         ));
     super.initState();
@@ -59,17 +57,13 @@ class _YoutubePlayerState extends State<_YoutubePlayer> {
   Widget build(BuildContext context) {
     return Center(
       child: Material(
-        child: Container(
-          width: Adapt.screenW(),
-          height: Adapt.screenW() * 9 / 16,
-          child: YoutubePlayer(
-            controller: _controller,
-            showVideoProgressIndicator: true,
-            progressIndicatorColor: Colors.red,
-            progressColors: ProgressBarColors(
-              playedColor: Colors.red,
-              handleColor: Colors.redAccent,
-            ),
+        child: YoutubePlayer(
+          controller: _controller,
+          showVideoProgressIndicator: true,
+          progressIndicatorColor: Colors.red,
+          progressColors: ProgressBarColors(
+            playedColor: Colors.red,
+            handleColor: Colors.redAccent,
           ),
         ),
       ),

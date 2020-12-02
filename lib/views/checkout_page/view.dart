@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_braintree/flutter_braintree.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie/actions/adapt.dart';
+import 'package:movie/models/models.dart';
 import 'package:movie/style/themestyle.dart';
+import 'package:movie/widgets/loading_layout.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -39,10 +44,10 @@ Widget buildView(
                 _TotalCell(amount: state.checkoutData?.amount ?? 0.0),
                 SizedBox(height: Adapt.px(30)),
                 _PaymentCell(
-                  braintreeDropInResult: state.braintreeDropInResult,
-                  onTap: () =>
-                      dispatch(CheckOutPageActionCreator.selectPaymentMethod()),
-                ),
+                    nativePay: state.paymentState.nativePay,
+                    selectedCard: state.paymentState.selectedCard,
+                    onTap: () => dispatch(
+                        CheckOutPageActionCreator.selectPaymentMethod())),
                 SizedBox(height: Adapt.px(30)),
                 _PayButton(
                   onTap: () => dispatch(CheckOutPageActionCreator.onPay()),
@@ -52,7 +57,7 @@ Widget buildView(
             ),
           ),
         ),
-        state.loading ? _LoadingLayout() : SizedBox(),
+        LoadingLayout(title: 'Working', show: state.loading)
       ],
     );
   });
@@ -173,66 +178,6 @@ final Map<String, String> _paymentType = {
   'Google Pay': 'images/google.png'
 };
 
-class _PaymentCell extends StatelessWidget {
-  final Function onTap;
-  final BraintreeDropInResult braintreeDropInResult;
-  const _PaymentCell({this.braintreeDropInResult, this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    final _theme = ThemeStyle.getTheme(context);
-    final _boxShadow = [
-      BoxShadow(
-          color: _theme.brightness == Brightness.light
-              ? const Color(0xFFD0D0D0)
-              : const Color(0xFF202020),
-          blurRadius: Adapt.px(10),
-          offset: Offset(Adapt.px(5), Adapt.px(5)))
-    ];
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(Adapt.px(30)),
-        decoration: BoxDecoration(
-            color: _theme.backgroundColor,
-            boxShadow: _boxShadow,
-            borderRadius: BorderRadius.circular(Adapt.px(20))),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
-            'Select Payment Method',
-            style: TextStyle(
-              fontSize: Adapt.px(28),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: Adapt.px(20)),
-          Row(
-            children: [
-              braintreeDropInResult == null
-                  ? SizedBox(height: Adapt.px(50))
-                  : Image.asset(
-                      _paymentType[braintreeDropInResult
-                              ?.paymentMethodNonce?.typeLabel ??
-                          'none'],
-                      height: Adapt.px(50),
-                    ),
-              SizedBox(width: Adapt.px(20)),
-              SizedBox(
-                width: Adapt.px(500),
-                child: Text(
-                  '${braintreeDropInResult?.paymentMethodNonce?.description ?? '---'}',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              )
-            ],
-          )
-        ]),
-      ),
-    );
-  }
-}
-
 class _PayButton extends StatelessWidget {
   final Function onTap;
   const _PayButton({this.onTap});
@@ -270,43 +215,107 @@ class _PayButton extends StatelessWidget {
   }
 }
 
-class _LoadingLayout extends StatelessWidget {
+class _PaymentCell extends StatelessWidget {
+  final Function onTap;
+  final bool nativePay;
+  final StripeCreditCard selectedCard;
+  const _PaymentCell({this.selectedCard, this.onTap, this.nativePay = true});
+
   @override
   Widget build(BuildContext context) {
-    return Material(
-        color: Colors.transparent,
-        child: Container(
-          width: Adapt.screenW(),
-          height: Adapt.screenH(),
-          color: const Color(0x20000000),
-          child: Center(
-            child: Container(
-              width: Adapt.px(300),
-              height: Adapt.px(300),
-              decoration: BoxDecoration(
-                color: const Color(0xAA000000),
-                borderRadius: BorderRadius.circular(
-                  Adapt.px(20),
-                ),
-              ),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(
-                      valueColor:
-                          AlwaysStoppedAnimation(const Color(0xFFFFFFFF)),
-                    ),
-                    SizedBox(height: Adapt.px(30)),
-                    const Text(
-                      'Working',
-                      style: TextStyle(
-                        color: const Color(0xFFFFFFFF),
-                        fontSize: 14,
-                      ),
-                    )
-                  ]),
+    final _theme = ThemeStyle.getTheme(context);
+    final _boxShadow = [
+      BoxShadow(
+          color: _theme.brightness == Brightness.light
+              ? const Color(0xFFD0D0D0)
+              : const Color(0xFF202020),
+          blurRadius: Adapt.px(10),
+          offset: Offset(Adapt.px(5), Adapt.px(5)))
+    ];
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(Adapt.px(30)),
+        decoration: BoxDecoration(
+            color: _theme.backgroundColor,
+            boxShadow: _boxShadow,
+            borderRadius: BorderRadius.circular(Adapt.px(20))),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            'Select Payment Method',
+            style: TextStyle(
+              fontSize: Adapt.px(28),
+              fontWeight: FontWeight.bold,
             ),
           ),
-        ));
+          SizedBox(height: Adapt.px(20)),
+          nativePay
+              ? _NativePayCell()
+              : _CreditCardCell(
+                  card: selectedCard,
+                )
+        ]),
+      ),
+    );
+  }
+}
+
+class _NativePayCell extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final _isAndroid = Platform.isAndroid;
+    final _icon =
+        _isAndroid ? FontAwesomeIcons.googlePay : FontAwesomeIcons.applePay;
+    final _title = _isAndroid ? 'Google Pay' : 'Apple Pay';
+    return Row(
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 1),
+          decoration: BoxDecoration(
+            border: Border.all(width: 1.5),
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Icon(
+            _icon,
+            size: 25,
+          ),
+        ),
+        SizedBox(width: Adapt.px(20)),
+        Flexible(
+          child: Text(
+            _title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class _CreditCardCell extends StatelessWidget {
+  final StripeCreditCard card;
+  const _CreditCardCell({this.card});
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        card == null
+            ? SizedBox(height: Adapt.px(50))
+            : Image.asset(
+                _paymentType[card?.brand ?? 'none'],
+                height: Adapt.px(50),
+              ),
+        SizedBox(width: Adapt.px(20)),
+        SizedBox(
+          width: Adapt.px(500),
+          child: Text(
+            card != null ? '**** **** **** ${card.last4}' : '---',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        )
+      ],
+    );
   }
 }

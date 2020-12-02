@@ -251,10 +251,10 @@ class _PhoneNumberEntry extends StatelessWidget {
             prefixIcon: InkWell(
                 onTap: () => showDialog(
                     context: context,
-                    child: _CountryCodeDialog(
-                      countries: countryCodes,
-                      onCellTap: countryCodeTap,
-                    )),
+                    builder: (_) => _CountryCodeDialog(
+                          countries: countryCodes,
+                          onCellTap: countryCodeTap,
+                        )),
                 child: SizedBox(
                   width: Adapt.px(60),
                   child: Center(

@@ -1,4 +1,5 @@
 import 'package:movie/actions/app_config.dart';
+import 'package:movie/models/base_api_model/stripe_address.dart';
 import 'package:movie/models/enums/media_type.dart';
 import 'package:movie/models/enums/premium_type.dart';
 import 'package:movie/models/models.dart';
@@ -623,5 +624,96 @@ class BaseApi {
     final _result = await _http.request<TopicSubscription>(_url,
         method: 'POST', data: _data);
     return _result;
+  }
+
+  ///create Stripe payment intent
+  Future<ResponseModel<UserPremiumModel>> createPayment(
+      Purchase purchase, PremiumType type, bool nativePay) async {
+    final String _url = '/StripePayment/CreatePayment';
+    final _r =
+        await _http.request<UserPremiumModel>(_url, method: 'POST', data: {
+      'userId': purchase.userId,
+      'amount': (purchase.amount * 100).toInt(),
+      'currency': 'usd',
+      'paymentMethodNonce': purchase.paymentMethodNonce,
+      'deviceData': purchase.deviceData,
+      'premiumType': type.toString().split('.').last,
+      'nativePay': nativePay
+    });
+    return _r;
+  }
+
+  Future<ResponseModel<dynamic>> createStripePremiumSubscription(
+      Purchase purchase, PremiumType type) async {
+    final String _url = '/StripePayment/CreateSubscription';
+    final _r = await _http.request<dynamic>(_url, method: 'POST', data: {
+      'userId': purchase.userId,
+      'amount': (purchase.amount * 100).toInt(),
+      'paymentMethodNonce': purchase.paymentMethodNonce,
+      'deviceData': purchase.deviceData,
+      'premiumType': type.toString().split('.').last
+    });
+    return _r;
+  }
+
+  Future<ResponseModel<StripeCreditCards>> getCreditCards(String userId) async {
+    final String _url = '/StripePayment/CreditCards/$userId';
+    final _r = await _http.request<StripeCreditCards>(_url);
+    return _r;
+  }
+
+  Future<ResponseModel<StripeCustomer>> getStripeCustomer(String userId) async {
+    final String _url = '/StripePayment/Customer/$userId';
+    final _r = await _http.request<StripeCustomer>(_url);
+    return _r;
+  }
+
+  Future<ResponseModel<StripeCharges>> getStripeCharges(
+      String stripeCustomerId) async {
+    final String _url = '/StripePayment/Charges/$stripeCustomerId';
+    final _r = await _http.request<StripeCharges>(_url);
+    return _r;
+  }
+
+  Future<StripeAddress> updateStripeAddress(String stripeCustomerId,
+      String customerName, StripeAddress address) async {
+    StripeAddress _model;
+    String _url = '/StripePayment/Customer/BillingAddress';
+    var _r = await _http.request(_url, method: 'POST', data: {
+      'customerID': stripeCustomerId,
+      'customerName': customerName,
+      'address': {
+        'city': address.city,
+        'country': address.country,
+        'line1': address.line1,
+        'line2': address.line2,
+        'postal_code': address.postalCode,
+        'state': address.state,
+      },
+    });
+    if (_r.success) if (_r.result['status'])
+      _model = StripeAddress.fromJson(_r.result['data']);
+    return _model;
+  }
+
+  Future<StripeAddress> deleteStripeAddress(String stripeCustomerId) async {
+    StripeAddress _model;
+    String _url = '/StripePayment/Customer/BillingAddress/$stripeCustomerId';
+    var _r = await _http.request(_url, method: 'DELETE');
+    if (_r.success) if (_r.result['status'])
+      _model = StripeAddress.fromJson(_r.result['data']);
+    return _model;
+  }
+
+  Future<dynamic> createStripeCreditCard(CreditCard card) async {
+    String _url = '/StripePayment/CreditCard';
+    var _r = await _http.request(_url, method: 'POST', data: {
+      'customerID': card.customerId,
+      'number': card.maskedNumber,
+      'expMonth': card.expirationMonth,
+      'expYear': card.expirationYear,
+      'cvc': card.bin,
+    });
+    return _r;
   }
 }

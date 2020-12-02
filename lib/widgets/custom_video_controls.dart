@@ -253,17 +253,6 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
                 );
               }),
         );
-        /*showGeneralDialog(
-          context: context,
-          barrierLabel: '',
-          barrierColor: Colors.black87,
-          transitionDuration: Duration(milliseconds: 200),
-          barrierDismissible: true,
-          pageBuilder: (_, __, ___) => DevicePicker(
-            videoController: controller,
-            serviceDiscovery: _serviceDiscovery,
-          ),
-        );*/
       },
       child: AnimatedOpacity(
         opacity: _hideStuff ? 0.0 : 1.0,
