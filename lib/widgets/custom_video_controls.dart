@@ -8,16 +8,16 @@ import 'package:chewie/src/cupertino_progress_bar.dart';
 // ignore: implementation_imports
 import 'package:chewie/src/utils.dart';
 // ignore: unused_import
-import 'package:dart_chromecast/casting/cast_device.dart';
+//import 'package:dart_chromecast/casting/cast_device.dart';
 // ignore: unused_import
-import 'package:dart_chromecast/casting/cast_media.dart';
+//import 'package:dart_chromecast/casting/cast_media.dart';
 // ignore: unused_import
-import 'package:dart_chromecast/casting/cast_sender.dart';
+//import 'package:dart_chromecast/casting/cast_sender.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/widgets/chromecast_dialog.dart';
-import 'package:movie/widgets/service_discovery.dart';
-import 'package:open_iconic_flutter/open_iconic_flutter.dart';
+//import 'package:movie/widgets/chromecast_dialog.dart';
+//import 'package:movie/widgets/service_discovery.dart';
 import 'package:video_player/video_player.dart';
 
 class CustomCupertinoControls extends StatefulWidget {
@@ -43,7 +43,7 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
   final marginSize = 10.0;
   Timer _expandCollapseTimer;
   Timer _initTimer;
-  ServiceDiscovery _serviceDiscovery;
+  //ServiceDiscovery _serviceDiscovery;
 
   VideoPlayerController controller;
   ChewieController chewieController;
@@ -60,7 +60,7 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
             )
           : Center(
               child: Icon(
-                OpenIconicIcons.ban,
+                CupertinoIcons.exclamationmark_circle,
                 color: Colors.white,
                 size: 42,
               ),
@@ -100,8 +100,8 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
 
   @override
   void initState() {
-    _serviceDiscovery = ServiceDiscovery();
-    _serviceDiscovery.startDiscovery();
+    /* _serviceDiscovery = ServiceDiscovery();
+    _serviceDiscovery.startDiscovery();*/
     super.initState();
   }
 
@@ -213,7 +213,7 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
               color: backgroundColor,
               child: Center(
                 child: Icon(
-                  OpenIconicIcons.chevronLeft,
+                  CupertinoIcons.left_chevron,
                   color: iconColor,
                   size: 12.0,
                 ),
@@ -242,15 +242,16 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
               opaque: false,
               pageBuilder: (context, animation, subAnimation) {
                 return SlideTransition(
-                  position:
-                      Tween<Offset>(begin: Offset(0, 1), end: Offset(0, 0))
-                          .animate(CurvedAnimation(
-                              parent: animation, curve: Curves.ease)),
-                  child: ChromecastDialog(
+                    position:
+                        Tween<Offset>(begin: Offset(0, 1), end: Offset(0, 0))
+                            .animate(CurvedAnimation(
+                                parent: animation, curve: Curves.ease)),
+                    child:
+                        SizedBox() /*ChromecastDialog(
                     videoController: controller,
                     serviceDiscovery: _serviceDiscovery,
-                  ),
-                );
+                  ),*/
+                    );
               }),
         );
       },
@@ -307,10 +308,10 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
               child: Center(
                 child: Icon(
                   chewieController.isFullScreen
-                      ? OpenIconicIcons.fullscreenExit
-                      : OpenIconicIcons.fullscreenEnter,
+                      ? CupertinoIcons.arrow_down_right_arrow_up_left
+                      : CupertinoIcons.arrow_up_left_arrow_down_right,
                   color: iconColor,
-                  size: 12.0,
+                  size: 16,
                 ),
               ),
             ),
@@ -402,11 +403,8 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
           right: 6.0,
         ),
         child: Icon(
-          controller.value.isPlaying
-              ? OpenIconicIcons.mediaPause
-              : OpenIconicIcons.mediaPlay,
+          controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
           color: iconColor,
-          size: 16.0,
         ),
       ),
     );
@@ -459,9 +457,9 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
             ..rotateX(math.pi)
             ..rotateZ(math.pi),
           child: Icon(
-            OpenIconicIcons.reload,
+            CupertinoIcons.gobackward_15,
             color: iconColor,
-            size: 12.0,
+            size: 18.0,
           ),
         ),
       ),
@@ -482,9 +480,9 @@ class _CupertinoControlsState extends State<CustomCupertinoControls> {
           right: 8.0,
         ),
         child: Icon(
-          OpenIconicIcons.reload,
+          CupertinoIcons.goforward_15,
           color: iconColor,
-          size: 12.0,
+          size: 18.0,
         ),
       ),
     );

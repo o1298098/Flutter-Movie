@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_braintree/flutter_braintree.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie/actions/adapt.dart';
 import 'package:movie/models/models.dart';

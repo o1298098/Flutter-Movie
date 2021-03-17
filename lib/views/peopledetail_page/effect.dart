@@ -2,7 +2,6 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/api/tmdb_api.dart';
 import 'package:movie/models/enums/media_type.dart';
-import 'package:movie/models/models.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -26,10 +25,10 @@ Future _onInit(Action action, Context<PeopleDetailPageState> ctx) async {
       ctx.dispatch(PeopleDetailPageActionCreator.onInit(_peopleDetail.result));
     var _combinedCredits = await _tmdb.getCombinedCredits(id);
     if (_combinedCredits.success) {
-      var cast = List<CombinedCastData>();
-      cast = new List<CombinedCastData>()..addAll(_combinedCredits.result.cast);
+      var cast = [];
+      cast = []..addAll(_combinedCredits.result.cast);
       cast.sort((a, b) => b.voteCount.compareTo(a.voteCount));
-      _combinedCredits.result.cast = new List<CombinedCastData>()
+      _combinedCredits.result.cast = []
         ..addAll(_combinedCredits.result.cast);
       _combinedCredits.result.cast.sort((a, b) {
         String date1 = a.mediaType == 'movie' ? a.releaseDate : a.firstAirDate;

@@ -43,7 +43,7 @@ void _onInit(Action action, Context<LoginPageState> ctx) async {
   ctx.state.countryCode = '+1';
   final _jsonStr = await CountryPhoneCode.getCountryJson(ctx.context);
   final countriesJson = json.decode(_jsonStr);
-  ctx.state.countryCodes = List<CountryPhoneCode>();
+  ctx.state.countryCodes = [];
   for (var country in countriesJson) {
     ctx.state.countryCodes.add(CountryPhoneCode.fromJson(country));
   }

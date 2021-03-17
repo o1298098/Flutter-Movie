@@ -9,7 +9,7 @@ Widget buildView(
   return Builder(
     builder: (context) {
       final ThemeData _theme = ThemeStyle.getTheme(context);
-      final _list = List<Widget>(_adapter.itemCount).asMap().keys.map((k) {
+      final _list = List<Widget>.filled(_adapter.itemCount, null).asMap().keys.map((k) {
         return SizedBox(
             key: Key('TabView${state.detail.seasons[k].id}'),
             child: _adapter.itemBuilder(viewService.context, k));

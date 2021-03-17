@@ -2,10 +2,8 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:movie/actions/api/base_api.dart';
 import 'package:movie/actions/user_info_operate.dart';
-import 'package:movie/models/base_api_model/payment_client_token.dart';
 import 'package:movie/models/base_api_model/purchase.dart';
 import 'package:movie/models/enums/premium_type.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 import 'package:toast/toast.dart';
 import 'action.dart';
@@ -132,26 +130,6 @@ void _onPay(Action action, Context<CheckOutPageState> ctx) async {
       StripePayment.cancelNativePayRequest();
     }
   });
-}
-
-Future<PaymentClientToken> _getToken(String uid) async {
-  PaymentClientToken _clientNonce = PaymentClientToken.fromParams(
-      expiredTime: DateTime.now().millisecondsSinceEpoch);
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  final _token = preferences.getString('PaymentToken');
-  if (_token != null) _clientNonce = PaymentClientToken(_token);
-  if (_token == null || _clientNonce.isExpired()) {
-    final _baseApi = BaseApi.instance;
-    var r = await _baseApi.getPaymentToken(uid);
-    if (r.success) {
-      _clientNonce = PaymentClientToken.fromParams(
-          token: r.result, expiredTime: DateTime.now().millisecondsSinceEpoch);
-      preferences.setString('PaymentToken', _clientNonce.toString());
-    } else
-      _clientNonce = PaymentClientToken.fromParams(
-          expiredTime: DateTime.now().millisecondsSinceEpoch);
-  }
-  return _clientNonce;
 }
 
 Future _getCreditCards(Action action, Context<CheckOutPageState> ctx) async {

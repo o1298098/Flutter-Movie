@@ -20,7 +20,7 @@ class KeyWordsConnector
   @override
   KeyWordsState get(MovieDetailPageState state) {
     KeyWordsState mstate = KeyWordsState();
-    mstate.keywords = state.movieDetailModel?.keywords??KeyWordModel.fromParams(keywords: List<KeyWordData>());
+    mstate.keywords = state.movieDetailModel?.keywords??KeyWordModel.fromParams(keywords:[]);
     return mstate;
   }
 }

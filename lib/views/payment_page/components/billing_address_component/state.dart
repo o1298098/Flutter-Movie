@@ -1,5 +1,4 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/base_api_model/braintree_billing_address.dart';
 import 'package:movie/models/base_api_model/stripe_address.dart';
 import 'package:movie/views/payment_page/state.dart';
 

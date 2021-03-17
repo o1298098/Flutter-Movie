@@ -1,5 +1,4 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/base_api_model/braintree_billing_address.dart';
 import 'package:movie/models/base_api_model/stripe_address.dart';
 
 import 'action.dart';
@@ -23,7 +22,7 @@ BillingAddressState _onAction(BillingAddressState state, Action action) {
 BillingAddressState _onUpdate(BillingAddressState state, Action action) {
   final StripeAddress _address = action.payload;
   final BillingAddressState newState = state.clone();
-  final _list = newState.address = _address;
+  newState.address = _address;
   return newState;
 }
 

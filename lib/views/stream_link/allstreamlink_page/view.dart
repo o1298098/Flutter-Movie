@@ -17,7 +17,7 @@ Widget buildView(
     final ThemeData _theme = ThemeStyle.getTheme(context);
     return Scaffold(
       key: state.scaffoldKey,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 0.0,
         brightness: _theme.brightness,

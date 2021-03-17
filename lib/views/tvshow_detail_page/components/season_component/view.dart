@@ -107,7 +107,7 @@ class _SeasonPanelState extends State<_SeasonPanel> {
   }
 
   void _markSeason() async {
-    final _marks = List<bool>(widget.seasons?.length ?? 0);
+    final _marks = List<bool>.filled(widget.seasons?.length ?? 0, false);
     SharedPreferences _pre = await SharedPreferences.getInstance();
 
     for (var q in widget.seasons) {

@@ -29,14 +29,14 @@ DiscoverPageState _busyChanged(DiscoverPageState state, Action action) {
 
 DiscoverPageState _onLoadData(DiscoverPageState state, Action action) {
   VideoListModel m = action.payload ??
-      VideoListModel.fromParams(results: List<VideoListResult>());
+      VideoListModel.fromParams(results: []);
   final DiscoverPageState newState = state.clone();
   newState.videoListModel = m;
   return newState;
 }
 
 DiscoverPageState _onLoadMore(DiscoverPageState state, Action action) {
-  final List<VideoListResult> m = action.payload ?? List<VideoListResult>();
+  final List<VideoListResult> m = action.payload ?? [];
   final DiscoverPageState newState = state.clone();
   newState.videoListModel.page++;
   newState.videoListModel.results.addAll(m);

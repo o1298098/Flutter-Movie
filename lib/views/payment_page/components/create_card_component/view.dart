@@ -19,7 +19,7 @@ Widget buildView(
       return Stack(
         children: [
           Scaffold(
-            resizeToAvoidBottomPadding: false,
+            resizeToAvoidBottomInset: false,
             backgroundColor: _theme.primaryColorDark,
             appBar: AppBar(
               backgroundColor: _theme.primaryColorDark,

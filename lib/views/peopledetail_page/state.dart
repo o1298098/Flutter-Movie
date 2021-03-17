@@ -53,9 +53,9 @@ class PeopleDetailPageState
 PeopleDetailPageState initState(Map<String, dynamic> args) {
   var state = PeopleDetailPageState();
   state.peopleDetailModel =
-      PeopleDetailModel.fromParams(alsoKnownAs: List<String>());
+      PeopleDetailModel.fromParams(alsoKnownAs: []);
   state.creditsModel = CombinedCreditsModel.fromParams(
-      cast: List<CombinedCastData>(), crew: List<CombinedCrewData>());
+      cast: [], crew: []);
   state.biographyHeight = Adapt.px(200.0);
   state.isBiographyOpen = false;
   state.showmovie = true;

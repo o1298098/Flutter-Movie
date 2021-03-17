@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:movie/globalbasestate/state.dart';
-import 'package:movie/models/episode_model.dart';
 import 'package:movie/models/app_user.dart';
 import 'package:movie/models/image_model.dart';
 import 'package:movie/models/season_detail.dart';
@@ -56,7 +55,7 @@ SeasonDetailPageState initState(Map<String, dynamic> args) {
   state.seasonNumber = args['seasonNumber'];
   state.name = args['seasonName'];
   state.seasonpic = args['posterpic'];
-  state.seasonDetailModel = Season.fromParams(episodes: List<Episode>());
+  state.seasonDetailModel = Season.fromParams(episodes: []);
   state.seasonCastState = SeasonCastState();
   return state;
 }

@@ -17,7 +17,7 @@ Widget buildView(
         children: [
           Scaffold(
             backgroundColor: _theme.backgroundColor,
-            resizeToAvoidBottomPadding: false,
+            resizeToAvoidBottomInset: false,
             appBar: AppBar(
               iconTheme: _theme.iconTheme,
               elevation: 0.0,
@@ -27,7 +27,7 @@ Widget buildView(
                 style: _theme.textTheme.bodyText1,
               ),
               actions: [
-                FlatButton(
+                TextButton(
                   onPressed: () =>
                       dispatch(CreateListPageActionCreator.onSubmit()),
                   child: Text(

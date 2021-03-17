@@ -286,7 +286,7 @@ class _DownLoadTaskListState extends State<_DownLoadTaskList> {
   }
 
   void updateTasks() {
-    tasks = List<DownloadQueue>();
+    tasks =[];
     if (tasks != null)
       widget.tasks?.forEach((e) {
         tasks.add(DownloadQueue(

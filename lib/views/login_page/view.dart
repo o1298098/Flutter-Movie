@@ -17,7 +17,7 @@ import 'state.dart';
 Widget buildView(
     LoginPageState state, Dispatch dispatch, ViewService viewService) {
   return Scaffold(
-    resizeToAvoidBottomPadding: false,
+    resizeToAvoidBottomInset: false,
     body: Stack(
       children: <Widget>[
         _BackGround(controller: state.animationController),
@@ -341,10 +341,13 @@ class _SubmitButton extends StatelessWidget {
                 width: Tween<double>(begin: buttonWidth, end: Adapt.px(100))
                     .animate(submitWidth)
                     .value,
-                child: FlatButton(
-                  color: Colors.black87,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(Adapt.px(50))),
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.black87,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(Adapt.px(50)),
+                    ),
+                  ),
                   child: Text('Sign In',
                       style: TextStyle(
                           color: Colors.white,

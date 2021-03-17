@@ -4,7 +4,6 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie/style/themestyle.dart';
-import 'package:movie/views/checkout_page/action.dart';
 
 import 'action.dart';
 import 'state.dart';

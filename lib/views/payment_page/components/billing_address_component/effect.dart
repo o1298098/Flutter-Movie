@@ -2,7 +2,6 @@ import 'dart:convert' show json;
 
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action;
-import 'package:movie/models/base_api_model/braintree_billing_address.dart';
 import 'package:movie/models/base_api_model/stripe_address.dart';
 import 'package:movie/models/country_phone_code.dart';
 import 'action.dart';
@@ -24,7 +23,7 @@ void _onInit(Action action, Context<BillingAddressState> ctx) async {
   ctx.state.createAddressState = CreateAddressState();
   final _jsonStr = await CountryPhoneCode.getCountryJson(ctx.context);
   final _countriesJson = json.decode(_jsonStr);
-  final _countries = List<CountryPhoneCode>();
+  final _countries = [];
   for (var _country in _countriesJson) {
     _countries.add(CountryPhoneCode.fromJson(_country));
   }

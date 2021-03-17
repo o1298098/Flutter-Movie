@@ -19,12 +19,12 @@ class FilterState implements Cloneable<FilterState> {
     SortCondition(name: 'Rating', isSelected: false, value: 'vote_average'),
     SortCondition(name: 'Vote Count', isSelected: false, value: 'vote_count'),
   ];
-  List<SortCondition> movieGenres = new List<SortCondition>()
+  List<SortCondition> movieGenres = []
     ..addAll(Genres.instance.movieList.keys.map((i) {
       return SortCondition(
           name: Genres.instance.movieList[i], isSelected: false, value: i);
     }).toList());
-  List<SortCondition> tvGenres = new List<SortCondition>()
+  List<SortCondition> tvGenres = []
     ..addAll(Genres.instance.tvList.keys.map((i) {
       return SortCondition(
           name: Genres.instance.tvList[i], isSelected: false, value: i);

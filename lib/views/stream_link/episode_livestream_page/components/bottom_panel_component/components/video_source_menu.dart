@@ -69,7 +69,7 @@ class VideoSourceMenu extends StatelessWidget {
                     : Center(
                         child: SizedBox(
                           width: 120,
-                          child: FlatButton(
+                          child: TextButton(
                             onPressed: streamLinkRequestTap,
                             child: Text(
                               'request stream link',

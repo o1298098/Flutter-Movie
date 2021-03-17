@@ -1,6 +1,4 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/base_api_model/braintree_creditcard.dart';
-import 'package:movie/models/base_api_model/braintree_customer.dart';
 import 'package:movie/models/base_api_model/braintree_transaction.dart';
 import 'package:movie/models/models.dart';
 

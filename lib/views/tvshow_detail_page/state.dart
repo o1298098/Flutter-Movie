@@ -45,16 +45,16 @@ TvShowDetailState initState(Map<String, dynamic> args) {
 
   state.tvDetailModel = new TVDetailModel.fromParams();
   state.creditsModel = new CreditsModel.fromParams(
-      cast: List<CastData>(), crew: List<CrewData>());
+      cast: [], crew: []);
 
   state.imagesmodel = new ImageModel.fromParams(
-      posters: List<ImageData>(), backdrops: List<ImageData>());
-  state.reviewModel = new ReviewModel.fromParams(results: List<ReviewResult>());
+      posters: [], backdrops:[]);
+  state.reviewModel = new ReviewModel.fromParams(results: []);
   state.recommendations =
-      new VideoListModel.fromParams(results: List<VideoListResult>());
+      new VideoListModel.fromParams(results: []);
   state.keywords = new KeyWordModel.fromParams(
-      keywords: List<KeyWordData>(), results: List<KeyWordData>());
-  state.videomodel = new VideoModel.fromParams(results: List<VideoResult>());
+      keywords: [], results: []);
+  state.videomodel = new VideoModel.fromParams(results: []);
   state.accountState = AccountState.fromParams(
       id: 0,
       uid: GlobalStore.store.getState().user?.firebaseUser?.uid,

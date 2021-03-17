@@ -39,12 +39,12 @@ class HomePageState implements Cloneable<HomePageState> {
 
 HomePageState initState(Map<String, dynamic> args) {
   var state = HomePageState();
-  state.movie = new VideoListModel.fromParams(results: List<VideoListResult>());
-  state.tv = new VideoListModel.fromParams(results: List<VideoListResult>());
+  state.movie = new VideoListModel.fromParams(results: []);
+  state.tv = new VideoListModel.fromParams(results: []);
   state.popularMovies =
-      new VideoListModel.fromParams(results: List<VideoListResult>());
+      new VideoListModel.fromParams(results: []);
   state.popularTVShows =
-      new VideoListModel.fromParams(results: List<VideoListResult>());
+      new VideoListModel.fromParams(results: []);
   state.trending = SearchResultModel.fromParams(results: []);
   state.showPopMovie = true;
   state.showHeaderMovie = true;

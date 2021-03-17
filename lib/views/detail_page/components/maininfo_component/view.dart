@@ -211,12 +211,13 @@ class _PlayButton extends StatelessWidget {
       ),
       width: Adapt.px(100),
       height: Adapt.px(100),
-      child: FlatButton(
-        padding: EdgeInsets.zero,
-        color: hasStreamLink == true ? Colors.red : Colors.grey,
+      child: TextButton(
+        style: TextButton.styleFrom( padding: EdgeInsets.zero,
+        backgroundColor: hasStreamLink == true ? Colors.red : Colors.grey,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(Adapt.px(50))),
-        highlightColor: Colors.red,
+        ),
+       
         child: Icon(
           Icons.play_arrow,
           color: const Color(0xFFFFFFFF),

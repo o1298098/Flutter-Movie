@@ -39,13 +39,13 @@ void _deleteList(Action action, Context<ListCellState> ctx) {
             ),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text('Submit'),
               onPressed: () {
                 final _baseApi = BaseApi.instance;

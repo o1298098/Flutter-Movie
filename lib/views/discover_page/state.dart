@@ -77,7 +77,6 @@ DiscoverPageState initState(Map<String, dynamic> args) {
   state.isbusy = false;
   state.lVote = 0.0;
   state.rVote = 10.0;
-  state.videoListModel =
-      new VideoListModel.fromParams(results: List<VideoListResult>());
+  state.videoListModel =VideoListModel.fromParams(results: []);
   return state;
 }

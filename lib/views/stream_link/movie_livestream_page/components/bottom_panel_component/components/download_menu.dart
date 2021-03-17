@@ -121,7 +121,7 @@ class _DownLoadTaskListState extends State<_DownLoadTaskList> {
 
   Future updateTasks() async {
     _downloadTasks = await FlutterDownloader.loadTasks();
-    _queue = List<DownloadQueue>();
+    _queue = [];
     if (_queue != null)
       _downloadTasks?.forEach((e) {
         //FlutterDownloader.remove(taskId: e.taskId);

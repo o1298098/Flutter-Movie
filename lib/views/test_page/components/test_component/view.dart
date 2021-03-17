@@ -16,8 +16,10 @@ Widget buildView(TestState state, Dispatch dispatch, ViewService viewService) {
             ValueKey(TestInheritedWidget.of(viewService.context).counter.value),
       ),
       SizedBox(height: Adapt.px(100)),
-      FlatButton(
-        color: Colors.amber,
+      TextButton(
+        style: TextButton.styleFrom(
+          backgroundColor: Colors.amber,
+        ),
         onPressed: () {
           TestInheritedWidget.of(viewService.context).counter.value++;
         },

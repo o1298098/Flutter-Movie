@@ -64,7 +64,7 @@ class _StripeTestState extends State<_StripeTest> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: RaisedButton(
+      child:ElevatedButton(
         child: Text("Native payment"),
         onPressed: () async {
           await StripePayment.canMakeNativePayPayments([])

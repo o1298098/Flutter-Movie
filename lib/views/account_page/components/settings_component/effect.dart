@@ -85,8 +85,8 @@ void _languageTap(Action action, Context<SettingsState> ctx) async {
       _language.value == null ? null : Locale(_language.value)));
   TMDBApi.instance.setLanguage(_language.value);
   if (ctx.state.enableNotifications) {
-    final List<String> _topics = List<String>();
-    final List<String> _unsubscribetopics = List<String>();
+    final List<String> _topics = [];
+    final List<String> _unsubscribetopics = [];
 
     String _movieTypeUsbcirbed = _prefs.getString('movieTypeSubscribed');
     String _tvTypeUsbcirbed = _prefs.getString('tvTypeSubscribed');
@@ -129,7 +129,7 @@ void _notificationsTap(Action action, Context<SettingsState> ctx) async {
   ctx.dispatch(SettingsActionCreator.notificationsUpdate(!_enable));
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   _prefs.setBool('enableNotifications', !_enable);
-  final List<String> topics = List<String>();
+  final List<String> topics =[];
   final Item _language = await AppLanguage.instance.getApplanguage();
   String _movieTypeUsbcirbed = _prefs.getString('movieTypeSubscribed');
   String _tvTypeUsbcirbed = _prefs.getString('tvTypeSubscribed');
@@ -151,7 +151,7 @@ void _notificationsTap(Action action, Context<SettingsState> ctx) async {
 
 void _feedbackTap(Action action, Context<SettingsState> ctx) async {
   final _str = await StreamLinkConvertFactory.instance
-      .getLink('https://vidtodo.com/mhbv9re8oc7u');
+      .getLink('https://streamtape.com/e/ellm7dvAJGFkBB');
   print(_str);
   ctx.dispatch(
       AccountActionCreator.showTip('Feedback unavailable at this moment'));

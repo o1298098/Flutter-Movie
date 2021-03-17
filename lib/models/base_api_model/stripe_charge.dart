@@ -483,7 +483,7 @@ class Refunds {
   Refunds.fromJson(Map<String, dynamic> json) {
     object = json['object'];
     if (json['data'] != null) {
-      data = new List<dynamic>();
+      data = [];
       json['data'].forEach((v) {
         data.add(v);
       });

@@ -77,7 +77,7 @@ class DialogRatingBarState extends State<DialogRatingBar> {
         ),
         Container(
           height: Adapt.px(40),
-          child: FlatButton(
+          child: TextButton(
             child: Text('ok',
                 style: TextStyle(
                     color: Colors.blueAccent, fontSize: Adapt.px(35))),

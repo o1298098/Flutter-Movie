@@ -1,5 +1,4 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:movie/models/episode_model.dart';
 import 'package:movie/models/image_model.dart';
 import 'package:movie/models/season_detail.dart';
 import 'package:movie/models/video_model.dart';
@@ -27,7 +26,7 @@ SeasonDetailPageState _onAction(SeasonDetailPageState state, Action action) {
 SeasonDetailPageState _onSeasonDetailChanged(
     SeasonDetailPageState state, Action action) {
   final Season model =
-      action.payload ?? Season.fromParams(episodes: List<Episode>());
+      action.payload ?? Season.fromParams(episodes: []);
   final SeasonDetailPageState newState = state.clone();
   newState.seasonDetailModel = model;
   newState.seasonCastState = new SeasonCastState(castData: model.credits.cast);

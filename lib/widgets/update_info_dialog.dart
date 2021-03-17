@@ -76,14 +76,14 @@ class UpdateInfoDialog extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
             child: Row(children: [
               Expanded(child: SizedBox()),
-              FlatButton(
+              TextButton(
                 onPressed: () => _ignoreVersion(context),
                 child: Text(
                   'ignore',
                   style: TextStyle(color: Colors.grey, fontSize: Adapt.px(30)),
                 ),
               ),
-              FlatButton(
+              TextButton(
                   onPressed: () => _startDownload(context),
                   child: Text(
                     'download',

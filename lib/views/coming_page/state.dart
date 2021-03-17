@@ -28,7 +28,7 @@ ComingPageState initState(Map<String, dynamic> args) {
   var state = ComingPageState();
   state.showmovie = true;
   state.moviecoming =
-      VideoListModel.fromParams(results: List<VideoListResult>());
-  state.tvcoming = VideoListModel.fromParams(results: List<VideoListResult>());
+      VideoListModel.fromParams(results: []);
+  state.tvcoming = VideoListModel.fromParams(results: []);
   return state;
 }

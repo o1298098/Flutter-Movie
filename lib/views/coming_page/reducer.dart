@@ -23,7 +23,7 @@ ComingPageState _onAction(ComingPageState state, Action action) {
 
 ComingPageState _onInitMoviesComing(ComingPageState state, Action action) {
   final VideoListModel q = action.payload ??
-      VideoListModel.fromParams(results: List<VideoListResult>());
+      VideoListModel.fromParams(results:[]);
   final ComingPageState newState = state.clone();
   newState.moviecoming = q;
   newState.moviePage = q.page;
@@ -32,7 +32,7 @@ ComingPageState _onInitMoviesComing(ComingPageState state, Action action) {
 
 ComingPageState _onLoadMore(ComingPageState state, Action action) {
   final VideoListModel q = action.payload ??
-      VideoListModel.fromParams(results: List<VideoListResult>());
+      VideoListModel.fromParams(results:[]);
   final ComingPageState newState = state.clone();
   if (newState.showmovie) {
     newState.moviePage = q.page;
@@ -48,7 +48,7 @@ ComingPageState _onLoadMore(ComingPageState state, Action action) {
 
 ComingPageState _onInitTVComing(ComingPageState state, Action action) {
   final VideoListModel q = action.payload ??
-      VideoListModel.fromParams(results: List<VideoListResult>());
+      VideoListModel.fromParams(results: []);
   final ComingPageState newState = state.clone();
   newState.tvcoming = q;
   newState.tvPage = q.page;

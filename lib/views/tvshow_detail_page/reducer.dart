@@ -70,7 +70,7 @@ TvShowDetailState _onSetRecommendations(
 
 TvShowDetailState _onSetKeyWords(TvShowDetailState state, Action action) {
   KeyWordModel c = action.payload ??
-      new KeyWordModel.fromParams(keywords: List<KeyWordData>());
+      new KeyWordModel.fromParams(keywords: []);
   final TvShowDetailState newState = state.clone();
   newState.keywords = c;
   return newState;

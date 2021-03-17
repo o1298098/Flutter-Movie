@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie/actions/adapt.dart';
-import 'package:movie/models/base_api_model/braintree_billing_address.dart';
 import 'package:movie/models/base_api_model/stripe_address.dart';
 import 'package:movie/style/themestyle.dart';
 

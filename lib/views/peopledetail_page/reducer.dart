@@ -25,7 +25,7 @@ PeopleDetailPageState _onAction(PeopleDetailPageState state, Action action) {
 
 PeopleDetailPageState _onInit(PeopleDetailPageState state, Action action) {
   final PeopleDetailModel m = action.payload ??
-      PeopleDetailModel.fromParams(alsoKnownAs: List<String>());
+      PeopleDetailModel.fromParams(alsoKnownAs:[]);
   final PeopleDetailPageState newState = state.clone();
   newState.peopleDetailModel = m;
   newState.profilePath = m.profilePath;

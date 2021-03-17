@@ -73,11 +73,11 @@ MovieDetailPageState initState(Map<String, dynamic> args) {
   state.tabTintColor = Color.fromRGBO(
       random.nextInt(200), random.nextInt(100), random.nextInt(255), 1);
   state.palette = new PaletteGenerator.fromColors(
-      List<PaletteColor>()..add(new PaletteColor(Colors.black87, 0)));
+      []..add(new PaletteColor(Colors.black87, 0)));
   state.imagesmodel = new ImageModel.fromParams(
-      posters: List<ImageData>(), backdrops: List<ImageData>());
-  state.reviewModel = new ReviewModel.fromParams(results: List<ReviewResult>());
-  state.videomodel = new VideoModel.fromParams(results: List<VideoResult>());
+      posters: [], backdrops:[]);
+  state.reviewModel = new ReviewModel.fromParams(results:[]);
+  state.videomodel = new VideoModel.fromParams(results: []);
   state.accountState =
       new MediaAccountStateModel.fromParams(favorite: false, watchlist: false);
   return state;

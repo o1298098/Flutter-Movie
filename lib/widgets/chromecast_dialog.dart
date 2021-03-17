@@ -1,4 +1,4 @@
-import 'dart:async';
+/*import 'dart:async';
 
 import 'package:dart_chromecast/casting/cast.dart';
 import 'package:flutter/material.dart';
@@ -571,3 +571,4 @@ class _ProgressBarPainter extends CustomPainter {
     );
   }
 }
+*/

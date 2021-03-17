@@ -14,7 +14,7 @@ Widget buildView(ScanState state, Dispatch dispatch, ViewService viewService) {
                 aspectRatio: state.controller.value.aspectRatio,
                 child: CameraPreview(state.controller))
             : SizedBox(),
-        FlatButton(
+        TextButton(
             onPressed: () => dispatch(ScanActionCreator.takePicture()),
             child: Text('take a picture'))
       ],

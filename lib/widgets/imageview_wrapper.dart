@@ -29,7 +29,7 @@ class HeroPhotoViewWrapper extends StatelessWidget {
           children: <Widget>[
             PhotoView(
               imageProvider: CachedNetworkImageProvider(url),
-              loadingChild: loadingChild,
+              loadingBuilder: (_, __) => loadingChild,
               backgroundDecoration: backgroundDecoration,
               minScale: minScale,
               maxScale: maxScale,

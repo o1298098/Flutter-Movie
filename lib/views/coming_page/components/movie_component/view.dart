@@ -108,7 +108,7 @@ class _ShimmerList extends StatelessWidget {
       baseColor: _theme.primaryColorDark,
       highlightColor: _theme.primaryColorLight,
       child: Column(
-        children: List(4).map((e) => const _ShimmerCell()).toList(),
+        children: List.filled(4, 0).map((e) => const _ShimmerCell()).toList(),
       ),
     );
   }

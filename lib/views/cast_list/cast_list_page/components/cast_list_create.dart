@@ -136,7 +136,7 @@ class _CastListCreateState extends State<CastListCreate> {
     return Stack(
       children: [
         Scaffold(
-          resizeToAvoidBottomPadding: false,
+          resizeToAvoidBottomInset: false,
           backgroundColor: _theme.backgroundColor,
           appBar: AppBar(
             elevation: 0.0,
@@ -147,7 +147,7 @@ class _CastListCreateState extends State<CastListCreate> {
             iconTheme: _theme.iconTheme,
             backgroundColor: _theme.backgroundColor,
             actions: [
-              FlatButton(
+              TextButton(
                 onPressed: _onSave,
                 child: Text(
                   'Save',

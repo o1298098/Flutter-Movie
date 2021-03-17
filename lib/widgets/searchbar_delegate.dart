@@ -47,7 +47,7 @@ class SearchBarDelegate extends SearchDelegate<SearchResult> {
 
   Future<List<String>> _getHistory() async {
     if (prefs == null) prefs = await SharedPreferences.getInstance();
-    searchHistory = prefs.getStringList('searchHistory') ?? List<String>();
+    searchHistory = prefs.getStringList('searchHistory') ?? [];
     return searchHistory;
   }
 
@@ -134,7 +134,7 @@ class SearchBarDelegate extends SearchDelegate<SearchResult> {
                                     onPressed: () {
                                       if (prefs != null &&
                                           searchHistory.length > 0) {
-                                        searchHistory = List<String>();
+                                        searchHistory = [];
                                         prefs.remove('searchHistory');
                                         query = '';
                                         showSuggestions(context);

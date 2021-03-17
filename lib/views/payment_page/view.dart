@@ -424,7 +424,7 @@ class _CreditCardSwiper extends StatelessWidget {
         Offset(Adapt.screenW(), 0),
         Offset(Adapt.screenW(), 0),
       ];
-      List(lenght - 4).forEach((e) {
+      List.filled(lenght - 4, 0).forEach((e) {
         _opacitys.insert(0, 0);
         _rotates.insert(0, 0);
         _scales.insert(0, 0);
